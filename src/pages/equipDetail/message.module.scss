@@ -1,0 +1,108 @@
+.tabContent,
+.mobileTabContent {
+  height: 100%;
+  :global {
+    .ant-table-wrapper .ant-table-thead >tr>th {
+      font-size: 0.875rem;
+    }
+    .ant-tabs-content-holder {
+      overflow-y: scroll;
+    }
+    .ant-tabs-nav {
+      background-color: #fff;
+      &::before {
+        border-bottom: none;
+      }
+    }
+    .ant-tabs-tab {
+      font-size: 1rem;
+    }
+    .ant-tabs-tab+.ant-tabs-tab {
+      margin-left: 80px;
+    }
+    .ant-tabs .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+      font-size: 1rem;
+      font-weight: 600;
+    }
+    .ant-empty-image {
+      height: 0;
+    }
+    .ant-empty-description {
+      font-size: 0.8rem;
+    }
+    .nurseTableRow {
+      vertical-align: top !important;
+    }
+
+  }
+}
+:global {
+  .ant-checkbox-inner,
+  .ant-radio-inner {
+    width: 1rem !important;
+    height: 1rem !important;
+    border-radius: 50% !important;
+  }
+}
+.pcCheckoutValue {
+
+  :global {
+    .ant-checkbox-wrapper {
+      margin-top: 1rem;
+      font-size: 1rem !important;
+      .ant-checkbox-inner {
+        width: 1rem !important;
+        height: 1rem !important;
+        border-radius: 50% !important;
+      }
+    }
+  }
+}
+
+.mobileTabContent {
+  :global {
+    .ant-tabs-nav {
+      position: fixed;
+      top: 8.8rem;
+      z-index: 9;
+      width: 100%;
+    }
+    .ant-tabs-content-holder {
+      padding-top: 12.5rem;
+    }
+
+    .ant-table-wrapper .ant-table-cell,
+    .ant-table-wrapper .ant-table-thead>tr>th{
+      padding: 16px 8px !important;
+    }
+  }
+}
+.rowItem {
+  padding: 10px 0;
+  color: #6C7784;
+}
+.rowItem + .rowItem{
+  border-top: 1px solid #DCE3E9;
+}
+
+.mobileSettingContent {
+  :global {
+    .adm-list-header {
+      font-size: 1.125rem;
+      color: #3D3D3D;
+      font-weight: 600;
+    }
+    .adm-list-body {
+      border-radius: 10px;
+      color: #6C7784;
+    }
+
+    .adm-picker-header-button:first-child {
+      color: #3D3D3D;
+    }
+    .adm-picker-header-title {
+      font-weight: 500;
+      font-size: 1.125rem !important;
+    }
+  }
+}

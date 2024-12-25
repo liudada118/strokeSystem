@@ -1,0 +1,183 @@
+.bottomContent {
+    z-index: 2;
+}
+
+.setImg {
+    width: 1.52rem;
+}
+
+
+
+.bottomItem{
+    position: relative;
+}
+
+
+
+
+.deviceTitle {
+    width: 6rem;
+}
+
+.imgContent {
+    position: relative;
+    height: 5rem;
+    width: 5rem;
+    flex: 1;
+    display: flex;
+    // justify-content: center;
+    align-items: end;
+    // border-radius: 50%;
+    overflow: hidden;
+
+    .img {
+        height: 5rem;
+        width: 5rem;
+        border-radius: 0.48rem;
+    }
+}
+.deviceItem{
+    margin-bottom: 0.5rem;
+}
+
+.bottomName{
+    color: #6C7784;
+    font-size: 0.7rem;
+}
+.selectItempc{
+    background: #0072EF;
+    .bottomName{
+        color: #FFFFFF;
+    }
+}
+@media screen and (min-width: $phoneWidth) and (max-width: $PadWidth) {
+    .bottomContent {
+        display: flex;
+        flex: 1;
+        padding: 0 0 2.72rem 0;
+
+        .bottonSelectItem {
+            font-weight: bold;
+        }
+
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        // height: 3.5rem;
+        background-color: #fff;
+        padding: 0.52rem 3.96rem 2.72rem 2.96rem;
+    }
+
+    .bottomItemContent {
+        flex: 7;
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.88rem;
+    }
+
+   
+
+    .bottomItem {
+        // flex: 1;
+        display: flex;
+        align-items: center;
+        // justify-content: center;
+        text-decoration: none;
+        color: #333;
+        flex-direction: column;
+    }
+
+    .bottomAdd {
+        flex: 3;
+        display: flex;
+        align-items: center;
+        justify-content: end;
+        position: relative;
+    }
+
+    .bottomAddContent {
+        background: linear-gradient(#009FFF, #006CFD);
+        width: 4.56rem;
+        height: 4.56rem;
+        border-radius: 50%;
+        position: absolute;
+        bottom: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        img{
+            width: 1.79rem;
+        }
+    }
+    .bottomAddContentbg{
+        background-color: #fefefe;
+        width: 5.52rem;
+        height: 5.52rem;
+        position: absolute;
+        bottom: -0.48rem;
+        right: -0.48rem;
+        border-radius: 50%;
+    }
+
+    .readMessage{
+        width: 0.6rem;
+        height: 0.6rem;
+       }
+}
+
+
+@media screen and (min-width: $PadWidth) {
+    .readMessage{
+     width: 0.8rem;
+     height: 0.8rem;
+    }
+ 
+     .bottomItemContent{
+         display: flex;
+         flex-direction: column;
+         // align-items: center;
+     }
+     // .homeTitle{
+     //     margin-left: 7.41rem;
+     //     width: unset;
+     //     font-size: 2rem;
+     //     font-weight: bold;
+     // }
+     .setImg{
+         width: 1.66rem;
+     }
+     .homeBottom{
+         
+     }
+     .bottomItem{
+         display: flex;
+         flex-direction: column;
+         align-items: center;
+         color: #fff;
+     }
+     .bottomName{
+         // display: none;
+     }
+     .bottomContent{
+         position: fixed;
+         left: 0;
+         top: 0;
+         height: 100%;
+         width: 4.3rem;
+         z-index: 100000000;
+         background: #DCE3E9;
+         height: 100%;
+         display: flex;
+         flex-direction: column;
+         justify-content: space-between;
+         // align-items: center;
+         padding: 1rem 0 3.7rem;
+     }
+ 
+     .bottomItem{
+         display: flex;
+         // align-items: center;
+         justify-content: center;
+         padding: 0.8rem 0;
+     }
+ }

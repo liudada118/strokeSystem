@@ -1,0 +1,263 @@
+.dataInfo {
+    display: flex;
+
+    margin-bottom: 1.39rem;
+    // flex-direction: column;
+}
+
+.realDataItems {
+    display: flex;
+    flex-wrap: wrap;
+
+    .realDataItem {
+        flex: 0 0 25%;
+        display: flex;
+        // align-items: center;
+        // justify-content: center;
+        flex-direction: column;
+    }
+
+    .realDataItemTitle {
+        font-size: 1rem;
+    }
+
+    .realDataItemContent {
+        display: flex;
+        align-items: baseline;
+    }
+
+    .realDataItemData {
+        font-size: 2.78rem;
+        font-weight: bold;
+
+    }
+
+    .realDataItemUtil {
+        font-size: 0.97rem;
+        font-weight: normal;
+    }
+
+
+}
+
+.sleepSegAndProp {
+    // display: flex;
+}
+
+.sleepSeg {
+    display: flex;
+    // flex: 6;
+    // background-color: #fdfdfd;
+    // padding: 1.25rem 1.56rem 1.7rem;
+    // border-radius: 0.83rem;
+    // margin-right: 1rem;
+    // align-items: center;
+}
+
+
+.circles {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    margin-bottom: 0.94rem;
+}
+
+.circle {
+    width: 0.42rem;
+    height: 0.42rem;
+    border-radius: 10px;
+
+}
+
+.sleepProp {
+    flex: 4;
+    display: flex;
+    flex-direction: column;
+    // justify-content: center;
+}
+
+.sleepStatuss {
+    display: flex;
+    width: 100%;
+}
+
+.circleItem {
+    display: flex;
+    align-items: center;
+    margin-right: 1rem;
+}
+.circleItem:nth-child(4){
+    margin: 0;
+}
+
+.circle {
+    margin-right: 0.31rem;
+}
+
+.showSleep {
+    min-width: 100px;
+    background-color: rgba(0, 0, 0, 0.7);
+    // position: absolute;
+    // top: -2.8rem ;
+    z-index: 10;
+    border-radius: 10px;
+    position: absolute;
+    // left: -120px;
+    // transform: translateY(-56px);
+    top : -4rem;
+    height: 2.4rem;
+}
+
+.showSleepItem {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    padding: 0.6rem;
+}
+
+.showSleepTriang {
+    width: 0;
+    height: 0;
+    border: 6px solid transparent;
+    border-top: 6px solid rgba(0, 0, 0, 0.7);
+    position: absolute;
+    // bottom: -px;
+    left: 50%;
+    transform: translateX(-6px);
+    top: -1.6rem;
+}
+
+.startAndEndTime {
+    margin-top: 0.63rem;
+    display: flex;
+    justify-content: space-between;
+    color: #B0B3B8;
+    font-size: 8px;
+}
+
+.card {
+    width: 100%;
+
+}
+
+.sleepProp {
+    background-color: #fdfdfd;
+    padding: 1.25rem 1.56rem 1.7rem;
+    border-radius: 0.83rem;
+}
+
+.propContent {
+    display: flex;
+    flex: 1;
+}
+
+.propChart {
+    height: 100%;
+    flex: 1;
+}
+
+.propsData {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.propsDateItem {
+    display: flex;
+    align-items: center;
+    font-size: 1rem;
+}
+
+.move {}
+
+.curveChartContent{
+    display: flex;
+}
+
+.curveChart {
+    flex: 0 0 calc((100% - 2rem)/3);
+    height: 20rem;
+    background-color: #fdfdfd;
+    border-radius: 0.83rem;
+    padding: 1.25rem;
+    font-size: 1.04rem;
+}
+
+
+.propsDateItem:nth-of-type(1){
+    margin-bottom: 0.8rem;
+}
+.ant-table-thead{
+    .ant-table-cell{
+        font-size: 0.7rem;
+        padding-left: 0!important;
+        padding-right: 0!important;
+        text-align: center!important;
+    }
+}
+
+.ant-table-cell{
+    padding: 0;
+    text-align: center!important;
+    padding-left: 0!important;
+    padding-right: 0!important;
+}
+
+
+
+// new
+.dayReport {
+    .itemInfo {
+        justify-content: center;
+    }
+    
+ 
+    .itemIcon {
+        background-color: unset !important;
+
+        img {
+            width: 60% !important;
+            height: 60% !important;
+        }
+    }
+
+    .realDataItemData {
+        display: flex;
+        justify-content: center;
+        align-items: baseline;
+        font-size: 2rem;
+    }
+
+    .realTitle {
+        display: flex;
+        justify-content: center;
+        color: #B0B3B8;
+    }
+
+    .sleepSegAndProp {
+        flex: 1;
+    }
+
+    .SegInfo {
+        display: flex;
+        align-items: center;
+        margin-bottom: 0.4rem;
+        font-weight: bold;
+
+        .itemIcon {
+            width: 3rem;
+            height: 3rem;
+            background-color: #0067ff;
+            border-radius: 1rem;
+            margin-right: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    }
+}

@@ -1,0 +1,209 @@
+.title {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    left: 0;
+    z-index: 100000000;
+    background-color: #fff;
+    font-family: sy;
+}
+
+.homeTitle {
+    padding: .8rem 1.25rem;
+    background-color: #fff;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0rem 0.1rem 0.52rem 0rem rgba(24, 22, 22, 0.03);
+    box-sizing: border-box;
+
+    height: 3.28rem;
+    z-index: 100;
+}
+
+.homeTitle img {
+    height: 2.6rem;
+    // width: 310px;
+
+}
+
+.titleLeft {
+    cursor: pointer;
+}
+
+.searchInput {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-right: 1rem;
+}
+
+.infoIcon {
+    width: 1rem;
+}
+
+.searchInput input {
+    width: 13.46rem;
+    height: 2.67rem;
+    border: #efefef solid 1px;
+    border-radius: 1rem;
+    padding-left: 7.8rem;
+}
+
+.searchInput img {
+    width: 0.6rem;
+    height: 0.6rem;
+    position: absolute;
+    left: 7rem;
+}
+
+.titleRight {
+    display: flex;
+    align-items: center;
+}
+
+.icons {
+    display: flex;
+}
+
+.icons img {
+    width: 0.94rem;
+    height: 0.94rem;
+}
+
+.icon {
+    margin-right: 2rem;
+}
+
+.headImg img {
+    width: 1.56rem;
+    height: 1.56rem;
+}
+
+.homeContent{
+    .reprotSelect{
+        display: none;
+    }
+}
+.titleContentItem{
+    display: flex;
+    position : relative ;
+    height : 100%
+}
+
+.titleContentItem{
+    display: flex;
+    align-items: center;
+}
+
+// @media screen and (min-width: 530px) and (max-width: $PadWidth) {
+//     .homeTitle{
+//         .titleLeft {
+//             img{
+//                 height: 3.6rem;
+//             }
+//         }
+//     }
+    
+// }
+
+
+@media screen and (min-width: $phoneWidth) and (max-width: $PadWidth) {
+    .homeTitle {
+        // flex-direction: column;
+        // display: none;
+        // position: fixed;
+        // top: 0;
+        // left: 0;
+        height: 3.28rem;;
+    }
+
+    .deviceTitle {
+        width: 6rem;
+    }
+}
+
+.reprotSelect {
+    flex: 5;
+    display: flex;
+    background-color: #fefefe;
+    padding: 0 5.08rem;
+    justify-content: space-between;
+    height: 3.52rem;
+    width: 100%;
+}
+
+.reprotSelectItem {
+    flex: 1;
+    // padding: 0.5rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 2rem;
+    text-align: center;
+    position: relative;
+}
+
+
+.borderBottom{
+    width: 100%;
+    height: 0.32rem;
+    position: absolute;
+    bottom: 0;
+    border-radius: 0.16rem;
+    background: linear-gradient(to right,#009FFF, #006CFD);;
+}
+
+@media screen and (min-width: $PadWidth) {
+    .reprotSelect{
+        display: none!important;
+    }
+    .homeTitle{
+        margin-left: 8.41rem;
+        width: unset;
+        font-size: 1.1rem;
+        font-weight: bold;
+    }
+    .pcReprotSelect {
+        // flex: 5;
+        display: flex;
+        background-color: #fefefe;
+        // padding: 0 5.08rem;
+        justify-content: space-between;
+        height: 3.28rem;
+        // width: 30%;
+        .reprotSelectItem{
+            padding: 0 1rem;
+        }
+    }
+}
+
+.searchSelect{
+    position: absolute;
+    left: 0.2rem;
+    .ant-select-selector{
+        border: 0!important;
+    }
+    width: 6.2rem!important;
+    .ant-select-selector{
+        padding: 0 0.6rem!important;
+        background-color: unset!important;
+        box-shadow: unset!important;
+    }
+    
+}
+
+.deviceTitle {
+    width: 6rem;
+}
+
+.deviceItem{
+    margin-bottom: 0.5rem;
+}
+
+.reprotSelect{
+    .ant-picker{
+        width: 200px;
+    }
+}

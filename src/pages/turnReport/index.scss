@@ -1,0 +1,186 @@
+.nurseReport2 {
+
+
+    .nursecard {
+        background-color: #fff;
+        border-radius: 5px;
+        padding: 1rem 1rem;
+        margin-bottom: 1rem
+    }
+
+    .nurseTitleReal {
+        position: relative;
+        margin-bottom: 1.5rem;
+        font-weight: bold;
+        font-size: 1.5rem;
+        text-align: center;
+    }
+
+    .personalInfo {
+        background-color: #fefefe;
+        box-shadow: 0rem 0.75rem 4.17rem 0rem rgba(167, 209, 255, 0.46), 0rem 0.33rem 1.42rem 0rem rgba(0, 129, 254, 0.06);
+        border: 0.17rem solid #FFFFFF;
+        overflow: hidden;
+
+        .bgc {
+            height: 8rem;
+            position: absolute;
+            opacity: 0.2;
+            right: -3rem;
+            bottom: 0;
+
+            img {
+                height: 100%;
+            }
+        }
+
+        flex: 2;
+        display: flex;
+        flex-direction: row;
+        // align-items: center;
+        justify-content: space-between;
+        margin-right: 1.39rem;
+        border-radius: 1.1rem;
+        padding: 1.2rem;
+        height: 100%;
+        position: relative;
+
+        .setting {
+            width: 2rem;
+            height: 2rem;
+            position: absolute;
+            right: 1rem;
+            bottom: 1rem;
+            z-index: 2;
+
+            img {
+                width: 100%;
+                height: 100%;
+            }
+        }
+
+    }
+
+    .nurseReportContent {
+        flex: 1;
+        background-color: #eee;
+        padding: 1rem;
+        overflow-y: scroll;
+    }
+
+    .personLeft {
+        display: flex;
+    }
+
+    .spin {
+        z-index: 100000002 !important;
+    }
+
+    .imgContent {
+        position: relative;
+        height: 5rem;
+        width: 5rem;
+        flex: 1;
+        display: flex;
+        // justify-content: center;
+        align-items: end;
+        // border-radius: 50%;
+        overflow: hidden;
+
+        .img {
+            height: 5rem;
+            width: 5rem;
+            border-radius: 0.48rem;
+        }
+    }
+
+    .personalImg {
+        width: 7.52rem;
+        height: 7.52rem;
+        border-radius: 0.56rem;
+        margin-bottom: 1.53rem;
+        margin-right: 0.96rem;
+        // border-radius: 50%;
+        overflow: hidden;
+
+        .img {
+            width: 100%;
+            height: 100%;
+            // border-radius: 50%;
+        }
+    }
+
+    .personalName {
+        margin-bottom: 2rem;
+        font-size: 1.36rem;
+        font-weight: bold;
+    }
+
+    .itemContent {
+        display: flex;
+        font-size: 1rem;
+        justify-content: space-around;
+        align-items: center;
+        width: 100%;
+        margin-top: 0.48rem;
+    }
+
+    .itemContents {
+
+        // width: 100%;
+        // .itemData {
+        //     flex: 2;
+        //     font-size: 0.9rem;
+        //     font-weight: bold;
+        //     transform: translate(-50% , -50%);
+        // }
+        .itemData {
+            font-size: 1.04rem;
+            color: #222222;
+            // font-family: sy;
+        }
+    }
+
+    .itemTitle {
+        color: #888888;
+        margin-right: 10px;
+        flex: 3;
+        font-size: 1.04rem;
+        // display: inline-block;
+    }
+
+    .nurseItemTitle{
+        padding: 1rem 2rem;
+        background-color: #fff;
+        border-radius: 5px;
+        font-weight: bold;
+        margin-bottom: 0.8rem;
+    }
+
+
+    .secondHint{
+        font-weight: bold;
+        font-size: 1.2rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .secondContent{
+        border: #eee 3px dashed ;
+    }
+    .secondHeatmap{
+        display: flex;
+    }
+    
+    .secondImgContent{
+        display: flex;
+    }
+    
+    .finishLogo{
+        background: linear-gradient(270deg, #006CFD 6%, #009FFF 95%);
+        padding: 3px;
+        border-radius: 4px;
+    }
+    .nurseborderBottom{
+        border-bottom: #eee 1px solid;
+    }
+}

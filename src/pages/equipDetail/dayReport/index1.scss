@@ -1,0 +1,812 @@
+.dataSelect {
+    display: flex;
+
+    .clickSelectDate {
+        display: flex;
+        align-items: center;
+        width: 15rem;
+        justify-content: space-between;
+        margin-right: 3rem;
+    }
+
+    .clickDateValue {
+        font-size: 0.8rem;
+        font-weight: 550;
+
+    }
+}
+
+.dataSelect {
+    background: #EDF7FF;
+    position: relative;
+    z-index: 100000000;
+}
+
+.dataSelectContent {
+    margin-top: 2.86rem;
+    padding: 0.88rem 0;
+    background: #EDF7FF;
+    // position: fixed;
+    width: 100%;
+    top: 4.6rem;
+    left: 0;
+    // text-align: center;
+    z-index: 9;
+}
+
+.dayPersonCard {
+    margin-top: 8rem;
+    padding: 1.4rem 1.2rem;
+    background-color: #fff;
+    border-radius: 0.48rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-bottom: 0.92rem;
+
+    .name {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1rem;
+        width: 6rem;
+        height: 6rem;
+        border-radius: 5px;
+    }
+
+
+    .nameText {
+        display: flex;
+        font-size: 1.36rem;
+        color: #0072EF;
+        font-weight: bold;
+        // margin-left: 0.72rem;
+        margin-bottom: 1rem;
+        margin-bottom: 2.2rem;
+        align-items: end;
+    }
+
+    .bedInfo {
+        display: flex;
+        align-items: start;
+        margin-bottom: 1rem;
+    }
+
+    .bedTitle {
+        color: #888888;
+        margin-right: 0.56rem;
+    }
+
+    .roomText {
+        color: #222;
+        font-weight: normal;
+        font-size: 1rem;
+    }
+
+    img {
+        width: 2.64rem;
+        border-radius: 0.48rem;
+    }
+}
+
+.sleepContent {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    border-radius: 0.48rem;
+
+}
+
+.sleepData {
+    background-color: #fff;
+    flex: 0 0 48%;
+    padding: 1.2rem 1.2rem 1.4rem;
+    margin-bottom: 0.72rem;
+}
+
+.sleepDataTitle {
+    font-size: 1.28rem;
+    color: #888888;
+    margin-bottom: 0.3rem;
+}
+
+.sleepDataInfo {
+    display: flex;
+    align-items: baseline;
+}
+
+.sleepDataNum {
+    font-size: 1.16rem;
+    margin-right: 0.2rem;
+    line-height: 1.48rem;
+    font-weight: bold;
+}
+
+.nurseStati {
+    display: flex;
+    // height: 8rem;
+    flex: 1;
+
+    .nurseChart {
+        flex: 6;
+    }
+
+    .nurseTitle {
+        flex: 5;
+        display: flex;
+        align-items: start;
+        justify-content: center;
+        flex-direction: column;
+    }
+
+}
+
+.nurseChart {
+    flex: 1;
+}
+
+.nurseContent {
+    background-color: #fff;
+    padding: 1.6rem 1.9rem;
+    border-radius: 0.68rem;
+    margin-bottom: 0.72rem;
+    overflow: hidden;
+    // height: 100%;
+}
+
+.turnReportContent {
+    height: calc(100% - 0.72rem);
+}
+
+.nurseTitleName {
+    font-size: 1.28rem;
+    color: #222;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+
+    .nurseTitle {
+        flex: 1;
+        display: flex;
+        // align-items: center;
+        padding-left: 2rem;
+        flex-direction: column;
+        justify-content: center;
+    }
+}
+
+
+.sleepDataUtil {
+    font-size: 0.58rem;
+    color: #B3B3B3;
+}
+
+.propsDateItem {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.circle {
+    width: 0.72rem;
+    height: 0.72rem;
+    border-radius: 50%;
+}
+
+.nursecharts {
+    height: 12rem;
+}
+
+.daySleepInfo {
+    margin: 1.28rem 1rem;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+    .daySleepItem {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .daySleepItemData {
+        font-size: 2.16rem;
+        display: flex;
+        align-items: baseline;
+    }
+
+    .daySleeputil {
+        font-size: 0.96rem;
+        color: #B0B3B8;
+        margin-left: 0.2rem;
+    }
+
+    .daySleepItemTitle {
+        color: #121924;
+    }
+}
+
+.dataContent {
+    position: relative;
+    padding-top: 4rem;
+    background-color: #F7F8FD;
+}
+
+.fixDataSelectContent {
+    // position: sticky;
+    top: 5rem;
+    z-index: 100;
+    background-color: #f5f6f7;
+    margin-bottom: 1rem;
+    // padding-top: 3.2rem;
+
+    .dataSelectContent {
+        margin-top: 0;
+    }
+
+    // height: 8rem;
+}
+
+@media screen and (min-width: $PadWidth) {
+
+
+    .dataSelectContent {
+        // position: fixed;
+        // top: 0;
+        padding: 1rem 1.2rem;
+        margin-top: 0rem;
+        background-color: #fff;
+        border-radius: 0.5rem;
+        display: flex;
+        justify-content: space-between;
+
+        .dataSelect {
+            background-color: #fff;
+
+        }
+
+        .ant-btn {
+            border-color: #0052D9;
+            color: #0052D9;
+        }
+    }
+
+    // .weekContent{
+    //     margin-top: 5rem;
+    // }
+    .dayPersonCard {
+        margin-top: 2rem;
+
+        .nameText {
+            color: #000;
+        }
+    }
+
+    .reportPage {
+        .fixDataSelectContent {
+            padding-top: 5.2rem;
+            position: sticky;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            background-color: #f5f6f7;
+            // height: 9.1rem;
+            display: flex;
+            align-items: end;
+
+        }
+
+        .dataContent {
+            width: 100%;
+            background-color: #f5f6f7;
+            // display: flex;
+            // flex-direction: row;
+            padding: 0;
+            position: relative;
+
+            .dayPc {
+                display: flex;
+                margin-top: 1rem;
+                // padding-top: 9.1rem;
+
+                .dayLeft {
+                    flex: 0 0 calc(20% - 0.7rem);
+
+                    .nurseContent {
+                        margin-top: 2rem;
+
+
+                    }
+
+                    margin-right: 1.4rem;
+                    display: flex;
+                    flex-direction: column;
+
+                }
+
+                .dayRight {
+                    flex: 0 0 calc(80% - 0.7rem);
+                    display: flex;
+                    flex-direction: column;
+                }
+
+            }
+
+        }
+    }
+
+    .sleepSeg {
+        background-color: #fefefe;
+    }
+
+    .dayPersonCard {
+        margin-top: 0;
+    }
+
+    .ant-table-thead .ant-table-cell {
+        font-size: 1.7rem;
+    }
+}
+
+.ant-picker-cell-inner::before {
+    border: 0 !important;
+}
+
+.reprotMask {
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(3px);
+    width: 100%;
+    height: calc(100% - 11.82rem);
+    position: fixed;
+    left: 0;
+    top: 11.82rem;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    color: #fff;
+    font-weight: bold;
+}
+
+.dayContent {
+    position: relative;
+}
+
+@media screen and (max-width: $PadWidth) {
+    .action {
+        display: none;
+    }
+}
+
+@media screen and (min-width: $PadWidth) {
+    .dayContent {
+        // margin-top: 3rem;
+    }
+
+    // .reprotMask {
+    //     top: 8.0rem;
+    //     height: calc(100% - 8.6rem);
+    // }
+
+
+}
+
+@media screen and (min-width: $PadWidth) {
+    .dayContent {
+        // margin-top: 3rem;
+    }
+
+    .reprotMask {
+        top: 9.1rem;
+        height: calc(100% - 9.1rem);
+    }
+
+
+}
+
+@media screen and (min-width: $padWidth) and (max-width: $PadWidth) {
+    .reprotMask {
+        top: 11rem;
+        height: calc(100% - 11rem);
+    }
+}
+
+.nurseRiskTitle {
+    display: flex;
+    justify-content: space-between;
+}
+
+
+.firstItem {
+    display: flex;
+    justify-content: space-between;
+
+    .strokeItem {
+        flex: 0 0 33%;
+    }
+
+    .heartBreatheItem {
+        flex: 0 0 66%;
+    }
+
+    .strokeTitle {
+        display: flex;
+        justify-content: space-between;
+        align-items: end;
+    }
+
+
+}
+
+.nurseRiskContent {
+    padding: 1rem;
+    font-size: 0.9rem;
+    border-radius: 0.48rem;
+    background-color: #fafafa;
+    margin-bottom: 1.6rem;
+}
+
+.nurseValueItems {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 2.2rem;
+
+}
+
+// .secondItem{
+//     display: flex;
+// }
+
+.secondChartsItem {
+    display: flex;
+    justify-content: space-between;
+
+    .nursechartsContent {
+        flex: 0 0 33%;
+    }
+}
+
+.thirdItem {
+    display: flex;
+    justify-content: space-between;
+
+    .pressCharts {
+        flex: 0 0 33%;
+    }
+
+    .nurseItemContent {
+        flex: 0 0 66%;
+    }
+}
+
+.pressProgress {
+    background-color: #F5F5F5;
+    height: 2.8rem;
+    display: flex;
+    align-items: center;
+    position: relative;
+
+    .pressProgressLine {
+        width: 100%;
+        background: linear-gradient(0deg, #006CFD 20%, #009FFF 109%);
+        height: 0.8rem;
+        border-radius: 0.4rem;
+    }
+
+    .pressProgressIndex {
+        height: 100%;
+        position: absolute;
+        width: 1px;
+        background-color: #006CFD;
+    }
+
+
+}
+
+.progressButtonContent {
+    display: flex;
+    justify-content: space-between;
+}
+
+.nurseTitleName {
+    font-size: 1.28rem;
+    font-weight: 600;
+}
+
+.learnMore {
+    font-size: 0.72rem;
+    color: #0256FF;
+    font-weight: normal;
+}
+
+.strokeTitle {
+    text-align: end;
+}
+
+.nurseSecondTitleName {
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+    font-family: 'pf';
+}
+
+.nurseMoveValue {
+    font-size: 1.1rem;
+    color: #006CFD;
+    font-weight: 600;
+    margin-bottom: 2.2rem;
+}
+
+.nurseChartsContent {
+    padding: 0.9rem 1rem;
+    // font-size: 0.9rem;
+    border-radius: 0.48rem;
+    background-color: #fafafa;
+}
+
+.nurseChartTitleName {
+    font-size: 0.95rem;
+    font-weight: 600;
+    border-radius: 0.65rem;
+    font-family: 'pf';
+}
+
+.nurseValueTitle {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    font-family: 'pf';
+}
+
+.circles {}
+
+.circleItem {
+    font-size: 0.56rem;
+}
+
+.infoMask {
+    color: #fff;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 8;
+    padding: 1.6rem 1.9rem;
+    font-size: 0.9rem;
+
+    // position: relative;
+    img {
+        position: absolute;
+        top: 0.85rem;
+        right: 0.85rem;
+        width: 1.6rem;
+    }
+}
+
+.infoMaskTitle {
+    font-weight: bold;
+    font-size: 1.1rem;
+    margin-bottom: 1.6rem;
+}
+
+.nurseRateAndHeart {
+    display: flex;
+}
+
+.nurseHeartCharts {
+    flex: 0 0 calc(50% - 0.45rem);
+    margin-right: 0.9rem;
+}
+
+.nurseRateCharts {
+    flex: 0 0 calc(50% - 0.45rem);
+}
+
+.sleepSeg {
+    flex: 0 0 calc(33% - 0.6rem);
+    margin-right: 0.9rem
+}
+
+.nursePos {
+    flex: 0 0 calc(33% - 0.6rem);
+    margin-right: 0.9rem
+}
+
+.sleepQuality {
+    flex: 0 0 calc(33% - 0.6rem)
+}
+
+.dataSelectPicker {
+    width: 12rem;
+}
+
+@media screen and (min-width: $phoneWidth) and (max-width: $PadWidth) {
+    .firstItem {
+        flex-direction: column;
+    }
+
+    .dayPersonCard {
+        margin-top: 1rem;
+    }
+
+    .nurseRateAndHeart {
+        flex-direction: column;
+        background-color: #F5F8FA;
+        padding: 0.68rem;
+        border-radius: 1rem;
+    }
+
+    .seleteRateOrHeart {
+        display: flex;
+    }
+
+    // .nurseSeleteHeart {
+    //     border-right: 1px solid #eee;
+    // }
+
+    .seleteRateOrHeartItem {
+        flex: 1;
+        font-size: 1.12rem;
+        font-weight: 600;
+
+
+        text-align: center;
+    }
+
+    .nurseHeartCharts {
+        flex: 1;
+        margin-right: 0;
+        border-radius: 0;
+        padding: 0;
+    }
+
+    .nurseRateCharts {
+        flex: 1;
+        border-radius: 0;
+        padding: 0;
+    }
+
+    .nurseContent {
+        padding: 1.36rem 0.96rem;
+    }
+
+    .seleteRateOrHeartValue {
+        // margin-right: 0.68rem;
+        // background-color: #fff;
+        border-radius: 0.7rem;
+        padding: 0.68rem;
+    }
+
+    .seleteRateOrRateValue {
+        // margin-left: 0.68rem;
+        // background-color: #fff;
+        padding: 0.68rem;
+        border-radius: 0.7rem;
+    }
+
+    .nurseChartsContent {
+        background-color: #F5F8FA;
+    }
+
+    .phone.reportPage {
+        background: #F5F8FA;
+        padding: 1rem;
+    }
+
+    .nurseRiskContent {
+        background-color: #F5F8FA;
+    }
+
+    .secondChartsItem {
+        flex-direction: column;
+        height: 20rem;
+    }
+
+    .sleepSeg {
+
+        margin-right: 0
+    }
+
+    .nursePos {
+
+        margin-right: 0
+    }
+
+    // .nurseSeleteHeart {
+    //     border-right: 1px solid #eee;
+    // }
+
+    .secondChartsItem {
+        background-color: #F5F8FA;
+        padding: 0.68rem;
+        border-radius: 1rem;
+        // .nurseContent{
+        //     p0
+        // }
+    }
+
+    .nurseChartsContent {
+        padding: 0;
+        flex: 1;
+    }
+
+    .thirdItem {
+        flex-direction: column;
+    }
+
+    .nurseChartTitleName {
+        display: none;
+    }
+
+    .dataSelect {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .clickSelectDate {
+            width: 100%;
+            margin-right: 0;
+        }
+
+        .dataSelectPicker {
+            position: absolute;
+            opacity: 0;
+        }
+
+    }
+
+    .fixDataSelectContent {
+        position: fixed;
+        width: 100%;
+        left: 0;
+        top: 0;
+        padding: 0 1rem;
+        display: flex;
+        flex-direction: column-reverse;
+        // height: 11rem;
+        .dataSelectContent {
+            background-color: #fff;
+            border-radius: 0.68rem;
+            
+        }
+        .clickSelectDate{
+            padding: 0 1.2rem;
+        }
+        .dataSelect{
+            background-color: #fff;
+            .clickDateValue{
+                font-size: 1.1rem;
+            }
+        }
+    }
+    .reprotMask {
+        top: 11rem;
+        height: calc(100% - 11rem);
+    }
+    .dayContent{
+        margin-top: 10px;
+    }
+
+    // .ant-picker-panel-container {
+    //     transform: translateX(-22%) !important;
+    // }
+
+  
+}
+
+.timeBar {
+    margin-top: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+}
+
+.firstCharts {
+    .nurseChart {
+        height: 8rem;
+    }
+}
+
+.fixDataSelectContent{
+    box-shadow:  0rem 0rem 0.42rem 0rem rgba(0, 0, 0, .1)
+ }

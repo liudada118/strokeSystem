@@ -1,0 +1,337 @@
+.dataSelect {
+    background: #EDF7FF;
+    position: relative;
+    z-index: 100000000;
+}
+
+.dataSelectContent {
+    margin-top: 2.86rem;
+    padding: 0.88rem 0;
+    background: #EDF7FF;
+    position: fixed;
+    width: 100%;
+    top: 4.6rem;
+    left: 0;
+    text-align: center;
+    z-index: 9;
+}
+
+.dayPersonCard {
+    margin-top: 8rem;
+    padding: 0.72rem 0.96rem;
+    background-color: #fff;
+    border-radius: 0.48rem;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.92rem;
+
+    .name {
+        display: flex;
+        align-items: center;
+    }
+
+    .nameText {
+        font-size: 1.36rem;
+        color: #222;
+        font-weight: bold;
+        margin-left: 0.72rem;
+    }
+
+    .bedInfo {
+        display: flex;
+        align-items: center;
+    }
+
+    .bedTitle {
+        color: #888888;
+        margin-right: 0.56rem;
+    }
+
+    .roomText {
+        color: #222;
+        font-weight: normal;
+    }
+
+    img {
+        width: 2.64rem;
+        border-radius: 0.48rem;
+    }
+}
+
+.sleepContent {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    border-radius: 0.48rem;
+
+}
+
+.sleepData {
+    background-color: #fff;
+    flex: 0 0 48%;
+    padding: 1.2rem 1.2rem 1.4rem;
+    margin-bottom: 0.72rem;
+}
+
+.sleepDataTitle {
+    font-size: 1.28rem;
+    color: #888888;
+    margin-bottom: 0.3rem;
+}
+
+.sleepDataInfo {
+    display: flex;
+    align-items: baseline;
+}
+
+.sleepDataNum {
+    font-size: 1.96rem;
+    margin-right: 0.2rem;
+    line-height: 2.48rem;
+    font-weight: bold;
+}
+
+.nurseStati {
+    display: flex;
+    height: 12.8rem;
+
+    .nurseChart {
+        flex: 6;
+    }
+
+    .nurseTitle {
+        flex: 5;
+        display: flex;
+        align-items: start;
+        justify-content: center;
+        flex-direction: column;
+    }
+
+}
+
+.nurseChart {
+    flex: 1;
+}
+
+.nurseContent {
+    background-color: #fff;
+    padding: 1.2rem;
+    border-radius: 0.48rem;
+    margin-bottom: 0.72rem;
+}
+
+.nurseTitleName {
+    font-size: 1.28rem;
+    color: #222;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+
+    .nurseTitle {
+        flex: 1;
+        display: flex;
+        // align-items: center;
+        padding-left: 2rem;
+        flex-direction: column;
+        justify-content: center;
+    }
+}
+
+
+.sleepDataUtil {
+    font-size: 0.88rem;
+    color: #B3B3B3;
+}
+
+.propsDateItem {
+    display: flex;
+    align-items: center;
+}
+
+.circle {
+    width: 0.72rem;
+    height: 0.72rem;
+    border-radius: 50%;
+}
+
+.nursecharts {
+    height: 12rem;
+}
+
+.daySleepInfo {
+    margin-top: 1.28rem;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+    .daySleepItem {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .daySleepItemData {
+        font-size: 2.16rem;
+        display: flex;
+        align-items: center;
+    }
+
+    .daySleeputil {
+        font-size: 0.96rem;
+        color: #B0B3B8;
+        margin-left: 0.2rem;
+    }
+
+    .daySleepItemTitle {
+        color: #121924;
+    }
+}
+
+.dataContent {
+    position: relative;
+    padding-top: 4rem;
+    background-color: #F7F8FD;
+}
+
+@media screen and (min-width: $PadWidth) {
+
+    .dataSelectContent {
+        position: fixed;
+        top: 0;
+        padding: 1rem 2.42rem;
+        margin-top: 3.1rem;
+    }
+
+    // .weekContent{
+    //     margin-top: 5rem;
+    // }
+    .dayPersonCard {
+        margin-top: 2rem;
+    }
+
+    .reportPage {
+        .dataContent {
+            width: 100%;
+            background-color: #F7F8FD;
+            // display: flex;
+            // flex-direction: row;
+            padding-top: 4.2rem;
+
+            .dayPc {
+                display: flex;
+                margin-top: 6rem;
+
+                .dayLeft {
+                    flex: 0 0 calc(50% - 0.7rem);
+
+                    .nurseContent {
+                        margin-top: 2rem;
+                    }
+
+                    margin-right: 1.4rem;
+                    display: flex;
+                    flex-direction: column;
+
+                }
+
+                .dayRight {
+                    flex: 0 0 calc(50% - 0.7rem);
+                    display: flex;
+                    flex-direction: column;
+                }
+
+            }
+
+        }
+    }
+
+    .sleepSeg {
+        background-color: #fefefe;
+    }
+
+    .dayPersonCard {
+        margin-top: 0;
+    }
+
+    .ant-table-thead .ant-table-cell {
+        font-size: 1.7rem;
+    }
+}
+
+.ant-picker-cell-inner::before {
+    border: 0 !important;
+}
+
+.reprotMask {
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(3px);
+    width: 100%;
+    height: calc(100% - 11.82rem);
+    position: fixed;
+    left: 0;
+    top: 11.82rem;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    color: #fff;
+    font-weight: bold;
+}
+
+.dayContent {
+    position: relative;
+}
+
+@media screen and (max-width: $PadWidth) {
+    .action {
+        display: none;
+    }
+}
+
+// @media screen and (min-width: $PadWidth) {
+//     .dayContent {
+//         // margin-top: 3rem;
+//     }
+
+//     .reprotMask {
+//         top: 8.0rem;
+//         height: calc(100% - 8.6rem);
+//     }
+
+
+// }
+
+@media screen and (min-width: $PadWidth) {
+    .dayContent {
+        // margin-top: 3rem;
+    }
+
+    .reprotMask {
+        top: 7.1rem;
+        height: calc(100% - 7.1rem);
+    }
+
+
+}
+
+@media screen and (min-width: $padWidth) and (max-width: $PadWidth) {
+    .reprotMask {
+        top: 11rem;
+        height: calc(100% - 11rem);
+    }
+}
+
+.nurseRiskTitle{
+    display: flex;
+    justify-content: space-between;
+}
+
+.nurseValueItems{
+    display: flex;
+    justify-content: space-between;
+}
+
+
+
+

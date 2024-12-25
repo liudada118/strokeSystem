@@ -1,0 +1,870 @@
+// @import '../../variable';
+
+.homeContent {
+    background-color: #F7F8FD;
+    height: 100vh;
+    padding-top: 3.28rem;
+}
+
+
+.equipsContent {
+    flex: 3;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.equipPagination {
+    display: flex;
+    justify-content: center;
+}
+
+.equips {
+    padding-top: 0.4rem;
+    flex: 3;
+    display: flex;
+    flex-wrap: wrap;
+    // margin: auto;
+}
+
+
+.equipImg {
+    margin-right: 0.72rem;
+}
+
+.equipRoom {
+    margin-right: 0.63rem;
+    font-family: number;
+}
+
+.headImg {
+    width: 3.29rem;
+    height: 3.29rem;
+}
+
+
+.equipInfos {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.35rem;
+    font-size: 1.12rem;
+    color: #888888;
+}
+
+.equipInfo {
+    display: flex;
+    font-weight: bold;
+}
+
+.equipUnTop {
+    width: 2rem;
+    height: 2rem;
+    // background-color: #D8D8D8;
+    border-radius: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.equipUnTop img {
+    width: 45%;
+    height: 45%;
+}
+
+.equipTop {
+    width: 2rem;
+    height: 2rem;
+}
+
+.equipTop img {
+    width: 45%;
+    height: 45%;
+}
+
+.equipData {
+    display: flex;
+    // padding: 0 0.6rem;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.08rem;
+}
+
+
+.equipTitle {
+    font-size: 0.63rem;
+    color: #B0B3B8;
+    text-align: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+
+    img {
+        width: 100%;
+    }
+}
+
+.nurseInfo {
+    background-color: #F7F8FD;
+    border-radius: 0.48rem;
+    padding: 0.58rem 0.72rem;
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.96rem;
+    color: #888888;
+    margin-top: 0.72rem;
+}
+
+.equipText {
+    // margin-top: 0.36rem;
+    font-size: 1rem;
+    text-align: center;
+    font-family: number;
+}
+
+.equipUtil {
+    font-size: 00.52rem;
+    color: #B0B3B8;
+}
+
+.headImg {
+    border-radius: 0.48rem;
+}
+
+.messages {
+    flex: 2;
+    background-color: #fff;
+    margin-left: 1.04rem;
+    padding: 1.04rem;
+    box-shadow: 0rem 0rem 0.42rem 0rem rgba(0, 0, 0, 0.02);
+    border-radius: 0.63rem;
+
+}
+
+.messageTitle {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1.25rem;
+}
+
+.equipTitleImg {}
+
+.messageInfo {
+    font-size: 1.04rem;
+    // font-family: PingFangSC-Semibold, PingFang SC;
+    font-weight: 600;
+    color: #000000;
+    line-height: 1.46rem;
+    margin-bottom: 0.28rem;
+}
+
+.messageMore {
+    font-size: 0.63rem;
+    // font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #B0B3B8;
+    line-height: 0.94rem;
+    cursor: pointer;
+}
+
+.messageIcon {
+    width: 0.42rem;
+    height: 0.42rem;
+    background-color: #FE542B;
+    border-radius: 0.21rem;
+    margin-right: 0.36rem;
+}
+
+.messageInfos {
+    display: flex;
+    justify-content: space-between;
+}
+
+.messageInfo {
+    display: flex;
+    align-items: center;
+}
+
+.messageRoom {
+    margin-right: 0.36rem;
+    font-size: 1.28rem;
+    // font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #000000;
+    line-height: 1.15rem;
+}
+
+.messageName {
+    font-size: 1.28rem;
+    // font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #000000;
+    line-height: 1.15rem;
+}
+
+.messageHint {
+    // margin-left: 0.78rem;
+    // font-size: 0.63rem;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #B0B3B8;
+    line-height: 0.94rem;
+}
+
+
+.ant-popover {
+    padding: 0 !important;
+}
+
+.ant-popover-arrow-content:before {
+    background-color: rgba(0, 0, 0, 0.84) !important;
+}
+
+// .ant-message-notice-content {
+//     background-color: #07A35A;
+//     color: #fff;
+// }
+
+.anticon.anticon-check-circle {
+    color: #fff;
+}
+
+
+
+.equipName {
+    margin-bottom: 0.1rem;
+
+    width: 6rem;
+
+    overflow: hidden;
+
+    white-space: nowrap;
+    /*不显示的地方用省略号...代替*/
+
+    text-overflow: ellipsis;
+    /* 支持 IE */
+}
+
+// let width = window.innerWidth < 600 ? 'phone' : window.innerWidth < 999 ? 'pad' : window.innerWidth < 1500 ? 'Pad' : 'pc'
+
+
+
+.newAlarmContent {
+    top: 0;
+    position: absolute;
+    width: 100%;
+    height: calc(100% - 1rem);
+    background: #EC6E38;
+    box-shadow: 0px 0px 10px 0px rgba(164, 176, 188, 0.4);
+    border-radius: 0.63rem;
+    z-index: 1;
+    padding: 2.9rem 1.2rem 0.9rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    user-select: none;
+
+    .newAlarmTypeAndInfo {
+        color: #fff;
+        border-bottom: 1px solid #FFFFFF;
+        padding-bottom: 1.5rem;
+        margin: 0 0.5rem;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .newAlarmType {
+        font-size: 2rem;
+        text-align: center;
+        font-weight: 600;
+    }
+
+    .newAlarmInfo {
+        font-size: 1.25rem;
+        text-align: center;
+        display: flex;
+        justify-content: space-around;
+    }
+
+    .newAlarmButton {
+        background: rgba(255, 255, 255, 0.8);
+        border-radius: 0.6rem;
+        padding: 0.75rem;
+        text-align: center;
+        color: #EC6E38;
+        font-size: 0.93rem;
+        font-weight: 600;
+        cursor: pointer;
+        z-index: 1;
+    }
+
+    .newAlarmText {
+        flex: 1;
+        text-align: center;
+        overflow: hidden; //超出的文本隐藏
+        text-overflow: ellipsis; //溢出用省略号显示
+        white-space: nowrap; //溢出不换行
+    }
+
+    .newAlarmRoomnum {
+        text-align: left;
+    }
+
+    .newAlarmNum {
+        text-align: right;
+    }
+
+}
+
+
+
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+.main {
+    background-color: #F7F8FD;
+}
+
+
+// .ant-select-dropdown {
+//     z-index: 100000001 !important;
+// }
+// .ant-message {
+//     z-index: 100000003 !important;
+// }
+
+// .ant-message-notice-wrapper {
+//     z-index: 100000003;
+// }
+
+// .ant-modal-wrap {
+//     z-index: 100000001 !important;
+// }
+
+// .ant-select-dropdown {
+//     z-index: 100000001 !important;
+// }
+
+
+// .spin {
+//     z-index: 100000002 !important;
+// }
+
+// .ant-spin-fullscreen {
+//     z-index: 100000002 !important;
+// }
+
+.equipText {
+    .ant-spin-dot {
+        width: 0.8em;
+        height: 0.8em;
+    }
+
+    .ant-spin-dot-item {
+        width: 7px;
+        height: 7px;
+    }
+}
+
+.sosContent {
+    background-color: #fff;
+    font-size: 1.6rem;
+    width: 21rem;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    color: #000;
+
+    .sosdiv {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .sosTitle {
+        font-weight: bold;
+        flex: 2;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+
+        img {
+            margin-bottom: 1.5rem;
+        }
+    }
+
+    .sosinfo {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        justify-content: space-around;
+        flex: 8;
+        width: 100%;
+
+        .sosName {
+            // flex: 1;
+            display: flex;
+            width: 100%;
+            align-items: center;
+            justify-content: center;
+        }
+    }
+
+    .sosImg {
+        width: 8rem;
+        height: 8rem;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 3rem;
+
+    }
+
+    .sosConfirm {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .sosButton {
+        background-color: #000;
+        width: 100%;
+        padding: 1.1rem;
+        text-align: center;
+        border-radius: 2px;
+        color: #eee;
+        font-size: 1.2rem;
+    }
+}
+
+
+
+.sosContent {
+    transition: all 0.3s ease-in-out;
+    visibility: visible;
+    // transform: translate(-50% , -50%);
+}
+
+.sosRoom {
+    margin-right: 0.8rem;
+}
+
+
+.breatheContent {
+    display: flex;
+    flex-direction: row;
+}
+
+.heartContent {
+    display: flex;
+    flex-direction: row;
+}
+
+.onbedStateItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+
+}
+
+
+
+
+.equip {
+
+    .sitState {
+        background: #EC6E38;
+
+        .equipName {
+            color: #fff;
+        }
+
+        .equipRoom {
+            color: #fff;
+        }
+
+        .onbedStateText {
+            color: #fff;
+        }
+
+        .equipText {
+            color: #fff;
+        }
+    }
+
+    .unlineState {
+        background-color: #F5F8FA;
+        box-shadow: 0px 0px 10px 0px rgba(164, 176, 188, 0.4);
+
+        .equipName {
+            color: #B4C0CA;
+        }
+
+        .equipRoom {
+            color: #B4C0CA;
+        }
+
+        .onbedStateText {
+            color: #B4C0CA;
+        }
+
+        .equipText {
+            color: #B4C0CA;
+        }
+    }
+
+    .outBedState {
+        .equipName {
+            color: #EC6E38;
+
+        }
+
+        .equipRoom {
+            color: #EC6E38;
+        }
+
+        .onbedStateText {
+            color: #EC6E38;
+        }
+    }
+
+    .wideState {
+        .equipName {
+            color: #EC6E38;
+        }
+
+        .equipRoom {
+            color: #EC6E38;
+        }
+
+        .onbedStateText {
+            color: #EC6E38;
+        }
+    }
+
+    .sleepState {
+        .onbedStateText {
+            color: #0072EF;
+        }
+    }
+
+    // .risk {
+    //     border: 3% red Solid;
+    //     box-shadow: 0rem 0rem 0.42rem 0rem rgba(255, 0, 0, 1);
+    //     transform: scale(100/106);
+    // }
+
+    .nurseTimeout {
+        background-color: #EC6E38;
+        color: #fff;
+    }
+
+    .nurseFastTimeout {
+        background-color: #E6EBF0;
+        color: #EC6E38;
+    }
+
+    .nurseNormal {
+        background-color: #E6EBF0;
+        color: #6C7784;
+    }
+
+    .sitState {
+        .nurseInfo {
+            background: rgba(255, 255, 255, 0.8);
+            color: #EC6E38;
+
+        }
+    }
+
+    .nurseInfo {
+        transform: scaleX(1.05);
+    }
+}
+
+.sosContent {
+    background-color: #EC6E38;
+    padding: 0.6rem;
+    color: #fff;
+    border: 1px solid #FFFFFF;
+    border-radius: 0.5rem;
+    box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.3);
+
+    img {
+        width: 3.6rem;
+    }
+}
+
+.sosdiv {
+    align-items: center;
+}
+
+.equipRoom {
+    overflow: hidden; //超出的文本隐藏
+    text-overflow: ellipsis; //溢出用省略号显示
+    white-space: nowrap; //溢出不换行
+}
+
+
+.sosRoom {
+    width: 6rem;
+    overflow: hidden; //超出的文本隐藏
+    text-overflow: ellipsis; //溢出用省略号显示
+    white-space: nowrap; //溢出不换行  
+}
+
+.sosContent {
+    cursor: pointer;
+}
+
+.slick-dots button {
+    color: #999 !important;
+    background: #999 !important;
+}
+
+.slick-active button {
+    color: #0072EF !important;
+    background: #0072EF !important;
+}
+
+.equip {
+    position: relative;
+}
+
+
+
+@media screen and (min-width: $padWidth) and (max-width: $PadWidth) {
+    .equipName {
+        width: 12rem;
+    }
+}
+
+@media screen and (min-width: $phoneWidth) and (max-width: $PadWidth) {
+
+    .equipInfos {
+        margin-bottom: 1.25rem;
+        font-size: 1.02rem;
+    }
+
+    .nurseInfo {
+        padding: 0.62rem 0.78rem;
+        font-size: 1.08rem;
+        margin-top: 0.78rem;
+    }
+
+    .newAlarmType {
+        margin-bottom: 0.5rem;
+    }
+
+
+    .equipPagination {
+        display: none;
+    }
+
+    .equipsContent {
+        margin-bottom: 5.5rem;
+    }
+
+    // .headImg {
+    //     width: 2.29rem;
+    //     height: 2.29rem;
+    // }
+    .main {
+        padding: 1.08rem 0.54rem;
+
+        .messages {
+            display: none;
+        }
+
+    }
+
+    .equipName {
+        font-size: 1.36rem;
+        color: #222222;
+    }
+
+    .equip {
+        cursor: pointer;
+        flex: 0 0 calc(50% - 0.325rem);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+    }
+
+    .equipItem {
+        padding: 1.18rem;
+        background: #FFFFFF;
+        box-shadow: 0rem 0rem 0.42rem 0rem rgba(0, 0, 0, 0.02);
+        border-radius: 0.63rem;
+        margin-bottom: 1.08rem;
+        width: 100%;
+        // max-height: calc((100% - 3rem)/3);
+    }
+
+    .main {
+        flex: 1;
+
+        // overflow-y: scroll;
+        display: block;
+        margin-bottom: 60px;
+    }
+
+    .equip:nth-child(3n-1) {
+        margin-right: unset;
+    }
+
+    .equip:nth-child(3n-2) {
+        margin-right: unset;
+    }
+
+    .equip:nth-child(2n-1) {
+        margin-right: 0.65rem;
+    }
+
+    .homeContent {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .onbedStateItem {
+        img {
+            width: 4.5rem;
+        }
+    }
+
+    .onbedStateItem {
+        font-size: 2.16rem;
+        font-weight: bold;
+    }
+
+    .equipName {
+        font-size: 1.5rem;
+        font-weight: bold;
+    }
+
+    .equipRoom {
+        width: 3.3rem;
+        font-weight: bold;
+        font-size: 0.97rem;
+    }
+
+    .sosItem {
+        display: flex;
+        flex-direction: column;
+        align-items: end;
+    }
+
+    .newAlarmContent {
+        .newAlarmType {
+            font-size: 1.8rem;
+            text-align: center;
+            font-weight: 600;
+        }
+    }
+
+}
+
+@media screen and (min-width: $PadWidth) {
+    .equipName {
+        width: 9rem;
+    }
+
+    .equipName {
+        font-size: 1.36rem;
+        color: #222222;
+    }
+
+    .headImg {
+        width: 4rem;
+        height: 4rem;
+    }
+
+    .main {
+        margin-left: 4.3rem;
+        padding: 0.8rem 3.88rem;
+        background-color: #F7F8FD;
+    }
+
+    .equips {
+        margin: 0 1rem;
+    }
+
+    .equip {
+        flex-basis: calc((100% - 5rem) / 6);
+    }
+
+    .equip:nth-child(6n-2) {
+        margin-right: 1rem;
+    }
+
+    .equip:nth-child(6n-1) {
+        margin-right: 1rem;
+    }
+
+    .equip:nth-child(6n-3) {
+        margin-right: 1rem;
+    }
+
+    .equip:nth-child(6n-4) {
+        margin-right: 1rem;
+    }
+
+    .equip:nth-child(6n-5) {
+        margin-right: 1rem;
+    }
+
+
+    .equipItem {
+        padding: 1.1rem;
+        background: #FFFFFF;
+        box-shadow: 0rem 0rem 0.42rem 0rem rgba(0, 0, 0, 0.02);
+        border-radius: 0.63rem;
+        margin-bottom: 1rem;
+        // max-height: calc((100% - 3rem)/3);
+    }
+
+    .equipText {
+        // width: 1.6rem;
+        line-height: 1.5rem;
+    }
+
+
+    .onbedStateItem {
+        font-size: 2rem;
+        font-weight: bold;
+    }
+
+    .equipName {
+        font-size: 1.5rem;
+        font-weight: bold;
+    }
+
+    .equipRoom {
+        width: 3.3rem;
+        font-weight: bold;
+        font-size: 0.9rem;
+    }
+
+    .equipText {
+        width: 1.6rem;
+        line-height: 1.5rem;
+    }
+
+    .onbedStateItem {
+        img {
+            width: 4.3rem;
+        }
+    }
+}

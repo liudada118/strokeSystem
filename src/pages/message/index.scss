@@ -1,0 +1,144 @@
+@import '../../variable';
+
+.messagePage {
+    background-color: #F5F6F7;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+
+    .messageMain {
+        // padding: 0 25rem;
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        margin-top: 8.25rem;
+    }
+
+    .messageTitle {
+        margin-top: 1.4rem;
+        margin-bottom: 1.25rem;
+    }
+
+    .messageContentBox {
+        flex: 1;
+        background-color: #fff;
+        // border-radius: 0.83rem;
+        margin-bottom: 7.78rem;
+        // padding: 1.67rem 1.39rem;
+        position: relative;
+        padding-bottom: 5rem;
+    }
+
+    .pagination {
+        position: absolute;
+        bottom: 1.39rem;
+        right: 1.39rem;
+    }
+}
+
+.messageImg {
+    width: 3.84rem;
+    height: 3.84rem;
+    border-radius: 0.48rem;
+    margin-right: 0.72rem;
+}
+
+.messageItem {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.96rem 1.2rem;
+    border-bottom: 1px solid #eee;
+}
+
+
+.messageDate {
+    color: #B0B3B8;
+}
+
+.messageInfo {
+    font-size: 1.04rem;
+    font-weight: 600;
+    color: #000000;
+    line-height: 1.46rem;
+    margin-bottom: 0.28rem;
+}
+
+.messageMore {
+    font-size: 0.63rem;
+    font-weight: 400;
+    color: #B0B3B8;
+    line-height: 0.94rem;
+    cursor: pointer;
+}
+
+.messageIcon {
+    width: 0.42rem;
+    height: 0.42rem;
+    background-color: #FE542B;
+    border-radius: 0.21rem;
+    margin-right: 0.36rem;
+}
+
+.messageInfos {
+    display: flex;
+    justify-content: space-between;
+}
+
+.messageInfo {
+    display: flex;
+    align-items: center;
+}
+
+.messageRoom {
+    margin-right: 0.36rem;
+    font-size: 1.28rem;
+    // font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #000000;
+    line-height: 1.15rem;
+}
+
+.messageName {
+    font-size: 1.28rem;
+    // font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #000000;
+    line-height: 1.15rem;
+}
+
+.messageHint {
+    // margin-left: 0.78rem;
+    // font-size: 0.63rem;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #B0B3B8;
+    line-height: 0.94rem;
+}
+
+@media screen and (min-width: $phoneWidth) and (max-width: $PadWidth) {
+    .messageHint {
+        font-size: 1rem;
+    }
+}
+
+@media screen and (min-width: $PadWidth) {
+    .messagePage {
+        .messageMain {
+            margin-left: 7.41rem;
+            margin-top: 4.25rem;
+            padding: 3.7rem 10rem;
+            background-color: #F5F6F7;
+        }
+        .messageContentBox{
+            padding: 1.85rem;
+            border-radius: 1.57rem;
+            background: #fafafa;
+            padding-bottom: 5rem;
+            .messageItem{
+                background: #fff;
+            }
+            
+        }
+    }
+
+}

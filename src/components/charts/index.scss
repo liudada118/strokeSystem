@@ -1,0 +1,201 @@
+.yInfo {
+    width: 100%;
+    display: flex;
+    // align-items: center;
+    padding: 1rem 0;
+    height: 100%;
+    justify-content: space-between;
+}
+
+.yText {
+    padding: 1rem 0;
+}
+
+.yDateInfo {
+    width: 5rem;
+    display: flex;
+    // align-items: center;
+    padding: 1rem 0;
+    height: 100%;
+    justify-content: space-between;
+}
+
+.yDateText {
+    width: 5rem;
+    padding: 1rem 0;
+}
+
+.yDateInfoContent {
+    width: 2rem;
+    text-align: right;
+    margin-right: 3px;
+    color: #595959;
+}
+
+.yInfoContent {
+    width: 3rem;
+    text-align: right;
+    margin-right: 3px;
+    color: #595959;
+}
+
+.yRowContent {
+
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+}
+
+.yRow {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    // align-items: center;
+    flex: 1;
+}
+
+.yRowLine {
+    height: 0;
+    border-bottom: 1px solid #EAEAEA;
+}
+
+.valueContent {
+    width: 100%;
+    position: absolute;
+    left: 0;
+    top: 10%;
+    height: 80%;
+    display: flex;
+}
+
+.valueLineContent {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    flex: 1;
+    flex-direction: column;
+}
+
+.valueLine {
+    width: 12px;
+    border-radius: 6px;
+}
+
+.xTextContent {
+    width: 100%;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    display: flex;
+    font-size: 8px;
+}
+
+.xText {
+    flex: 1;
+    text-align: center;
+}
+
+.yDate {
+    .xText {
+        flex: 1;
+        text-align: right;
+        position: relative;
+    }
+
+    .zeroXtext {
+        position: absolute;
+        left: -3px;
+    }
+
+    .xTextContent {
+        bottom: -1rem;
+    }
+
+    .yText {
+        padding: 0.5rem 0;
+    }
+}
+
+.yDataContent {
+    flex: 1;
+    display: flex;
+    align-items: center;
+}
+
+.yData {
+    flex: 1;
+    height: 60%;
+    display: flex;
+    // align-items: center;
+}
+.yDay{
+    .yInfo{
+        padding-bottom: 1rem;
+    }
+    .yText {
+        // padding: 0;
+        padding: 0.8rem 0;
+        font-size: 0.63rem;
+        color: #B0B3B8;
+    }
+    .yData{
+        height: 50%;
+       
+    } 
+    .yRowContent{
+        // position: relative;
+        justify-content: center;
+        border-left: 1px solid #EAEAEA;
+        border-bottom: 1px solid #EAEAEA;
+        padding: 0.8rem 0;
+    }
+    .yDataContent{
+        position: absolute;
+        width: 100%;
+        height: 30%;
+    }
+    .xText{
+        text-align: right;
+        color: #B0B3B8;
+    }
+    .zeroXtext {
+        position: absolute;
+        left: -3px;
+    }
+    .xTextContent{
+        bottom: -1rem
+    }
+}
+
+.sleepCharts {
+    margin-top: 3rem;
+    display: flex;
+    height: 12rem;
+
+    .sleepChart {
+        flex: 7;
+    }
+
+    .sleepInfo {
+        flex: 3;
+        display: flex;
+        align-items: start;
+        justify-content: center;
+        flex-direction: column;
+        // font-weight: bold;
+    }
+}
+
+.blueGeadient{
+    background: linear-gradient(to right, #7598f2, #555bee);
+}
+
+.greenGeadient{
+    background: linear-gradient(to right, #a1e75f, #a8ea6b);
+}
+
+.otherGeadient{
+    background: linear-gradient(to right, #afe7e2, #9adfda);
+}

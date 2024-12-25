@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="36px" height="36px" viewBox="0 0 36 36" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>跳转箭头</title>
+    <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="跳转箭头" transform="translate(18.000000, 18.000000) rotate(-180.000000) translate(-18.000000, -18.000000) ">
+            <rect id="基准板48" stroke="#000000" stroke-width="0.1" opacity="0" x="0.05" y="0.05" width="35.9" height="35.9"></rect>
+            <g transform="translate(18.000000, 18.000000) rotate(90.000000) translate(-18.000000, -18.000000) translate(9.000000, 13.500000)" id="箭头" stroke="#909399" stroke-linecap="round" stroke-linejoin="round" stroke-width="3">
+                <path d="M4.5,-4.5 L11.5228796,2.5228796 L12.8086067,3.8086067 C13.1904527,4.19045268 13.1904527,4.80954732 12.8086067,5.1913933 L11.5260782,6.47392176 L11.5260782,6.47392176 L4.5,13.5" transform="translate(9.000000, 4.500000) rotate(90.000000) translate(-9.000000, -4.500000) "></path>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,529 @@
+.heatmapContent {
+    .ant-progress {
+        width: 100% !important;
+        height: 100% !important;
+    }
+
+    .ant-progress-inner {
+        width: 100% !important;
+        height: 100% !important;
+    }
+}
+
+@media screen and (min-width: $PadWidth) {
+    .personalChart {
+        display: flex;
+    }
+
+    .heatmapInfo {
+        flex: 0 0 calc(60% - 0.5rem);
+        width: unset;
+        // height: 100%;
+        margin-right: 1rem;
+        flex-direction: column;
+    }
+
+
+
+    .personalChart {
+        .monItemContents {
+            margin-top: 1rem;
+        }
+    }
+
+    .rightContent {
+        flex: 0 0 calc(40% - 0.5rem);
+
+        .carePlan {
+            margin-bottom: 0;
+        }
+    }
+
+    .heatmapLeft {
+        // flex: 12;
+
+        .heatmapContent {
+            // width: unset !important;
+            // width: 65%;
+            height: 100%;
+        }
+    }
+
+
+    #realPc {
+        margin: 0 !important;
+
+        .rightContent {
+            .presonButtonContent {
+                position: relative;
+                .presonButton{
+                    padding: 0.8rem 0;
+                    border-radius: 9px;
+                }
+            }
+        }
+
+    }
+
+    .bedSoresTime {
+        margin-top: 0.8rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #fefefe;
+        padding: 1.2rem 1.44rem;
+        border-radius: 5px;
+        margin-bottom: 0.72rem;
+    }
+
+    .bedSoresSleepContent {
+        background-color: #fff;
+        padding: 1.2rem 1.24rem 1.64rem;
+        border-radius: 0.48rem;
+    }
+
+    .bedSoresSleepTitle {
+        font-size: 1.92rem;
+        font-weight: bold;
+    }
+
+    .bedSoresSleepType {
+        display: flex;
+        justify-content: space-around;
+        flex: 1;
+        // height: 8.28rem;
+    }
+
+    .bedSoresSleepType {
+        background-color: #fefefe;
+        border-radius: 5px;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .bedSoresSleepItem {
+        width: 100%;
+        // height: 6rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        flex: 0 0 calc(100% - 0.72rem*2/3);
+        border-radius: 0.48rem;
+
+        img {
+            // height: 100%;
+            width: 100%;
+        }
+
+        // img{
+        //     width: 5rem;
+        // }
+        .sleepTop {
+            width: 60%;
+            height: 1.8rem;
+            border: #cccccc solid 2px;
+            ;
+            border-radius: 2rem;
+        }
+
+        .sleepHead {
+            position: absolute;
+            width: 2.2rem;
+            height: 2.2rem;
+            border: #cccccc solid 2px;
+            border-radius: 2rem;
+            transform: translate(0, -0.35rem);
+        }
+    }
+
+    .RIGHT {
+        transform: rotateZ(-20deg);
+    }
+
+    .LEFT {
+        transform: rotateZ(20deg);
+    }
+
+    .personalInfo {
+        height: unset !important;
+        background-color: #fefefe;
+    }
+
+
+    .rightContent {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .personalImg {
+        width: 11rem;
+        height: 11rem;
+    }
+
+    .bedSoresSleepContent {
+        margin-bottom: 1.85rem;
+    }
+
+    .bedSoresTimeTitle {
+        font-size: 1.92rem;
+        font-weight: bold;
+    }
+
+
+    .phone.reportPage .reportContent {
+        // margin-top: 0;
+        padding: 0 4rem 1.38rem 6.3rem;
+        display: flex;
+        flex-direction: row;
+    }
+
+    .heatmapInfo {
+        .realMove {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+
+            .realChart {
+                flex: 1;
+            }
+        }
+    }
+
+}
+
+
+
+.nurseContentitems {
+    .ant-checkbox-wrapper {
+        font-size: 0.8rem !important;
+    }
+}
+
+@media screen and (min-width: $phoneWidth) and (max-width: 1200px) {
+    .heatmapLeft {
+        // flex: 12;
+
+        .heatmapContent {
+            // width: unset !important;
+            // width: 70%;
+        }
+    }
+}
+
+@media screen and (min-width: $phoneWidth) and (max-width: $PadWidth) {
+    .personalChart {
+        .monItemContents {
+            display: none;
+        }
+    }
+
+    .bedSoresSleepItem {
+
+        img {
+            // height: 100%;
+            width: 100%;
+        }
+    }
+
+
+
+}
+
+#realPc {
+    .ant-table-thead {
+        .ant-table-cell {
+            font-size: 0.7rem !important;
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+            text-align: center !important;
+        }
+    }
+}
+
+.heatmapLeft {
+    // width: 100%;
+    // height: 100%;
+    flex: 1;
+    background-color: #000000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.72rem;
+    position: relative;
+}
+
+.heatmapInfo {
+    width: 100%;
+    // background-color: #000000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.72rem;
+    position: relative;
+}
+
+.heatmapContent {
+    // width: 70%;
+    background-color: #000000;
+
+}
+
+.heatmapText {
+    color: #fefefe;
+    font-size: 1.6rem;
+    font-weight: bold;
+    position: absolute;
+    top: 1.92rem;
+    left: 1.92rem;
+    z-index: 100;
+}
+
+.heatmapRemind {
+    position: absolute;
+    top: 1.92rem;
+    font-size: 1.6rem;
+    width: 2rem;
+    height: 2rem;
+    text-align: center;
+    right: 1.92rem;
+    z-index: 100;
+    color: #fefefe;
+    border-radius: 50%;
+    border: #fefefe 2px solid;
+
+}
+
+.heatmapColor {
+    position: absolute;
+    left: 2.2rem;
+    // z-index: 2;
+    z-index: 1;
+}
+
+.nurseConent {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    height: 100%;
+
+    .nurseTitleContent {
+        padding: 2rem 2rem;
+        width: 100%;
+        text-align: center;
+    }
+
+    .nurseTitleReal {
+        position: relative;
+        margin-bottom: 1.84rem;
+        font-weight: bold;
+        font-size: 1.28rem;
+    }
+
+    .nurseBottomContent {
+        display: flex;
+        width: 100%;
+        padding: 1rem 1rem 3rem;
+        align-items: center;
+        // img {
+        //     margin-right: 1rem;
+        // }
+
+        .nurseButton {
+            flex: 1;
+            color: #fff;
+            // margin: 1.5rem 0;
+        }
+
+    }
+
+    .nurseSelect {
+        width: 70%;
+        padding: 1rem;
+        background-color: #ccc;
+        height: 50vh;
+    }
+
+    .nurseIndex {
+        display: flex;
+        width: 180px;
+        justify-content: space-between;
+    }
+
+    .nurseContentInfo {
+        font-size: 1.3rem;
+        padding: 0.5rem 1rem;
+        border-radius: 2rem;
+        background-color: #999;
+        margin-bottom: 2rem;
+    }
+
+    .nurseButtonContent {
+        margin-top: 1rem;
+        display: flex;
+        justify-content: space-around;
+    }
+}
+
+.ant-message {
+    z-index: 100000003 !important;
+}
+
+.ant-drawer {
+    z-index: 100000001 !important;
+}
+
+.nurseButton {
+    width: 100%;
+    background: linear-gradient(270deg, #006CFD 6%, #009FFF 95%);
+    border-radius: 9px;
+    padding: 0.8rem 0;
+    text-align: center;
+}
+
+.nurseTitleProgress {
+    width: 100%;
+    display: flex;
+    align-items: center;
+
+    .progressItem {
+        width: 0.72rem;
+        height: 0.72rem;
+        border-radius: 50%;
+        border: #ccc 2px solid;
+    }
+
+    .progressInter {
+        flex: 1;
+        height: 0.16rem;
+        background-color: #ccc;
+    }
+}
+
+.guideTitle {
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+.guideContent {
+    font-size: 1.12rem;
+}
+
+.guideContentImg {
+    width: 100%;
+}
+
+.scrool {
+    overflow-y: scroll;
+}
+
+.nurseSecondButton {
+    flex: 0.6;
+    border-radius: 9px;
+    padding: 0.8rem 0;
+    background: linear-gradient(270deg, #E4F1FF 6%, #E4F1FF 95%);
+    margin-right: 1rem;
+    text-align: center;
+    color: #006ADF;
+    font-weight: bold;
+}
+
+.nursecard {
+    background-color: #fff;
+    border-radius: 5px;
+    padding: 1rem 1rem;
+    margin-bottom: 1rem
+}
+.secondHint{
+    // font-weight: bold;
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+}
+
+.secondContent{
+
+}
+.secondHeatmap{
+    display: flex;
+}
+
+.secondImgContent{
+    display: flex;
+}
+
+.addImg{
+    position: relative;
+    display: flex;
+    align-items: center;
+    // justify-content: center;
+    // flex: 1 1 22%;
+    padding: 1.84rem 0 1.28rem;
+    flex-direction: column;
+    width: 6.24rem;
+    height: 6.24rem;
+    border: #D8D8D8 1px solid ;
+    color: #A2A2A2;
+    border-radius: 6px;
+}
+
+.nurseItemTitle{
+    padding: 1.12rem 2rem;
+    background-color: #fff;
+    border-radius: 5px;
+    font-size: 1.28rem;
+    margin-bottom: 0.8rem;
+}
+
+.ant-drawer{
+    font-family: 'font';
+    .ant-drawer-content-wrapper{
+        // border-radius: 0.72rem;
+        border-top-left-radius: 0.72rem;
+        border-top-right-radius: 0.72rem;
+        overflow: hidden;
+    }
+    .nurseButton{
+      
+        color: #fff;
+    }
+}
+
+.ant-drawer-content-wrapper:has(.noticeDrawer){
+    height: 450px!important;
+}
+.noticeDrawer{
+    
+      
+    
+}
+@media screen and (max-width: 400px) {
+.realNurseHeatmap{
+    width: 42%!important;
+}
+}
+
+.noticeDrawer{
+    .ant-drawer-header-title{
+        text-align:center;
+    }
+    .ant-drawer-close{
+        transform: translateX(-1rem);
+        position: absolute;
+    }
+}
+
+.ant-tooltip{
+    z-index: 100000001!important;
+    color: #fff;
+    // background-color: #fff;
+    .ant-tooltip-inner{
+        background-color: #fff;
+        color: #000000;
+    }
+    .ant-tooltip-arrow::before{
+        background: #fff;
+    }
+}
+

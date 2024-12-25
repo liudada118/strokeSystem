@@ -1,0 +1,19 @@
+.nursecharts {
+    height: 12rem;
+}
+
+.nurseAndOnbedContent{
+    display: flex;
+}
+
+@media screen and (min-width: $phoneWidth) and (max-width: $PadWidth) {
+ .nurseAndOnbedContent{
+    flex-direction: column;
+ }  
+ .nurseAndOnbedContent{
+    background-color: #F5F8FA;
+    padding: 0.68rem;
+    border-radius: 1rem;
+ } 
+
+}

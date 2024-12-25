@@ -1,0 +1,75 @@
+.dayNurseTitle{
+    border-bottom: 1px solid #666;
+    padding-bottom: 0.5rem;
+    margin-bottom: 0.5rem;
+    display: flex;
+    .dayHeatmapTitle{
+        display: flex;
+        flex: 1;
+        .dayNurseLeftTile{
+            flex: 1;
+            text-align: center;
+        }
+        .dayNurseRightTile{
+            flex: 1;
+            text-align: center;
+        }
+    }
+   
+}
+
+.nurseTitleName{
+    margin-bottom: 1rem;
+}
+
+.dayNurseContentTitle{
+    display: flex;
+    flex: 1;
+}
+.dayNurseLeftTile{
+    width: 8rem;
+}
+.dayNurseRightTile{
+    flex: 1;
+}
+
+.leftTitle{
+    display: flex;
+}
+.nurseContentDiv{
+    flex: 1;
+    .rightTabel{
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+    .rightTitle{
+        display: flex;
+        border-bottom: 1px solid #666;
+        flex: 1;
+        align-items: center;
+    }
+    .rightTitleItem1{
+        width: 8rem;
+    }
+    .rightTitle:last-child{
+        border: 0px;
+    }
+}
+.dayNurseContentDiv{
+    border-bottom: 1px solid #666;
+    display: flex;
+}
+.dayHeatmapContent{
+    flex: 1;
+}
+.nurseContentDiv{
+    flex: 1;
+}
+
+@media screen and (min-width: $PadWidth){
+    
+}
+.nurseHeatmap{
+    padding: 0 10%;
+}

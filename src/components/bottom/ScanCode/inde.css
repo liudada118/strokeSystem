@@ -1,0 +1,12 @@
+.capture-wrap{
+    position: relative;
+}
+
+.btns{
+    position: absolute;
+    /* left: 5%; */
+    top: 5%;
+}
+.btns img{
+    width: 30px;height: 30px;
+}

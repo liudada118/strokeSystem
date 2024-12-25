@@ -1,0 +1,81 @@
+.turnContent {
+    width: 66%;
+}
+
+.strokeItem{
+    .nurseStati{
+        margin: 0 1rem;
+    }
+}
+.firstCharts{
+    margin-bottom: 0;
+}
+.sleepDataNum{
+    color: #4E565F;
+}
+@media screen and (min-width: $phoneWidth) and (max-width: $PadWidth) {
+    .firstCharts{
+        padding: 0 0.68rem;
+    }
+    .secondChartsItem {
+        .card{
+            padding: 0 0.68rem; 
+        }
+    }
+    .nurseSecondTitleName {
+        margin-left: 1rem;
+    }
+
+    .nurseMoveValue {
+        margin-left: 1rem;
+    }
+
+    .nurseChartsContent {
+        .daySleepItem {
+            flex: 1;
+            align-items: start;
+            // justify-content: flex-end;
+            flex-direction: column-reverse;
+        }
+    }
+
+    .nurseValueItems {
+        margin-left: 1rem;
+        margin-right: 1rem;
+
+    }
+
+    .nurseRateAndHeart {
+        .daySleepInfo {
+            margin-left: 0;
+            margin-right: 0;
+        }
+    }
+
+    .SegInfo {
+        .daySleepInfo {
+            margin-left: 0;
+            margin-right: 0;
+        }
+    }
+
+    .learnMore {
+        font-size: 1rem;
+    }
+
+    .turnContent {
+        width: 100%;
+    }
+    .sleepDataUtil{
+        font-size: 0.8rem;
+    }
+}
+
+.nurseSecondTitleName {
+    color: #4E565F;
+}
+
+.nurseValueItem {
+    color: #4E565F;
+}
+

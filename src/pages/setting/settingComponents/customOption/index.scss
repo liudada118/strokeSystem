@@ -1,0 +1,33 @@
+.customOptionContent{
+    .customTitle{
+        margin-bottom: 1rem;
+        font-size: 1.2rem;
+        font-weight: 600;
+    }
+
+    .setItem{
+        .customOption{
+            flex-direction: row;
+            align-items: center;
+        }
+    }
+
+    .customOption{
+        display: flex;
+        flex-direction: column;
+        font-size: 0.8rem;
+        .ant-radio-wrapper{
+            font-size: 0.8rem;
+        }
+    }
+    .setItem{
+        margin-bottom: 1.2rem;
+    }
+
+    .setItem3{
+        .ant-checkbox-group{
+            flex-direction: column;
+        }
+    }
+    
+}

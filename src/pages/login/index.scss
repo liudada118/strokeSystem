@@ -1,0 +1,189 @@
+.loginContainer{
+    display: flex;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    flex-direction: column;
+    .ant-btn.ant-btn-block{
+        background : #0072EF
+    }
+}
+
+.loginContent{
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    font-family: 'font';
+}
+
+.loginTypes{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    margin-top: 2rem;
+    // margin-bottom: 1.25rem;
+}
+
+.loginContent img{
+    height: 2.6rem;
+    // width: 310px;
+}
+.loginTypeBorder{
+    background-color: #0072EF;
+    height: 1px;
+    width: 100%;
+    margin-top: 1rem;
+    margin-bottom: 3rem;
+}
+.loginTypeBorderContent{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.verifi{
+    display: flex;
+    align-items: center;
+    .ant-input{
+        margin-right: 1rem;
+    }
+}
+
+.verifiText{
+    // width: 5rem;
+    font-size: 0.75rem;
+    text-align: center;
+}
+
+.footItems{
+    display: flex;
+    margin-bottom: 0.42rem;
+}
+
+.footItem{
+    flex: 1;
+    text-align: center;
+    color: rgba(0,0,0,0.45);
+    font-size: 0.73rem;
+}
+.footCompany{
+    color: rgba(0,0,0,0.45);
+    font-size: 0.73rem;
+    margin-bottom: 1.25rem;
+}
+
+// 修改antd样式
+.phoneInput{
+  
+}
+.ant-input-group.ant-input-group-compact{
+    display: flex!important;
+    height: 2rem;
+    margin-bottom: 1.25rem;
+}
+.ant-input{
+    flex: 1!important;
+}
+.ant-input-group.ant-input-group-compact > *:first-child{
+    border-top-left-radius: 40px!important;
+    border-bottom-left-radius: 40px!important;
+}
+.ant-input-group.ant-input-group-compact > .ant-select:first-child > .ant-select-selector{
+    border-top-left-radius: 40px!important;
+    border-bottom-left-radius: 40px!important;
+}
+.ant-input-group.ant-input-group-compact > *:last-child{
+    border-top-right-radius: 40px!important;
+    border-bottom-right-radius: 40px!important
+}
+.verifi .ant-input{
+    border-radius: 40px!important;
+}
+.verifi .ant-input-password{
+    border-radius: 40px!important;
+    .ant-input{
+        border-radius: 0px!important;
+    }
+}
+
+.loginButton{
+    margin-top: 1.25rem;
+    // background-color: #2DDBE1!important;
+    // border-color: #2DDBE1!important;
+}
+
+@media screen and (min-width: $phoneWidth) and (max-width: $PadWidth) {
+    .ant-input-group.ant-input-group-compact{
+        height: unset;
+    }
+    .loginTypes{
+        font-size: 4rem;
+    }
+    .loginContent{
+        padding: 0 8rem;
+        width: 100%;
+    }
+    .loginContent img{
+        height: unset;
+        width: 100%;
+       
+    }
+}
+@media screen and (min-width: $phoneWidth) and (max-width: 700px){
+    .ant-input-group.ant-input-group-compact{
+        height: 11rem;
+        margin-bottom: 3rem;
+    }
+    .verifi {
+        .verifiValue{
+            height: 11rem;
+            margin-bottom: 6rem;
+            border-radius: 5.5rem;
+        }
+    }
+    .loginButton{
+        height: 11rem;
+    }
+
+    .loginContent img{
+        margin-bottom : 50rem
+    }
+}
+
+@media screen and (min-width: 700px) and (max-width: $PadWidth){
+    .loginContent{
+        // padding: 0 12rem;
+        width: 70%;
+        img{
+            height: unset;
+            width: 100%;
+        }
+        .loginTypes{
+            font-size: 1.5rem;
+        }
+        .verifiText{
+            font-size: 1.2rem;
+            width: 6rem;
+        }
+    }
+}
+
+@media screen and (min-width: $PadWidth){
+    .loginContent{
+        // padding: 0 12rem;
+        width: 30%;
+        img{
+            height: unset;
+            width: 100%;
+        }
+        .loginTypes{
+            font-size: 1.5rem;
+        }
+        .verifiText{
+            font-size: 1rem;
+            width: 6rem;
+        }
+    }
+} 

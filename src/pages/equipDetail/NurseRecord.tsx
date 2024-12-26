@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Button, Checkbox, Drawer, Form, Image, Input, Radio, Table, Upload, Typography } from "antd";
+import { Button, Checkbox, Drawer, Form, Image, Input, Radio, Table, Upload, Typography, message } from "antd";
 import CommonTitle from "../../components/CommonTitle";
 import photo from "../../assets/images/photo.png";
 import expand_img from '../../assets/images/expand.png'
@@ -7,7 +7,7 @@ import dayjs from "dayjs";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import styles from './message.module.scss'
 import useWindowSize from "../../hooks/useWindowSize";
-import { Instancercv } from "@/api/api";
+import { instance, Instancercv } from "@/api/api";
 import { useSelector } from "react-redux";
 import { tokenSelect } from "@/redux/token/tokenSlice";
 import { PreViewConfig } from "./mobileEdit/NurseEdit";
@@ -38,8 +38,8 @@ const NurseRecord: (props: NurseRecordProps) => React.JSX.Element = (props) => {
     const param = useParams()
     const sensorName = param.id
 
-    const [nurseConfig , setNurseConfig] = useState<any>([{}])
-    const [nurseConfigCopy , setNueseConfigCopy] = useState([{}])
+    const [nurseConfig, setNurseConfig] = useState<any>([{}])
+    const [nurseConfigCopy, setNueseConfigCopy] = useState([{}])
 
     const nurseTableColumns = [{
         title: '序号',
@@ -157,7 +157,9 @@ const NurseRecord: (props: NurseRecordProps) => React.JSX.Element = (props) => {
         setDataSource([...dataSource, ..._dataSource])
     }
 
-
+    /**
+     * 请求护理配置
+     */
     useEffect(() => {
         Instancercv({
             method: "get",
@@ -170,7 +172,7 @@ const NurseRecord: (props: NurseRecordProps) => React.JSX.Element = (props) => {
                 deviceId: sensorName
             }
         }).then((res) => {
-            console.log(res.data , 'resssssssss')
+            console.log(res.data, 'resssssssss')
             const nursingConfig = JSON.parse(res.data.nursingConfig)
             console.log(nursingConfig)
             setNurseConfig(nursingConfig)
@@ -178,9 +180,48 @@ const NurseRecord: (props: NurseRecordProps) => React.JSX.Element = (props) => {
         })
     }, [])
 
+    /**
+     * 添加护理报告
+     */
     const addNurseReport = () => {
-        
+        instance({
+            method: "post",
+            url: "/sleep/nurse/addDayNurse",
+            headers: {
+                "content-type": "application/json",
+                "token": token
+            },
+            data: {
+                did: sensorName,
+                timeMillis: new Date().getTime(),
+                data: JSON.stringify(nurseConfig),
+            },
+        }).then((res) => {
+            message.success('添加成功')
+        })
     }
+
+    /**
+     * 请求护理列表
+     */
+
+    useEffect(() => {
+        instance({
+            method: 'get',
+            url: "/sleep/nurse/getDayNurseData",
+            headers: {
+                "content-type": "application/json",
+                "token": token
+            },
+            params: {
+                did: sensorName,
+                startTimeMillis: new Date(new Date().toLocaleDateString()).getTime() + 0,
+                endTimeMills: new Date(new Date().toLocaleDateString()).getTime() + 24 * 60 * 60 * 1000
+            }
+        }).then((res) => {
+            
+        })
+    }, [])
 
     return (
         <div className='w-[calc(30%-10px)] md:w-full'>
@@ -234,7 +275,7 @@ const NurseRecord: (props: NurseRecordProps) => React.JSX.Element = (props) => {
                             </Form.Item> */}
 
                             {
-                                
+
                             }
                             <PreViewConfig display={true} nurseConfig={nurseConfig} setNurseConfig={setNurseConfig} />
                             <Form.Item className='flex justify-around w-full'>
@@ -258,7 +299,7 @@ const NurseRecord: (props: NurseRecordProps) => React.JSX.Element = (props) => {
             <div ref={nurseRef} className='bg-[#fff] py-[25px] px-[25px] md:w-[94%] md:rounded-[10px] md:my-[10px] md:mx-auto md:py-[1rem] md:px-[1rem]'>
                 <CommonTitle name='护理项目' type={isMobile ? 'rect' : 'square'} />
                 {isMobile && (
-                    <Button className='w-full h-[5vh] mb-[0.5rem] text-base' type='primary' onClick={() => navigate('/record')}>记录护理项目</Button>
+                    <Button className='w-full h-[5vh] mb-[0.5rem] text-base' type='primary' onClick={() => navigate('/record', { state: { sensorName } })}>记录护理项目</Button>
                 )}
                 <Table rowClassName='nurseTableRow' id='nurseTable' rowKey="number" columns={nurseTableColumns} dataSource={dataSource} pagination={false} />
             </div>

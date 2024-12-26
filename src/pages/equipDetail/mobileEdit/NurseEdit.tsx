@@ -20,6 +20,7 @@ import UploadImg from '@/pages/setting/uploadImg/UploadImg'
 import ImgUpload from '@/components/imgUpload/ImgUpload'
 import { CheckboxProps } from 'antd/lib'
 import CommonTitle from '@/components/CommonTitle'
+import { useGetWindowSize } from '@/hooks/hook'
 
 const CheckboxGroup = Checkbox.Group;
 
@@ -201,7 +202,7 @@ export function NurseEdit() {
                 deviceId: sensorName
             }
         }).then((res) => {
-            console.log(res.data , 'resssssssss')
+            console.log(res.data, 'resssssssss')
             const nursingConfig = JSON.parse(res.data.nursingConfig)
             console.log(nursingConfig)
             setNurseConfig(nursingConfig)
@@ -268,16 +269,17 @@ export function NurseEdit() {
 
                 {selectIndex >= 0 || isSelectChild >= 0 ? <div onClick={() => {
                     saveNurseItem()
-                }} className="absolute bottom-[38px] left-[4%] w-[92%] m-auto mt-[15px] py-[16px] bg-[#0072EF] flex items-center justify-center text-[#fff] text-base rounded-[10px]">
+                }} className="absolute bottom-[38px] left-[4%] w-full m-auto mt-[15px] py-[16px] bg-[#0072EF] flex items-center justify-center text-[#fff] text-base rounded-[10px]">
                     保存护理项
                 </div> : ''}
             </Popup>
-            <div onClick={() => { setVisible1(true) }} className="w-[92%] m-auto mt-[15px] py-[16px] bg-[#0072EF] flex items-center justify-center text-[#fff] text-base rounded-[10px]">
+            <div onClick={() => { setVisible1(true) }} className="w-full m-auto mt-[15px] py-[16px] bg-[#0072EF] flex items-center justify-center text-[#fff] text-base rounded-[10px]">
                 添加护理项
                 <img src={nurseAdd} className='w-[1rem] ml-[5px]' alt="" />
             </div>
-            <PreViewConfig display={false} nurseConfig={nurseConfig} setNurseConfig={setNurseConfig} />
-            <div onClick={() => { saveNurseConfigToCloud() }} className="w-[92%] m-auto mt-[15px] py-[16px] bg-[#0072EF] flex items-center justify-center text-[#fff] text-base rounded-[10px]">
+            <div className='pt-[20px] w-[92%] m-auto'>
+                <PreViewConfig display={false} nurseConfig={nurseConfig} setNurseConfig={setNurseConfig} /></div>
+            <div onClick={() => { saveNurseConfigToCloud() }} className="w-full m-auto mt-[15px] py-[16px] bg-[#0072EF] flex items-center justify-center text-[#fff] text-base rounded-[10px]">
                 保存护理项
             </div>
         </>
@@ -425,8 +427,9 @@ export function PreViewConfig(props: preViewConfigParam) {
         }
     }
     const { display, setNurseConfig, nurseConfig } = props
+
     return (
-        <div className={`${display ? '' : 'bg-[#f4f5f6]'}  pb-[16px]`}>
+        <div className={`${display ? '' : 'bg-[#f4f5f6]'} `}>
             {
                 nurseConfig.map((item, index) => {
                     return <RenderConfig display={display} changeItemValue={changeItemValue} key={item.id} type={item.type} index={index} title={item.title} arr={item.arr} />
@@ -453,31 +456,46 @@ function Card(props: cardParam) {
     const deleteItems = () => {
         changeItemValue({ index, type: EditType.DELETE })
     }
+    const isMobile = useGetWindowSize()
 
-    return (
-        <>
-            {props.hasOwnProperty("display") ? <><CommonTitle name={title} type='rect' />
+    // 展示表单的页面
+    if (props.hasOwnProperty("display") && display) {
+        if (isMobile) {
+            return <div className='p-[16px] pb-[15px] bg-[#fff] w-full m-auto rounded-[10px] mb-[16px]'>
+                <CommonTitle name={title} type='rect' />
                 <div className='flex flex-col ml-[9px] mb-[20px]'>
                     {children}
-                </div></> :
-                <div className='p-[16px] pb-[20px] bg-[#fff] w-[92%] m-auto rounded-[10px] mt-[16px]'>
-                    <div className='flex items-center justify-between font-bold mb-[13px] text-base'>
-                        {title}
-                        <div className='flex text-base text-[#0072EF] font-normal'>
-                            {props.hasOwnProperty("editItem") ? <div onClick={() => {
-                                console.log(editItem)
-                                setEditItem && setEditItem(!editItem)
-                            }} className='mr-[15px]'>编辑</div> : ''}
-                            <div className='flex items-center' onClick={() => { deleteItems() }}>
-                                <img src={nurseSelectItemDelete} className='w-[20px]' alt="" /></div>
-                        </div>
-                    </div>
-                    <div className='flex flex-col'>
-                        {children}
-                    </div>
-                </div>}
-        </>
-    )
+                </div>
+            </div>
+        } else {
+            return <><CommonTitle name={title} type='rect' />
+                <div className='flex flex-col ml-[9px] mb-[20px]'>
+                    {children}
+                </div>
+            </>
+        }
+    }
+    // 编辑的表单页面
+    else {
+        return <div className='p-[16px] bg-[#fff] w-full m-auto rounded-[10px] mb-[16px]'>
+            <div className='flex items-center justify-between font-bold mb-[13px] text-base'>
+                {title}
+                <div className='flex text-base text-[#0072EF] font-normal'>
+                    {props.hasOwnProperty("editItem") ? <div onClick={() => {
+                        console.log(editItem)
+                        setEditItem && setEditItem(!editItem)
+                    }} className='mr-[15px]'>编辑</div> : ''}
+                    <div className='flex items-center' onClick={() => { deleteItems() }}>
+                        <img src={nurseSelectItemDelete} className='w-[20px]' alt="" /></div>
+                </div>
+            </div>
+            <div className='flex flex-col'>
+                {children}
+            </div>
+        </div>
+    }
+
+
 }
 
 function RenderConfig({ type, index, title, arr, changeItemValue, display }: any) {
@@ -538,15 +556,17 @@ function RenderConfig({ type, index, title, arr, changeItemValue, display }: any
         })
     }
 
+
+
     switch (type) {
         case ConfigType.IMG:
-            return <Card changeItemValue={changeItemValue} type={type} index={index} title={`${index + 1}.${title}(上传图片)`}>
+            return <Card display={display} changeItemValue={changeItemValue} type={type} index={index} title={`${index + 1}.${title}(上传图片)`}>
                 <ImgUpload img={img} finish={(img: any) => {
                     imgFinish(img)
                 }} />
             </Card>;
         case ConfigType.INPUT:
-            return <Card changeItemValue={changeItemValue} type={type} index={index} title={`${index + 1}.${title}(输入)`}>
+            return <Card display={display} changeItemValue={changeItemValue} type={type} index={index} title={`${index + 1}.${title}(输入)`}>
                 <Input onChange={(e) => {
                     onInput(e)
                 }} className='bg-[#F5F8FA]' placeholder='请输入文字' />

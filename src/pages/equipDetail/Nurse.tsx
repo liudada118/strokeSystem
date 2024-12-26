@@ -25,20 +25,20 @@ const Nurse: React.FC = () => {
         }
     };
 
-    const [turnType , setTurnType] = useState(0)
+    // const [turnType , setTurnType] = useState(0)
 
-    useEffect(() => {
-        getTurnType()
-    } , [])
+    // useEffect(() => {
+    //     getTurnType()
+    // } , [])
     
-    const getTurnType = () => {
-        setTurnType(1)
-    }
+    // const getTurnType = () => {
+    //     setTurnType(1)
+    // }
 
     if(isMobile) return (
 
         <ConfigProvider theme={ThemeTable}  renderEmpty={renderEmpty}>
-            <TurnPlan turnType={turnType} isMobile />
+            <TurnPlan isMobile />
             <TurnCardTable isMobile />
             <NurseRecord isMobile />
         </ConfigProvider>
@@ -49,7 +49,7 @@ const Nurse: React.FC = () => {
             <div className='flex w-full'>
                 <div className='w-[70%] mr-[10px]'>
                     <span className='inline-block text-lg text-[#32373E] font-semibold mb-[10px]'>翻身</span>
-                    <TurnPlan turnType={turnType} />
+                    <TurnPlan />
                     <TurnCardTable />
                 </div>
                 <NurseRecord />

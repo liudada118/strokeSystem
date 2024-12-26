@@ -1,17 +1,43 @@
 import React, { useState } from 'react'
 import './index.scss'
-import { Checkbox, CheckboxProps, Radio, Space, Switch } from 'antd'
+import { Checkbox, CheckboxProps, message, Radio, Space, Switch } from 'antd'
 import { RadioChangeEvent } from 'antd/lib';
+import { Instancercv } from '@/api/api';
+import { useDispatch, useSelector } from 'react-redux';
+import { tokenSelect } from '@/redux/token/tokenSlice';
+import { changeTurnFlag, organizeIdSelect, turnbodyFlagSelect } from '@/redux/premission/premission';
 // import { CheckboxValueType } from 'antd/es/checkbox/Group';
 
 const CheckboxGroup = Checkbox.Group;
 
 export default function CustomOption() {
-    const [value, setValue] = useState(1);
-
+    const dispatch = useDispatch()
+    const turnType = useSelector(turnbodyFlagSelect)
+    const [value, setValue] = useState(turnType);
+    const token = useSelector(tokenSelect)
+    const organizeId = useSelector(organizeIdSelect)
     const onChange = (e: RadioChangeEvent) => {
+        const value = e.target.value
         console.log('radio checked', e.target.value);
+
         setValue(e.target.value);
+        dispatch(changeTurnFlag(value))
+        Instancercv({
+            method: "post",
+            url: "/organize/updateOrganization",
+            headers: {
+                "content-type": "application/x-www-form-urlencoded",
+                "token": token
+            },
+            params: {
+                organizeId: organizeId,
+                flipbodyFlag: value
+            },
+        }).then((res) => {
+            message.success('修改成功')
+
+            // 修改redux 配置
+        })
     };
 
     const onSwitchChange = () => {

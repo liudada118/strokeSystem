@@ -143,7 +143,7 @@ const MqttMiddleware = (storeApi: any) => (next: any) => (action: any) => {
     }
 }
 
-export function message({ payload, storeApi, data }: any) {
+function message({ payload, storeApi, data }: any) {
     let { equips, switchArr: alarm, realAlarmArr: sosArrOver, riskArr: riskArrs, newVoiceExample, equipsPlay } = storeApi.getState().equip
 
     if (!Object.keys(riskArr).length) riskArr = JSON.parse(JSON.stringify(riskArrs))

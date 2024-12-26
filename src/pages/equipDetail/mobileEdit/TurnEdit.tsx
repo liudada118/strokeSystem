@@ -1,4 +1,4 @@
-import { List } from "antd-mobile"
+import { List, Picker } from "antd-mobile"
 import { useState } from "react"
 import { RenderListItem } from "../EditingUser"
 import { FormType } from "@/components/CommonFormModal"
@@ -29,14 +29,37 @@ export function TurnEdit() {
         value: ''
     })
 
-    return ( 
-        <List  className="w-[92%] mx-auto mt-[10px] rounded-[10px] overflow-hidden">
-            {/* {renderListItem(FormType.TIME_RANGE, 'timeRangeA', '设置时间段', '设置时间段')}
+    return (
+        <>
+            <List className="w-[92%] mx-auto mt-[10px] rounded-[10px] overflow-hidden">
+                {/* {renderListItem(FormType.TIME_RANGE, 'timeRangeA', '设置时间段', '设置时间段')}
             {renderListItem(FormType.TIME_INTERVAL, 'timeIntervalA', '翻身间隔', '设置翻身间隔')} */}
-            <RenderListItem type={FormType.SWITCH} objKey="switchA" label="翻身设置" formValue={formValue} setFormValue={setFormValue} setPickerInfo={setPickerInfo} />
-            <RenderListItem type={FormType.TIME_RANGE} objKey="timeRangeB" label="监测时间段" title="设置监测时间段" formValue={formValue} setFormValue={setFormValue} setPickerInfo={setPickerInfo} />
-            <RenderListItem type={FormType.TIME_INTERVAL} objKey="timeIntervalB" label="提醒时间" title="设置提醒时间" formValue={formValue} setFormValue={setFormValue} setPickerInfo={setPickerInfo} />
+                <RenderListItem type={FormType.SWITCH} objKey="switchA" label="翻身设置" formValue={formValue} setFormValue={setFormValue} setPickerInfo={setPickerInfo} />
+                <RenderListItem type={FormType.TIME_RANGE} objKey="timeRangeB" label="监测时间段" title="设置监测时间段" formValue={formValue} setFormValue={setFormValue} setPickerInfo={setPickerInfo} />
+                <RenderListItem type={FormType.TIME_INTERVAL} objKey="timeIntervalB" label="提醒时间" title="设置提醒时间" formValue={formValue} setFormValue={setFormValue} setPickerInfo={setPickerInfo} />
 
-        </List>
+            </List>
+            <Picker
+                columns={pickerInfo.columns}
+                visible={pickerInfo.visible}
+                onClose={() => {
+                    setPickerInfo({
+                        visible: false,
+                        title: '',
+                        columns: [],
+                        key: '',
+                        value: ''
+                    })
+                }}
+                title={pickerInfo.title}
+                value={pickerInfo.value}
+                onConfirm={v => {
+                    const result = v.length > 1 ? `${v[0]}:${v[1]} - ${v[2]}:${v[3]}` : v[0]
+                    setFormValue({
+                        ...formValue,
+                        [pickerInfo.key]: result
+                    })
+                }}
+            /></>
     )
 }

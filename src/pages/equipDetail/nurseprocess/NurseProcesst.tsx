@@ -39,6 +39,8 @@ import { minDataParam, returnCloudHeatmapData, returnMinData, returnRealtimeData
 import NurseTitleProgress, { TurnOver, UploadSleep } from './NurseTitleProgress'
 import NurseTitle from './NurseStepTitle'
 import NurseBottom from './NurseStepBottom'
+import { Popup } from 'antd-mobile'
+import { turnbodyFlagSelect } from '@/redux/premission/premission'
 
 interface nurseProcessProps {
   isModalOpenSend: boolean
@@ -84,7 +86,7 @@ export default function NurseProcesst(props: nurseProcessProps) {
   const equipInfo = useSelector(state => selectEquipBySensorname(state, sensorName))
   let navigate = useNavigate()
   console.log(equipInfo)
-  const { type, roomNum, nurseStart, nurseEnd, nursePeriod ,  } = equipInfo
+  const { type, roomNum, nurseStart, nurseEnd, nursePeriod, } = equipInfo
 
   const [index, setIndex] = useState(1)
   const isMobile = useGetWindowSize()
@@ -95,7 +97,7 @@ export default function NurseProcesst(props: nurseProcessProps) {
   const [guide, setGuide] = useState(false)
   const [img, setImg] = useState('')
   const [sleepTypenur, setSleepType] = useState<any>(0)
-  const [onBedTime , setOnBedTime] = useState(0)
+  const [onBedTime, setOnBedTime] = useState(0)
   const [remark, setRemark] = useState<any>()
   const turnOverRef = useRef<any>()
 
@@ -113,118 +115,6 @@ export default function NurseProcesst(props: nurseProcessProps) {
   const onClose = () => {
     changePos()
   };
-  
-  const seeReport = () => {
-
-
-    instance({
-      method: "get",
-      url: "/sleep/nurse/getRecords",
-      params: {
-        deviceName: sensorName,
-        startTime: new Date().setHours(0, 0, 0, 0),
-        endTime: new Date().setHours(24, 0, 0, 0),
-        pageNum: 1,
-        pageSize: 99
-      },
-      headers: {
-        "content-type": "application/x-www-form-urlencoded",
-        "token": token
-      },
-    }).then((res) => {
-      const arr = res.data.page.records[0]
-      console.log('arr', arr)
-      const data = arr.nurseContent.split('|')
-      const nurseData = arr.extra.split('|')
-      const imgStr = data[0]
-      const bedImgStr = data[4]
-      const contentStr = data[1]
-      const rateArr = nurseData[0]
-      const heartArr = nurseData[1]
-      const onbedTime = nurseData[2]
-
-      // data = {
-      //   normalArr: content,
-      //   imgArr: img1,
-      //   selectArr: selectContent,
-      //   inputArr: inputContent
-      // }
-      const normalArr = data.filter((a: any) => {
-        return a.includes('normalArr')
-      })
-      const imgArr = data.filter((a: any) => {
-        return a.includes('imgArr')
-      })
-      const selectArr = data.filter((a: any) => {
-        return a.includes('selectArr')
-      })
-      const inputArr = data.filter((a: any) => {
-        return a.includes('inputArr')
-      })
-
-      const normalArrRes = strToObj(normalArr[0].split('+')[1])
-      const imgArrRes = strToObj(imgArr[0].split('+')[1])
-      const selectArrRes = strToObj(selectArr[0].split('+')[1])
-      const inputArrRes = strToObj(inputArr[0].split('+')[1])
-
-      let img, contentArr, remark, rate, heart, onBedTime, bedImg, skin, sleep
-
-      if (data[3]) {
-        remark = data[3].split('+')[1]
-        setRemark(remark)
-      }
-
-      if (data[4]) {
-        bedImg = data[4].split('+')[1]
-        // setRemark(remark)
-      }
-      if (data[5]) {
-        skin = data[5].split('+')[1]
-        // setRemark(remark)
-      }
-
-
-
-      if (rateArr) {
-        rate = rateArr.split('+')[1].split(',')
-      }
-
-      if (heartArr) {
-        heart = heartArr.split('+')[1].split(',')
-      }
-
-      if (onbedTime) {
-        onBedTime = onbedTime.split('+')[1]
-      }
-
-
-      // startMatrix = record.startMatrix
-      // endMatrix = record.endMatrix
-      navigate(`/nurseReport`, {
-        state: {
-          startMatrix: JSON.parse('[' + arr.startMatrix + ']'),
-          endMatrix: JSON.parse('[' + arr.endMatrix + ']'),
-          img, contentArr, remark, rate, heart, onBedTime, bedImg, skin, sleep, normalArrRes, imgArrRes, selectArrRes, inputArrRes,
-          name: equipInfo.name,
-          age: equipInfo.age,
-          roomNum: equipInfo.roomNum,
-          chargeMan: equipInfo.chargeNum,
-          date: new Date().getTime(),
-          startTime: dayjs(arr.timeMills).format('HH:mm'),
-          endTime: dayjs(arr.timeMillsEnd).format('HH:mm'),
-          id: arr.id,
-          drRemark: arr.drRemark,
-          drName: arr.drName,
-          sensorName: sensorName,
-          // date : new Date().getTime(),
-          // router: location.pathname,
-          // props: location.state
-        },
-      });
-    })
-
-
-  }
 
   // mqtt 事件
   const mqttEvent: any = {
@@ -238,7 +128,7 @@ export default function NurseProcesst(props: nurseProcessProps) {
     realtime({ jsonObj, sensorName }: minDataParam) {
       const { heart, rate, stroke, bodyMove, onBedTime } = returnRealtimeData({ jsonObj, sensorName })
       if (!jsonObj.realtimeOnbedState) {
-        
+
       }
 
       setOnBedTime(onBedTime)
@@ -405,6 +295,7 @@ export default function NurseProcesst(props: nurseProcessProps) {
    */
   const submitReport = () => {
     const phone = localStorage.getItem('phone')
+    console.log('submitReport')
     instance({
       method: "post",
       url: "/sleep/nurse/addNursingLog",
@@ -413,8 +304,8 @@ export default function NurseProcesst(props: nurseProcessProps) {
         extra: obj.sleepPosImg,//({ img: img, content: content }),
         chargeMan: phone?.slice(-4),
         flipbodyTime: new Date().getTime(),
-        posture: 2,
-        onbedTime : Math.floor(onBedTime)
+        posture: valueToSleep(sleepTypenur),
+        onbedTime: Math.floor(onBedTime)
       },
     }).then((res) => {
       message.success('护理成功')
@@ -437,95 +328,177 @@ export default function NurseProcesst(props: nurseProcessProps) {
     setObj({ ...obj, ...param })
   }
 
+  const turnType = useSelector(turnbodyFlagSelect)
+
   return (
-    <> {!isMobile ? '' : <NurseModal open={isModalOpenSend} >
-      {index == 0 ? <><h2 className='noticeTitle'>注意事项</h2>
-        {
-          noticeObj.map((a: any, indexs) => {
-            return (
-              <div key={indexs}>
-                <h3 style={{ fontWeight: 'bold' }}>{indexs + 1}.{a.title}</h3>
-                <div>{a.info}</div>
-              </div>
-            )
-          })
-        }
-        <Button
-          onClick={() => {
-            console.log(nowPos, Array.isArray(afterPos))
-            changePos()
-
-          }}
-          className='noticeButton'>确认</Button>
-      </> :
-        <div className={`nurseConent ${guide ? 'scrool' : ''}`}>
-          <Drawer
-            title="注意事项"
-            placement={'bottom'}
-            // closable={false}
-            onClose={onClose}
-            open={open && isModalOpenSend && index == 1}
-            key={'bottom'}
-            className="noticeDrawer"
-          >
-            <div className="pfBold" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+    <> {!isMobile ? '' :
 
 
-              <ol style={{ paddingLeft: '1.12rem', lineHeight: '2rem', flex: 1 }}>
-                {nurseNoticeList.map((item) =>
-                  <li>{item}</li>
-                )}
-              </ol>
-              <div className="nurseButton" onClick={() => {
-                // changePos()
-                onClose()
-              }}>
-                我已知晓，开始护理
-              </div>
-            </div>
-          </Drawer>
+      turnType == 1 ?
+        <OneClickCare submitReport={submitReport} isModalOpenSend={isModalOpenSend} setIsModalOpenSend={setIsModalOpenSend} setSleepType={setSleepType} sleepTypenur={sleepTypenur} />
+        :
+        <NurseModal open={isModalOpenSend} >
+          {index == 0 ? <><h2 className='noticeTitle'>注意事项</h2>
+            {
+              noticeObj.map((a: any, indexs) => {
+                return (
+                  <div key={indexs}>
+                    <h3 style={{ fontWeight: 'bold' }}>{indexs + 1}.{a.title}</h3>
+                    <div>{a.info}</div>
+                  </div>
+                )
+              })
+            }
+            <Button
+              onClick={() => {
+                console.log(nowPos, Array.isArray(afterPos))
+                changePos()
 
-          <Drawer
-            title=""
-            placement={'bottom'}
-            closable={true}
-            onClose={finishClose}
-            open={nurseFinish}
-            key={'bottom'}
-          >
-            <div style={{ display: 'flex', flexDirection: 'column', height: '100%', width: '100%' }}>
-              <div style={{ flex: 1 }}>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.5rem', margin: '1rem 0' }}>
-                  <div style={{ width: '1.5rem', height: '1.5rem', marginRight: '0.3rem', borderRadius: '50%', background: 'linear-gradient(270deg, #006CFD 6%, #009FFF 95%)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><img style={{ width: '100%', height: '100%' }} src={okWhite} /></div>  护理完成
+              }}
+              className='noticeButton'>确认</Button>
+          </> :
+            <div className={`nurseConent ${guide ? 'scrool' : ''}`}>
+              <Drawer
+                title="注意事项"
+                placement={'bottom'}
+                // closable={false}
+                onClose={onClose}
+                open={open && isModalOpenSend && index == 1}
+                key={'bottom'}
+                className="noticeDrawer"
+              >
+                <div className="pfBold" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+
+
+                  <ol style={{ paddingLeft: '1.12rem', lineHeight: '2rem', flex: 1 }}>
+                    {nurseNoticeList.map((item) =>
+                      <li>{item}</li>
+                    )}
+                  </ol>
+                  <div className="nurseButton" onClick={() => {
+                    // changePos()
+                    onClose()
+                  }}>
+                    我已知晓，开始护理
+                  </div>
                 </div>
-                {/* <div style={{ textAlign: 'center', fontSize: '1.2rem', color: '#006ADF' }}
+              </Drawer>
+
+              <Drawer
+                title=""
+                placement={'bottom'}
+                closable={true}
+                onClose={finishClose}
+                open={nurseFinish}
+                key={'bottom'}
+              >
+                <div style={{ display: 'flex', flexDirection: 'column', height: '100%', width: '100%' }}>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.5rem', margin: '1rem 0' }}>
+                      <div style={{ width: '1.5rem', height: '1.5rem', marginRight: '0.3rem', borderRadius: '50%', background: 'linear-gradient(270deg, #006CFD 6%, #009FFF 95%)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><img style={{ width: '100%', height: '100%' }} src={okWhite} /></div>  护理完成
+                    </div>
+                    {/* <div style={{ textAlign: 'center', fontSize: '1.2rem', color: '#006ADF' }}
                   onClick={() => {
                     seeReport()
                   }}
                 >点击查看护理报告</div> */}
-              </div>
-              <div className="nurseButton" onClick={() => {
-                setIsModalOpenSend(false)
-                finishClose()
-              }}>
-                回到首页
-              </div>
-            </div>
-          </Drawer>
+                  </div>
+                  <div className="nurseButton" onClick={() => {
+                    setIsModalOpenSend(false)
+                    finishClose()
+                  }}>
+                    回到首页
+                  </div>
+                </div>
+              </Drawer>
 
-          <div className={`nurseTitleContent ${guide ? 'scrool' : ''}`}>
-            <NurseTitle guide={guide} setIndex={setIndex} setOpen={setOpen} setIsModalOpenSend={setIsModalOpenSend} setGuide={setGuide} index={index} nurseStepArr={nurseStepArr} />
-          </div>
-          {
-            guide ?
-              <NurseGuide />
-              :
-              <>{nurseStepArr[index - 1].content}</>
+              <div className={`nurseTitleContent ${guide ? 'scrool' : ''}`}>
+                <NurseTitle guide={guide} setIndex={setIndex} setOpen={setOpen} setIsModalOpenSend={setIsModalOpenSend} setGuide={setGuide} index={index} nurseStepArr={nurseStepArr} />
+              </div>
+              {
+                guide ?
+                  <NurseGuide />
+                  :
+                  <>{nurseStepArr[index - 1].content}</>
+              }
+              <NurseBottom setNurseFinish={setNurseFinish} submitReport={submitReport} guide={guide} index={index} setIndex={setIndex} setGuide={setGuide} total={nurseStepArr.length} />
+            </div>
           }
-          <NurseBottom setNurseFinish={setNurseFinish} submitReport={submitReport} guide={guide} index={index} setIndex={setIndex} setGuide={setGuide} total={nurseStepArr.length} />
-        </div>
-      }
-    </NurseModal >}
+        </NurseModal >
+    }
     </>
   )
+}
+
+interface oneClickCareParam {
+  isModalOpenSend: boolean
+  setIsModalOpenSend: Function
+  setSleepType: Function
+  sleepTypenur: number
+  submitReport : Function
+}
+const OneClickCare = (props: oneClickCareParam) => {
+
+  const { isModalOpenSend, setIsModalOpenSend, setSleepType, sleepTypenur,submitReport } = props
+
+  const sleepPose = [{
+    value: '左侧卧',
+    img: <img src={left} alt='' />,
+    unimg: <img src={unLeft} alt='' />
+  }, {
+    value: '仰卧',
+    img: <img src={back} alt='' />,
+    unimg: <img src={unBack} alt='' />
+  }, {
+    value: '右侧卧',
+    img: <img src={left} alt='' className='scale-x-[-1]' />,
+    unimg: <img src={unLeft} alt='' className='scale-x-[-1]' />
+  }]
+
+
+  // const [choosedSleep, setChoosedSleep] = useState<number>(sleepTypenur)
+
+  const handleChooseSleep = (value: number) => {
+    // setChoosedSleep(value)
+    setSleepType(value)
+  }
+  return (<Popup
+    visible={isModalOpenSend}
+    onMaskClick={() => {
+      setIsModalOpenSend(false)
+    }}
+    bodyStyle={{
+      borderTopLeftRadius: '8px',
+      borderTopRightRadius: '8px',
+      minHeight: '40vh',
+    }}
+  >
+    <div className='flex justify-between items-center pt-[10px] px-[20px]'>
+      <span className='text-base text-[#3D3D3D]' onClick={() => {
+        setIsModalOpenSend(false)
+        // setChoosedSleep('')
+        setSleepType(-1)
+      }}>取消</span>
+      <span className='text-lg font-medium'>选择睡姿</span>
+      <span className='text-base text-[#0072EF]' onClick={() => {
+        console.log('submitReport')
+        setIsModalOpenSend(false)
+        submitReport()
+        setSleepType(-1)
+        // setChoosedSleep('')
+      }}>提交</span>
+    </div>
+    <div className='flex justify-center items-center mt-[40px] pt-[10px] w-full'>
+      {sleepPose.map((item, index) => (
+        <div key={item.value} className='basis-1/3 flex flex-col items-center'>
+          <div
+            className={`w-[70%] ${sleepTypenur === index ? 'bg-gradient-to-b from-[#009FFF] to-[#006CFD] shadow-md shadow-[#1D79EA]' : 'bg-[#F6F7FD]'} mb-[10px] rounded-[6px]`}
+            onClick={() => handleChooseSleep(index)}>
+            {sleepTypenur === index ? item.unimg : item.img}
+          </div>
+          <span>{item.value}</span>
+        </div>
+      ))}
+    </div>
+  </Popup>)
 }

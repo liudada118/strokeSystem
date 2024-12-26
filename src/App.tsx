@@ -4,7 +4,8 @@ import './App.css';
 import { HashRouter, Route, Routes } from 'react-router-dom';
 import { Loading } from './components/pageLoading';
 import RequirAuthRoute from './components/auth/RequirAuthRoute';
-import EditingUser from './pages/equipDetail/EditingUser';
+// import RecordForm from './pages/equipDetail/RecordForm';
+// import EditingUser from './pages/equipDetail/EditingUser';
 // import TurnReport from './pages/turnReport/TurnReport';
 // import UserInfoCard from './pages/equipDetail/UserInfoCard';
 
@@ -20,6 +21,8 @@ const Setting = React.lazy(() => import('./pages/setting/Setting'))
 const Message = React.lazy(() => import('./pages/message'))
 const UserInfoCard = React.lazy(() => import('./pages/equipDetail/UserInfoCard'))
 const TurnReport = React.lazy(() => import('./pages/turnReport/TurnReport'))
+const EditingUser = React.lazy(() => import('./pages/equipDetail/EditingUser'))
+const RecordForm = React.lazy(() => import('./pages/equipDetail/RecordForm'))
 
 function App() {
   return (
@@ -47,7 +50,7 @@ function App() {
           <Route path="/equipInfo/:id" element={
             <RequirAuthRoute><UserInfoCard isMobile /></RequirAuthRoute>
           } />
-
+          <Route path="/record" element={<RecordForm />} />
           <Route path="/userInfo_editing" element={
             <RequirAuthRoute><EditingUser /></RequirAuthRoute> } />
         </Routes>

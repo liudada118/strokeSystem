@@ -4,6 +4,8 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 interface premissionState {
     roleId: string
     headImg: string
+    organizeId: string
+    turnbodyFlag: number
     status: string
     error: any
 }
@@ -11,11 +13,13 @@ interface premissionState {
 const initialState: premissionState = {
     roleId: '',
     headImg: '',
+    organizeId: '',
+    turnbodyFlag: 1,
     status: 'idle',
     error: null,
 }
 
-const roleIdToPermission:any = {
+const roleIdToPermission: any = {
     1: 'superManage',
     2: 'manage',
     3: 'careMan',
@@ -24,8 +28,8 @@ const roleIdToPermission:any = {
 
 
 
-export function isManage(str : string){
-    const manageArr = ['superManage' , 'manage']
+export function isManage(str: string) {
+    const manageArr = ['superManage', 'manage']
     return manageArr.includes(str)
 }
 
@@ -37,7 +41,12 @@ const premissionSlice = createSlice({
             state.error = null
             state.headImg = ''
             state.roleId = ''
+            state.organizeId = ''
+            state.turnbodyFlag = 0
             state.status = 'idle'
+        },
+        changeTurnFlag(state , action){
+            state.turnbodyFlag = action.payload
         }
     },
     extraReducers(builder) {
@@ -48,15 +57,19 @@ const premissionSlice = createSlice({
             state.status = 'succeeded'
             console.log(action.payload, 'succeeded')
             const res = action.payload
-            if(res.code == 500){
-                
-            }else{
+            if (res.code == 500) {
+
+            } else {
                 const image = res.commonConfig.image
+                const turnbodyFlag = res.commonConfig.turnbodyFlag
                 const roleId = res.data.roleId
+                const organizeId = res.data.organizeId
                 state.headImg = image
                 state.roleId = roleIdToPermission[roleId]
+                state.organizeId = organizeId
+                state.turnbodyFlag = turnbodyFlag
             }
-            
+
         })
 
         builder.addCase(fetchPermission.rejected, (state, action) => {
@@ -68,10 +81,12 @@ const premissionSlice = createSlice({
 
 export const roleIdSelect = (state: any) => state.premission.roleId
 export const headImgSelect = (state: any) => state.premission.headImg
+export const organizeIdSelect = (state: any) => state.premission.organizeId
+export const turnbodyFlagSelect = (state: any) => state.premission.turnbodyFlag
 
 export default premissionSlice.reducer
 
-export const { loginOut } = premissionSlice.actions
+export const { loginOut,changeTurnFlag } = premissionSlice.actions
 
 export const fetchPermission = createAsyncThunk('premission/fetch', async (_, { getState }) => {
     const state: any = getState()

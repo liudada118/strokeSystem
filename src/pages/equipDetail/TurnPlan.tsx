@@ -13,6 +13,14 @@ import { instance } from "@/api/api";
 import { useSelector } from "react-redux";
 import { selectEquipBySensorname } from "@/redux/equip/equipSlice";
 import NurseProcesst from "./nurseprocess/NurseProcesst";
+import { turnbodyFlagSelect } from "@/redux/premission/premission";
+
+import right from '@/assets/icon/right.png'
+import back from '@/assets/icon/back.png'
+import left from '@/assets/icon/left.png'
+import unRight from '@/assets/icon/unRight.png'
+import unBack from '@/assets/icon/unBack.png'
+import unLeft from '@/assets/icon/unLeft.png'
 
 enum TurnPlanStatus {
     DONE = '已完成',
@@ -49,18 +57,21 @@ const turnAroundPlan: TurnPlanList[] = [{
 }];
 const sleepPose = [{
     value: '左侧卧',
-    img: <img src={left_sleep} alt='' />
+    img: <img src={left} alt='' />,
+    unimg: <img src={unLeft} alt='' />
 }, {
     value: '仰卧',
-    img: <img src={top_sleep} alt='' />
+    img: <img src={back} alt='' />,
+    unimg: <img src={unBack} alt='' />
 }, {
     value: '右侧卧',
-    img: <img src={left_sleep} alt='' className='scale-x-[-1]' />
+    img: <img src={left} alt='' className='scale-x-[-1]' />,
+    unimg: <img src={unLeft} alt='' className='scale-x-[-1]' />
 }]
 
 interface TurnPlanProps {
     isMobile?: boolean;
-    turnType: number
+    // turnType: number
 }
 
 const TurnPlan: (props: TurnPlanProps) => React.JSX.Element = (props) => {
@@ -72,6 +83,9 @@ const TurnPlan: (props: TurnPlanProps) => React.JSX.Element = (props) => {
     const equipInfo = useSelector(state => selectEquipBySensorname(state, sensorName))
     const { nursePeriod, nurseStart, nurseEnd } = equipInfo
 
+    const turnType = useSelector(turnbodyFlagSelect)
+
+    console.log(turnType, 'turnTypeturnType')
 
     useEffect(() => {
         getNurse()
@@ -138,7 +152,7 @@ const TurnPlan: (props: TurnPlanProps) => React.JSX.Element = (props) => {
         }
     }
 
-    const { isMobile = false, turnType } = props;
+    const { isMobile = false } = props;
     const navigate = useNavigate();
     const [recordModal, setRecordModal] = useState<boolean>(false)
     const [choosedSleep, setChoosedSleep] = useState<string>('')
@@ -190,44 +204,10 @@ const TurnPlan: (props: TurnPlanProps) => React.JSX.Element = (props) => {
                 className={`w-[6rem] h-[2.4rem] text-sm ${inactive ? '!bg-[#ECF0F4] !text-[#C2CDD6]' : ''} ${isTimeOut(data.timeEnd) ? 'bg-[#EC6E38]' : ''} border-none`}
                 disabled={inactive}>去记录</Button>
     }
+
     return (
         <div className='bg-[#fff] w-full md:w-[94%] md:rounded-[10px] md:my-[10px] md:mx-auto border-b border-b-[#ECF0F4] md:border-0 pt-[25px] pl-[25px] md:pt-[1rem] md:pl-[1rem] pb-[10px]'>
-            {turnType == 1 ? <NurseProcesst isModalOpenSend={recordModal} setIsModalOpenSend={setRecordModal} />
-                :
-                <Popup
-                    visible={recordModal}
-                    onMaskClick={() => {
-                        setRecordModal(false)
-                    }}
-                    bodyStyle={{
-                        borderTopLeftRadius: '8px',
-                        borderTopRightRadius: '8px',
-                        minHeight: '40vh',
-                    }}
-                >
-                    <div className='flex justify-between items-center pt-[10px] px-[20px]'>
-                        <span className='text-base text-[#3D3D3D]' onClick={() => {
-                            setRecordModal(false)
-                            setChoosedSleep('')
-                        }}>取消</span>
-                        <span className='text-lg font-medium'>选择睡姿</span>
-                        <span className='text-base text-[#0072EF]' onClick={() => {
-                            setRecordModal(false)
-                            setChoosedSleep('')
-                        }}>提交</span>
-                    </div>
-                    <div className='flex justify-center items-center mt-[40px] pt-[10px]'>
-                        {sleepPose.map(item => (
-                            <div key={item.value} className='flex flex-col items-center ml-[20px]'>
-                                <div className={`${choosedSleep === item.value ? 'bg-gradient-to-b from-[#009FFF] to-[#006CFD] shadow-md shadow-[#1D79EA]' : 'bg-[#F6F7FD]'} mb-[10px] rounded-[6px]`} onClick={() => handleChooseSleep(item.value)}>
-                                    {item.img}
-                                </div>
-                                <span>{item.value}</span>
-                            </div>
-                        ))}
-                    </div>
-                </Popup>}
-
+            <NurseProcesst isModalOpenSend={recordModal} setIsModalOpenSend={setRecordModal} />
             <CommonTitle name='翻身计划' type={isMobile ? 'rect' : 'square'} />
             <div className='w-full'>
                 {turnAroundPlan.map((item, index) => (

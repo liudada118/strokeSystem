@@ -14,7 +14,9 @@ export enum FormType {
     SWITCH = 'SWITCH',
     TIME_INTERVAL = 'TIME_INTERVAL',
     UPLOAD = 'UPLOAD',
-    DATE_SELECT = 'DATE_SELECT'
+    DATE_SELECT = 'DATE_SELECT',
+    INPUTNUMBER = 'INPUTNUMBER',
+    SECONDRATE = 'SECONDRATE'
 }
 type CommonFormItem = {
     label: string;
@@ -73,6 +75,8 @@ const CommonFormModal: (props: CommonFormModalProps) => React.JSX.Element = (pro
                 {list.map((item) => {
 
                     switch (item.type) {
+                        case 'INPUTNUMBER' : 
+                            return <></>
                         case 'INPUT':
                             return (
                                 <Form.Item label={item.label} name={item.key} key={item.key}>

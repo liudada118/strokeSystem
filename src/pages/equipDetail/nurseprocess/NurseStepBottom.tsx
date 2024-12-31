@@ -24,7 +24,7 @@ export default function NurseBottom(props: nurseBottomParam) {
     }
 
     const arr = new Array(total).fill(1)
-    console.log(props)
+  
     return (
         <>
             {

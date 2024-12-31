@@ -1,13 +1,8 @@
 import { useGetWindowSize } from '@/hooks/hook'
 import { selectEquipBySensorname } from '@/redux/equip/equipSlice'
-import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useLocation, useParams } from 'react-router-dom'
 import logo from "@/assets/image/logo.png";
-import { Instancercv } from '@/api/api'
-import { getToken } from '@/redux/token/userInfoUtil'
-import { phoneSelect, tokenSelect } from '@/redux/token/tokenSlice'
-import { ConfigProvider, DatePicker, Input, Select } from 'antd'
 import { MessageRightTitle } from './MessageRightTitle'
 import { HomeRightTitle } from './HomeRightTitle'
 import { headImgSelect } from '@/redux/premission/premission'

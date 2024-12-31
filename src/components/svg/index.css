@@ -1,0 +1,39 @@
+
+
+.father {
+    position: relative;
+}
+
+.son {
+    position: absolute;
+    width: 100px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.progressSvg {
+    width: 100%;
+    height: 100%;
+}
+
+@keyframes spin {
+    to {
+        stroke-dashoffset: -400;
+    }
+}
+
+.progressSvg rect {
+    fill: none;
+    stroke: blue;
+    stroke-width: 4;
+    /* 	stroke-linecap: round; */
+    stroke-dasharray: 1000 1000;
+    stroke-dashoffset: calc((1 - var(--progress)) * (-400));
+    animation: spin var(--speed) infinite linear;
+    /*   animation-direction: alternate; */
+}
+
+.borderProgress{
+    transform: scale(1.1,1.2);
+}

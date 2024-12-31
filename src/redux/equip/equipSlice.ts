@@ -39,9 +39,6 @@ const equipSlice = createSlice({
     initialState,
     reducers: {
         alarmConfirm(state, action) {
-            // let sosArrRes = [...sosArr]
-            // sosArrRes = sosArrRes.filter((a) => a.sensorName != sensorName)
-            // sosArrOver = sosArrOver.filter((a: any) => a.sensorName != sensorName)
             const alarmArr = [...state.alarmArr]
             state.alarmArr = alarmArr.filter((a) => a.sensorName != action.payload)
         },
@@ -85,6 +82,15 @@ const equipSlice = createSlice({
             state.status = 'idle'
             state.error = null
             state.equipConstant = []
+        },
+        changeEquipInfo(state, action){
+            const equip = JSON.parse(JSON.stringify(state.equips))
+            console.log(equip)
+            const { res, equipPc } = changeOnerEquipInfo({ equips: equip, changeInfo: action.payload })
+
+            state.equips = res
+            state.equipPc = equipPc
+            state.equipConstant = res
         }
     },
     extraReducers(builder) {
@@ -217,7 +223,7 @@ export const fetchEquips = createAsyncThunk('equip/fetchEquips', async (_, { get
     return response.data
 })
 
-export const { initData, changeDisplayEquip, equipLoginOut } = equipSlice.actions
+export const { initData, changeDisplayEquip, equipLoginOut,changeEquipInfo } = equipSlice.actions
 
 
 /**
@@ -282,20 +288,25 @@ export const changePersonalEquipUserInfo = createAsyncThunk('equip/changeUserInf
  */
 interface alarmParam {
     deviceName: string
-    leaveBedAlarm?: number
+   
     strokeAlarm?: number
     sosAlarm?: number
     injuryAlarm?: number
     breathAlarm?: number
+
+
     fallbedAlarm?: number
-    situpAlarm?: number
     fallbedStart?: number
     fallbedEnd?: number
+
+    leaveBedAlarm?: number
     leaveBedStart?: number
     leaveBedEnd?: number
     leaveBedPeriod?: number
+
     situpStart?: number
     situpEnd?: number
+    situpAlarm?: number
 }
 export const changePersonalEquipAlarmInfo = createAsyncThunk('equip/changeAlarmInfo', async (options: alarmParam, { getState }) => {
     const state: any = getState()

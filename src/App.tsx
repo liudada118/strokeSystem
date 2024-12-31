@@ -1,5 +1,4 @@
 import React, { Suspense } from 'react';
-import logo from './logo.svg';
 import './App.css';
 import { HashRouter, Route, Routes } from 'react-router-dom';
 import { Loading } from './components/pageLoading';

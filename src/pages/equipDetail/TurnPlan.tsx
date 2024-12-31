@@ -1,7 +1,7 @@
 import { Button, message } from "antd";
 import { Popup } from 'antd-mobile'
 import CommonTitle from '../../components/CommonTitle';
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useImperativeHandle, useRef, useState } from "react";
 import plan_gray from "../../assets/images/plan_gray.png";
 import plan_blue from "../../assets/images/plan_blue.png";
 import plan_orange from "../../assets/images/plan_orange.png";
@@ -21,40 +21,21 @@ import left from '@/assets/icon/left.png'
 import unRight from '@/assets/icon/unRight.png'
 import unBack from '@/assets/icon/unBack.png'
 import unLeft from '@/assets/icon/unLeft.png'
+import { convertToChinaNum } from "@/utils/math";
 
 enum TurnPlanStatus {
     DONE = '已完成',
     TIME_OUT_DONE = '超时完成',
+    LOADING = '报告生成中',
+    UN_TIME_TO_BE_DOWN = '计划翻身',
     TO_BE_DONE = '待翻身',
     TIME_OUT = '已超时'
 }
 interface TurnPlanList {
     status: TurnPlanStatus;
-    timeStart: string;
-    timeEnd: string;
+    time: string
 }
 
-const turnAroundPlan: TurnPlanList[] = [{
-    status: TurnPlanStatus.DONE,
-    timeStart: '08:00',
-    timeEnd: '10:00'
-}, {
-    status: TurnPlanStatus.TIME_OUT_DONE,
-    timeStart: '10:00',
-    timeEnd: '12:00'
-}, {
-    status: TurnPlanStatus.TIME_OUT,
-    timeStart: '12:00',
-    timeEnd: '14:00'
-}, {
-    status: TurnPlanStatus.TO_BE_DONE,
-    timeStart: '14:00',
-    timeEnd: '16:00'
-}, {
-    status: TurnPlanStatus.TO_BE_DONE,
-    timeStart: '14:00',
-    timeEnd: '16:00'
-}];
 const sleepPose = [{
     value: '左侧卧',
     img: <img src={left} alt='' />,
@@ -101,35 +82,47 @@ const TurnPlan: (props: TurnPlanProps) => React.JSX.Element = (props) => {
             params: {
                 deviceName: sensorName,
                 scheduleTimePeriod: nursePeriod,
-                startTimeMillis: new Date(new Date().toLocaleDateString()).getTime() + nurseStart,
-                endTimeMills: new Date(new Date().toLocaleDateString()).getTime() + nurseEnd
+                startTimeMillis: new Date(new Date().toLocaleDateString()).getTime() + 0,
+                endTimeMills: new Date(new Date().toLocaleDateString()).getTime() + 24 * 60 * 60 * 1000
             },
         }).then((res) => {
-            const nursingSchedule = res.data.nursingSchedule
-            const keysArr = Object.keys(nursingSchedule)
-            const valuesArr = Object.values(nursingSchedule)
             const nurseArr: any = []
-            for (let i = 0; i < keysArr.length; i++) {
-                if (i == keysArr.length - 1) {
-                    const timeStart = new Date(keysArr[i]).getTime()
-                    const timeEnd = new Date(new Date().toLocaleDateString()).getTime() + nurseEnd
-                    nurseArr[i] = {}
-                    nurseArr[i].timeStart = dayjs(timeStart).format('HH:mm')
-                    nurseArr[i].timeEnd = dayjs(timeEnd).format('HH:mm')
-                    nurseArr[i].status = calNurseItemStatus({ timeEnd, timeStart, nurseStatus: Number(valuesArr[i]) })
+            const flipbodyData = res.data.flipbodyData
+            const nurseTotal = 12//res.data.flipbodyCount
+            const flipbodyLen = Object.keys(flipbodyData).length
+            for (let i = 0; i < nurseTotal; i++) {
+                nurseArr[i] = {}
+                if (flipbodyLen && flipbodyData[i]) {
+                    nurseArr[i].status = calNurseItemStatus(flipbodyData[i].status)
+                    nurseArr[i].time = flipbodyData[i].timeMillis
+                    nurseArr[i].logid = flipbodyData[i].logid
                 } else {
-                    const timeStart = new Date(keysArr[i]).getTime()
-                    const timeEnd = new Date(keysArr[i + 1]).getTime()
-                    nurseArr[i] = {}
-                    nurseArr[i].timeStart = dayjs(timeStart).format('HH:mm')
-                    nurseArr[i].timeEnd = dayjs(timeEnd).format('HH:mm')
-                    nurseArr[i].status = calNurseItemStatus({ timeEnd, timeStart, nurseStatus: Number(valuesArr[i]) })
+                    if (flipbodyLen == i) {
+                        nurseArr[i].status = calNurseItemStatus(0)
+                    } else {
+                        nurseArr[i].status = calNurseItemStatus(4)
+                    }
                 }
+
             }
             setTurnAroundPlan(nurseArr)
+
+
+
         }).catch((err) => {
             message.error('服务器错误')
         });;
+    }
+
+    function findLoadingReport(nurseArr: any) {
+        const loadingReportArr = nurseArr.filter((item: any) => item.status == TurnPlanStatus.LOADING)
+        const loadingStampArr = loadingReportArr.map((item: any) => item.timeMillis)
+        if (loadingStampArr.length) {
+            const maxStamp = Math.max(loadingStampArr)
+            setTimeout(() => {
+                getNurse()
+            }, maxStamp + 120 * 1000 - new Date().getTime());
+        }
     }
 
     interface calNurseStatusParam {
@@ -138,17 +131,18 @@ const TurnPlan: (props: TurnPlanProps) => React.JSX.Element = (props) => {
         nurseStatus: number
     }
 
-    const calNurseItemStatus = ({ timeEnd, timeStart, nurseStatus }: calNurseStatusParam) => {
-        if (new Date().getTime() < timeStart) {
-            return TurnPlanStatus.TO_BE_DONE
-        } else if (new Date().getTime() > timeEnd) {
-            if (nurseStatus == 1) {
-                return TurnPlanStatus.DONE
-            } else {
-                return TurnPlanStatus.TIME_OUT
-            }
-        } else {
-            return TurnPlanStatus.TO_BE_DONE
+    const calNurseItemStatus = (nurseStatus: number) => {
+        switch (nurseStatus) {
+            case 1:
+                return TurnPlanStatus.DONE;
+            case 2:
+                return TurnPlanStatus.LOADING;
+            case 3:
+                return TurnPlanStatus.TIME_OUT_DONE;
+            case 4:
+                return TurnPlanStatus.UN_TIME_TO_BE_DOWN;
+            default:
+                return TurnPlanStatus.TO_BE_DONE;
         }
     }
 
@@ -159,24 +153,16 @@ const TurnPlan: (props: TurnPlanProps) => React.JSX.Element = (props) => {
     const current = dayjs().format('HH:mm').split(':')
 
     // 未激活的计划状态判断
-    const inactivePlan = (starTime: string) => {
-        const min = starTime.split(':')
-
-        if (parseInt(min[0]) > parseInt(current[0])) {
-            return true
-        } else return parseInt(min[0]) === parseInt(current[0]) && parseInt(min[1]) > parseInt(current[1]);
-
+    const inactivePlan = (status: string) => {
+        return status == TurnPlanStatus.UN_TIME_TO_BE_DOWN
     }
 
-    const isTimeOut = (endTIme: string) => {
-        const max = endTIme.split(':')
-        if (parseInt(max[0]) < parseInt(current[0])) {
-            return true
-        } else return parseInt(max[0]) === parseInt(current[0]) && parseInt(max[1]) < parseInt(current[1]);
+    const isTimeOut = (status: string) => {
+        return status == TurnPlanStatus.TO_BE_DONE
     }
 
     const renderImagIcon = (data: any) => {
-        if (inactivePlan(data.timeStart)) return plan_gray
+        if (inactivePlan(data.status)) return plan_gray
         return [TurnPlanStatus.DONE, TurnPlanStatus.TO_BE_DONE].includes(data.status) ? plan_blue : plan_orange
     }
 
@@ -192,36 +178,48 @@ const TurnPlan: (props: TurnPlanProps) => React.JSX.Element = (props) => {
         setChoosedSleep(value)
     }
 
+    // const changeLoadButtonToDownButton
+
     const renderButton = (data: any) => {
-        const inactive = inactivePlan(data.timeStart);
+        const inactive = inactivePlan(data.status);
         return [TurnPlanStatus.DONE, TurnPlanStatus.TIME_OUT_DONE].includes(data.status) ? (
-            <Button variant="filled"
-                onClick={() => isMobile && navigate('/report')}
-                className='w-[6rem] h-[2.4rem] text-sm bg-[#ECF0F4] border-none text-[#3E444C] font-medium'>查看报告</Button>
-        ) :
+            <div className="relative" >
+                <Button variant="filled"
+                    onClick={() => isMobile && navigate('/turnReport', { state: { logid: data.logid } })}
+                    className='w-[6rem] h-[2.4rem] text-sm bg-[#ECF0F4] border-none text-[#3E444C] font-medium'>查看报告</Button>
+
+            </div>
+        ) : data.status == TurnPlanStatus.LOADING ?
+            <div className="relative" onClick={() => { message.info('报告正在生成中，请稍后查看') }}>
+                <Button variant="solid"
+                    className={`w-[6rem] h-[2.4rem] text-sm bg-[#ECF0F4] border-none text-[#3E444C] font-medium`}
+                    disabled={inactive}>查看报告</Button>
+                <BorderProgress getNurse={getNurse} height={4} startPosition={(data.time)} timeTotal={150} />
+            </div>
+            :
             <Button color="primary" variant="solid"
                 onClick={() => handleRecord()}
-                className={`w-[6rem] h-[2.4rem] text-sm ${inactive ? '!bg-[#ECF0F4] !text-[#C2CDD6]' : ''} ${isTimeOut(data.timeEnd) ? 'bg-[#EC6E38]' : ''} border-none`}
+                className={`w-[6rem] h-[2.4rem] text-sm ${inactive ? '!bg-[#ECF0F4] !text-[#C2CDD6]' : ''} ${isTimeOut(data.status) ? 'bg-[#EC6E38]' : ''} border-none`}
                 disabled={inactive}>去记录</Button>
     }
 
     return (
         <div className='bg-[#fff] w-full md:w-[94%] md:rounded-[10px] md:my-[10px] md:mx-auto border-b border-b-[#ECF0F4] md:border-0 pt-[25px] pl-[25px] md:pt-[1rem] md:pl-[1rem] pb-[10px]'>
-            <NurseProcesst isModalOpenSend={recordModal} setIsModalOpenSend={setRecordModal} />
+            <NurseProcesst isModalOpenSend={recordModal} setIsModalOpenSend={setRecordModal} getNurse={getNurse} />
             <CommonTitle name='翻身计划' type={isMobile ? 'rect' : 'square'} />
             <div className='w-full'>
                 {turnAroundPlan.map((item, index) => (
-                    <div key={index} className={`flex items-center w-full ${inactivePlan(item.timeStart) ? 'disabledPlan' : ''}`}>
+                    <div key={index} className={`flex items-center w-full ${inactivePlan(item.status) ? 'disabledPlan' : ''}`}>
                         <img src={renderImagIcon(item)}
                             alt="" className='w-xl h-xl mr-[10px]' />
                         <div
                             className={`flex items-center justify-between w-[93%] ${index !== (turnAroundPlan.length - 1) && 'border-b border-b-[#DCE3E9]'} p-[10px]`}>
                             <div className='flex flex-col planText'>
                                 <span
-                                    className='text-base font-medium'>{`${item.timeStart} - ${item.timeEnd}`}</span>
+                                    className='text-base font-medium'>{`第${convertToChinaNum(index + 1)}次`}</span>
                                 <span
                                     className={`text-sm ${[TurnPlanStatus.TIME_OUT, TurnPlanStatus.TIME_OUT_DONE].includes(item.status) ? 'text-[#EC6E38]' : 'text-[#3E444C]'}`}
-                                >{item.status}</span>
+                                >{`${item.status} ${dayjs(item.time).format('HH:mm')}`}</span>
                             </div>
                             {renderButton(item)}
                         </div>
@@ -235,3 +233,45 @@ const TurnPlan: (props: TurnPlanProps) => React.JSX.Element = (props) => {
 }
 
 export default TurnPlan
+
+
+interface borderProgressParam {
+    height: number
+    startPosition: number
+    timeTotal: number
+    getNurse: Function
+}
+
+const BorderProgress = (props: borderProgressParam) => {
+    const { height, startPosition, timeTotal, getNurse } = props
+    console.log(new Date().getTime() - startPosition)
+    console.log((startPosition + timeTotal * 1000 - new Date().getTime()) / (timeTotal * 1000) * 100)
+    const newPosition = (startPosition + timeTotal * 1000 - new Date().getTime()) / (timeTotal * 1000) * 100
+    const time = (newPosition) / 100 * timeTotal
+    const progressRef = useRef<any>()
+
+    useEffect(() => {
+        let timeout: any
+        let timeRenderButton: any
+        if (time) {
+            timeout = setTimeout(() => {
+                if (progressRef.current) progressRef.current.style.transform = `translateX(${0}%)`
+            }, 10);
+            timeRenderButton = setTimeout(() => {
+                // 为什么请求一下接口  而不直接修改button状态 因为button状态可能是完成或者超时完成
+                getNurse()
+            }, time * 1000);
+        }
+        return () => {
+            clearTimeout(timeout)
+            clearTimeout(timeRenderButton)
+        }
+    }, [time])
+
+    return (
+        <div className="buttonProgress absolute bottom-0 w-full h-full rounded-[6px] overflow-hidden">
+            <div className={`absolute bottom-0 w-full h-[4px] bg-[#DCE3E9]`}></div>
+            <div ref={progressRef} className={`absolute bottom-0 w-full h-[4px] bg-[#0072EF]`} style={{ transform: `translateX(${-newPosition}%)`, transition: `transform ${time}s ease-in-out` }}></div>
+        </div>
+    )
+}

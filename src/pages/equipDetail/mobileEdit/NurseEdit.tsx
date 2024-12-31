@@ -210,7 +210,7 @@ export function NurseEdit() {
     }, [])
 
     return (
-        <>
+        <div className='w-[92%] m-auto'>
             <Popup
                 visible={visible1}
                 onMaskClick={() => {
@@ -277,12 +277,12 @@ export function NurseEdit() {
                 添加护理项
                 <img src={nurseAdd} className='w-[1rem] ml-[5px]' alt="" />
             </div>
-            <div className='pt-[20px] w-[92%] m-auto'>
+            <div className='pt-[20px] w-[full] m-auto'>
                 <PreViewConfig display={false} nurseConfig={nurseConfig} setNurseConfig={setNurseConfig} /></div>
             <div onClick={() => { saveNurseConfigToCloud() }} className="w-full m-auto mt-[15px] py-[16px] bg-[#0072EF] flex items-center justify-center text-[#fff] text-base rounded-[10px]">
                 保存护理项
             </div>
-        </>
+        </div>
     )
 }
 

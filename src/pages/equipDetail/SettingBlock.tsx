@@ -67,7 +67,7 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (props) =>
         situpStart, situpEnd, situpAlarm,
         type, deviceId,
         leavebedParam,
-
+        
     } = userInfo
     // const [switchA, setSwitchA] = useState<boolean>(valueToAlarmFlag(injuryAlarm))
     // const [switchB, setSwitchB] = useState<boolean>(valueToAlarmFlag(leaveBedAlarm))
@@ -121,7 +121,6 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (props) =>
                 }
 
             }
-
             const realObj: any = { ...userInfo }
             if (start) realObj[obj[realKey].start] = start
             if (end) realObj[obj[realKey].end] = end

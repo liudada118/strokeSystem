@@ -275,12 +275,12 @@ export const personalOtherInfoObj: any = {
     pushReport: {
         img: mobilePush,
         title: '推送日报设置',
-        component : <DayReportEdit />
+        component: <DayReportEdit />
     },
     equipType: {
         img: mobileEquiptype,
         title: '设备类型设置',
-        component : <EquipTypeEdit />
+        component: <EquipTypeEdit />
     }
 }
 
@@ -314,9 +314,18 @@ const PersonalContentInfo = (props: personalInfoParam) => {
     )
 }
 
-const timeIntervalColumns = [['半小时', '一小时', '一个半小时'].map(item => ({
-    label: item,
-    value: item
+const hourArr = [0.5, 1, 1.5, 2]
+
+const timeIntervalColumns = [hourArr.map(item => ({
+    label: `${item}小时`,
+    value: `${item * 60}min`
+}))]
+
+const secondArr = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+
+const secodnRateColumns = [secondArr.map(item => ({
+    label: `${item}次`,
+    value: `${item}次`
 }))]
 
 interface renderListParam {
@@ -327,9 +336,10 @@ interface renderListParam {
     formValue: any
     setFormValue: Function
     setPickerInfo: Function
+    // submitCloud : Function
 }
 
-export const RenderListItem = ({ type, objKey: key, label, title = '', formValue, setFormValue, setPickerInfo }: renderListParam) => {
+export const RenderListItem = ({ type, objKey: key, label, title = '', formValue, setFormValue, setPickerInfo, }: renderListParam) => {
 
     const createTimeNumber: (val: number) => { label: string; value: string }[] = (number) => {
         return new Array(number).fill(0).map((item, index) => {
@@ -359,7 +369,16 @@ export const RenderListItem = ({ type, objKey: key, label, title = '', formValue
                 visible: true,
                 key
             })
-        } else {
+        } else if (type === FormType.SECONDRATE) {
+            setPickerInfo({
+                title,
+                columns: secodnRateColumns,
+                visible: true,
+                key
+            })
+        }
+
+        else {
             setPickerInfo({
                 title,
                 columns: timeIntervalColumns,
@@ -379,6 +398,7 @@ export const RenderListItem = ({ type, objKey: key, label, title = '', formValue
                     {label}
                 </List.Item>
             )
+        case FormType.SECONDRATE:
         case FormType.TIME_RANGE:
         case FormType.TIME_INTERVAL:
             return (

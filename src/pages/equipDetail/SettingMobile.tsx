@@ -50,10 +50,6 @@ function Card(props: cardParam) {
 
 
 export default function SettingMobile() {
-
-
-
-
     return (
         <div className='pb-[15px]'>
             <Card title='提醒设置' img={mobileRemind} type='remind' />

@@ -60,7 +60,7 @@ const EquipDetail = () => {
                     <NoEquipLoading> <UserInfoCard outer isMobile />
                         <Tabs
                             className={[styles.mobileTabContent, styles.tabContent].join(' ')}
-                            defaultActiveKey="nurse"
+                            defaultActiveKey="monitor"
                             centered
                             items={tabList}
                         />
@@ -85,7 +85,7 @@ const EquipDetail = () => {
                     <div className='w-[calc(76%-30px)] h-full'>
                         <Tabs
                             className={styles.tabContent}
-                            defaultActiveKey="nurse"
+                            defaultActiveKey="monitor"
                             centered
                             items={tabList}
                         />

@@ -105,33 +105,33 @@ function NurseCharts(props: nurseChartsProps) {
 
         }
         let dataIndex = 0
-        data.forEach((a: any, index: any) => {
-            const data = a.careContent.split('|')
+        // data.forEach((a: any, index: any) => {
+        //     const data = a.careContent.split('|')
 
-            const nurseData = a.careData.split('|')
-            const normalArr = data.filter((a: any) => {
-                return a.includes('normalArr')
-            })
-            console.log(normalArr[0])
-            if (includesObj({ str: normalArr[0].split('+')[1], arr: ["a1a", "b1b", "c1c", "d1d",] }) && isJSON(strToObj(normalArr[0].split('+')[1]))) {
-                const normalArrRes = JSON.parse(strToObj(normalArr[0].split('+')[1]))
-                if (dataIndex == 0) {
-                    normalArrRes.forEach((a: any) => {
-                        chartsData[a.title] = a.value
-                    })
-                } else {
-                    if (normalArrRes.length > 0 && Object.keys(chartsData).length > 0) {
-                        normalArrRes.forEach((a: any) => {
-                            chartsData[a.title] += a.value
-                        })
-                    }
-                }
-                console.log(chartsData, 'chartsData')
-                dataIndex++
-            }
+        //     const nurseData = a.careData.split('|')
+        //     const normalArr = data.filter((a: any) => {
+        //         return a.includes('normalArr')
+        //     })
+        //     console.log(normalArr[0])
+        //     if (includesObj({ str: normalArr[0].split('+')[1], arr: ["a1a", "b1b", "c1c", "d1d",] }) && isJSON(strToObj(normalArr[0].split('+')[1]))) {
+        //         const normalArrRes = JSON.parse(strToObj(normalArr[0].split('+')[1]))
+        //         if (dataIndex == 0) {
+        //             normalArrRes.forEach((a: any) => {
+        //                 chartsData[a.title] = a.value
+        //             })
+        //         } else {
+        //             if (normalArrRes.length > 0 && Object.keys(chartsData).length > 0) {
+        //                 normalArrRes.forEach((a: any) => {
+        //                     chartsData[a.title] += a.value
+        //                 })
+        //             }
+        //         }
+        //         console.log(chartsData, 'chartsData')
+        //         dataIndex++
+        //     }
 
 
-        })
+        // })
         const nurseTotal = Object.values(chartsData).reduce((a: any, b: any) => a + b, 0)
         setNurseTotal(nurseTotal)
         setProjectNurseTotal(Object.keys(chartsData).length)

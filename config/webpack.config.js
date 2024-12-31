@@ -1,7 +1,8 @@
 'use strict';
 
 // const serverPath = 'weixin/nurse/'
-const serverPath = 'test/'
+const serverPath = 'testNew/'
+// const serverPath = ''
 
 const fs = require('fs');
 const path = require('path');

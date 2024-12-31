@@ -97,10 +97,22 @@ export const equipInfoFormatUtil = {
             const endHourStr = secToHourstamp(endStamp / 1000)
             return endHourStr
         }
+    },
+
+    switchValueToboolean(value: number) {
+        return value == 1 ? true : false
     }
 }
 
-export const minToHourText = (num : number) => {
+export const minToHourText = (num: number) => {
     return `${num / 60}小时`
-} 
+}
 
+export const posNumToposText = (num: number) => {
+    const data: any = {
+        0: 'center',
+        1: 'left',
+        2: 'right'
+    }
+    return data[num]
+}

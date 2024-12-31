@@ -2,23 +2,33 @@ import { List, Picker } from "antd-mobile"
 import { useState } from "react"
 import { RenderListItem } from "../EditingUser"
 import { FormType } from "@/components/CommonFormModal"
+import { useSelector } from "react-redux"
+import { selectEquipBySensorname } from "@/redux/equip/equipSlice"
+import { useLocation, useParams } from "react-router-dom"
+import { Instancercv } from "@/api/api"
+import { tokenSelect } from "@/redux/token/tokenSlice"
+import { message } from "antd"
 
 /**
  * 
  * @returns 翻身设置
  */
 export function TurnEdit() {
+
+    // const param = useParams()
+    const location = useLocation()
+    // const 
+
+    const sensorName = location.state.sensorName
+    const token = useSelector(tokenSelect)
+    const equipInfo = useSelector((state) => selectEquipBySensorname(state, sensorName))
+
+    console.log(equipInfo)
+
     const [formValue, setFormValue] = useState({
-        timeRangeA: '12:10 - 10:10',
+        timeRangeA: '6次',
         timeIntervalA: '30min',
-        timeRangeB: '12:10 - 10:10',
-        timeIntervalB: '30min',
-        timeRangeC: '12:10 - 10:10',
-        timeRangeD: '12:10 - 10:10',
         switchA: true,
-        switchB: true,
-        switchC: false,
-        switchD: false,
     })
 
     const [pickerInfo, setPickerInfo] = useState<any>({
@@ -29,15 +39,63 @@ export function TurnEdit() {
         value: ''
     })
 
+    const turnArr = [
+        {
+            type: FormType.SWITCH,
+            objKey: "switchA",
+            label: '翻身设置'
+        },
+        {
+            type: FormType.SECONDRATE,
+            objKey: "timeRangeA",
+            label: '翻身次数',
+            title: '设置翻身次数'
+        },
+        {
+            type: FormType.TIME_INTERVAL,
+            objKey: "timeIntervalA",
+            label: '翻身间隔',
+            title: '设置翻身间隔'
+        },
+    ]
+
+    const submitCloud = (newValue: any) => {
+        setFormValue(newValue)
+        console.log(newValue)
+        const obj = {
+            flipbodyCount : parseInt(newValue.timeRangeA),
+            flipbodyTime : parseInt(newValue.timeIntervalA)
+        }
+        Instancercv({
+            method: "post",
+            url: "/nursing/updateFlipConfig",
+            headers: {
+                "content-type": "application/json",
+                "token": token
+            },
+            params: {
+                deviceId: sensorName,
+                flipbodyConfig: JSON.stringify(obj),
+            },
+        }).then((res) => {
+            // message.success('修改成功')
+        }).catch((err) => {
+            message.error('修改失败')
+        })
+
+    }
+
+
     return (
         <>
             <List className="w-[92%] mx-auto mt-[10px] rounded-[10px] overflow-hidden">
-                {/* {renderListItem(FormType.TIME_RANGE, 'timeRangeA', '设置时间段', '设置时间段')}
-            {renderListItem(FormType.TIME_INTERVAL, 'timeIntervalA', '翻身间隔', '设置翻身间隔')} */}
-                <RenderListItem type={FormType.SWITCH} objKey="switchA" label="翻身设置" formValue={formValue} setFormValue={setFormValue} setPickerInfo={setPickerInfo} />
-                <RenderListItem type={FormType.TIME_RANGE} objKey="timeRangeB" label="监测时间段" title="设置监测时间段" formValue={formValue} setFormValue={setFormValue} setPickerInfo={setPickerInfo} />
-                <RenderListItem type={FormType.TIME_INTERVAL} objKey="timeIntervalB" label="提醒时间" title="设置提醒时间" formValue={formValue} setFormValue={setFormValue} setPickerInfo={setPickerInfo} />
-
+                {
+                    turnArr.map((offBedItem) => {
+                        return (
+                            <RenderListItem type={offBedItem.type} objKey={offBedItem.objKey} label={offBedItem.label} title={offBedItem.title} formValue={formValue} setFormValue={submitCloud} setPickerInfo={setPickerInfo} />
+                        )
+                    })
+                }
             </List>
             <Picker
                 columns={pickerInfo.columns}
@@ -55,7 +113,7 @@ export function TurnEdit() {
                 value={pickerInfo.value}
                 onConfirm={v => {
                     const result = v.length > 1 ? `${v[0]}:${v[1]} - ${v[2]}:${v[3]}` : v[0]
-                    setFormValue({
+                    submitCloud({
                         ...formValue,
                         [pickerInfo.key]: result
                     })

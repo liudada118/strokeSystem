@@ -659,7 +659,7 @@ const Heatmap = React.forwardRef((props: any, refs) => {
             window.removeEventListener('resize', () => { })
         }
 
-    }, []);
+    }, [props.sensorName]);
     const [fontSize , setFontSize] = useState(1)
     return (
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', backgroundColor: '#000', position: 'relative' }}>

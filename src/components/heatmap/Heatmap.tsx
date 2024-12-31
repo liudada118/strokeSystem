@@ -48,6 +48,7 @@ interface circleInterface {
 const Heatmap = React.forwardRef((props: any, refs) => {
 
     const bedMax = (props.sensorName == 'KgvDXUvdEs9M9AEQDcVc') ? 9000 : 14000
+    // const bedMax = 14000
     const [fontSize, setFontSize] = useState(1)
 
 
@@ -701,7 +702,7 @@ const Heatmap = React.forwardRef((props: any, refs) => {
         return () => {
             window.removeEventListener('resize', () => { })
         }
-    }, []);
+    }, [props.sensorName]);
 
     return (
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', backgroundColor: '#000',height : props.height ? '100%' : 'unset' , width : props.width ? props.width : 'unset' }}>

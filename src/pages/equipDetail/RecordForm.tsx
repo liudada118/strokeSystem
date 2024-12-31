@@ -95,6 +95,7 @@ const RecordForm: React.FC = () => {
             },
         }).then((res) => {
             message.success('添加成功')
+            navigate(-1)
         })
     }
 

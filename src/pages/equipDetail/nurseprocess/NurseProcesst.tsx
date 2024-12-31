@@ -45,6 +45,7 @@ import { turnbodyFlagSelect } from '@/redux/premission/premission'
 interface nurseProcessProps {
   isModalOpenSend: boolean
   setIsModalOpenSend: Function
+  getNurse: Function
 }
 
 const nurseNoticeList = [
@@ -77,7 +78,7 @@ let startPosture: any
 
 export default function NurseProcesst(props: nurseProcessProps) {
 
-  const { isModalOpenSend, setIsModalOpenSend } = props
+  const { isModalOpenSend, setIsModalOpenSend, getNurse } = props
 
   const param = useParams()
   const sensorName = param.id || ''
@@ -85,7 +86,7 @@ export default function NurseProcesst(props: nurseProcessProps) {
   const token = useSelector(tokenSelect)
   const equipInfo = useSelector(state => selectEquipBySensorname(state, sensorName))
   let navigate = useNavigate()
-  console.log(equipInfo)
+  // console.log(equipInfo)
   const { type, roomNum, nurseStart, nurseEnd, nursePeriod, } = equipInfo
 
   const [index, setIndex] = useState(1)
@@ -310,6 +311,7 @@ export default function NurseProcesst(props: nurseProcessProps) {
     }).then((res) => {
       message.success('护理成功')
       initNurseData()
+      getNurse()
     });
   }
 
@@ -435,11 +437,11 @@ interface oneClickCareParam {
   setIsModalOpenSend: Function
   setSleepType: Function
   sleepTypenur: number
-  submitReport : Function
+  submitReport: Function
 }
 const OneClickCare = (props: oneClickCareParam) => {
 
-  const { isModalOpenSend, setIsModalOpenSend, setSleepType, sleepTypenur,submitReport } = props
+  const { isModalOpenSend, setIsModalOpenSend, setSleepType, sleepTypenur, submitReport } = props
 
   const sleepPose = [{
     value: '左侧卧',

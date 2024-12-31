@@ -22,12 +22,10 @@ import set from '../../assets/icon/set.svg'
 import onSet from '../../assets/icon/onSet.svg'
 
 import { Input, Modal, Radio, message, Select } from 'antd';
-import axios from 'axios';
 
 import { useGetWindowSize } from '../../hooks/hook';
 import show from './ScanCode/utils/show';
-import { instance, Instancercv, netRepUrl, netUrl } from '@/api/api';
-import { compressionFile } from '@/utils/imgCompressUtil';
+import { instance, Instancercv, netRepUrl } from '@/api/api';
 import ImgUpload from '../imgUpload/ImgUpload';
 import { useDispatch, useSelector } from 'react-redux';
 import { headImgSelect } from '@/redux/premission/premission';
@@ -482,46 +480,7 @@ const Bottom = forwardRef((props: bottomProps, refs: any) => {
     <div className="bottomContent">
       <Modal title="为新设备添加信息" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
         <div style={{ display: 'flex', alignItems: 'center' }} className='deviceItem'><div style={{ width: '4rem', }}> 头像:</div>
-          {/* <div className="imgContent"> <div className="img" style={{
-            background: `url(${userinfo.img ? userinfo.img : nullImg
-              })  center center / cover no-repeat`,
-          }}></div>
-
-            <input type="file" name="img" style={{ opacity: 0, position: 'absolute', width: '100%', height: '100%', left: 0 }} id="img" onChange={(e) => {
-              setSpinning(true);
-              if (e.target.files) {
-                setImgFile(e.target.files[0])
-                let res = compressionFile(e.target.files[0])
-                res.then((e) => {
-                  const token = localStorage.getItem('token')
-                  axios({
-                    method: "post",
-                    url: netUrl + "/file/fileUpload",
-                    headers: {
-                      "content-type": "multipart/form-data",
-                      "token": token
-                    },
-                    data: {
-                      file: e,
-                    }
-                  }).then((res) => {
-
-                    setSpinning(false);
-                    message.success('上传成功')
-                    const value = { ...userinfo }
-                    setUserInfo({
-                      ...value,
-                      img: res.data.data.src
-                    })
-                  });
-                })
-
-              }
-            }} />
-          </div> */}
-
           <ImgUpload img={userinfo.img} finish={loadImg} />
-
         </div>
 
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }} className='deviceItem'>

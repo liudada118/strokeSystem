@@ -16,20 +16,9 @@ import sitHeart from '../../assets/image/sitHeart.png'
 import sitRate from '../../assets/image/sitRate.png'
 import newHeart from '../../assets/image/newHeart.png'
 import newRate from '../../assets/image/newRate.png'
-
-import { phoneSelect, tokenSelect } from '@/redux/token/tokenSlice'
-// import { alarmStampToTime } from './util'
 import { nurseInfoClass, OnBedState, onBedState, onBedStateText, onBedStateTime, stateToObj } from './TimeState'
 import { useNavigate } from 'react-router-dom'
-import { mqttSelect } from '@/redux/mqtt/mqttSlice'
 import { equip } from '.'
-// import { ALARMTYPE } from '@/redux/equip/equipUtil'
-
-const content = (
-    <div>
-        <p>点击将卡片置顶</p>
-    </div>
-);
 
 
 
@@ -46,7 +35,6 @@ export default function Equip() {
     return (
         <div className="main">
             {!isMobile ? <Carousel
-                // autoplay 
                 autoplaySpeed={6000} >
                 {equipPc.length ? equipPc.map((equips: Array<equip>, indexs: any) => {
                     return <div className="equipsContent" key={indexs}>

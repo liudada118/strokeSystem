@@ -220,14 +220,16 @@ export default forwardRef((props: any, refs: any) => {
 
 
   useEffect(() => {
-    mqtt.on('message', ((topic: any, payload: any) => {
-      const jsonObj = JSON.parse(payload);
-      if (sensorName === jsonObj.deviceName) {
-        if (mqttEvent[jsonObj.type]) mqttEvent[jsonObj.type]({ jsonObj, sensorName })
-      }
+    if (mqtt) {
+      mqtt.on('message', ((topic: any, payload: any) => {
+        const jsonObj = JSON.parse(payload);
+        if (sensorName === jsonObj.deviceName) {
+          if (mqttEvent[jsonObj.type]) mqttEvent[jsonObj.type]({ jsonObj, sensorName })
+        }
 
-    }));
-  }, [])
+      }));
+    }
+  }, [mqtt])
 
   useEffect(() => {
     if (typeof props.select == 'number') {
@@ -257,7 +259,7 @@ export default forwardRef((props: any, refs: any) => {
 
 
           <div className="heatmapInfo md:mb-[0.8rem] md:mt-[10px]">
-            <Card title='全天压力分布图' margin>
+            <Card title='实时压力分布图' margin>
               <div className="heatmapLeft px-[1.9rem] " style={{ position: 'relative', padding: props.sensorName == 'iJ3X0JSttyoiRPafpIka' ? '2.5rem 0' : '' }}>
                 {/* <div className="heatmapText">床号:{equipInfo.roomNum}</div> */}
                 <div className="heatmapColor">
@@ -287,21 +289,21 @@ export default forwardRef((props: any, refs: any) => {
             <Card unheight title={'在床体征'}>
               <div className="flex mx-[0.5rem] items-center">
                 <div className="flex-1">
-                  <div className="text-[0.8rem] text-[#929EAB]">心率</div>
-                  <div className="">{!equipInfo.onBed || valueArr.rate == 0 ? '--' : valueArr.rate == 88 || valueArr.rate == -1 ? <Spin /> : <div className="text-[1rem] text-[#000]">{valueArr.heart} <span className="text-[0.6rem] text-[#929EAB]">bmp</span></div>} </div>
+                  <div className="text-[0.8rem] font-medium text-[#929EAB]">心率</div>
+                  <div className="">{!equipInfo.onBed || valueArr.rate == 0 ? '--' : valueArr.rate == 88 || valueArr.rate == -1 ? <Spin /> : <div className="text-[1rem]  text-[#000]"><span className="font-semibold">{valueArr.heart}</span>  <span className="text-[0.6rem] text-[#929EAB]">bmp</span></div>} </div>
                 </div>
                 <div className="w-[1px] h-[1rem] bg-[#D8D8D8]"></div>
                 <div className="flex-1 flex flex-col items-center">
                   <div className="">
-                    <div className="text-[0.8rem] text-[#929EAB]">呼吸</div>
-                    <div className=""> {!equipInfo.onBed || valueArr.rate == 0 ? '--' : valueArr.rate == 88 || valueArr.rate == -1 ? <Spin /> : <div className="text-[1rem] text-[#000]">{valueArr.rate}<span className="text-[0.6rem] text-[#929EAB]">次/分</span></div>}</div>
+                    <div className="text-[0.8rem] font-medium text-[#929EAB]">呼吸</div>
+                    <div className=""> {!equipInfo.onBed || valueArr.rate == 0 ? '--' : valueArr.rate == 88 || valueArr.rate == -1 ? <Spin /> : <div className="text-[1rem] text-[#000]"><span className="font-semibold">{valueArr.rate}</span> <span className="text-[0.6rem] text-[#929EAB]">次/分</span></div>}</div>
                   </div>
                 </div>
                 <div className="w-[1px] h-[1rem] bg-[#D8D8D8]"></div>
                 <div className="flex-1 flex flex-col items-end">
                   <div className="">
-                    <div className="text-[0.8rem] text-[#929EAB]">本次在床</div>
-                    <div className="text-[1rem] text-[#000]">{numToHour(valueArr.onBedTime)}<span className="text-[0.6rem] text-[#929EAB]">小时</span></div>
+                    <div className="text-[0.8rem] font-medium text-[#929EAB]">本次在床</div>
+                    <div className="text-[1rem]  text-[#000]"><span className="font-semibold"> {numToHour(valueArr.onBedTime)}</span> <span className="text-[0.6rem] text-[#929EAB]">小时</span></div>
                   </div>
                 </div>
               </div>

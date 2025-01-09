@@ -1,19 +1,18 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
 import MenuLayouts from "../../layouts/MenuLayouts";
 import styles from './message.module.scss'
 import UserInfoCard from "./UserInfoCard";
 import Monitor from "./Monitor/Monitor";
+import back from '@/assets/image/return.png'
 import Nurse from './Nurse'
 import Reporter from './Reporter'
 import { Tabs, ConfigProvider } from 'antd'
 import zh_CN from 'antd/es/locale/zh_CN';
 import useWindowSize from "../../hooks/useWindowSize";
-import CommonNavBar from "../../components/CommonNavBar";
-import { useSelector } from "react-redux";
-import { statusSelect } from "@/redux/equip/equipSlice";
-import { Loading } from "@/components/pageLoading";
 import { NoEquipLoading } from "@/components/noEquipLoading/NoEquipLoading";
 import Title from "@/components/title/Title";
+import { useNavigate, useParams } from "react-router-dom";
+
 
 
 const TabTheme = {
@@ -28,6 +27,26 @@ const TabTheme = {
 
 const EquipDetail = () => {
 
+
+
+    // const typeToActiveKey:any = {
+    //     '0': 'monitor',
+    //     '1': 'nurse',
+    //     '2': 'reporter'
+    // }
+
+    // const activeKeyTotype = {
+    //     monitor : 0,
+    //     nurse : 1,
+    //     reporter : 2
+    // }
+    const activeKeyArr: any = ['monitor', 'nurse', 'reporter']
+
+    const param = useParams()
+    const { type, id } = param
+    const navigate = useNavigate()
+
+    const [activeKey, setActiveKey] = useState(activeKeyArr[(type || 0)])
 
 
     const { isMobile } = useWindowSize()
@@ -58,17 +77,38 @@ const EquipDetail = () => {
                     {/* <CommonNavBar title='801' onBack={() => { }} /> */}
                     <Title />
                     <NoEquipLoading> <UserInfoCard outer isMobile />
-                        <Tabs
-                            className={[styles.mobileTabContent, styles.tabContent].join(' ')}
-                            defaultActiveKey="monitor"
-                            centered
-                            items={tabList}
-                        />
+                        <div className="relative">
+                            <Tabs
+                                className={[styles.mobileTabContent, styles.tabContent].join(' ')}
+                                defaultActiveKey={activeKey}
+                                centered
+                                items={tabList}
+                                onChange={(e) => {
+                                    console.log(e, 'native')
+                                    navigate(`/report/${activeKeyArr.indexOf(e)}/${id}`)
+                                }}
+                            />
+                            {/* <img src={back} alt="" /> */}
+                        </div>
+                        {/* <TabsMobile>
+                            {
+                                tabList.map((item) => {
+                                    return (
+                                        <TabsMobile.Tab title='蔬菜' key={item.key}>
+                                            {
+                                                item.children
+                                            }
+                                        </TabsMobile.Tab>
+                                    )
+                                })
+                            }
+                        </TabsMobile> */}
                     </NoEquipLoading>
                 </ConfigProvider>
             </MenuLayouts>
         )
     }
+
 
 
     return (
@@ -85,9 +125,13 @@ const EquipDetail = () => {
                     <div className='w-[calc(76%-30px)] h-full'>
                         <Tabs
                             className={styles.tabContent}
-                            defaultActiveKey="monitor"
+                            defaultActiveKey={activeKey}
                             centered
                             items={tabList}
+                            onChange={(e) => {
+                                console.log(e, 'native')
+                                navigate(`/report/${activeKeyArr.indexOf(e)}/${id}`)
+                            }}
                         />
                     </div>
                 </div>
@@ -96,4 +140,4 @@ const EquipDetail = () => {
     )
 }
 
-export default EquipDetail
+export default EquipDetail  

@@ -129,7 +129,7 @@ const UserInfoCard: (props: UserInfoCardProps) => React.JSX.Element = (props) =>
         leaveBedStart, leaveBedEnd, leaveBedPeriod, leaveBedAlarm,
         situpStart, situpEnd, situpAlarm,
         type, deviceId,
-        leavebedParam, } = equipInfo
+        leavebedParam,rank } = equipInfo
     const [userInfo, setUserInfo] = useState<any>({ roomNum, sex, age, patientName, headImg })
     const [img, setImg] = useState(headImg)
 
@@ -366,7 +366,7 @@ const UserInfoCard: (props: UserInfoCardProps) => React.JSX.Element = (props) =>
             <div
                 className='fixed top-[2.8rem] z-[9] w-full h-[6rem] bg-[#fff]'>
                 <div className='flex items-end justify-between w-[90%] h-full py-[1.2rem] bg-[#fff] mx-auto border-b border-b-[#DCE3E9]'>
-                    <img src={userInfo.headImg} alt="" className='w-[4rem] mr-[1.2rem] rounded-[6px]' />
+                    <img src={userInfo.headImg || nullImg} alt="" className='w-[4rem] mr-[1.2rem] rounded-[6px]' />
                     <div className='flex flex-col justify-center grow'>
                         <span className='text-sm font-semibold'>{userInfo.patientName}</span>
                         <span className='flex w-full'>
@@ -432,7 +432,7 @@ const UserInfoCard: (props: UserInfoCardProps) => React.JSX.Element = (props) =>
                         <span>Braden压疮风险评估</span>
                         <span className='text-[#EC6E38] ml-[10px]'>中度风险</span>
                     </span>
-                    <span className='text-[#0072EF] cursor-pointer'>重新评估</span>
+                    <span className='text-[#0072EF] cursor-pointer' onClick={() => {navigate('/que' , {state : {sensorName , rank}})}}>重新评估</span>
                 </div>
                 {!isMobile && <SettingBlock userInfoChange={userInfoChange} setUserChange={setUserInfoChange} userInfo={userInfo} onModify={setting} />}
                 {/* {isMobile && renderMobileSetting()} */}

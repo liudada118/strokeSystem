@@ -757,42 +757,54 @@
     }
 
     .fixDataSelectContent {
-        position: fixed;
+        // position: fixed;
+        z-index: 1;
         width: 100%;
         left: 0;
-        top: 0;
+        top: 13.5rem;
         padding: 0 1rem;
         display: flex;
         flex-direction: column-reverse;
+
         // height: 11rem;
         .dataSelectContent {
             background-color: #fff;
             border-radius: 0.68rem;
-            
+            display: flex;
+            z-index: 0;
         }
-        .clickSelectDate{
+
+        .clickSelectDate {
             padding: 0 1.2rem;
         }
-        .dataSelect{
+
+        .dataSelect {
             background-color: #fff;
-            .clickDateValue{
+            flex: 1;
+
+            .clickDateValue {
                 font-size: 1.1rem;
             }
         }
     }
+
     .reprotMask {
         top: 11rem;
         height: calc(100% - 11rem);
     }
-    .dayContent{
+
+    .dayContent {
         margin-top: 10px;
+    }
+    .dataSelect{
+        z-index: 0;
     }
 
     // .ant-picker-panel-container {
     //     transform: translateX(-22%) !important;
     // }
 
-  
+
 }
 
 .timeBar {
@@ -807,6 +819,6 @@
     }
 }
 
-.fixDataSelectContent{
-    box-shadow:  0rem 0rem 0.42rem 0rem rgba(0, 0, 0, .1)
- }
+.fixDataSelectContent {
+    box-shadow: 0rem 0rem 0.42rem 0rem rgba(0, 0, 0, .1)
+}

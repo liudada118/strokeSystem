@@ -30,6 +30,7 @@ import { fakeData } from "../../fakeData";
 import NurseTextInfo from "./NurseTextInfo";
 import Card from "./Card";
 import { cloudSleepToPageSleep, initCircleArr, initRealCircleArr, minDataParam, returnCloudHeatmapData, returnMinData, returnRealtimeData } from "../../heatmapUtil";
+import CommonTitle from "@/components/CommonTitle";
 
 
 export const rainbowTextColors = [
@@ -143,20 +144,29 @@ export default forwardRef((props: any, refs: any) => {
    * @param param0 circleArr 传入压疮点 ,resSleep 睡姿 , timer 压疮倒计时,wsPointData 矩阵数据
    * 渲染这些数据
    */
-  const initPage = ({ circleArr, resSleep, timer, wsPointData }: any) => {
-    setSleep(resSleep)
-    if (heatMapRef.current) heatMapRef.current.setCircleArr(circleArr)
+  const initPage = ({ circleArr, resSleep, timer, wsPointData, type }: any) => {
+   
+   
+    
+    // 在床
+    if(valueArr.onbedState){
+      if (heatMapRef.current) heatMapRef.current.setCircleArr(circleArr)
+      setSleep(resSleep)
+      if (heatMapRef.current) heatMapRef.current.bthClickHandle(wsPointData)
+    }
+
     if (timer) setTimer(timer ? timer : 0)
-    if (heatMapRef.current) heatMapRef.current.bthClickHandle(wsPointData)
-    if (progressRef.current) progressRef.current.setCountZero()
+
+    // 分钟数据
+    if (type != 'realtime') if (progressRef.current) progressRef.current.setCountZero()
   }
 
   /**
    * 
    * @param param0 heart 心率, rate 呼吸, stroke 脑卒中, bodyMove 体动, onBedTime 在床时间
    */
-  const initRealtimePage = ({ heart, rate, stroke, bodyMove, onBedTime }: any) => {
-    setValueArr({ heart, rate, stroke, bodyMove, onBedTime })
+  const initRealtimePage = ({ heart, rate, stroke, bodyMove, onBedTime,onbedState }: any) => {
+    setValueArr({ heart, rate, stroke, bodyMove, onBedTime, onbedState })
     if (moveRef.current) moveRef.current.handChangeChart({ ydata: bodyMove })
   }
 
@@ -208,10 +218,10 @@ export default forwardRef((props: any, refs: any) => {
       initPage({ circleArr, timer, resSleep, wsPointData })
     },
     realtime({ jsonObj, sensorName }: minDataParam) {
-      const { heart, rate, stroke, bodyMove, onBedTime } = returnRealtimeData({ jsonObj, sensorName })
-      initRealtimePage({ heart, rate, stroke, bodyMove, onBedTime })
+      const { heart, rate, stroke, bodyMove, onBedTime, onbedState } = returnRealtimeData({ jsonObj, sensorName })
+      initRealtimePage({ heart, rate, stroke, bodyMove, onBedTime, onbedState })
       if (!jsonObj.realtimeOnbedState) {
-        initPage({ circleArr: [], wsPointData: new Array(1024).fill(0), resSleep: 4 })
+        initPage({ circleArr: [], wsPointData: new Array(1024).fill(0), resSleep: 4, type: 'realtime' })
       }
     },
 
@@ -259,7 +269,8 @@ export default forwardRef((props: any, refs: any) => {
 
 
           <div className="heatmapInfo md:mb-[0.8rem] md:mt-[10px]">
-            <Card title='实时压力分布图' margin>
+            <Card>
+              <CommonTitle name={'实时压力分布图'} type="square" />
               <div className="heatmapLeft px-[1.9rem] " style={{ position: 'relative', padding: props.sensorName == 'iJ3X0JSttyoiRPafpIka' ? '2.5rem 0' : '' }}>
                 {/* <div className="heatmapText">床号:{equipInfo.roomNum}</div> */}
                 <div className="heatmapColor">

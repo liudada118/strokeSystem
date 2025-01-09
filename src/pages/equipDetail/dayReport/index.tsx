@@ -230,7 +230,7 @@ export default function DayReport() {
   const [date, setDate] = useState(new Date().getTime());
   const [matrixObj, setMatrixObj] = useState<any>({ startMatrix: new Array(1024).fill(0), endMatrix: new Array(1024).fill(0), })
   const [data, setData] = useState<any>({});
-  const [dayDate, setDayDate] = useState(location.state.date ? location.state.date : new Date().setHours(0, 0, 0, 0))
+  const [dayDate, setDayDate] = useState(new Date().setHours(0, 0, 0, 0))
   const [onbedDate, setOnBedDate] = useState(0)
   const [sleepNums, setSleepNums] = useState<number>(0);
   const [sleepNowNum, setSleepNowNum] = useState<number>(1);

@@ -430,7 +430,7 @@ export const RealChart = React.forwardRef((props: RealIndex, refs) => {
       color: ["#006EFF", "#67E0E3", "#9FE6B8"],
       xAxis: {
         type: "category",
-        data: ['十分钟前', ...xdata, '现在'],
+        data: ['48s前', ...xdata, '现在'],
         axisLabel: {
           // formatter: function (value: any) {
           //   if (interval != undefined) {

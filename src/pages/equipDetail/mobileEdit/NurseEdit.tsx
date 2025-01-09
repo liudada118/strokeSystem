@@ -116,6 +116,11 @@ export function NurseEdit() {
         setNurseConfig(config)
     }
 
+    const onFinish = (param: any) => {
+        setVisible1(false)
+        setNurseConfig(param)
+    }
+
     const changeTitle = (e: any) => {
         const value = e.target.value
         setTitle(value)
@@ -221,6 +226,136 @@ export function NurseEdit() {
                 }}
                 bodyStyle={{ height: '70vh' }}
             >
+                {/* {isSelectChild < 0 ?
+                    <div className='pt-[13px] px-[15px] relative'>
+                        <div className='text-center text-lg font-bold mb-[20px]'>添加护理项</div>
+                        <div className='ml-[6px] text-base mb-[12px]'>护理项目名称</div>
+                        <input onChange={(e) => { changeTitle(e) }} className='bg-[#F5F8FA] w-full text-base py-[8px] rounded-[10px] pl-[20px] mb-[12px]' type="text" placeholder='输入护理项目名称' />
+                        <div className='ml-[6px] text-base mb-[12px]'>选择记录方式</div>
+                        <div className='bg-[#F5F8FA] py-[3px] px-[20px]'>
+                            {
+                                nurseItem.map((item, index) => {
+                                    return (
+                                        <div className='nurseEditItem' onClick={() => setSelectIndex(index)}>{item.text}
+                                            {selectIndex == index ?
+                                                <div className='w-[14px]'>
+                                                    <img src={nurseItemSelect} className='w-[14px]' alt="" />
+                                                </div> : ''}
+                                        </div>
+                                    )
+                                })
+                            }
+                            {
+                                nurseItemIncludeChild.map((item, index) => {
+                                    return (
+                                        <div className='nurseEditItem' onClick={() => {
+                                            setSelectIndex(-1)
+                                            setIsSelectChild(index)
+                                        }}>{item.text}
+                                            <div className='w-[14px] flex justify-center'>
+                                                <img src={right} className='h-[10px]' alt="" />
+                                            </div>
+                                        </div>
+                                    )
+                                })
+                            }
+                        </div>
+                    </div>
+                    :
+                    <>
+                        {
+                            isSelectChild == 0 ?
+                                <AddSelectItem index={isSelectChild} setIsSelectChild={setIsSelectChild} itemArr={singleItemArr} setItemArr={setSingleItemArr} /> :
+                                <AddSelectItem index={isSelectChild} setIsSelectChild={setIsSelectChild} itemArr={multipleItemArr} setItemArr={setMultipleItemArr} />
+                        }
+                    </>
+
+                }
+
+                {selectIndex >= 0 || isSelectChild >= 0 ? <div onClick={() => {
+                    saveNurseItem()
+                }} className="absolute bottom-[38px] left-[4%] w-full m-auto mt-[15px] py-[16px] bg-[#0072EF] flex items-center justify-center text-[#fff] text-base rounded-[10px]">
+                    保存护理项
+                </div> : ''} */}
+
+                <DisplayEditNurseContent onFinish={onFinish} nurseConfig={nurseConfig} />
+            </Popup>
+            <div onClick={() => { setVisible1(true) }} className="w-full m-auto mt-[15px] py-[16px] bg-[#0072EF] flex items-center justify-center text-[#fff] text-base rounded-[10px]">
+                添加护理项
+                <img src={nurseAdd} className='w-[1rem] ml-[5px]' alt="" />
+            </div>
+            <div className='pt-[20px] w-[full] m-auto'>
+                <PreViewConfig display={false} nurseConfig={nurseConfig} setNurseConfig={setNurseConfig} /></div>
+            <div onClick={() => { saveNurseConfigToCloud() }} className="w-full m-auto mt-[15px] py-[16px] bg-[#0072EF] flex items-center justify-center text-[#fff] text-base rounded-[10px]">
+                保存护理项
+            </div>
+        </div>
+    )
+}
+
+interface displayEditParams {
+    onFinish: Function
+    // setNurseConfig: Function
+    nurseConfig: any
+}
+
+export const DisplayEditNurseContent = (props: displayEditParams) => {
+    const { nurseConfig, onFinish } = props
+    const isMobile = useGetWindowSize()
+    const [title, setTitle] = useState('')
+    const [isSelectChild, setIsSelectChild] = useState(-1)
+    const [selectIndex, setSelectIndex] = useState(-1)
+    const [singleItemArr, setSingleItemArr] = useState([{ value: '', id: new Date().getTime() }])
+    const [multipleItemArr, setMultipleItemArr] = useState([{ value: '', id: new Date().getTime() }])
+
+    const saveNurseItem = () => {
+        console.log('保存')
+        setSelectIndex(-1)
+        setIsSelectChild(-1)
+        // 用户自定义单选或者多选框
+        const config = [...nurseConfig]
+        let obj: any
+        if (isSelectChild >= 0) {
+            // 用户自定义单选
+            if (isSelectChild == 0) {
+                obj = {
+                    title: title,
+                    type: nurseItemIncludeChild[isSelectChild].type,
+                    arr: singleItemArr
+                }
+
+            }
+            // 用户自定义多选框
+            else {
+                obj = {
+                    title: title,
+                    type: nurseItemIncludeChild[isSelectChild].type,
+                    arr: multipleItemArr
+                }
+            }
+        }
+        // 上传照片或者和输入框
+        else {
+            obj = {
+                title: title,
+                type: nurseItem[selectIndex].type,
+            }
+        }
+        obj.id = new Date().getTime()
+        config.push(obj)
+        console.log(config)
+        // setNurseConfig(config)
+        onFinish(config)
+    }
+
+    const changeTitle = (e: any) => {
+        const value = e.target.value
+        setTitle(value)
+    }
+
+    if (isMobile) {
+        return (
+            <>
                 {isSelectChild < 0 ?
                     <div className='pt-[13px] px-[15px] relative'>
                         <div className='text-center text-lg font-bold mb-[20px]'>添加护理项</div>
@@ -272,18 +407,62 @@ export function NurseEdit() {
                 }} className="absolute bottom-[38px] left-[4%] w-full m-auto mt-[15px] py-[16px] bg-[#0072EF] flex items-center justify-center text-[#fff] text-base rounded-[10px]">
                     保存护理项
                 </div> : ''}
-            </Popup>
-            <div onClick={() => { setVisible1(true) }} className="w-full m-auto mt-[15px] py-[16px] bg-[#0072EF] flex items-center justify-center text-[#fff] text-base rounded-[10px]">
-                添加护理项
-                <img src={nurseAdd} className='w-[1rem] ml-[5px]' alt="" />
-            </div>
-            <div className='pt-[20px] w-[full] m-auto'>
-                <PreViewConfig display={false} nurseConfig={nurseConfig} setNurseConfig={setNurseConfig} /></div>
-            <div onClick={() => { saveNurseConfigToCloud() }} className="w-full m-auto mt-[15px] py-[16px] bg-[#0072EF] flex items-center justify-center text-[#fff] text-base rounded-[10px]">
-                保存护理项
-            </div>
-        </div>
-    )
+            </>
+        )
+    } else {
+        return (
+            <>
+                <div className='pt-[13px] px-[15px] relative'>
+                    <div className='text-center text-lg font-bold mb-[20px]'>添加护理项</div>
+                    <div className='ml-[6px] text-base mb-[12px]'>护理项目名称</div>
+                    <input onChange={(e) => { changeTitle(e) }} className='bg-[#F5F8FA] w-full text-base py-[8px] rounded-[10px] pl-[20px] mb-[12px]' type="text" placeholder='输入护理项目名称' />
+                    <div className='ml-[6px] text-base mb-[12px]'>选择记录方式</div>
+                    <div className='bg-[#F5F8FA] py-[3px] px-[20px]'>
+                        {
+                            nurseItem.map((item, index) => {
+                                return (
+                                    <div className='nurseEditItem' onClick={() => setSelectIndex(index)}>{item.text}
+                                        {selectIndex == index ?
+                                            <div className='w-[14px]'>
+                                                <img src={nurseItemSelect} className='w-[14px]' alt="" />
+                                            </div> : ''}
+                                    </div>
+                                )
+                            })
+                        }
+                        {
+                            nurseItemIncludeChild.map((item, index) => {
+                                return (
+                                    <div className='nurseEditItem' onClick={() => {
+                                        setSelectIndex(-1)
+                                        setIsSelectChild(index)
+                                    }}>{item.text}
+                                        <div className='w-[14px] flex justify-center'>
+                                            <img src={right} className='h-[10px]' alt="" />
+                                        </div>
+                                    </div>
+                                )
+                            })
+                        }
+                    </div>
+                </div>
+                {isSelectChild < 0 ? '' : <>
+                    {
+                        isSelectChild == 0 ?
+                            <AddSelectItem index={isSelectChild} setIsSelectChild={setIsSelectChild} itemArr={singleItemArr} setItemArr={setSingleItemArr} /> :
+                            <AddSelectItem index={isSelectChild} setIsSelectChild={setIsSelectChild} itemArr={multipleItemArr} setItemArr={setMultipleItemArr} />
+                    }
+                </>
+                }
+
+                {selectIndex >= 0 || isSelectChild >= 0 ? <div onClick={() => {
+                    saveNurseItem()
+                }} className="w-full m-auto mt-[15px] py-[16px] bg-[#0072EF] flex items-center justify-center text-[#fff] text-base rounded-[10px]">
+                    保存护理项
+                </div> : ''}
+            </>
+        )
+    }
 }
 
 interface addSelectItem {
@@ -374,16 +553,35 @@ interface preViewConfigParam {
     setNurseConfig: Function
     nurseConfig: Array<nurseConfigParam>
 }
+
+
 export function PreViewConfig(props: preViewConfigParam) {
-    // 
-    const changeItemValue = ({ type, index, itemIndex, value, changeValue }: any) => {
+    /**
+     * 当要对自定义表单做出修改的时候
+     * @param param0 
+     * @returns 
+     */
+    interface changeItemParams {
+        type: any
+        index: number
+        itemIndex: number
+        value: string
+        changeValue: string
+    }
+    /**
+     * 大项就是  单选|多选|上传头像|输入  
+     * 小项就是  单选|多选的每个选项
+     * */
+    const changeItemValue = ({ type, index, itemIndex, value, changeValue }: changeItemParams) => {
         switch (type) {
+            // 删除整个大项
             case EditType.DELETE:
                 {
                     const newConfig = [...nurseConfig].filter((item, itemIndex) => itemIndex != index);
                     setNurseConfig(newConfig);
                     return;
                 }
+            // 添加一个大项
             case EditType.ADDITEM:
                 {
                     const newConfig = [...nurseConfig]
@@ -391,6 +589,7 @@ export function PreViewConfig(props: preViewConfigParam) {
                     setNurseConfig(newConfig);
                     return;
                 }
+            // 删除大项中的某个小项
             case EditType.DELETEITEM:
                 {
                     const newConfig = [...nurseConfig]
@@ -403,6 +602,7 @@ export function PreViewConfig(props: preViewConfigParam) {
                     setNurseConfig(newConfig);
                     return
                 }
+            // 修改小项的信息名称
             case EditType.EDIT: {
                 const newConfig = [...nurseConfig]
                 const changeArr = newConfig[index].arr
@@ -413,6 +613,7 @@ export function PreViewConfig(props: preViewConfigParam) {
                 }
                 return
             }
+            // 给大项赋初始值
             case EditType.CHANGEVALUE: {
                 const newConfig = [...nurseConfig]
                 newConfig[index].changeValue = changeValue
@@ -431,8 +632,8 @@ export function PreViewConfig(props: preViewConfigParam) {
     return (
         <div className={`${display ? '' : 'bg-[#f4f5f6]'} `}>
             {
-                nurseConfig.map((item, index) => {
-                    return <RenderConfig display={display} changeItemValue={changeItemValue} key={item.id} type={item.type} index={index} title={item.title} arr={item.arr} />
+              nurseConfig&&  nurseConfig.map((item, index) => {
+                    return <RenderNurseConfig display={display} changeItemValue={changeItemValue} key={item.id} type={item.type} index={index} title={item.title} arr={item.arr} />
                 })
             }
         </div>
@@ -498,7 +699,7 @@ function Card(props: cardParam) {
 
 }
 
-function RenderConfig({ type, index, title, arr, changeItemValue, display }: any) {
+function RenderNurseConfig({ type, index, title, arr, changeItemValue, display }: any) {
 
     const [editItem, setEditItem] = useState(false)
     const [img, setImg] = useState(nurseItemImg)

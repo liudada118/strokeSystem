@@ -5,9 +5,10 @@ import { FormType } from "@/components/CommonFormModal"
 import { useSelector } from "react-redux"
 import { selectEquipBySensorname } from "@/redux/equip/equipSlice"
 import { useLocation, useParams } from "react-router-dom"
-import { Instancercv } from "@/api/api"
+import { Instancercv, netUrl } from "@/api/api"
 import { tokenSelect } from "@/redux/token/tokenSlice"
 import { message } from "antd"
+import axios from "axios"
 
 /**
  * 
@@ -66,14 +67,14 @@ export function TurnEdit() {
             flipbodyCount : parseInt(newValue.timeRangeA),
             flipbodyTime : parseInt(newValue.timeIntervalA)
         }
-        Instancercv({
+        axios({
             method: "post",
-            url: "/nursing/updateFlipConfig",
+            url: netUrl + "/nursing/updateFlipConfig",
             headers: {
                 "content-type": "application/json",
                 "token": token
             },
-            params: {
+            data: {
                 deviceId: sensorName,
                 flipbodyConfig: JSON.stringify(obj),
             },

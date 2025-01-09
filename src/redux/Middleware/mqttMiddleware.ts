@@ -19,6 +19,20 @@ let riskArr: any = {},
     resData: Array<any> = [],
     equipsPlayArr: Array<any> = []
 
+interface onBed {
+    stack: Array<number>,
+    state: number
+}
+const onBedStackPush = ({ stack, state }: onBed) => {
+    if (stack.length < 20) {
+        stack.push(state)
+    } else {
+        stack.shift()
+        stack.push(state)
+    }
+}
+
+
 const MqttMiddleware = (storeApi: any) => (next: any) => (action: any) => {
     const state: any = storeApi.getState()
     const token = state.token.token
@@ -30,7 +44,7 @@ const MqttMiddleware = (storeApi: any) => (next: any) => (action: any) => {
 
 
         let { equips, switchArr: alarm, realAlarmArr: sosArrOver, riskArr: riskArrs, equipsPlay } = storeApi.getState().equip
-   
+
         riskArr = JSON.parse(JSON.stringify(riskArrs))
         arr = JSON.parse(JSON.stringify(sosArrOver))
         resData = JSON.parse(JSON.stringify(equips)) //[...equips]
@@ -89,6 +103,18 @@ const MqttMiddleware = (storeApi: any) => (next: any) => (action: any) => {
         client.on("disconnect", function (packet: any) { });
 
         let timer = setInterval(() => {
+
+            resData.forEach((equip, index) => {
+                if (equip.onBedStack) {
+                    onBedStackPush({ stack: equip.onBedStack, state: equip.onBedState })
+                } else {
+                    equip.onBedStack = []
+                    onBedStackPush({ stack: equip.onBedStack, state: equip.onBedState })
+                }
+                if (equip.onBedStack.length == 20 && equip.onBedStack.every((a: any) => { return typeof a != 'number' || a == 100 })) {
+                    equip.onBed = 100
+                }
+            })
 
             const equip = JSON.parse(JSON.stringify(resData))
             const equipPc = initEquipPc(equip)

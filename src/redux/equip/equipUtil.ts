@@ -334,9 +334,11 @@ export function neatEquips({ equipArr }: neatEquipsProps): neatReturn {
     const equip = equipArr.map((a: any) => {
         if (a.status == 'unknow') {
             a.onBed = 100
-        } else if (a.status == 'online') {
-            a.onBed = 1
-        }
+        } 
+        
+        // else if (a.status == 'online') {
+        //     a.onBed = 1
+        // }
 
         // 将所有非离线设备的报警都置为不可触发的状态
         Object.keys(ALARMTYPE).forEach((alarmType) => {

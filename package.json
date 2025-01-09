@@ -71,6 +71,7 @@
     "tailwindcss": "^3.4.14",
     "terser-webpack-plugin": "^5.2.5",
     "typescript": "^4.9.5",
+    "ua-parser-js": "^2.0.0",
     "web-vitals": "^2.1.4",
     "webpack": "^5.64.4",
     "webpack-dev-server": "^4.6.0",

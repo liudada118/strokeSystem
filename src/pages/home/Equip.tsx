@@ -71,14 +71,14 @@ export default function Equip() {
                   `}
                                             onClick={() => {
                                                 if (item.type == 'large') {
-                                                    navigate(`/report/${item.sensorName}`, {
+                                                    navigate(`/report/0/${item.sensorName}`, {
                                                         state: {
                                                             person: item
                                                         },
                                                     });
                                                 }
                                                 else {
-                                                    navigate(`/report/${item.sensorName}`, {
+                                                    navigate(`/report/0/${item.sensorName}`, {
                                                         state: {
                                                             person: item
                                                         },
@@ -179,14 +179,14 @@ export default function Equip() {
                                         className={`equipItem  ${stateToObj[onBedState(item)].class}`}
                                         onClick={() => {
                                             if (item.type == 'large') {
-                                                navigate(`/report/${item.sensorName}`, {
+                                                navigate(`/report/0/${item.sensorName}`, {
                                                     state: {
                                                         person: item
                                                     },
                                                 });
                                             }
                                             else {
-                                                navigate(`/report/${item.sensorName}`, {
+                                                navigate(`/report/0/${item.sensorName}`, {
                                                     state: {
                                                         person: item
                                                     },

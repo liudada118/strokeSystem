@@ -84,6 +84,7 @@ interface realtimeReturn {
     stroke: number
     onBedTime: number
     bodyMove: Array<number>
+    onbedState : number
 }
 
 /**
@@ -93,14 +94,15 @@ interface realtimeReturn {
  */
 export const returnRealtimeData: (param: minDataParam) => realtimeReturn = ({ jsonObj, sensorName }) => {
 
-    const { realtimeStrokeRisk, heartRateRandom, realtimeBreathRate, onOutOffBedTimeMillis, realtimeBodyMoveArr } = jsonObj
+    const { realtimeStrokeRisk, heartRateRandom, realtimeBreathRate, onOutOffBedTimeMillis, realtimeBodyMoveArr, realtimeOnbedState } = jsonObj
 
     const res = {
         heart: heartRateRandom,
         rate: realtimeBreathRate,
         stroke: realtimeStrokeRisk,
         onBedTime: (new Date().getTime() - onOutOffBedTimeMillis) / 1000,
-        bodyMove: realtimeBodyMoveArr
+        bodyMove: realtimeBodyMoveArr,
+        onbedState: realtimeOnbedState
     }
 
     // 如果是假数据设备

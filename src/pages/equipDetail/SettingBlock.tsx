@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import CommonFormModal, { FormType } from "../../components/CommonFormModal";
-import { Button, Switch } from "antd";
+import { Button, Modal, Switch } from "antd";
 import styles from "./message.module.scss";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,6 +8,9 @@ import { changeEquipAllInfo, changePersonalEquipAlarmInfo, selectEquipBySensorna
 import { equipInfoFormatUtil, minToHourText } from "@/utils/dataToFormat";
 import { phoneSelect } from "@/redux/token/tokenSlice";
 import { isManage, roleIdSelect } from "@/redux/premission/premission";
+import CommonTitle from "@/components/CommonTitle";
+import rigthLogo from '@/assets/image/rigthLogo.png'
+import { DisplayEditNurseContent, PreViewConfig } from "./mobileEdit/NurseEdit";
 
 interface SettingBlockProps {
     onModify: (value: boolean) => void
@@ -67,7 +70,7 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (props) =>
         situpStart, situpEnd, situpAlarm,
         type, deviceId,
         leavebedParam,
-        
+
     } = userInfo
     // const [switchA, setSwitchA] = useState<boolean>(valueToAlarmFlag(injuryAlarm))
     // const [switchB, setSwitchB] = useState<boolean>(valueToAlarmFlag(leaveBedAlarm))
@@ -457,10 +460,10 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (props) =>
         setEditing(false)
         onModify(false)
     }
-    const roleId = useSelector(roleIdSelect) 
+    const roleId = useSelector(roleIdSelect)
     const isManageFlag = isManage(roleId)
     const renderFooterBtn = () => {
-       
+
         return isManageFlag ? editing ?
             <Button type="primary" className='w-full rounded-[2px]'
                 onClick={handleSettingCompleted}>保存设置</Button> : (
@@ -468,8 +471,24 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (props) =>
                     onClick={handleClickSettingBtn}>设置</span>) : ''
     }
 
+    const [isSettingClick, setIsSettingClick] = useState(false)
+    const handleAlarmSettingClick = () => {
+        const flag = !isSettingClick
+        setIsSettingClick(flag)
+        if (flag) {
+            handleClickSettingBtn()
+        } else {
+            handleSettingCompleted()
+        }
+
+    }
+
     return (
         <div className='overflow-scroll h-[calc(100%-13rem)]'>
+            <div className="flex justify-between">
+                <CommonTitle name={'提醒设置'} type="square" />
+                <div className="text-base text-sm leading-7 text-[#0072EF]" onClick={handleAlarmSettingClick}>{isSettingClick ? '保存' : '设置'}</div>
+            </div>
             {settings.map((item) => (
                 <div className='bg-[#fff] mb-[10px] py-[0.5rem] px-[0.8rem]'
                     key={item.label}>
@@ -493,6 +512,22 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (props) =>
                 </div>
             ))}
 
+
+            {/* {renderFooterBtn()} */}
+            <CommonTitle name={'健康配置'} type="square" />
+            {/* <div className='bg-[#fff] mb-[10px] p-[10px] px-[0.8rem] flex justify-between items-center'>
+                <div>护理配置</div>
+                <div><img className="w-[6.5px]" src={rigthLogo} alt="" /></div>
+            </div> */}
+            <SettingMoDal />
+
+
+            <div className='bg-[#fff] mb-[10px] p-[10px] px-[0.8rem] flex justify-between items-center'>
+                <div>推送日报配置</div>
+                <div><img className="w-[6.5px]" src={rigthLogo} alt="" /></div>
+            </div>
+
+            <CommonTitle name={'设备类型'} type="square" />
             <div className='bg-[#fff] mb-[10px] pt-[10px] px-[0.8rem]'>
                 <span className='text-base inline-block font-semibold mb-[10px]'>设备类型</span>
                 <div>
@@ -514,8 +549,52 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (props) =>
                     ))}
                 </div>
             </div>
-            {renderFooterBtn()}
+
         </div>
+    )
+}
+
+const SettingMoDal = () => {
+    const [nurseConfig, setNurseConfig] = useState([])
+    const [open, setOpen] = useState(false)
+    const onFinish = (config: any) => {
+        setNurseConfig(config)
+    }
+    const handleFinish = () => {
+
+    }
+    const close = () => {
+        setOpen(false)
+    }
+    return (
+        <>
+            <Modal
+                title={"护理配置"}
+                centered
+                open={open}
+                footer={() => null}
+                onOk={() => close()}
+                onCancel={() => close()}
+            >
+                <div className="flex">
+                    <div className="">
+                        <DisplayEditNurseContent nurseConfig={nurseConfig} onFinish={onFinish} />
+                    </div>
+                    <div className="">
+                        <PreViewConfig display={false} nurseConfig={nurseConfig} setNurseConfig={setNurseConfig} />
+                    </div>
+                </div>
+                <div className='flex justify-end'>
+                    <Button color="primary" variant="outlined" className='mr-[10px]' onClick={() => close()}>取消</Button>
+                    <Button type="primary" htmlType="submit" className='w-[6rem]' onClick={() => handleFinish()}>保存</Button>
+                </div>
+            </Modal>
+            <div onClick={() => { setOpen(true) }} className='bg-[#fff] mb-[10px] p-[10px] px-[0.8rem] flex justify-between items-center'>
+                <div>护理配置</div>
+                <div><img className="w-[6.5px]" src={rigthLogo} alt="" /></div>
+            </div>
+        </>
+
     )
 }
 

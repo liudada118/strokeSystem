@@ -70,6 +70,8 @@ const MqttMiddleware = (storeApi: any) => (next: any) => (action: any) => {
 
         const client = mqtt.connect(`wss://${HOST}:${PORT}/mqtt`, options);
 
+        window.client = client
+
         client.on('connect', function () {
 
             // storeApi.dispatch(mqttConnectionState(client));
@@ -177,9 +179,6 @@ function message({ payload, storeApi, data }: any) {
     if (!resData.length) resData = JSON.parse(JSON.stringify(equips)) //[...equips]
     equipsPlayArr = JSON.parse(JSON.stringify(equipsPlay))
     const jsonObj = JSON.parse(payload);
-
-
-
 
     if (jsonObj.type === 'alarm') {
 

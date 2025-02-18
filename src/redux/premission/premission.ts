@@ -45,7 +45,7 @@ const premissionSlice = createSlice({
             state.turnbodyFlag = 0
             state.status = 'idle'
         },
-        changeTurnFlag(state , action){
+        changeTurnFlag(state, action) {
             state.turnbodyFlag = action.payload
         }
     },
@@ -65,7 +65,7 @@ const premissionSlice = createSlice({
                 const roleId = res.data.roleId
                 const organizeId = res.data.organizeId
                 state.headImg = image
-                state.roleId = roleIdToPermission[roleId]
+                state.roleId = roleId//  roleIdToPermission[roleId]
                 state.organizeId = organizeId
                 state.turnbodyFlag = turnbodyFlag
             }
@@ -86,7 +86,7 @@ export const turnbodyFlagSelect = (state: any) => state.premission.turnbodyFlag
 
 export default premissionSlice.reducer
 
-export const { loginOut,changeTurnFlag } = premissionSlice.actions
+export const { loginOut, changeTurnFlag } = premissionSlice.actions
 
 export const fetchPermission = createAsyncThunk('premission/fetch', async (_, { getState }) => {
     const state: any = getState()

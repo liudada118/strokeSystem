@@ -33,7 +33,7 @@ const ALARMVALUE = {
     },
     dropBed: {
         value: 3,
-        alarmArrName: 'fallbedArr'
+        alarmArrName: 'cArr'
     },
     situp: {
         value: 4,

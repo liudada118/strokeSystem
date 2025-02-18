@@ -35,6 +35,17 @@
     <button id="play">声音</button>
     <button>关闭</button>
   </div>
+  <script>
+    function return1() {
+      console.log(1)
+      return 1
+    }
+
+    function showMqttStatus() {
+      console.log(window.client.connected)
+      return window.client.connected
+    }
+  </script>
   <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.

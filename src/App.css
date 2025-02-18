@@ -41,3 +41,12 @@
   background-color: #f4f5f6;
   min-height: 100vh;
 }
+
+@font-face {
+  font-family: 'pf';
+  src: url(./assets/font/苹方-简.ttf);
+}
+/* @import "antd/dist/antd.css"; */
+.pf {
+  font-family: 'pf';
+}

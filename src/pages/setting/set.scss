@@ -3,7 +3,7 @@
 .setContent {
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
+    min-height: 60vh;
     background-color: #F5F6F7;
 
     .setBox {
@@ -57,7 +57,7 @@
 .setBoxPc {
 
     flex: 1;
-    margin-left: 7.41rem;
+    margin-left: 4.41rem;
     margin-bottom: 60px;
     margin-top: 4rem;
     padding: 2rem 2rem;
@@ -65,7 +65,7 @@
 
     .selectBox {
         width: 20rem;
-        margin-right: 3rem;
+        margin-right: 1rem;
     }
 
     .contentBox {

@@ -1,7 +1,7 @@
 import { Button, message } from "antd";
 import { Popup } from 'antd-mobile'
 import CommonTitle from '../../components/CommonTitle';
-import React, { useEffect, useImperativeHandle, useRef, useState } from "react";
+import React, { useContext, useEffect, useImperativeHandle, useRef, useState } from "react";
 import plan_gray from "../../assets/images/plan_gray.png";
 import plan_blue from "../../assets/images/plan_blue.png";
 import plan_orange from "../../assets/images/plan_orange.png";
@@ -22,6 +22,7 @@ import unRight from '@/assets/icon/unRight.png'
 import unBack from '@/assets/icon/unBack.png'
 import unLeft from '@/assets/icon/unLeft.png'
 import { convertToChinaNum } from "@/utils/math";
+import { DataContext } from ".";
 
 enum TurnPlanStatus {
     DONE = '已完成',
@@ -57,7 +58,10 @@ interface TurnPlanProps {
 
 const TurnPlan: (props: TurnPlanProps) => React.JSX.Element = (props) => {
 
-    const [turnAroundPlan, setTurnAroundPlan] = useState<TurnPlanList[]>([])
+    const context = useContext(DataContext);
+
+    const {turnAroundPlan, setTurnAroundPlan ,getNurse} = context
+    // const [turnAroundPlan, setTurnAroundPlan] = useState<TurnPlanList[]>([])
 
     const param = useParams()
     const sensorName = param.id
@@ -75,55 +79,44 @@ const TurnPlan: (props: TurnPlanProps) => React.JSX.Element = (props) => {
     /**
      * 请求护理计划
      */
-    const getNurse = () => {
-        instance({
-            method: "post",
-            url: "/sleep/nurse/getMatrixListByName",
-            params: {
-                deviceName: sensorName,
-                scheduleTimePeriod: nursePeriod,
-                startTimeMillis: new Date(new Date().toLocaleDateString()).getTime() + 0,
-                endTimeMills: new Date(new Date().toLocaleDateString()).getTime() + 24 * 60 * 60 * 1000
-            },
-        }).then((res) => {
-            const nurseArr: any = []
-            const flipbodyData = res.data.flipbodyData
-            const nurseTotal = 12//res.data.flipbodyCount
-            const flipbodyLen = Object.keys(flipbodyData).length
-            for (let i = 0; i < nurseTotal; i++) {
-                nurseArr[i] = {}
-                if (flipbodyLen && flipbodyData[i]) {
-                    nurseArr[i].status = calNurseItemStatus(flipbodyData[i].status)
-                    nurseArr[i].time = flipbodyData[i].timeMillis
-                    nurseArr[i].logid = flipbodyData[i].logid
-                } else {
-                    if (flipbodyLen == i) {
-                        nurseArr[i].status = calNurseItemStatus(0)
-                    } else {
-                        nurseArr[i].status = calNurseItemStatus(4)
-                    }
-                }
+    // const getNurse = () => {
+    //     instance({
+    //         method: "post",
+    //         url: "/sleep/nurse/getMatrixListByName",
+    //         params: {
+    //             deviceName: sensorName,
+    //             scheduleTimePeriod: nursePeriod,
+    //             startTimeMillis: new Date(new Date().toLocaleDateString()).getTime() + 0,
+    //             endTimeMills: new Date(new Date().toLocaleDateString()).getTime() + 24 * 60 * 60 * 1000
+    //         },
+    //     }).then((res) => {
+    //         const nurseArr: any = []
+    //         const flipbodyData = res.data.flipbodyData
+    //         const nurseTotal = res.data.flipbodyCount
+    //         const flipbodyLen = Object.keys(flipbodyData).length
+    //         for (let i = 0; i < nurseTotal; i++) {
+    //             nurseArr[i] = {}
+    //             if (flipbodyLen && flipbodyData[i]) {
+    //                 nurseArr[i].status = calNurseItemStatus(flipbodyData[i].status)
+    //                 nurseArr[i].time = flipbodyData[i].timeMillis
+    //                 nurseArr[i].logid = flipbodyData[i].logid
+    //             } else {
+    //                 if (flipbodyLen == i) {
+    //                     nurseArr[i].status = calNurseItemStatus(0)
+    //                 } else {
+    //                     nurseArr[i].status = calNurseItemStatus(4)
+    //                 }
+    //             }
 
-            }
-            setTurnAroundPlan(nurseArr)
+    //         }
+    //         setTurnAroundPlan(nurseArr)
 
 
 
-        }).catch((err) => {
-            message.error('服务器错误')
-        });;
-    }
-
-    function findLoadingReport(nurseArr: any) {
-        const loadingReportArr = nurseArr.filter((item: any) => item.status == TurnPlanStatus.LOADING)
-        const loadingStampArr = loadingReportArr.map((item: any) => item.timeMillis)
-        if (loadingStampArr.length) {
-            const maxStamp = Math.max(loadingStampArr)
-            setTimeout(() => {
-                getNurse()
-            }, maxStamp + 120 * 1000 - new Date().getTime());
-        }
-    }
+    //     }).catch((err) => {
+    //         message.error('服务器错误')
+    //     });;
+    // }
 
     interface calNurseStatusParam {
         timeEnd: number
@@ -208,7 +201,7 @@ const TurnPlan: (props: TurnPlanProps) => React.JSX.Element = (props) => {
             <NurseProcesst isModalOpenSend={recordModal} setIsModalOpenSend={setRecordModal} getNurse={getNurse} />
             <CommonTitle name='翻身计划' type={isMobile ? 'rect' : 'square'} />
             <div className='w-full'>
-                {turnAroundPlan.map((item, index) => (
+                {turnAroundPlan.map((item:any, index:any) => (
                     <div key={index} className={`flex items-center w-full ${inactivePlan(item.status) ? 'disabledPlan' : ''}`}>
                         <img src={renderImagIcon(item)}
                             alt="" className='w-xl h-xl mr-[10px]' />
@@ -219,7 +212,7 @@ const TurnPlan: (props: TurnPlanProps) => React.JSX.Element = (props) => {
                                     className='text-base font-medium'>{`第${convertToChinaNum(index + 1)}次`}</span>
                                 <span
                                     className={`text-sm ${[TurnPlanStatus.TIME_OUT, TurnPlanStatus.TIME_OUT_DONE].includes(item.status) ? 'text-[#EC6E38]' : 'text-[#3E444C]'}`}
-                                >{`${item.status} ${dayjs(item.time).format('HH:mm')}`}</span>
+                                >{`${item.status} ${item.time ? dayjs(item.time).format('HH:mm') : ''}`}</span>
                             </div>
                             {renderButton(item)}
                         </div>

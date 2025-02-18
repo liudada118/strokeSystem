@@ -1,6 +1,6 @@
 import React, { Fragment, useState } from "react";
 import dayjs, { Dayjs } from "dayjs";
-import { Button, Modal, Form, Input, Radio, TimePicker, Upload, Spin, message } from 'antd'
+import { Button, Modal, Form, Input, Radio, TimePicker, Upload, Spin, message, Select } from 'antd'
 import photo from "../assets/images/photo.png";
 import nullImg from '@/assets/image/null.png'
 import { compressionFile } from "@/utils/imgCompressUtil";
@@ -16,40 +16,45 @@ export enum FormType {
     UPLOAD = 'UPLOAD',
     DATE_SELECT = 'DATE_SELECT',
     INPUTNUMBER = 'INPUTNUMBER',
-    SECONDRATE = 'SECONDRATE'
+    SECONDRATE = 'SECONDRATE',
+    TIME_SINGLE_TIME = 'TIME_SINGLE_TIME',
+    SELECT = 'SELECT'
 }
 type CommonFormItem = {
     label: string;
     key: string;
     value?: string | number;
     type: FormType;
+    
 }
 type InputForm = CommonFormItem & { placeholder: string };
-type ComplexForm = CommonFormItem & { children: { id: string; label: string , value : number }[] };
+type ComplexForm = CommonFormItem & { children: { id: string; label: string, value: number|string }[] };
 interface CommonFormModalProps {
     open: boolean;
     close: () => void;
     formList: CommonFormItem[] | InputForm[] | ComplexForm[];
     title: string;
     onFinish: (values: any) => void;
-    imgChange ?: Function
+    imgChange?: Function
 }
 const CommonFormModal: (props: CommonFormModalProps) => React.JSX.Element = (props) => {
-    const { open, close, formList, title, onFinish,imgChange } = props
+    const { open, close, formList, title, onFinish, imgChange } = props
     const [timeStart, setTimeStart] = useState<number>(0)
     const [timeEnd, setTimeEnd] = useState<number>(0)
     const [spinning, setSpinning] = React.useState<boolean>(false);
 
     const handleFinish = (values: any) => {
-     
+
         const _values = { ...values }
         formList.forEach((item) => {
             if (item.type === 'TIME_RANGE') {
                 _values[item.key] = `${timeStart}-${timeEnd}`
+            } else if (item.type === 'TIME_SINGLE_TIME') {
+                _values[item.key] = `${timeStart}`
             }
         })
         close()
-        console.log(values ,formList,`${timeStart} - ${timeEnd}`,_values )
+        console.log(values, formList, `${timeStart} - ${timeEnd}`, _values)
         onFinish && onFinish(_values)
     }
 
@@ -68,14 +73,43 @@ const CommonFormModal: (props: CommonFormModalProps) => React.JSX.Element = (pro
         }
         return e?.fileList;
     };
-    const renderFormItem = (list: CommonFormItem[]) => {
+
+    const handleChange = () => {
+
+    }
+
+    const secondArr = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+
+    const secodnRateColumns = secondArr.map(item => ({
+        label: `${item}次`,
+        value: `${item}次`
+    }))
+
+    const renderFormItem = (list: CommonFormItem[] | ComplexForm[]) => {
         return (
             <Fragment>
                 <Spin className="spin" spinning={spinning} fullscreen />
                 {list.map((item) => {
 
                     switch (item.type) {
-                        case 'INPUTNUMBER' : 
+                        case 'TIME_SINGLE_TIME':
+                            return (
+                                <Form.Item label={item.label} name={item.key} key={item.key} className='flex items-center'>
+                                    <TimePicker placeholder='' onChange={onChangeTimeStart} needConfirm={false} defaultValue={dayjs((item.value as string)?.split('-')[0], 'HH:mm')} className='rounded-[1rem] w-[38%]' format='HH:mm' />
+                                </Form.Item>
+                            )
+                        case 'SELECT':
+                            return (
+                                <Form.Item label={item.label} name={item.key} key={item.key} className='flex items-center'>
+                                    <Select
+                                        defaultValue={item.value}
+                                        style={{ width: 120 }}
+                                        onChange={handleChange}
+                                        options={(item as ComplexForm).children}
+                                    />
+                                </Form.Item>
+                            )
+                        case 'INPUTNUMBER':
                             return <></>
                         case 'INPUT':
                             return (
@@ -125,7 +159,7 @@ const CommonFormModal: (props: CommonFormModalProps) => React.JSX.Element = (pro
                                                     // setImgFile(e.target.files[0])
                                                     let res = compressionFile(e.target.files[0])
                                                     res.then((e) => {
-                                                        console.log(e , 'compressionFile')
+                                                        console.log(e, 'compressionFile')
                                                         const token = localStorage.getItem('token')
                                                         axios({
                                                             method: "post",
@@ -141,13 +175,13 @@ const CommonFormModal: (props: CommonFormModalProps) => React.JSX.Element = (pro
                                                             const img = res.data.data.src
                                                             setSpinning(false);
                                                             message.success('上传成功')
-                                                            imgChange && imgChange( img )
+                                                            imgChange && imgChange(img)
                                                             // setImg(img)
                                                         }).catch((err) => {
                                                             message.error(err.error)
                                                             setSpinning(false);
                                                         })
-                                                        ;
+                                                            ;
                                                     })
 
                                                 }

@@ -1,22 +1,30 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import CommonFormModal, { FormType } from "../../components/CommonFormModal";
-import { Button, Modal, Switch } from "antd";
+import { Button, message, Modal, Switch } from "antd";
 import styles from "./message.module.scss";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { changeEquipAllInfo, changePersonalEquipAlarmInfo, selectEquipBySensorname, statusSelect } from "@/redux/equip/equipSlice";
 import { equipInfoFormatUtil, minToHourText } from "@/utils/dataToFormat";
-import { phoneSelect } from "@/redux/token/tokenSlice";
+import { phoneSelect, tokenSelect } from "@/redux/token/tokenSlice";
 import { isManage, roleIdSelect } from "@/redux/premission/premission";
 import CommonTitle from "@/components/CommonTitle";
 import rigthLogo from '@/assets/image/rigthLogo.png'
 import { DisplayEditNurseContent, PreViewConfig } from "./mobileEdit/NurseEdit";
+import NurseSetting from "../setting/nurseSetting/NurseSetting";
+import './settingBlock.scss'
+import { Instancercv, netUrl } from "@/api/api";
+import axios from "axios";
+import { DataContext } from ".";
 
 interface SettingBlockProps {
     onModify: (value: boolean) => void
     userInfo: any
     userInfoChange: boolean
     setUserChange: Function
+    submitCloud : any;
+    nurseformValue : any
+    setNurseFormValue : any
 }
 
 const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (props) => {
@@ -41,11 +49,13 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (props) =>
     const sensorName = param.id
     const equipInfo = useSelector(state => selectEquipBySensorname(state, sensorName))
     const phone = useSelector(phoneSelect)
+    const token = useSelector(tokenSelect)
     const dispatch: any = useDispatch()
     const navigate = useNavigate()
     // const status = useSelector(statusSelect)
-
-    const { onModify } = props
+    const context = useContext(DataContext)
+    const {nurseformValue,submitCloud,setNurseFormValue} = context
+    const { onModify, } = props
     // TODO:合并成一个state对象
     const [editing, setEditing] = useState<boolean>(false);
 
@@ -72,6 +82,43 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (props) =>
         leavebedParam,
 
     } = userInfo
+
+
+
+    /**
+    * 请求护理配置
+    */
+    // useEffect(() => {
+    //     Instancercv({
+    //         method: "get",
+    //         url: "/nursing/getNursingConfig",
+    //         headers: {
+    //             "content-type": "multipart/form-data",
+    //             "token": token
+    //         },
+    //         params: {
+    //             deviceId: sensorName
+    //         }
+    //     }).then((res) => {
+    //         console.log(res.data, 'resssssssss')
+    //         const flipbodyConfig = JSON.parse(res.data.flipbodyConfig)
+    //         console.log(flipbodyConfig)
+    //         const { flipbodyCount, flipbodyTime } = flipbodyConfig
+    //         if (flipbodyCount) {
+    //             setNurseFormValue({
+    //                 timeRangeA: `${flipbodyCount}次`,
+    //                 timeIntervalA: `${flipbodyTime/60}小时`,
+    //                 switchA: true,
+    //             })
+    //         } else {
+    //             setNurseFormValue({
+    //                 timeRangeA: `${0}次`,
+    //                 timeIntervalA: `${flipbodyTime/60}小时`,
+    //                 switchA: false,
+    //             })
+    //         }
+    //     })
+    // }, [])
     // const [switchA, setSwitchA] = useState<boolean>(valueToAlarmFlag(injuryAlarm))
     // const [switchB, setSwitchB] = useState<boolean>(valueToAlarmFlag(leaveBedAlarm))
     // const [switchC, setSwitchC] = useState<boolean>(valueToAlarmFlag(situpAlarm))
@@ -103,7 +150,19 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (props) =>
         const realValue: string = Object.values(values)[0]
         const realKey: string = Object.keys(values)[0]
 
-        if (typeof realValue == 'string') {
+        console.log(values)
+
+        if(realKey == 'timeRangeA'){
+            setNurseFormValue({
+                ...nurseformValue , timeIntervalA: realValue,
+            })
+        }else if(realKey == 'timeIntervalA'){
+            setNurseFormValue({
+                ...nurseformValue , timeRangeA: realValue,
+            })
+        }
+
+        else if (typeof realValue == 'string') {
             const start = Number(realValue.split('-')[0])
             const end = Number(realValue.split('-')[1])
             const obj: any = {
@@ -143,6 +202,20 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (props) =>
 
 
     }
+
+    const secondArr = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+    const timeArr = [1, 2, 3]
+    const secodnRateColumns = secondArr.map(item => ({
+        id: `${item}次`,
+        label: `${item}次`,
+        value: `${item}次`
+    }))
+    const timeRateColumns = timeArr.map(item => ({
+        id: `${item}小时`,
+        label: `${item}小时`,
+        value: `${item}小时`
+    }))
+
     const settings = [{
         label: '翻身设置',
         id: 'turn_over_switch',
@@ -159,9 +232,9 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (props) =>
             // changeAlarmValueToCloud({ injuryAlarm: alarmFlagToValue(!switchA) })
         },
         params: [{
-            label: '设置时间段',
+            label: '翻身间隔',
             id: 'timeRangeA',
-            value: `${timePeriodInitFormat({ timeStamp: nurseStart, type: 'start' })} - ${timePeriodInitFormat({ timeStamp: nurseEnd, type: 'end' })}`,
+            value: nurseformValue.timeIntervalA,
             onChange: () => {
                 setTimeAModalOpen(true)
             },
@@ -170,10 +243,11 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (props) =>
                 open={timeAModalOpen}
                 close={() => setTimeAModalOpen(false)}
                 formList={[{
-                    label: '设置时间段',
+                    label: '设置翻身间隔',
                     key: 'timeRangeA',
-                    value: `${timePeriodInitFormat({ timeStamp: nurseStart, type: 'start' })} - ${timePeriodInitFormat({ timeStamp: nurseEnd, type: 'end' })}`,
-                    type: FormType.TIME_RANGE,
+                    value: nurseformValue.timeIntervalA,
+                    type: FormType.SELECT,
+                    children : timeRateColumns
                 }]}
                 onFinish={(values) => {
                     changeValueToUserInfo(values)
@@ -181,38 +255,22 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (props) =>
                 }}
             />
         }, {
-            label: '翻身间隔',
+            label: '翻身次数',
             id: 'timeIntervalA',
             onChange: () => {
                 setIntervalAModalOpen(true)
             },
-            value: nursePeriod,
+            value: nurseformValue.timeRangeA,
             modal: <CommonFormModal
                 title='翻身设置'
                 open={intervalAModalOpen}
                 close={() => setIntervalAModalOpen(false)}
                 formList={[{
-                    label: '设置翻身间隔',
+                    label: '设置翻身次数',
                     key: 'timeIntervalA',
-                    value: nursePeriod,
-                    type: FormType.RADIO,
-                    children: [{
-                        id: '30',
-                        value: 30,
-                        label: '0.5小时'
-                    }, {
-                        id: '60',
-                        value: 60,
-                        label: '1小时'
-                    }, {
-                        id: '90',
-                        value: 90,
-                        label: '1.5小时'
-                    }, {
-                        id: '120',
-                        value: 120,
-                        label: '2小时'
-                    }]
+                    value: nurseformValue.timeRangeA,
+                    type: FormType.SELECT,
+                    children: secodnRateColumns
                 }]}
                 onFinish={(values) => {
                     // setTimeIntervalA(values.timeIntervalA)
@@ -423,12 +481,12 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (props) =>
             // obj.phone = phone
         }
 
-        if (userNurseChange) {
-            obj.nurseParam = {
-                nurseStart, nurseEnd, nursePeriod, injuryAlarm,
-                deviceId: sensorName
-            }
-        }
+        // if (userNurseChange) {
+        //     obj.nurseParam = {
+        //         nurseStart, nurseEnd, nursePeriod, injuryAlarm,
+        //         deviceId: sensorName
+        //     }
+        // }
 
         if (userAlarmParamChange) {
             obj.alarmParam = {
@@ -447,9 +505,14 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (props) =>
             }
         }
 
-        if (props.userInfoChange || userNurseChange || userAlarmParamChange || userLeaveBedParamChange) {
+        if (props.userInfoChange || userAlarmParamChange || userLeaveBedParamChange) {
             console.log('dispatch')
             dispatch(changeEquipAllInfo(obj))
+        }
+
+        if (userNurseChange) {
+            console.log(nurseformValue)
+            submitCloud(nurseformValue)
         }
 
         setNurseChange(false)
@@ -460,6 +523,38 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (props) =>
         setEditing(false)
         onModify(false)
     }
+
+    // const submitCloud = (newValue: any) => {
+    //     setFormValue(newValue)
+    //     console.log(newValue)
+    //     const obj = {
+    //         flipbodyCount : parseInt(newValue.timeRangeA),
+    //         flipbodyTime : parseInt(newValue.timeIntervalA)
+    //     }
+
+    //     // 开关关闭后  设置次数为0
+    //     if(!newValue.switchA){
+    //         obj.flipbodyCount = 0
+    //     }
+    //     axios({
+    //         method: "post",
+    //         url: netUrl + "/nursing/updateFlipConfig",
+    //         headers: {
+    //             "content-type": "application/json",
+    //             "token": token
+    //         },
+    //         data: {
+    //             deviceId: sensorName,
+    //             config: JSON.stringify(obj),
+    //         },
+    //     }).then((res) => {
+    //         // message.success('修改成功')
+    //     }).catch((err) => {
+    //         message.error('修改失败')
+    //     })
+
+    // }
+
     const roleId = useSelector(roleIdSelect)
     const isManageFlag = isManage(roleId)
     const renderFooterBtn = () => {
@@ -502,7 +597,7 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (props) =>
                             <div className='text-sm text-[#32373E] w-[5rem]'>{_item.label}</div>
                             <div
                                 className={`flex justify-between items-center h-full text-base ${index !== (item.params.length - 1) && 'border-b border-b-[#DCE3E9]'} p-[5px] w-[calc(100%-5rem)]`}>
-                                <span className='text-[#6C7784]'>{_item.label.includes('翻身') ? minToHourText(_item.value) : _item.label.includes('提醒时间') ? `${_item.value}min` : _item.value}</span>
+                                <span className='text-[#6C7784]'>{_item.label.includes('翻身') ? _item.value : _item.label.includes('提醒时间') ? `${_item.value}min` : _item.value}</span>
                                 {editing && <span className='text-sm text-[#0072EF] cursor-pointer'
                                     onClick={() => _item.onChange()}>修改</span>}
                             </div>
@@ -575,8 +670,9 @@ const SettingMoDal = () => {
                 footer={() => null}
                 onOk={() => close()}
                 onCancel={() => close()}
+                className="personNurseSetting"
             >
-                <div className="flex">
+                {/* <div className="flex">
                     <div className="">
                         <DisplayEditNurseContent nurseConfig={nurseConfig} onFinish={onFinish} />
                     </div>
@@ -587,7 +683,10 @@ const SettingMoDal = () => {
                 <div className='flex justify-end'>
                     <Button color="primary" variant="outlined" className='mr-[10px]' onClick={() => close()}>取消</Button>
                     <Button type="primary" htmlType="submit" className='w-[6rem]' onClick={() => handleFinish()}>保存</Button>
-                </div>
+                </div> */}
+
+
+                <NurseSetting type="user" />
             </Modal>
             <div onClick={() => { setOpen(true) }} className='bg-[#fff] mb-[10px] p-[10px] px-[0.8rem] flex justify-between items-center'>
                 <div>护理配置</div>

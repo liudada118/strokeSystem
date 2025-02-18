@@ -314,11 +314,11 @@ const PersonalContentInfo = (props: personalInfoParam) => {
     )
 }
 
-const hourArr = [0.5, 1, 1.5, 2]
+const hourArr = [1, 2, 3]
 
 const timeIntervalColumns = [hourArr.map(item => ({
     label: `${item}小时`,
-    value: `${item * 60}min`
+    value: `${item}小时`
 }))]
 
 const secondArr = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12]

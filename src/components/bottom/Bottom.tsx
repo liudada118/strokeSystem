@@ -418,7 +418,7 @@ const Bottom = forwardRef((props: bottomProps, refs: any) => {
         setRead(true)
       }
     }).catch((err) => {
-      message.error('服务器错误')
+      // message.error('服务器错误')
     })
 
     return () => {

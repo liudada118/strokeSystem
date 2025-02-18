@@ -31,6 +31,7 @@ import NurseTextInfo from "./NurseTextInfo";
 import Card from "./Card";
 import { cloudSleepToPageSleep, initCircleArr, initRealCircleArr, minDataParam, returnCloudHeatmapData, returnMinData, returnRealtimeData } from "../../heatmapUtil";
 import CommonTitle from "@/components/CommonTitle";
+import { phoneSelect } from "@/redux/token/tokenSlice";
 
 
 export const rainbowTextColors = [
@@ -132,24 +133,30 @@ export function valueToSleep(num: number) {
 }
 
 
-
+let globalOnbedState = 0
 export default forwardRef((props: any, refs: any) => {
 
   const param = useParams()
   const sensorName = param.id || ''
   const equipInfo = useSelector((state) => selectEquipBySensorname(state, sensorName))
 
+  const [valueArr, setValueArr] = useState<any>({ rate: 0, onBedTime: 0 })
+  const valueArrRef = useRef(valueArr);
+
+  useEffect(() => {
+    valueArrRef.current = valueArr; // 同步最新 count
+  });
   /**
    * 
    * @param param0 circleArr 传入压疮点 ,resSleep 睡姿 , timer 压疮倒计时,wsPointData 矩阵数据
    * 渲染这些数据
    */
   const initPage = ({ circleArr, resSleep, timer, wsPointData, type }: any) => {
-   
-   
-    
+
+
+    console.log(valueArr)
     // 在床
-    if(valueArr.onbedState){
+    if (valueArrRef.current.onbedState) {
       if (heatMapRef.current) heatMapRef.current.setCircleArr(circleArr)
       setSleep(resSleep)
       if (heatMapRef.current) heatMapRef.current.bthClickHandle(wsPointData)
@@ -165,8 +172,10 @@ export default forwardRef((props: any, refs: any) => {
    * 
    * @param param0 heart 心率, rate 呼吸, stroke 脑卒中, bodyMove 体动, onBedTime 在床时间
    */
-  const initRealtimePage = ({ heart, rate, stroke, bodyMove, onBedTime,onbedState }: any) => {
+  const initRealtimePage = ({ heart, rate, stroke, bodyMove, onBedTime, onbedState }: any) => {
     setValueArr({ heart, rate, stroke, bodyMove, onBedTime, onbedState })
+    console.log(valueArr)
+    // globalOnbedState = onbedState
     if (moveRef.current) moveRef.current.handChangeChart({ ydata: bodyMove })
   }
 
@@ -198,7 +207,7 @@ export default forwardRef((props: any, refs: any) => {
     getFirstMaritx()
   }, [sensorName])
 
-  const [valueArr, setValueArr] = useState<any>({ rate: 0, onBedTime: 0 })
+
   const [timer, setTimer] = useState<any>(0)
   const [sleep, setSleep] = useState<any>(4)
   const isMobile = useGetWindowSize()
@@ -211,6 +220,7 @@ export default forwardRef((props: any, refs: any) => {
   const moveRef = useRef<any>()
   const [circleArr, setCircleArr] = useState<Array<any>>([]);
   const mqtt = useSelector(mqttSelect)
+  const phone = useSelector(phoneSelect)
 
   const mqttEvent: any = {
     minute({ jsonObj, sensorName }: minDataParam) {
@@ -219,12 +229,16 @@ export default forwardRef((props: any, refs: any) => {
     },
     realtime({ jsonObj, sensorName }: minDataParam) {
       const { heart, rate, stroke, bodyMove, onBedTime, onbedState } = returnRealtimeData({ jsonObj, sensorName })
+      // console.log( heart, rate, stroke, bodyMove, onBedTime, onbedState)
       initRealtimePage({ heart, rate, stroke, bodyMove, onBedTime, onbedState })
       if (!jsonObj.realtimeOnbedState) {
         initPage({ circleArr: [], wsPointData: new Array(1024).fill(0), resSleep: 4, type: 'realtime' })
       }
     },
-
+    matrix({ jsonObj, sensorName }: minDataParam) {
+      const wsPointData = jsonObj.matrixList
+      if (heatMapRef.current) heatMapRef.current.bthClickHandle(wsPointData)
+    }
   }
 
 
@@ -238,6 +252,18 @@ export default forwardRef((props: any, refs: any) => {
         }
 
       }));
+    }
+    return () => {
+      if (mqtt) {
+        mqtt.unsubscribe(`${phone}`, function (error: any) {
+          if (error) {
+            console.log(error)
+          } else {
+            console.log('Unsubscribed')
+            mqtt.subscribe(`${phone}`);
+          }
+        })
+      }
     }
   }, [mqtt])
 
@@ -301,13 +327,13 @@ export default forwardRef((props: any, refs: any) => {
               <div className="flex mx-[0.5rem] items-center">
                 <div className="flex-1">
                   <div className="text-[0.8rem] font-medium text-[#929EAB]">心率</div>
-                  <div className="">{!equipInfo.onBed || valueArr.rate == 0 ? '--' : valueArr.rate == 88 || valueArr.rate == -1 ? <Spin /> : <div className="text-[1rem]  text-[#000]"><span className="font-semibold">{valueArr.heart}</span>  <span className="text-[0.6rem] text-[#929EAB]">bmp</span></div>} </div>
+                  <div className="">{!valueArr.onbedState || valueArr.rate == 0 ? '--' : valueArr.rate == 88 || valueArr.rate == -1 ? <Spin /> : <div className="text-[1rem]  text-[#000]"><span className="font-semibold">{valueArr.heart}</span>  <span className="text-[0.6rem] text-[#929EAB]">bmp</span></div>} </div>
                 </div>
                 <div className="w-[1px] h-[1rem] bg-[#D8D8D8]"></div>
                 <div className="flex-1 flex flex-col items-center">
                   <div className="">
                     <div className="text-[0.8rem] font-medium text-[#929EAB]">呼吸</div>
-                    <div className=""> {!equipInfo.onBed || valueArr.rate == 0 ? '--' : valueArr.rate == 88 || valueArr.rate == -1 ? <Spin /> : <div className="text-[1rem] text-[#000]"><span className="font-semibold">{valueArr.rate}</span> <span className="text-[0.6rem] text-[#929EAB]">次/分</span></div>}</div>
+                    <div className=""> {!valueArr.onbedState || valueArr.rate == 0 ? '--' : valueArr.rate == 88 || valueArr.rate == -1 ? <Spin /> : <div className="text-[1rem] text-[#000]"><span className="font-semibold">{valueArr.rate}</span> <span className="text-[0.6rem] text-[#929EAB]">次/分</span></div>}</div>
                   </div>
                 </div>
                 <div className="w-[1px] h-[1rem] bg-[#D8D8D8]"></div>

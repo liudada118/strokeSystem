@@ -1,5 +1,5 @@
 import { List, Picker } from "antd-mobile"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { RenderListItem } from "../EditingUser"
 import { FormType } from "@/components/CommonFormModal"
 import { useSelector } from "react-redux"
@@ -28,7 +28,7 @@ export function TurnEdit() {
 
     const [formValue, setFormValue] = useState({
         timeRangeA: '6次',
-        timeIntervalA: '30min',
+        timeIntervalA: '2小时',
         switchA: true,
     })
 
@@ -65,7 +65,12 @@ export function TurnEdit() {
         console.log(newValue)
         const obj = {
             flipbodyCount : parseInt(newValue.timeRangeA),
-            flipbodyTime : parseInt(newValue.timeIntervalA)
+            flipbodyTime : parseInt(newValue.timeIntervalA)*60
+        }
+
+        // 开关关闭后  设置次数为0
+        if(!newValue.switchA){
+            obj.flipbodyCount = 0
         }
         axios({
             method: "post",
@@ -76,7 +81,7 @@ export function TurnEdit() {
             },
             data: {
                 deviceId: sensorName,
-                flipbodyConfig: JSON.stringify(obj),
+                config: JSON.stringify(obj),
             },
         }).then((res) => {
             // message.success('修改成功')
@@ -86,6 +91,41 @@ export function TurnEdit() {
 
     }
 
+    
+    /**
+     * 请求护理配置
+     */
+    useEffect(() => {
+        Instancercv({
+            method: "get",
+            url: "/nursing/getNursingConfig",
+            headers: {
+                "content-type": "multipart/form-data",
+                "token": token
+            },
+            params: {
+                deviceId: sensorName
+            }
+        }).then((res) => {
+            console.log(res.data, 'resssssssss')
+            const flipbodyConfig = JSON.parse(res.data.flipbodyConfig)
+            console.log(flipbodyConfig)
+            const {flipbodyCount , flipbodyTime} =  flipbodyConfig
+            if(flipbodyCount){
+                setFormValue({
+                    timeRangeA: `${flipbodyCount}次`,
+                    timeIntervalA: `${flipbodyTime/60}小时`,
+                    switchA: true,
+                })
+            }else{
+                setFormValue({
+                    timeRangeA: `${0}次`,
+                    timeIntervalA: `${flipbodyTime/60}小时`,
+                    switchA: false,
+                })
+            }
+        })
+    }, [])
 
     return (
         <>

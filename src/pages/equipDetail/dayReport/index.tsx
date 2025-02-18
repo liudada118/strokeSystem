@@ -391,57 +391,7 @@ export default function DayReport() {
 
         }
 
-        setDayReport(true)
-        if (data.sleeping_position[0]) data.sleeping_position[0] = data.sleeping_position[0].some((a: number) => a < 0) ? new Array(16).fill(0) : data.sleeping_position[0]
-
-        let pos = 0
-        for (let i = 1; i < data.sleeping_position[0].length; i++) {
-          if (data.sleeping_position[0][i] - data.sleeping_position[0][i - 1] != 0) {
-            pos++
-          }
-        }
-        // setPosChangeDay
-        let hourend = (data.inbed_timestamp_list[data.inbed_timestamp_list.length - 1]) < 19 ? (data.inbed_timestamp_list[data.inbed_timestamp_list.length - 1]) + 24 : (data.inbed_timestamp_list[data.inbed_timestamp_list.length - 1])
-        let hourstart = (data.inbed_timestamp_list[0])
-
-        const hour = (hourend - hourstart)
-        setPosChangeHour(Math.round(pos / hour))
-        setPosChangeDay(pos)
-
-
-        setData(data);
-
-        const sleepTime = data.sleeping_times
-        const sleepProp = data.sleep_state.map((a: any) => {
-          if (a[0] == 2 || a[0] == 3) {
-            return a[1]
-          } else {
-            return 0
-          }
-        })
-        const wideProp = data.sleep_state.map((a: any) => {
-          if (a[0] == 1) {
-            return a[1]
-          } else {
-            return 0
-          }
-        })
-        // console.log(wideProp)
-
-        const onbedtime = sleepTime * (sleepProp.reduce((a: any, b: any) => a + b, 0) + wideProp.reduce((a: any, b: any) => a + b, 0)) / (sleepProp.reduce((a: any, b: any) => a + b, 0))
-
-
-        setOnbedTime(onbedtime)
-
-
-
-        let sleepNums = 0;
-        data.sleep_state.forEach((a: any) => {
-          sleepNums += a[1];
-        });
-        setSleepNums(sleepNums);
-        const allTime = data.deep_sleeping_times + data.light_sleep_time;
-        setAllTime(allTime);
+        initReport(data)
 
       } else {
 
@@ -452,10 +402,73 @@ export default function DayReport() {
           data = fakeData.bed.report
           setData(data)
           setDayReport(true)
-
+          initReport(data)
         }
       }
     });
+  }
+
+  function initReport(data:any){
+    if (sensorName == 'KgvDXUvdEs9M9AEQDcVc') {
+      // fakeData.bed.report
+      data = fakeData.bed.report
+      setData(data)
+      setDayReport(true)
+
+    }
+
+    setDayReport(true)
+    if (data.sleeping_position[0]) data.sleeping_position[0] = data.sleeping_position[0].some((a: number) => a < 0) ? new Array(16).fill(0) : data.sleeping_position[0]
+
+    let pos = 0
+    for (let i = 1; i < data.sleeping_position[0].length; i++) {
+      if (data.sleeping_position[0][i] - data.sleeping_position[0][i - 1] != 0) {
+        pos++
+      }
+    }
+    // setPosChangeDay
+    let hourend = (data.inbed_timestamp_list[data.inbed_timestamp_list.length - 1]) < 19 ? (data.inbed_timestamp_list[data.inbed_timestamp_list.length - 1]) + 24 : (data.inbed_timestamp_list[data.inbed_timestamp_list.length - 1])
+    let hourstart = (data.inbed_timestamp_list[0])
+
+    const hour = (hourend - hourstart)
+    setPosChangeHour(Math.round(pos / hour))
+    setPosChangeDay(pos)
+
+
+    setData(data);
+
+    const sleepTime = data.sleeping_times
+    const sleepProp = data.sleep_state.map((a: any) => {
+      if (a[0] == 2 || a[0] == 3) {
+        return a[1]
+      } else {
+        return 0
+      }
+    })
+    const wideProp = data.sleep_state.map((a: any) => {
+      if (a[0] == 1) {
+        return a[1]
+      } else {
+        return 0
+      }
+    })
+    // console.log(wideProp)
+
+    const onbedtime = sleepTime * (sleepProp.reduce((a: any, b: any) => a + b, 0) + wideProp.reduce((a: any, b: any) => a + b, 0)) / (sleepProp.reduce((a: any, b: any) => a + b, 0))
+
+
+    setOnbedTime(onbedtime)
+
+
+
+    let sleepNums = 0;
+    data.sleep_state.forEach((a: any) => {
+      sleepNums += a[1];
+    });
+    setSleepNums(sleepNums);
+    const allTime = data.deep_sleeping_times + data.light_sleep_time;
+    setAllTime(allTime);
+
   }
 
   const getNurseReport = (date: number) => {

@@ -11,6 +11,7 @@ import { instance, Instancercv } from "@/api/api";
 import { useSelector } from "react-redux";
 import { tokenSelect } from "@/redux/token/tokenSlice";
 import { PreViewConfig } from "./mobileEdit/NurseEdit";
+import { NurseTable, templateToData } from "../setting/nurseSetting/NurseSetting";
 
 const formMap: { [key: string]: string } = {
     state_picture: '记录皮肤状况',
@@ -216,12 +217,41 @@ const NurseRecord: (props: NurseRecordProps) => React.JSX.Element = (props) => {
             params: {
                 did: sensorName,
                 startTimeMillis: new Date(new Date().toLocaleDateString()).getTime() + 0,
-                endTimeMills: new Date(new Date().toLocaleDateString()).getTime() + 24 * 60 * 60 * 1000
+                endTimeMillis: new Date(new Date().toLocaleDateString()).getTime() + 24 * 60 * 60 * 1000
             }
         }).then((res) => {
-            
+
         })
     }, [])
+
+    const [templateId, setTemplateId] = useState(0)
+    const [nurseTemplate, setNurseTemplate] = useState<any>([])
+
+    useEffect(() => {
+        getNurseTemplate()
+    }, [])
+
+    /**
+     * 获取护理模板
+     */
+    const getNurseTemplate = () => {
+        Instancercv({
+            method: "get",
+            url: "/nursing/getNurseTemplateData",
+            headers: {
+                "content-type": "multipart/form-data",
+                "token": token
+            },
+        }).then((res) => {
+            console.log(res)
+            const template = res.data.data[0]
+            setTemplateId(template.id)
+            console.log(template.template)
+            const data = templateToData(template.template)
+            // console.log(data)
+            setNurseTemplate(data)
+        })
+    }
 
     return (
         <div className='w-[calc(30%-10px)] md:w-full'>
@@ -274,10 +304,18 @@ const NurseRecord: (props: NurseRecordProps) => React.JSX.Element = (props) => {
                                 <Input.TextArea className='bg-[#ECF0F4] border-none text-base' placeholder='请输入文字' />
                             </Form.Item> */}
 
-                            {
+                            <div>
+                                护理项目
+                                <Input />
+                            </div>
+                            <div>
+                                完成时间
+                                
+                            </div>
+                            <div>上传图片</div>
+                            <div>填写备注</div>
 
-                            }
-                            <PreViewConfig display={true} nurseConfig={nurseConfig} setNurseConfig={setNurseConfig} />
+                            {/* <PreViewConfig display={true} nurseConfig={nurseConfig} setNurseConfig={setNurseConfig} /> */}
                             <Form.Item className='flex justify-around w-full'>
                                 <Button color="primary" variant="outlined" className='w-[8rem] h-[2.4rem] mr-[10px] text-sm' onClick={() => {
                                     form.resetFields()
@@ -298,10 +336,11 @@ const NurseRecord: (props: NurseRecordProps) => React.JSX.Element = (props) => {
             )}
             <div ref={nurseRef} className='bg-[#fff] py-[25px] px-[25px] md:w-[94%] md:rounded-[10px] md:my-[10px] md:mx-auto md:py-[1rem] md:px-[1rem]'>
                 <CommonTitle name='护理项目' type={isMobile ? 'rect' : 'square'} />
-                {isMobile && (
+                {/* {isMobile && (
                     <Button className='w-full h-[5vh] mb-[0.5rem] text-base' type='primary' onClick={() => navigate('/record', { state: { sensorName } })}>记录护理项目</Button>
                 )}
-                <Table rowClassName='nurseTableRow' id='nurseTable' rowKey="number" columns={nurseTableColumns} dataSource={dataSource} pagination={false} />
+                <Table rowClassName='nurseTableRow' id='nurseTable' rowKey="number" columns={nurseTableColumns} dataSource={dataSource} pagination={false} /> */}
+                <NurseTable type='user' getNurseTemplate={getNurseTemplate} templateId={templateId} data={nurseTemplate} />
             </div>
         </div>
     )

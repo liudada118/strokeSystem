@@ -48,8 +48,8 @@ import UserInfo from './user/UserInfo';
 import UploadImg from './uploadImg/UploadImg';
 import NurseSetting from './nurseSetting/NurseSetting';
 import Title from '@/components/title/Title';
-import { useDispatch } from 'react-redux';
-import { loginOut } from '@/redux/premission/premission';
+import { useDispatch, useSelector } from 'react-redux';
+import { loginOut, roleIdSelect } from '@/redux/premission/premission';
 import { equipLoginOut } from '@/redux/equip/equipSlice';
 import { tokenLoginout } from '@/redux/token/tokenSlice';
 import { mqttLoginout } from '@/redux/mqtt/mqttSlice';
@@ -253,66 +253,66 @@ export default function Setting() {
   const [userOrganizeName, setUserOrganizeName] = useState()
 
   // 查看权限
-  useEffect(() => {
-    Instancercv({
-      method: "get",
-      url: "/organize/getUserAuthority",
-      headers: {
-        "content-type": "multipart/form-data",
-        "token": token
-      },
-      params: {
-        username: phone,
-      }
-    }).then((res) => {
-      if (res.data.code == 500) return
-      const roleId = res.data.data.roleId
-      const organizeId = res.data.data.organizeId
-      const name = res.data.data.userName
-      const img = res.data.commonConfig.image
-      setHeadImg(img)
-      console.log(roleId)
-      setUserOrganizeId(organizeId)
-      setUserOrganizeName(name)
+  // useEffect(() => {
+  //   Instancercv({
+  //     method: "get",
+  //     url: "/organize/getUserAuthority",
+  //     headers: {
+  //       "content-type": "multipart/form-data",
+  //       "token": token
+  //     },
+  //     params: {
+  //       username: phone,
+  //     }
+  //   }).then((res) => {
+  //     if (res.data.code == 500) return
+  //     const roleId = res.data.data.roleId
+  //     const organizeId = res.data.data.organizeId
+  //     const name = res.data.data.userName
+  //     const img = res.data.commonConfig.image
+  //     setHeadImg(img)
+  //     console.log(roleId)
+  //     setUserOrganizeId(organizeId)
+  //     setUserOrganizeName(name)
 
-      localStorage.setItem('organizeId', organizeId)
-      // 管理
-      if (roleId == 2 || roleId == 1) {
-        setItems([{
-          label: '使用说明',
-          key: 'use',
-          children: [
-            { key: 'sysIntro', label: '系统简介' },
-            { key: 'product', label: '产品铺设、配网、绑定' },
-            { key: 'userInfo', label: '小程序使用说明' },
-            { key: 'platform', label: '管理平台使用说明' },
-          ],
-        },
-        {
-          label: '护理选项',
-          key: 'nurse',
-        },
-        {
-          label: '自定义选项',
-          key: 'customOption',
-        },
-        {
-          label: '上传LOGO',
-          key: 'loadImg',
-        },
-        {
-          label: '项目管理',
-          key: 'projectTitle',
-          children: [
-            { key: 'equip', label: '设备管理' },
-            { key: 'user', label: '护工管理' },
-            { key: 'person', label: '家属管理' },
-          ],
-        },
-        ])
-      }
-    })
-  }, [])
+  //     localStorage.setItem('organizeId', organizeId)
+  //     // 管理
+  //     if (roleId == 2 || roleId == 1) {
+  //       setItems([{
+  //         label: '使用说明',
+  //         key: 'use',
+  //         children: [
+  //           { key: 'sysIntro', label: '系统简介' },
+  //           { key: 'product', label: '产品铺设、配网、绑定' },
+  //           { key: 'userInfo', label: '小程序使用说明' },
+  //           { key: 'platform', label: '管理平台使用说明' },
+  //         ],
+  //       },
+  //       {
+  //         label: '护理选项',
+  //         key: 'nurse',
+  //       },
+  //       {
+  //         label: '自定义选项',
+  //         key: 'customOption',
+  //       },
+  //       {
+  //         label: '上传LOGO',
+  //         key: 'loadImg',
+  //       },
+  //       {
+  //         label: '项目管理',
+  //         key: 'projectTitle',
+  //         children: [
+  //           { key: 'equip', label: '设备管理' },
+  //           { key: 'user', label: '护工管理' },
+  //           { key: 'person', label: '家属管理' },
+  //         ],
+  //       },
+  //       ])
+  //     }
+  //   })
+  // }, [])
 
 
   const getProjectList = () => {
@@ -359,8 +359,9 @@ export default function Setting() {
   };
   // const items: MenuItem[] = 
 
-  const [items, setItems] = useState(phone == 'factoryAdmin' ?
-    [
+
+  let allTitle: any = {
+    factoryAdmin: [
       {
         label: '使用说明',
         key: 'use',
@@ -369,9 +370,6 @@ export default function Setting() {
           { key: 'product', label: '产品铺设、配网、绑定' },
           { key: 'userInfo', label: '小程序使用说明' },
           { key: 'platform', label: '管理平台使用说明' },
-
-          // { key: 'equip', label: '设备管理' },
-          // { key: 'user', label: '护工管理' },
         ],
       },
       {
@@ -382,61 +380,91 @@ export default function Setting() {
         label: '删除设备',
         key: 'delete',
       },
+    ],
+    superManage: [{
+      label: '使用说明',
+      key: 'use',
+      children: [
+        { key: 'sysIntro', label: '系统简介' },
+        { key: 'product', label: '产品铺设、配网、绑定' },
+        { key: 'userInfo', label: '小程序使用说明' },
+        { key: 'platform', label: '管理平台使用说明' },
 
-    ]
-    : phone == 'admin' ? [
-      {
-        label: '使用说明',
-        key: 'use',
-        children: [
-          { key: 'sysIntro', label: '系统简介' },
-          { key: 'product', label: '产品铺设、配网、绑定' },
-          { key: 'userInfo', label: '小程序使用说明' },
-          { key: 'platform', label: '管理平台使用说明' },
+        // { key: 'equip', label: '设备管理' },
+        // { key: 'user', label: '护工管理' },
+      ],
+    },
+    {
+      label: '设备入库',
+      key: 'warehouse',
+    },
+    {
+      label: '删除设备',
+      key: 'delete',
+    },],
+    manage: [{
+      label: '使用说明',
+      key: 'use',
+      children: [
+        { key: 'sysIntro', label: '系统简介' },
+        { key: 'product', label: '产品铺设、配网、绑定' },
+        { key: 'userInfo', label: '小程序使用说明' },
+        { key: 'platform', label: '管理平台使用说明' },
+      ],
+    },
+    {
+      label: '护理选项',
+      key: 'nurse',
+    },
+    {
+      label: '自定义选项',
+      key: 'customOption',
+    },
+    {
+      label: '上传LOGO',
+      key: 'loadImg',
+    },
+    {
+      label: '项目管理',
+      key: 'projectTitle',
+      children: [
+        { key: 'equip', label: '设备管理' },
+        { key: 'user', label: '护工管理' },
+        { key: 'person', label: '家属管理' },
+      ],
+    },
+    ],
+    member: [{
+      label: '使用说明',
+      key: 'use',
+      children: [
+        { key: 'sysIntro', label: '系统简介' },
+        { key: 'product', label: '产品铺设、配网、绑定' },
+        { key: 'userInfo', label: '小程序使用说明' },
+        { key: 'platform', label: '管理平台使用说明' },
+      ],
+    }]
+  }
 
-          // { key: 'equip', label: '设备管理' },
-          // { key: 'user', label: '护工管理' },
-        ],
-      },
-      {
-        label: '护理选项',
-        key: 'nurse',
-      },
-      {
-        label: '项目管理',
-        key: 'projectTitle',
+  const roleId = useSelector(roleIdSelect)
 
-        children: [
-          { key: 'project', label: '项目管理' },
-          // { key: 'equip', label: '设备管理' },
-          // { key: 'user', label: '护工管理' },
-        ],
-      },
-      {
-        label: '删除设备',
-        key: 'delete',
-      },
+  const calRoleIdToPermissions = (roleId: number, phone: string): string => {
+    if (phone == 'factoryAdmin') {
+      return 'factoryAdmin'
+    } else {
+      if (roleId == 0) {
+        return 'superManage'
+      } else if (roleId == 1 || roleId == 2) {
+        return 'manage'
+      } else {
+        return 'member'
+      }
+    }
+  }
 
-    ] : [
-      {
-        label: '使用说明',
-        key: 'use',
-        children: [
-          { key: 'sysIntro', label: '系统简介' },
-          { key: 'product', label: '产品铺设、配网、绑定' },
-          { key: 'userInfo', label: '小程序使用说明' },
-          { key: 'platform', label: '管理平台使用说明' },
+  const premission = calRoleIdToPermissions(roleId, phone)
 
-          // { key: 'equip', label: '设备管理' },
-          // { key: 'user', label: '护工管理' },
-        ],
-      },
-      // {
-      //   label: '护理选项',
-      //   key: 'nurse',
-      // },
-
-    ])
+  const items = allTitle[premission]
 
 
   const [strokeSource, setStrokeSource] = useState([])

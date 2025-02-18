@@ -1,8 +1,8 @@
 'use strict';
 
 // const serverPath = 'weixin/nurse/'
-// const serverPath = 'testNew/'
-const serverPath = 'apkTest/'
+const serverPath = 'testNew/'
+// const serverPath = 'apkTest/'
 // const serverPath = ''
 
 const fs = require('fs');

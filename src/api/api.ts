@@ -28,7 +28,7 @@ instance.interceptors.response.use(function (response) {
     window.location.hash = '#/login'
   }
   if(err){
-    message.error('服务器错误')
+    // message.error('服务器错误')
     return
   }
 })

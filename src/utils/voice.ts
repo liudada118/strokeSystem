@@ -71,8 +71,8 @@ export class voiceArr {
     }
 }
 
-const AK = 'Xk9ktJsyd3KuqGnEjjVtSCMZ'
-const SK = 'uZd3RgPdlpYdlKjqV0p5h0has1AMCSmn'
+const AK = 'nS2bB52F6AsadNQYiOpENhXk'
+const SK = 'MCVBLg09ddPVFgkxTk35ENhTz2OX6yXG'
 
 function getAccessToken() {
     let options = {
@@ -191,6 +191,7 @@ function newBtts(param: any, options: any, audio: any, that: any) {
 
                 // 用来处理错误
                 if (xhr.response.type === 'application/json') {
+                    getAccessToken()
                     that.playFlag = true
                     frd.onload = function () {
                         var text = frd.result;
@@ -199,6 +200,7 @@ function newBtts(param: any, options: any, audio: any, that: any) {
                     frd.readAsText(xhr.response);
                 }
             } else {
+                getAccessToken()
                 that.playFlag = true
             }
         }

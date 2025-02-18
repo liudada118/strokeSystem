@@ -102,10 +102,13 @@ const timeIntervalColumns = [['半小时', '一小时', '一个半小时'].map(i
 interface UserInfoCardProps {
     outer?: boolean;
     isMobile?: boolean;
+    nurseformValue ?: any;
+    submitCloud ?: any;
+    setNurseFormValue ?: any
 }
 const UserInfoCard: (props: UserInfoCardProps) => React.JSX.Element = (props) => {
     const navigate = useNavigate();
-    const { outer = false, isMobile = false } = props;
+    const { outer = false, isMobile = false ,nurseformValue,submitCloud,setNurseFormValue } = props;
     const { sexFormat } = equipInfoFormatUtil
     const param = useParams()
     // console.log(param)
@@ -434,7 +437,7 @@ const UserInfoCard: (props: UserInfoCardProps) => React.JSX.Element = (props) =>
                     </span>
                     <span className='text-[#0072EF] cursor-pointer' onClick={() => {navigate('/que' , {state : {sensorName , rank}})}}>重新评估</span>
                 </div>
-                {!isMobile && <SettingBlock userInfoChange={userInfoChange} setUserChange={setUserInfoChange} userInfo={userInfo} onModify={setting} />}
+                {!isMobile && <SettingBlock userInfoChange={userInfoChange} setUserChange={setUserInfoChange} userInfo={userInfo} onModify={setting} nurseformValue={nurseformValue} setNurseFormValue={setNurseFormValue} submitCloud={submitCloud} />}
                 {/* {isMobile && renderMobileSetting()} */}
                 {isMobile && <SettingMobile />}
                 <CommonFormModal

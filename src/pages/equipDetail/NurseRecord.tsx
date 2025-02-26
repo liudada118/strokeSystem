@@ -245,11 +245,14 @@ const NurseRecord: (props: NurseRecordProps) => React.JSX.Element = (props) => {
         }).then((res) => {
             console.log(res)
             const template = res.data.data[0]
-            setTemplateId(template.id)
-            console.log(template.template)
-            const data = templateToData(template.template)
-            // console.log(data)
-            setNurseTemplate(data)
+            if(template){
+                setTemplateId(template.id)
+                console.log(template.template)
+                const data = templateToData(template.template)
+                // console.log(data)
+                setNurseTemplate(data)
+            }
+            
         })
     }
 

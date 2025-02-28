@@ -14,7 +14,7 @@ import { equipInfoFormatUtil } from "@/utils/dataToFormat";
 import nullImg from '@/assets/image/null.png'
 import { phoneSelect } from "@/redux/token/tokenSlice";
 import SettingMobile from "./SettingMobile";
-
+import { LeftOutlined } from '@ant-design/icons';
 export const userModal = [
     {
         label: '上传头像',
@@ -102,13 +102,13 @@ const timeIntervalColumns = [['半小时', '一小时', '一个半小时'].map(i
 interface UserInfoCardProps {
     outer?: boolean;
     isMobile?: boolean;
-    nurseformValue ?: any;
-    submitCloud ?: any;
-    setNurseFormValue ?: any
+    nurseformValue?: any;
+    submitCloud?: any;
+    setNurseFormValue?: any
 }
 const UserInfoCard: (props: UserInfoCardProps) => React.JSX.Element = (props) => {
     const navigate = useNavigate();
-    const { outer = false, isMobile = false ,nurseformValue,submitCloud,setNurseFormValue } = props;
+    const { outer = false, isMobile = false, nurseformValue, submitCloud, setNurseFormValue } = props;
     const { sexFormat } = equipInfoFormatUtil
     const param = useParams()
     // console.log(param)
@@ -127,12 +127,12 @@ const UserInfoCard: (props: UserInfoCardProps) => React.JSX.Element = (props) =>
 
 
 
-    const { roomNum, sex, age, patientName, headImg,nurseStart, nurseEnd, nursePeriod, injuryAlarm,
+    const { roomNum, sex, age, patientName, headImg, nurseStart, nurseEnd, nursePeriod, injuryAlarm,
         fallbedStart, fallbedEnd, fallbedAlarm,
         leaveBedStart, leaveBedEnd, leaveBedPeriod, leaveBedAlarm,
         situpStart, situpEnd, situpAlarm,
         type, deviceId,
-        leavebedParam,rank } = equipInfo
+        leavebedParam, rank } = equipInfo
     const [userInfo, setUserInfo] = useState<any>({ roomNum, sex, age, patientName, headImg })
     const [img, setImg] = useState(headImg)
 
@@ -269,7 +269,7 @@ const UserInfoCard: (props: UserInfoCardProps) => React.JSX.Element = (props) =>
         }
     }
 
-    
+
     const renderListItem = (type: FormType, key: string, label: string, title: string = '') => {
         switch (type) {
             case FormType.SWITCH:
@@ -359,7 +359,7 @@ const UserInfoCard: (props: UserInfoCardProps) => React.JSX.Element = (props) =>
 
     const handleClickUserEdit = () => {
         if (isMobile) {
-            navigate('/userInfo_editing', { state: { sensorName , type : 'personal' } })
+            navigate('/userInfo_editing', { state: { sensorName, type: 'personal' } })
         } else {
             setUserInfoOpen(true)
         }
@@ -369,6 +369,9 @@ const UserInfoCard: (props: UserInfoCardProps) => React.JSX.Element = (props) =>
             <div
                 className='fixed top-[2.8rem] z-[9] w-full h-[6rem] bg-[#fff]'>
                 <div className='flex items-end justify-between w-[90%] h-full py-[1.2rem] bg-[#fff] mx-auto border-b border-b-[#DCE3E9]'>
+                    <img src={arrow} alt="" style={{ transform: "rotate(180deg)" }} className='w-[8px] h-[12px] mb-[10px] mr-[20px]'
+                        onClick={() => navigate(`/`)} />
+                    {/* <LeftOutlined className='w-[8px] h-[12px] mb-[10px] mr-[20px]'  style={{fontSize:"300px",display:'flex'}} onClick={() => navigate(`/`)} /> */}
                     <img src={userInfo.headImg || nullImg} alt="" className='w-[4rem] mr-[1.2rem] rounded-[6px]' />
                     <div className='flex flex-col justify-center grow'>
                         <span className='text-sm font-semibold'>{userInfo.patientName}</span>
@@ -381,8 +384,11 @@ const UserInfoCard: (props: UserInfoCardProps) => React.JSX.Element = (props) =>
                             ))}
                         </span>
                     </div>
-                    <img src={arrow} alt="" className='w-[8px] h-[12px] mb-[10px]'
-                        onClick={() => navigate(`/equipInfo/${sensorName}`)} />
+                    {/* <img src={arrow} alt="" className='w-[8px] h-[12px] mb-[10px]'/> */}
+
+                    <p style={{ fontSize: "20px" }} onClick={() => navigate(`/equipInfo/${sensorName}`)} >
+                        设置
+                    </p>
                 </div>
             </div>
         )
@@ -435,7 +441,7 @@ const UserInfoCard: (props: UserInfoCardProps) => React.JSX.Element = (props) =>
                         <span>Braden压疮风险评估</span>
                         <span className='text-[#EC6E38] ml-[10px]'>中度风险</span>
                     </span>
-                    <span className='text-[#0072EF] cursor-pointer' onClick={() => {navigate('/que' , {state : {sensorName , rank}})}}>重新评估</span>
+                    <span className='text-[#0072EF] cursor-pointer' onClick={() => { navigate('/que', { state: { sensorName, rank } }) }}>重新评估</span>
                 </div>
                 {!isMobile && <SettingBlock userInfoChange={userInfoChange} setUserChange={setUserInfoChange} userInfo={userInfo} onModify={setting} nurseformValue={nurseformValue} setNurseFormValue={setNurseFormValue} submitCloud={submitCloud} />}
                 {/* {isMobile && renderMobileSetting()} */}

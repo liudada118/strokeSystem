@@ -230,7 +230,7 @@ function FirstItem(props: firstItemProps) {
 
                         </div> : ''
                 }
-                <div className="strokeTitle nurseTitleName"> <div className="">脑卒中潜在风险预警</div>  <div className="learnMore" onClick={() => { setStrokeFlag(true) }}>了解更多</div> </div>
+                <div className="strokeTitle nurseTitleName"> <div className="">特殊体动风险监测</div>  <div className="learnMore" onClick={() => { setStrokeFlag(true) }}>了解更多</div> </div>
 
                 <div className="nurseRiskContent">风险等级: {props.stroke ?
                     props.stroke.length > 720 ? <><span style={{ color: '#4ad75c' }}>高风险</span>:建议咨询医生。</>

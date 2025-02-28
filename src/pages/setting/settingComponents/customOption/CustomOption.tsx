@@ -43,7 +43,7 @@ export default function CustomOption() {
     const onSwitchChange = () => {
 
     }
-    const plainOptions = ['5.脑卒中潜在风险预警', '6.全天压力记录', '7.护理记录', '8.翻身卡'];
+    const plainOptions = ['5.特殊体动风险监测', '6.全天压力记录', '7.护理记录', '8.翻身卡'];
     const defaultCheckedList = ['']
     const [checkedList, setCheckedList] = useState<any[]>(defaultCheckedList);
 

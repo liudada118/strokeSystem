@@ -529,7 +529,7 @@ const Bottom = forwardRef((props: bottomProps, refs: any) => {
 
         <div style={{ display: 'flex', alignItems: 'center' }} className='deviceItem'><div className="deviceTitle">护理员:</div>
           {phone?.slice(-4)}</div>
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }} className='deviceItem'><div className="deviceTitle">房号:</div>
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }} className='deviceItem'><div className="deviceTitle">床号:</div>
           {didData.length ? <div style={{ flex: 1 }}>{didData[0].roomNum}</div> : <Input style={{ flex: 1 }} value={userinfo.roomNum} onChange={(e) => {
 
             const value = { ...userinfo, roomNum: e.target.value }

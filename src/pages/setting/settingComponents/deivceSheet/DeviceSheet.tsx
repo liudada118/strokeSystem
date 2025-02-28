@@ -5,6 +5,8 @@ import { message, Modal, Select, Table } from 'antd'
 import no from "../../../assets/icon/no.png";
 import SeeUser from '../seeUser/SeeUser';
 import { Instancercv } from '@/api/api';
+import { Input, Button } from 'antd';
+import { SearchOutlined } from '@ant-design/icons';
 interface DeviceSheet {
     deviceSource: any
 }
@@ -43,6 +45,11 @@ export default function DeviceSheet(props: DeviceSheet) {
         title: '床号',
         dataIndex: 'roomNum',
         key: 'roomNum'
+    },
+    {
+        title: '姓名',
+        dataIndex: 'patientName',
+        key: 'patientName'
     },
     {
         title: '关联用户',
@@ -237,7 +244,7 @@ export default function DeviceSheet(props: DeviceSheet) {
                 />
             </Modal>
 
-            <div className="projectContent">
+             <div className="projectContent">
                 <div className="projectTitle">设备管理</div>
                 <Table dataSource={props.deviceSource} onRow={(record: any) => {
                     return {

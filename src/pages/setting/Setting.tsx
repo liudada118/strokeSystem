@@ -473,8 +473,7 @@ export default function Setting() {
   const [projectManageSource, setProjectManageSource] = useState<Array<any>>([])
   const [deviceSource, setDeviceSource] = useState<Array<any>>([{}])
   const [deleteClick, setDeleteClick] = useState(false)
-
-
+  console.log(deviceSource, 'deviceSourcedeviceSource');
   const deleteEquip = ({ did, index, user }: any) => {
     Instancercv({
       method: "post",
@@ -806,7 +805,7 @@ export default function Setting() {
               }}
             >删除</div>
             <div onClick={() => {
-              console.log(deleteObj)
+              console.log(deleteObj, '关联成功关联成功关联成功关联成功')
               Instancercv({
                 method: "post",
                 url: "/device/batchBindDevice",
@@ -821,7 +820,12 @@ export default function Setting() {
               }).then((res) => {
 
               })
-            }}>一键关联</div>
+            }}>
+
+              一键关联
+
+
+            </div>
           </div>
         )
       }

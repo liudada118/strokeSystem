@@ -25,10 +25,10 @@ type CommonFormItem = {
     key: string;
     value?: string | number;
     type: FormType;
-    
+
 }
 type InputForm = CommonFormItem & { placeholder: string };
-type ComplexForm = CommonFormItem & { children: { id: string; label: string, value: number|string }[] };
+type ComplexForm = CommonFormItem & { children: { id: string; label: string, value: number | string }[] };
 interface CommonFormModalProps {
     open: boolean;
     close: () => void;

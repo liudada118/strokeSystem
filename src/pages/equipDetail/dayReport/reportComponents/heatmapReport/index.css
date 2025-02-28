@@ -1,0 +1,36 @@
+.nurseHeatmapContents {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 0.4rem;
+}
+
+.nurseHeatmapContent {
+  border-radius: 1rem;
+  padding: 1rem 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  background-color: #000;
+  width: 80%;
+}
+
+.nurseHeatmapContent .heatmapColor {
+  left: 0.5rem;
+}
+
+.progressButtonContent {
+  margin-top: 0.4rem;
+  font-size: 0.8rem;
+}
+
+.progressLeftButton {
+  display: flex;
+  align-items: center;
+}
+
+.progressRightButton {
+  display: flex;
+  align-items: center;
+}

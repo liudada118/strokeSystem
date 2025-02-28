@@ -1,7 +1,7 @@
 'use strict';
 
 // const serverPath = 'weixin/nurse/'
-const serverPath = 'testNew/'
+const serverPath = 'Ytest/'
 // const serverPath = 'apkTest/'
 // const serverPath = ''
 

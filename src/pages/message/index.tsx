@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 // import Title, { alarmType } from "../../phoneComponents/title/Title";
-import { Pagination } from 'antd';
+
 import "./index.scss";
 
 // import Bottom from "../../phoneComponents/bottom/Bottom";
@@ -15,7 +15,10 @@ import { instance } from "@/api/api";
 import Title from "@/components/title/Title";
 import Bottom from "@/components/bottom/Bottom";
 
-
+import type { DatePickerProps } from 'antd';
+import { DatePicker, Space, Pagination } from 'antd';
+import { DownOutlined } from "@ant-design/icons";
+import fang from '../../assets/images/容器@2x.png'
 export interface message {
   roomNum: string;
   patientName: string;
@@ -177,11 +180,34 @@ export default function Message() {
     setTotal(total)
   }
 
+  const onChangeSpace: DatePickerProps['onChange'] = (date, dateString) => {
+    console.log(date, dateString);
+  };
   return (
     <div className="messagePage sy">
-      <Title titleChangeGetMessage={titleChangeGetMessage} />
+      <div className="messageTitle">
+        <div className="messageTitlediv1">
+          <p> 消息</p>
+        </div>
+        <div className="messageTitlediv2">
+          <Space direction="vertical">
+            <DatePicker onChange={onChangeSpace} />
+            <div>
+              <p>姓名 <DownOutlined /></p>
+              <input type="text" />
+              <img src={fang} alt="" />
+            </div>
+          </Space>
+        </div>
+      </div>
       <div className="messageMain">
-        <div className="messageContentBox">
+        <div className="h-[]">
+
+        </div>
+        <div>
+
+        </div>
+        {/* <div className="messageContentBox">
           {messages.map((message, index) => {
             return (
               <div key={index} className="messageItem">
@@ -203,7 +229,7 @@ export default function Message() {
           })}
           <div style={{ position: 'absolute', left: '1.39rem', bottom: '1.39rem' }}>{total}条</div>
           <Pagination className="pagination" defaultCurrent={1} onChange={onChange} showSizeChanger={false} total={Math.floor(total)} />
-        </div>
+        </div> */}
       </div>
       {<Bottom />}
     </div>

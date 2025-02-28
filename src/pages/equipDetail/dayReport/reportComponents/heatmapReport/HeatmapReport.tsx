@@ -179,7 +179,7 @@ function HeatmapReport(props: heatmapProps) {
                             {
                                 [...heatmapColor].reverse().map((a, index) => {
                                     return (
-                                        <div style={{ width: '0.3rem', height: '2rem', backgroundColor: a, marginBottom: '0.48rem' }}></div>
+                                        <div style={{ width: '0.3rem', height: '1rem', backgroundColor: a, marginBottom: '0.48rem' }}></div>
                                     )
                                 })
                             }
@@ -191,7 +191,7 @@ function HeatmapReport(props: heatmapProps) {
                                 width
                                 // width={isMobile ? true : false} height={isMobile ?false  : true} 
                                 /> : ''}
-
+                                
                             </NoRender></div>
                         {/* <Heatmap ref={heatMapRef} data={heatmapData} type={'large'} sensorName={props.sensorName} /> */}
                     </div></div>

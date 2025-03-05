@@ -79,3 +79,16 @@ export async function fetchData(options: any) {
   const res = await instance(options)
   return res
 }
+
+
+export const messagePageAdded=async(key:any,addshuju: any, addResponseTime: string)=>{
+  return instance({
+    method: "POST",
+    url: "https://sensor.bodyta.com/sleep/log/addAlarmConfirmer",
+    data: {
+      logid:key,
+      confirmer:addshuju,
+      confirmTime:addResponseTime
+    },
+  })
+}

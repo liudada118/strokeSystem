@@ -48,13 +48,13 @@ interface bottomProps {
 
 const mobileBottomArr = [
   { name: '首页', route: '/', unImg: home, img: onHome },
-  { name: '提醒', route: '/message', unImg: messageIcon, img: onMessage },
+  { name: '消息', route: '/message', unImg: messageIcon, img: onMessage },
   { name: '设置', route: '/setting', unImg: set, img: onSet }
 ]
 
 const pcBottomArr = [
   { name: '首页', route: '/', unImg: unhomepc, img: homepc },
-  { name: '提醒', route: '/message', unImg: unmessagepc, img: messagepc },
+  { name: '消息', route: '/message', unImg: unmessagepc, img: messagepc },
   { name: '设置', route: '/setting', unImg: unsetpc, img: setpc }
 ]
 
@@ -64,7 +64,7 @@ let bottomArr = mobileBottomArr
 const Bottom = forwardRef((props: bottomProps, refs: any) => {
   const [macType, setMacType] = useState('')
 
-  const dispatch:any = useDispatch()
+  const dispatch: any = useDispatch()
   /**
    * 
    * @param value 用户输入的设备后六位
@@ -279,7 +279,7 @@ const Bottom = forwardRef((props: bottomProps, refs: any) => {
    * @param res 服务器返回
    * 绑定设备成功或者失败之后的操作 
    */
-  const addEquipResule = (res : any) => {
+  const addEquipResule = (res: any) => {
     if (res.data.code == 0) {
       message.success('添加成功')
 
@@ -475,7 +475,10 @@ const Bottom = forwardRef((props: bottomProps, refs: any) => {
       img: img
     })
   }
+  const onMessage = (val: any) => {
+    console.log(val, '................................................................onClick={(a) => onMessage(a)}');
 
+  }
   return (
     <div className="bottomContent">
       <Modal title="为新设备添加信息" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
@@ -554,7 +557,7 @@ const Bottom = forwardRef((props: bottomProps, refs: any) => {
         </div>
       </Modal>
       <div className="bottomItemContent">
-        {!isMobile ? <div className="bottomItem">  { <img style={{ width: '2rem', borderRadius: '3px' }} src={headImg ? headImg : logo} alt="" onClick={() => { navigate('/') }} /> }</div> : ''}
+        {!isMobile ? <div className="bottomItem">  {<img style={{ width: '2rem', borderRadius: '3px' }} src={headImg ? headImg : logo} alt="" onClick={() => { navigate('/') }} />}</div> : ''}
         {bottomArr.map((a, index) => <div className={`bottomItem ${onIndex == index ? 'bottonSelectItem' : ''} ${!isMobile && onIndex == index ? 'selectItempc' : ''}`} onClick={() => {
           navigate(a.route)
           setIndex(index)
@@ -577,7 +580,7 @@ const Bottom = forwardRef((props: bottomProps, refs: any) => {
             <img className='setImg' style={{ display: onIndex == index ? 'unset' : 'none' }} src={a.img} alt="" />
             <img className='setImg' style={{ display: onIndex == index ? 'none' : 'unset' }} src={a.unImg} alt="" />
           </div>
-          <div className="bottomName">{a.name}</div>
+          <div className="bottomName" onClick={(index) => onMessage(index)}>{a.name}</div>
         </div>)}
       </div>
       <div className={`bottomAdd ${!isMobile ? 'bottomItem' : ''}`} onClick={showModal}>

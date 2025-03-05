@@ -42,7 +42,7 @@ const CommonFormModal: (props: CommonFormModalProps) => React.JSX.Element = (pro
     const [timeStart, setTimeStart] = useState<number>(0)
     const [timeEnd, setTimeEnd] = useState<number>(0)
     const [spinning, setSpinning] = React.useState<boolean>(false);
-
+    console.log(onFinish, formList, 'onFinishonFinishonFinishonFinishonFinishonFinish');
     const handleFinish = (values: any) => {
 
         const _values = { ...values }
@@ -85,6 +85,7 @@ const CommonFormModal: (props: CommonFormModalProps) => React.JSX.Element = (pro
         value: `${item}次`
     }))
 
+
     const renderFormItem = (list: CommonFormItem[] | ComplexForm[]) => {
         return (
             <Fragment>
@@ -113,7 +114,8 @@ const CommonFormModal: (props: CommonFormModalProps) => React.JSX.Element = (pro
                             return <></>
                         case 'INPUT':
                             return (
-                                <Form.Item label={item.label} name={item.key} key={item.key}>
+                                <Form.Item label={item.label} name={item.value} key={item.value}>
+
                                     <Input value={item.value} placeholder={(item as InputForm).placeholder} />
                                 </Form.Item>
                             )

@@ -38,7 +38,6 @@ export const HomeRightTitle = () => {
             fn()
         }, ms);
     }
-
     return (
         <div className="searchInput">
             <Input

@@ -210,6 +210,7 @@ const UserInfoCard: (props: UserInfoCardProps) => React.JSX.Element = (props) =>
 
     const [isModifying, setIsModifying] = useState<boolean>(isMobile)
     const [userInfoOpen, setUserInfoOpen] = useState<boolean>(false)
+
     const [userExtraInfo, setUserExtraInfo] = useState<any>({
         name: '老陈',
         number: '01F',
@@ -237,6 +238,8 @@ const UserInfoCard: (props: UserInfoCardProps) => React.JSX.Element = (props) =>
     })
 
     const handleUserInfoForm = (values: any) => {
+
+
         setUserInfoChange(true)
         console.log(values, 'values')
         const newObj = { ...values }

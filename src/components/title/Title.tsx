@@ -30,7 +30,8 @@ interface titleProps {
   setTotal?: Function
   getEquipList?: Function
   getSelectEquipList?: Function
-  titleChangeGetMessage ?: Function
+  titleChangeGetMessage?: Function
+
 }
 
 const format = 'HH:mm';
@@ -39,16 +40,16 @@ const format = 'HH:mm';
 
 const Title = React.forwardRef((props: titleProps, refs) => {
 
-  const { setMessages,titleChangeGetMessage } = props
+  const { setMessages, titleChangeGetMessage,  } = props
 
   const dispatch: any = useDispatch()
   const status = useSelector((state: any) => state.equip.status)
   const permissionStatus = useSelector((state: any) => state.premission.status)
 
-  console.log(permissionStatus , status)
+  console.log(permissionStatus, status)
 
   useEffect(() => {
-    if (permissionStatus === 'idle' || permissionStatus === 'failed' ) {
+    if (permissionStatus === 'idle' || permissionStatus === 'failed') {
       dispatch(fetchPermission())
     }
   }, [dispatch, permissionStatus])

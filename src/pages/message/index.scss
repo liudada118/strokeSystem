@@ -1,253 +1,101 @@
 @import '../../variable';
-
-// .messagePage {
-//     background-color: #F5F6F7;
-//     min-height: 100vh;
-//     display: flex;
-//     flex-direction: column;
-
-//     .messageMain {
-//         // padding: 0 25rem;
-//         display: flex;
-//         flex-direction: column;
-//         flex: 1;
-//         margin-top: 8.25rem;
-//     }
-
-//     .messageTitle {
-//         margin-top: 1.4rem;
-//         margin-bottom: 1.25rem;
-//     }
-
-//     .messageContentBox {
-//         flex: 1;
-//         background-color: #fff;
-//         // border-radius: 0.83rem;
-//         margin-bottom: 7.78rem;
-//         // padding: 1.67rem 1.39rem;
-//         position: relative;
-//         padding-bottom: 5rem;
-//     }
-
-//     .pagination {
-//         position: absolute;
-//         bottom: 1.39rem;
-//         right: 1.39rem;
-//     }
-// }
-
-// .messageImg {
-//     width: 3.84rem;
-//     height: 3.84rem;
-//     border-radius: 0.48rem;
-//     margin-right: 0.72rem;
-// }
-
-// .messageItem {
-//     display: flex;
-//     justify-content: space-between;
-//     padding: 0.96rem 1.2rem;
-//     border-bottom: 1px solid #eee;
-// }
-
-
-// .messageDate {
-//     color: #B0B3B8;
-// }
-
-// .messageInfo {
-//     font-size: 1.04rem;
-//     font-weight: 600;
-//     color: #000000;
-//     line-height: 1.46rem;
-//     margin-bottom: 0.28rem;
-// }
-
-// .messageMore {
-//     font-size: 0.63rem;
-//     font-weight: 400;
-//     color: #B0B3B8;
-//     line-height: 0.94rem;
-//     cursor: pointer;
-// }
-
-// .messageIcon {
-//     width: 0.42rem;
-//     height: 0.42rem;
-//     background-color: #FE542B;
-//     border-radius: 0.21rem;
-//     margin-right: 0.36rem;
-// }
-
-// .messageInfos {
-//     display: flex;
-//     justify-content: space-between;
-// }
-
-// .messageInfo {
-//     display: flex;
-//     align-items: center;
-// }
-
-// .messageRoom {
-//     margin-right: 0.36rem;
-//     font-size: 1.28rem;
-//     // font-family: PingFangSC-Regular, PingFang SC;
-//     font-weight: 400;
-//     color: #000000;
-//     line-height: 1.15rem;
-// }
-
-// .messageName {
-//     font-size: 1.28rem;
-//     // font-family: PingFangSC-Regular, PingFang SC;
-//     font-weight: 400;
-//     color: #000000;
-//     line-height: 1.15rem;
-// }
-
-// .messageHint {
-//     // margin-left: 0.78rem;
-//     // font-size: 0.63rem;
-//     font-family: PingFangSC-Regular, PingFang SC;
-//     font-weight: 400;
-//     color: #B0B3B8;
-//     line-height: 0.94rem;
-// }
-
-// @media screen and (min-width: $phoneWidth) and (max-width: $PadWidth) {
-//     .messageHint {
-//         font-size: 1rem;
-//     }
-// }
-
-// @media screen and (min-width: $PadWidth) {
-//     .messagePage {
-//         .messageMain {
-//             margin-left: 7.41rem;
-//             margin-top: 4.25rem;
-//             padding: 3.7rem 10rem;
-//             background-color: #F5F6F7;
-//         }
-//         .messageContentBox{
-//             padding: 1.85rem;
-//             border-radius: 1.57rem;
-//             background: #fafafa;
-//             padding-bottom: 5rem;
-//             .messageItem{
-//                 background: #fff;
-//             }
-            
-//         }
-//     }
-
-// }
-
-    @media (max-width: 768px) {
-      .table-container {
-        padding-left: 0;
-      }
-      .pagination-container {
-        flex-direction: column;
-        align-items: center;
-        height: auto;
-      }
-    }
-  
-
 .messagePage{
-
-    height: 100vh;
+    box-sizing: border-box; 
     display: flex;
     flex-direction: column;
     .messageTitle{
      left: 44px;
-    
-     width: 100%;
      height: 60px;
      opacity: 1;
-
-/* 自动布局 */
-    display: flex;
-justify-content: space-between;
-
-background: #FFFFFF;
-box-shadow: 0px 4px 10px 1px rgba(229, 229, 229, 0.5);
-margin-bottom: 0;
-.messageTitlediv1{
-
-    width: 300px;
-    height: 60px;
-    line-height: 100%;
-    /* 蔡司UI主色 */
-    color: #0072EF;
-    p{
-    line-height: 60px;
-    opacity: 1;
-    margin-left: 100px;
-    font-family: PingFang SC;
-    font-size: 20px;
-    font-weight: 600;
-    // line-height: normal;
-    letter-spacing: 0em;
-    margin-left: 60px;
-    font-variation-settings: "opsz" auto;
-     
-    }
-}
-.messageTitlediv2{
-    width: 800px;
-    height: 60px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    .messageTitlediv2_you{
-        width: 296px;
-        height: 39px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: #333333;
-        border-radius: 4px;
-        border: solid 1px #d9d9d9;
-        font-size: 14px;
-        margin-left: 20px;
-        .messageTitlediv2_you_inp{
-            width: 220px;
-            height: 30px;
-            border: none;
-            padding-left: 10px;
-            font-size: 14px;
-            outline: none;
-            box-shadow: none;
-        }
-    }
-    // margin-right: 10px;
-}
+     display: flex;
+     justify-content: space-between;
+     background: #FFFFFF;
+     box-shadow: 0px 4px 10px 1px rgba(229, 229, 229, 0.5);
+     margin-bottom: 0;
     }
     .messageMain{
         width: 100%;
         display: flex;
         flex-direction: column;
-        height: 948px;
         background: #F2F5F8;
+        box-sizing: border-box; 
+        .messagetitle{
+            width: 100%;
+            height: 6rem;
+            padding-top: 3.3rem;
+            background: #F2F5F8;
+            .messageTitleBtn{
+                margin-left: 5.8rem;
+                height: 6rem;
+              
+                display: flex;
+                align-items: center;
+                background: #F2F5F8;
+            }
+        }
+        .messageMainData{
+            width: 100%;
+          padding-top: 3.3rem;
+        
+          .messageMainDataTitle{
+            display: flex;
+            justify-content: space-between;
+            margin-left: 1.7rem;
+            align-items: center;
+            .messageMainDataTitlediv{
+                display: flex;
+                margin-top: 1.5rem;
+                margin-left: 0.4rem;
+            }
+            .messageMainDatadiv{
+                height: 34rem;
+                background: #fff;
+                margin-left: 5.8rem;
+                width: 100%;
+                          }
+          }
+
+        }
     }
+}
+.messageTitle{
+    width: 100%;
+    height: 115px;
+  
+    background: #F2F5F8;
+    padding-top: 3.3rem;
+}
+.messageTitleName{
+    width: 70%;
+    padding-left: 76px;
+    height: 115px;
+    margin-left: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #F2F5F8;
 }
 .on{
     background: #0072EF !important;
     color: #fff !important;
 }
-
-
-
-
-
-
-  .bun:nth-child(2){
-
-
+.bun:nth-child(2){
     width: 1px;
     height: 45px;
    border: 1px solid #A4B0BC;
    padding: 0!important;
+  }
+  .footer{
+    height: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .footerDiv1{
+    width: 5rem;
+    margin-right: 1.8rem;
+    font-family: 'PingFang SC';
+    color: #0072EF;
+    font-size: 1rem;
+
   }

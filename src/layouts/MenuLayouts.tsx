@@ -18,7 +18,7 @@ const MenuLayouts: (props: MenuLayoutProps) => React.JSX.Element = (props) => {
     // const status = useSelector()
 
     const { children, isMobile } = props
-    if (isMobile) return  <div className="bg-[#f4f5f6]">{children}</div>
+    if (isMobile) return <div className="bg-[#f4f5f6]">{children}</div>
 
     return (
         // <div className='flex'>

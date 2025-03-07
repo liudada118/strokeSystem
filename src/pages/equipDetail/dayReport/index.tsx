@@ -408,7 +408,7 @@ export default function DayReport() {
     });
   }
 
-  function initReport(data:any){
+  function initReport(data: any) {
     if (sensorName == 'KgvDXUvdEs9M9AEQDcVc') {
       // fakeData.bed.report
       data = fakeData.bed.report
@@ -722,7 +722,7 @@ export default function DayReport() {
 
               }} style={{ color: dayDate >= new Date().setHours(0, 0, 0, 0) ? '#D8D8D8' : 'unset' }} />
             </div>
-            <DatePicker placement='bottomLeft' cellRender={cellRender} inputReadOnly
+            <DatePicker allowClear={false} placement='bottomLeft' cellRender={cellRender} inputReadOnly
 
               onClick={() => {
                 setDateLocation()
@@ -754,7 +754,7 @@ export default function DayReport() {
       </div>
       <div className="dayContent">
         {!dayReport ? <div className="reprotMask">
-          <div style={{}}>
+          <div className="reprotMaskdiv ">
             暂无报告,睡一晚再来看看吧
           </div>
 

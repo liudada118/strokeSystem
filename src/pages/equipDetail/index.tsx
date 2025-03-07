@@ -194,10 +194,10 @@ const EquipDetail = () => {
                 theme={TabTheme}
             >
                 <div className='flex ml-[15px] h-[calc(100vh-62px)] overflow-hidden'>
-                    <div className='w-[24%] mr-[15px]'>
+                    <div className='w-[24%] pt-[1rem] mr-[15px]'>
                         <UserInfoCard />
                     </div>
-                    <div className='w-[calc(76%-30px)] h-full'>
+                    <div className='w-[calc(76%-30px)] pt-[1rem] h-full'>
                         <Tabs
                             className={styles.tabContent}
                             defaultActiveKey={activeKey}
@@ -276,13 +276,13 @@ function Provide() {
             if (flipbodyCount) {
                 setNurseFormValue({
                     timeRangeA: `${flipbodyCount}次`,
-                    timeIntervalA: `${flipbodyTime/60}小时`,
+                    timeIntervalA: `${flipbodyTime / 60}小时`,
                     switchA: true,
                 })
             } else {
                 setNurseFormValue({
                     timeRangeA: `${0}次`,
-                    timeIntervalA: `${flipbodyTime/60}小时`,
+                    timeIntervalA: `${flipbodyTime / 60}小时`,
                     switchA: false,
                 })
             }
@@ -295,7 +295,7 @@ function Provide() {
         console.log(newValue)
         const obj = {
             flipbodyCount: parseInt(newValue.timeRangeA),
-            flipbodyTime: parseInt(newValue.timeIntervalA)*60
+            flipbodyTime: parseInt(newValue.timeIntervalA) * 60
         }
 
         // 开关关闭后  设置次数为0

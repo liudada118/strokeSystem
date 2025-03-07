@@ -32,8 +32,8 @@ export default function VoicePremission() {
 
     }
     return (
-        <div>
-            <Modal title="是否允许网页发出声音" okText="允许" cancelText="不允许" open={isVoiceModalOpen} onOk={handleVoiceOk} onCancel={handleVoiceCancel}>
+        <div >
+            <Modal zIndex={100000000} title="是否允许网页发出声音" okText="允许" cancelText="不允许" open={isVoiceModalOpen} onOk={handleVoiceOk} onCancel={handleVoiceCancel}>
 
             </Modal>
 

@@ -481,7 +481,7 @@ const Bottom = forwardRef((props: bottomProps, refs: any) => {
   }
   return (
     <div className="bottomContent">
-      <Modal title="为新设备添加信息" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+      <Modal title="为新设备添加信息" okText="确定" cancelText="取消" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
         <div style={{ display: 'flex', alignItems: 'center' }} className='deviceItem'><div style={{ width: '4rem', }}> 头像:</div>
           <ImgUpload img={userinfo.img} finish={loadImg} />
         </div>

@@ -355,9 +355,9 @@
     background-color: rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(3px);
     width: 100%;
-    height: calc(100% - 11.82rem);
+    height: calc(100% - 7rem)!important;
     position: fixed;
-    left: 0;
+    // left: 0;
     top: 11.82rem;
     z-index: 1000;
     display: flex;
@@ -397,8 +397,8 @@
     }
 
     .reprotMask {
-        top: 9.1rem;
-        height: calc(100% - 9.1rem);
+        top:7rem;
+        height: calc(100% - 7rem);
     }
 
 
@@ -789,8 +789,8 @@
     }
 
     .reprotMask {
-        top: 11rem;
-        height: calc(100% - 11rem);
+        top: 16rem;
+        height: calc(100% - 16rem);
     }
 
     .dayContent {

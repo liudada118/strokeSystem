@@ -94,13 +94,13 @@ export const PcLeftTitle = (props: any) => {
 
 
 export const TitleRightInfo = (props: any) => {
-    const {setMessages,titleChangeGetMessage} = props
+    const { setMessages, titleChangeGetMessage,  } = props
     const phone = localStorage.getItem('phone')
     if (props.path == 'home') {
         return <HomeRightTitle />
     }
     else if (props.path == 'message') {
-        return <MessageRightTitle titleChangeGetMessage={titleChangeGetMessage}/>
+        return <MessageRightTitle  titleChangeGetMessage={titleChangeGetMessage} />
     } else if (props.path == 'setting') {
         return <div className="titleRight">{phone}</div>
     }

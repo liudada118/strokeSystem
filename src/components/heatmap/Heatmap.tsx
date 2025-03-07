@@ -705,8 +705,8 @@ const Heatmap = React.forwardRef((props: any, refs) => {
     }, [props.sensorName]);
 
     return (
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', backgroundColor: '#000',height : props.height ? '100%' : 'unset' , width : props.width ? props.width : 'unset' }}>
-            <canvas style={{ height : props.height ? '100%' : 'unset',width : props.width ? '100%' : 'unset' , flex : 1 }} ref={canvasRef} id={`heatmapcanvas${props.index ? props.index : ''}`} ></canvas>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', backgroundColor: '#000', height: props.height ? '100%' : 'unset', width: props.width ? props.width : 'unset' }}>
+            <canvas style={{ height: props.height ? '100%' : 'unset', width: props.width ? '100%' : 'unset', flex: 1 }} ref={canvasRef} id={`heatmapcanvas${props.index ? props.index : ''}`} ></canvas>
             {
                 circleArr && circleArr[0] && Object.keys(circleArr[0]).length ? circleArr?.map((a, indexs) => {
                     return (

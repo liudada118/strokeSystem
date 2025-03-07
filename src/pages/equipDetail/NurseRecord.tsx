@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
-import { Button, Checkbox, Drawer, Form, Image, Input, Radio, Table, Upload, Typography, message } from "antd";
+import React, { useContext, useEffect, useRef, useState } from "react";
+import { Button, Checkbox, Drawer, Form, Image, Input, Radio, Table, Upload, Typography, message, TimePicker } from "antd";
 import CommonTitle from "../../components/CommonTitle";
 import photo from "../../assets/images/photo.png";
 import expand_img from '../../assets/images/expand.png'
@@ -12,6 +12,9 @@ import { useSelector } from "react-redux";
 import { tokenSelect } from "@/redux/token/tokenSlice";
 import { PreViewConfig } from "./mobileEdit/NurseEdit";
 import { NurseTable, templateToData } from "../setting/nurseSetting/NurseSetting";
+import { DataContext } from ".";
+import { TimePickerProps } from "antd/lib";
+import ImgUpload from "@/components/imgUpload/ImgUpload";
 
 const formMap: { [key: string]: string } = {
     state_picture: '记录皮肤状况',
@@ -225,36 +228,68 @@ const NurseRecord: (props: NurseRecordProps) => React.JSX.Element = (props) => {
     }, [])
 
     const [templateId, setTemplateId] = useState(0)
-    const [nurseTemplate, setNurseTemplate] = useState<any>([])
+    // const [nursePersonTemplate, setNursePersonTemplate] = useState<any>([])
+
+    const context = useContext(DataContext)
+    const { nursePersonTemplate, setNursePersonTemplate, getPersonTemplate } = context
 
     useEffect(() => {
-        getNurseTemplate()
+        getPersonTemplate()
     }, [])
 
     /**
      * 获取护理模板
      */
-    const getNurseTemplate = () => {
-        Instancercv({
-            method: "get",
-            url: "/nursing/getNurseTemplateData",
-            headers: {
-                "content-type": "multipart/form-data",
-                "token": token
-            },
-        }).then((res) => {
-            console.log(res)
-            const template = res.data.data[0]
-            if(template){
-                setTemplateId(template.id)
-                console.log(template.template)
-                const data = templateToData(template.template)
-                // console.log(data)
-                setNurseTemplate(data)
-            }
-            
-        })
-    }
+    // const getNurseTemplate = () => {
+    //     Instancercv({
+    //         method: "get",
+    //         url: "/nursing/getNurseTemplateData",
+    //         headers: {
+    //             "content-type": "multipart/form-data",
+    //             "token": token
+    //         },
+    //     }).then((res) => {
+    //         console.log(res)
+    //         const template = res.data.data[0]
+    //         if(template){
+    //             setTemplateId(template.id)
+    //             console.log(template.template)
+    //             const data = templateToData(template.template)
+    //             // console.log(data)
+    //             setNurseTemplate(data)
+    //         }
+
+    //     })
+    // }
+
+    // const getPersonTemplate = () => {
+    //     Instancercv({
+    //         method: "get",
+    //         url: "/nursing/getNursingConfig",
+    //         headers: {
+    //             "content-type": "multipart/form-data",
+    //             "token": token
+    //         },
+    //         params: {
+    //             deviceId: sensorName
+    //         }
+    //     }).then((res) => {
+    //         const nursingConfig = JSON.parse(res.data.nursingConfig)
+    //         setNursePersonTemplate(nursingConfig)
+    //     })
+    // }
+
+    const format = 'HH:mm';
+    const [templateTime, setTemplateTime] = useState("")
+    const onTimeChange: TimePickerProps['onChange'] = (time, timeString) => {
+        console.log(time, timeString);
+        if (typeof timeString == 'string') {
+            const h = parseInt(timeString.split(':')[0])
+            const m = parseInt(timeString.split(':')[1])
+            setTemplateTime(`${h * 60 * 60 * 1000 + m * 60 * 1000}`)
+        }
+    };
+    const [img, setImg] = useState('')
 
     return (
         <div className='w-[calc(30%-10px)] md:w-full'>
@@ -276,49 +311,23 @@ const NurseRecord: (props: NurseRecordProps) => React.JSX.Element = (props) => {
                         }}
                         open={recordOpen}>
                         <Form form={form} onFinish={handleRecordForm}>
-                            {/* <CommonTitle name='记录皮肤状况（上传图片）' type='rect' />
-
-                            <Form.Item name="state_picture" valuePropName="fileList" getValueFromEvent={normFile}>
-                                <Upload action="/upload.do" listType="picture-card">
-                                    <button style={{ border: 0, background: 'none' }} type="button">
-                                        <img src={photo} alt='' />
-                                    </button>
-                                </Upload>
-                            </Form.Item>
-                            <CommonTitle name='助餐（单选）' type='rect' />
-
-                            <Form.Item name='buffet'>
-                                <Radio.Group>
-                                    <Radio value="已完成" className='text-base'> 已完成 </Radio>
-                                    <Radio value="未完成" className='text-base'> 未完成 </Radio>
-                                </Radio.Group>
-                            </Form.Item>
-                            <CommonTitle name='综合项（多选）' type='rect' />
-
-                            <Form.Item name="integrated">
-                                <Checkbox className='text-base' indeterminate={indeterminate} onChange={onCheckAllChange} checked={checkAll}>
-                                    全选
-                                </Checkbox>
-                                <Checkbox.Group className={['flex flex-col', styles.pcCheckoutValue].join(' ')} options={plainOptions} value={checkedList} onChange={onChange} />
-                            </Form.Item>
-                            <CommonTitle name='今日老人情况（输入）' type='rect' />
-                            <Form.Item name="statement">
-
-                                <Input.TextArea className='bg-[#ECF0F4] border-none text-base' placeholder='请输入文字' />
-                            </Form.Item> */}
-
                             <div>
                                 护理项目
                                 <Input />
                             </div>
                             <div>
                                 完成时间
-                                
+                                <TimePicker onChange={onTimeChange} defaultValue={dayjs('12:08', format)} format={format} />
                             </div>
-                            <div>上传图片</div>
-                            <div>填写备注</div>
+                            <div>
+                                上传图片
+                                <ImgUpload finish={setImg} img={img} />
+                            </div>
+                            <div>
+                                填写备注
+                                <Input />
+                            </div>
 
-                            {/* <PreViewConfig display={true} nurseConfig={nurseConfig} setNurseConfig={setNurseConfig} /> */}
                             <Form.Item className='flex justify-around w-full'>
                                 <Button color="primary" variant="outlined" className='w-[8rem] h-[2.4rem] mr-[10px] text-sm' onClick={() => {
                                     form.resetFields()
@@ -328,7 +337,7 @@ const NurseRecord: (props: NurseRecordProps) => React.JSX.Element = (props) => {
                                     取消
                                 </Button>
                                 <Button type="primary" onClick={() => {
-                                    addNurseReport()
+                                    // addNurseReport()
                                 }} className='w-[8rem] h-[2.4rem] text-sm'>
                                     保存
                                 </Button>
@@ -343,7 +352,7 @@ const NurseRecord: (props: NurseRecordProps) => React.JSX.Element = (props) => {
                     <Button className='w-full h-[5vh] mb-[0.5rem] text-base' type='primary' onClick={() => navigate('/record', { state: { sensorName } })}>记录护理项目</Button>
                 )}
                 <Table rowClassName='nurseTableRow' id='nurseTable' rowKey="number" columns={nurseTableColumns} dataSource={dataSource} pagination={false} /> */}
-                <NurseTable type='user' getNurseTemplate={getNurseTemplate} templateId={templateId} data={nurseTemplate} />
+                <NurseTable type='user' getNurseTemplate={getPersonTemplate} templateId={templateId} data={nursePersonTemplate} />
             </div>
         </div>
     )

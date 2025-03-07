@@ -154,7 +154,7 @@ export default forwardRef((props: any, refs: any) => {
   const initPage = ({ circleArr, resSleep, timer, wsPointData, type }: any) => {
 
 
-    console.log(valueArr)
+
     // 在床
     if (valueArrRef.current.onbedState) {
       if (heatMapRef.current) heatMapRef.current.setCircleArr(circleArr)
@@ -174,7 +174,7 @@ export default forwardRef((props: any, refs: any) => {
    */
   const initRealtimePage = ({ heart, rate, stroke, bodyMove, onBedTime, onbedState }: any) => {
     setValueArr({ heart, rate, stroke, bodyMove, onBedTime, onbedState })
-    console.log(valueArr)
+   
     // globalOnbedState = onbedState
     if (moveRef.current) moveRef.current.handChangeChart({ ydata: bodyMove })
   }

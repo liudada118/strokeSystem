@@ -45,7 +45,6 @@ const Title = React.forwardRef((props: titleProps, refs) => {
   const status = useSelector((state: any) => state.equip.status)
   const permissionStatus = useSelector((state: any) => state.premission.status)
 
-  console.log(permissionStatus , status)
 
   useEffect(() => {
     if (permissionStatus === 'idle' || permissionStatus === 'failed' ) {

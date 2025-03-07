@@ -686,7 +686,7 @@ const SettingMoDal = () => {
                 </div> */}
 
 
-                <NurseSetting type="user" />
+                <NurseSetting type="person" />
             </Modal>
             <div onClick={() => { setOpen(true) }} className='bg-[#fff] mb-[10px] p-[10px] px-[0.8rem] flex justify-between items-center'>
                 <div>护理配置</div>

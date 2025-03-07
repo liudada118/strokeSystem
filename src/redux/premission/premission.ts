@@ -55,7 +55,7 @@ const premissionSlice = createSlice({
         })
         builder.addCase(fetchPermission.fulfilled, (state, action) => {
             state.status = 'succeeded'
-            console.log(action.payload, 'succeeded')
+           
             const res = action.payload
             if (res.code == 500) {
 

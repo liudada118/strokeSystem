@@ -421,7 +421,7 @@ export default function Message() {
     })
   }
   return (
-
+    <>
     <div className="messagePage sy" style={{ marginLeft: '4.3rem' }}>
       <div className="messageTitle">
         <div className="messageTitlediv1">
@@ -532,7 +532,10 @@ export default function Message() {
           })}
         </div> */}
       </div>
-      {<Bottom />}
+      
     </div >
+    
+    <Bottom />
+    </>
   );
 }

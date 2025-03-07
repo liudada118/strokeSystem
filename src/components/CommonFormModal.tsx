@@ -42,7 +42,7 @@ const CommonFormModal: (props: CommonFormModalProps) => React.JSX.Element = (pro
     const [timeStart, setTimeStart] = useState<number>(0)
     const [timeEnd, setTimeEnd] = useState<number>(0)
     const [spinning, setSpinning] = React.useState<boolean>(false);
-    console.log(onFinish, formList, 'onFinishonFinishonFinishonFinishonFinishonFinish');
+   
     const handleFinish = (values: any) => {
 
         const _values = { ...values }

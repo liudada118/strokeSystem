@@ -276,13 +276,13 @@ function Provide() {
             if (flipbodyCount) {
                 setNurseFormValue({
                     timeRangeA: `${flipbodyCount}次`,
-                    timeIntervalA: `${flipbodyTime/60}小时`,
+                    timeIntervalA: `${flipbodyTime / 60}小时`,
                     switchA: true,
                 })
             } else {
                 setNurseFormValue({
                     timeRangeA: `${0}次`,
-                    timeIntervalA: `${flipbodyTime/60}小时`,
+                    timeIntervalA: `${flipbodyTime / 60}小时`,
                     switchA: false,
                 })
             }
@@ -295,7 +295,7 @@ function Provide() {
         console.log(newValue)
         const obj = {
             flipbodyCount: parseInt(newValue.timeRangeA),
-            flipbodyTime: parseInt(newValue.timeIntervalA)*60
+            flipbodyTime: parseInt(newValue.timeIntervalA) * 60
         }
 
         // 开关关闭后  设置次数为0
@@ -365,13 +365,33 @@ function Provide() {
             message.error('服务器错误')
         });;
     }
+
+
+    const [nursePersonTemplate, setNursePersonTemplate] = useState<any>([])
+    const getPersonTemplate = () => {
+        Instancercv({
+            method: "get",
+            url: "/nursing/getNursingConfig",
+            headers: {
+                "content-type": "multipart/form-data",
+                "token": token
+            },
+            params: {
+                deviceId: id
+            }
+        }).then((res) => {
+            const nursingConfig = JSON.parse(res.data.nursingConfig)
+            setNursePersonTemplate(nursingConfig)
+        })
+    }
+
     return (
         <DataContext.Provider value={{
             nurseformValue, setNurseFormValue,
             submitCloud,
-            turnAroundPlan,
-            setTurnAroundPlan,
+            turnAroundPlan, setTurnAroundPlan,
             getNurse,
+            nursePersonTemplate , setNursePersonTemplate,getPersonTemplate
         }}>
             <EquipDetail />
         </DataContext.Provider>

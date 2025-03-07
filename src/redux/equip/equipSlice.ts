@@ -99,7 +99,7 @@ const equipSlice = createSlice({
         })
         builder.addCase(fetchEquips.fulfilled, (state, action) => {
             state.status = 'succeeded'
-            console.log(action.payload, 'succeeded')
+            
 
 
             const equipArr = action.payload.data.records

@@ -417,7 +417,7 @@ export default function Setting() {
       key: 'nurse',
     },
     {
-      label: '自定义选项',
+      label: '配置翻身流程',
       key: 'customOption',
     },
     {
@@ -1713,11 +1713,11 @@ export default function Setting() {
 
           <div className='setTitle' onClick={() => {
             navigate('/userInfo')
-          }}><div className="setTitleInfo"><img className='setTitleImg' src={setItem} alt="" /> 使用说明</div> <img src={goRight} alt="" /></div>
+          }}><div className="setTitleInfo flex"><img className='setTitleImg' src={setItem} alt="" /> 使用说明</div> <img src={goRight} alt="" /></div>
 
           <div className='setTitle' onClick={() => {
             navigate('/productInfo')
-          }}><div className="setTitleInfo"><img className='setTitleImg' src={setItem} alt="" /> 产品功能介绍</div> <img src={goRight} alt="" /></div>
+          }}><div className="setTitleInfo flex"><img className='setTitleImg' src={setItem} alt="" /> 产品功能介绍</div> <img src={goRight} alt="" /></div>
 
           {/* <div className='setTitle' onClick={() => {
             navigate('/nurseSetting')

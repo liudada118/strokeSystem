@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import dayjs, { Dayjs } from "dayjs";
 import { Button, Modal, Form, Input, Radio, TimePicker, Upload, Spin, message, Select } from 'antd'
 import photo from "../assets/images/photo.png";
@@ -35,14 +35,13 @@ interface CommonFormModalProps {
     formList: CommonFormItem[] | InputForm[] | ComplexForm[];
     title: string;
     onFinish: (values: any) => void;
-    imgChange?: Function
+    imgChange?: Function;
 }
 const CommonFormModal: (props: CommonFormModalProps) => React.JSX.Element = (props) => {
-    const { open, close, formList, title, onFinish, imgChange } = props
+    const { open, close, formList, title, onFinish, imgChange, } = props
     const [timeStart, setTimeStart] = useState<number>(0)
     const [timeEnd, setTimeEnd] = useState<number>(0)
     const [spinning, setSpinning] = React.useState<boolean>(false);
-    console.log(onFinish, formList, 'onFinishonFinishonFinishonFinishonFinishonFinish');
     const handleFinish = (values: any) => {
 
         const _values = { ...values }
@@ -79,14 +78,21 @@ const CommonFormModal: (props: CommonFormModalProps) => React.JSX.Element = (pro
     }
 
     const secondArr = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+    const [initialValues, setInitialValues] = useState<any>({})
 
     const secodnRateColumns = secondArr.map(item => ({
         label: `${item}次`,
         value: `${item}次`
     }))
+    useEffect(() => {
+        const initialValues = {} as any
+        formList.forEach((item) => {
+            initialValues[item.key] = item.value
+        })
+        setInitialValues(initialValues)
+    }, [formList])
 
-
-    const renderFormItem = (list: CommonFormItem[] | ComplexForm[]) => {
+    const renderFormItem = (list: CommonFormItem[] | ComplexForm[],) => {
         return (
             <Fragment>
                 <Spin className="spin" spinning={spinning} fullscreen />
@@ -114,8 +120,7 @@ const CommonFormModal: (props: CommonFormModalProps) => React.JSX.Element = (pro
                             return <></>
                         case 'INPUT':
                             return (
-                                <Form.Item label={item.label} name={item.value} key={item.value}>
-
+                                <Form.Item label={item.label} name={item.key} key={item.key}>
                                     <Input value={item.value} placeholder={(item as InputForm).placeholder} />
                                 </Form.Item>
                             )
@@ -210,7 +215,7 @@ const CommonFormModal: (props: CommonFormModalProps) => React.JSX.Element = (pro
             onOk={() => close()}
             onCancel={() => close()}
         >
-            <Form onFinish={handleFinish} className='pt-[25px] px-[15px]'>
+            <Form onFinish={handleFinish} initialValues={initialValues} className='pt-[25px] px-[15px]'>
                 {renderFormItem(formList)}
                 <Form.Item className='flex justify-end'>
                     <Button color="primary" variant="outlined" className='mr-[10px]' onClick={() => close()}>取消</Button>

@@ -71,7 +71,7 @@ const premissionSlice = createSlice({
             }
 
         })
-
+        
         builder.addCase(fetchPermission.rejected, (state, action) => {
             state.status = 'failed'
             state.error = action.error.message

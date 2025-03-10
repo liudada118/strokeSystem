@@ -168,9 +168,10 @@ export default function NurseProcesst(props: nurseProcessProps) {
       nowPos = resSleep
       startMatrix = [...wsPointData]
       if (turnOverRef.current) turnOverRef.current.renderHeatmapData({ wsPointData, circleArr })
-
+      console.log('获取初始矩阵成功');
     }).catch((err) => {
-      message.error('服务器错误')
+      console.log(err, '获取初始矩阵失败');
+      // message.error('服务器错误3')
     });;
   }
 
@@ -331,6 +332,7 @@ export default function NurseProcesst(props: nurseProcessProps) {
   }
 
   const turnType = useSelector(turnbodyFlagSelect)
+  console.log(isModalOpenSend,);
 
   return (
     <> {!isMobile ? '' :

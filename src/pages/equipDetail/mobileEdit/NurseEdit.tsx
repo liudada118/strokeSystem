@@ -178,7 +178,7 @@ export function NurseEdit() {
     }
 
     const saveNurseConfigToCloud = () => {
-        console.log(nurseConfig, nurseConfig + '')
+        console.log(nurseConfig, '99999999')
         Instancercv({
             method: "post",
             url: "/nursing/updateNursingConfig",
@@ -210,7 +210,7 @@ export function NurseEdit() {
             console.log(res.data, 'resssssssss')
             const nursingConfig = JSON.parse(res.data.nursingConfig)
             console.log(nursingConfig)
-            setNurseConfig(nursingConfig)
+            setNurseConfig(nursingConfig || [])
         })
     }, [])
 
@@ -278,7 +278,7 @@ export function NurseEdit() {
                     保存护理项
                 </div> : ''} */}
 
-                <DisplayEditNurseContent onFinish={onFinish} nurseConfig={nurseConfig} />
+                <DisplayEditNurseContent onFinish={onFinish} nurseConfig={nurseConfig} setNurseConfig={setNurseConfig} />
             </Popup>
             <div onClick={() => { setVisible1(true) }} className="w-full m-auto mt-[15px] py-[16px] bg-[#0072EF] flex items-center justify-center text-[#fff] text-base rounded-[10px]">
                 添加护理项
@@ -297,6 +297,7 @@ interface displayEditParams {
     onFinish: Function
     // setNurseConfig: Function
     nurseConfig: any
+    setNurseConfig: Function
 }
 
 export const DisplayEditNurseContent = (props: displayEditParams) => {
@@ -309,7 +310,7 @@ export const DisplayEditNurseContent = (props: displayEditParams) => {
     const [multipleItemArr, setMultipleItemArr] = useState([{ value: '', id: new Date().getTime() }])
 
     const saveNurseItem = () => {
-        console.log('保存')
+        console.log('保存', nurseConfig, singleItemArr)
         setSelectIndex(-1)
         setIsSelectChild(-1)
         // 用户自定义单选或者多选框
@@ -632,7 +633,7 @@ export function PreViewConfig(props: preViewConfigParam) {
     return (
         <div className={`${display ? '' : 'bg-[#f4f5f6]'} `}>
             {
-              nurseConfig&&  nurseConfig.map((item, index) => {
+                nurseConfig && nurseConfig.map((item, index) => {
                     return <RenderNurseConfig display={display} changeItemValue={changeItemValue} key={item.id} type={item.type} index={index} title={item.title} arr={item.arr} />
                 })
             }
@@ -775,12 +776,12 @@ function RenderNurseConfig({ type, index, title, arr, changeItemValue, display }
         case ConfigType.SINGLE:
             if (display) {
                 return <Card display={display} changeItemValue={changeItemValue} type={type} index={index} editItem={editItem} setEditItem={setEditItem} title={`${index + 1}.${title}(单选)`}>
-                    <Radio.Group onChange={onRadioChange} value={radioValue}>
+                    <Radio.Group onChange={onRadioChange} value={radioValue} key={index + 'radioGroup'}>
                         <Space className='w-full' direction="vertical">
                             {
                                 arr ? arr.map((item: nurseSelectItemParam, itemIndex: number) => {
                                     return (
-                                        <div className='relative flex'>
+                                        <div className='relative flex' key={itemIndex+'radio'}>
                                             <div className='flex'>
                                                 <Radio className='pl-[5px]' value={item.value}>{item.value}</Radio>
                                             </div>

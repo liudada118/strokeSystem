@@ -71,10 +71,12 @@ Instancercv.interceptors.response.use(function (response) {
 })
 
 export async function fetchDatarcv(options: any) {
-  const res = await Instancercv(options)
+  const res:any = await Instancercv(options)
   return res
 }
 
+// export default Instancercv
+export default instance
 export async function fetchData(options: any) {
   const res = await instance(options)
   return res

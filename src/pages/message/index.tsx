@@ -5,7 +5,7 @@ import { alarmValueToType } from "@/utils/messageInfo";
 import { instance } from "@/api/api";
 import Title from "@/components/title/Title";
 import Bottom from "@/components/bottom/Bottom";
-import type {  TableProps, GetProps, } from 'antd';
+import type {TableProps, GetProps} from 'antd';
 import { DatePicker, Pagination, Button, Table, } from 'antd';
 type RangePickerProps = GetProps<typeof DatePicker.RangePicker>;
 export interface message {
@@ -91,7 +91,7 @@ export default function Message() {
     });
   }
 
-  
+
   const getMessage = async (reqparms: any = {}) => {
 
     const param = {
@@ -170,7 +170,7 @@ export default function Message() {
     }, {
       id: 6,
       key: 'situp',
-      title: "起床提醒"
+      title: "坐起提醒"
     },
     {
       id: 7,
@@ -180,7 +180,7 @@ export default function Message() {
     {
       id: 8,
       key: 'otherReminders',
-      title: "其他提醒"
+      title: "其他提醒",
     },
   ]
   // 表格数据
@@ -234,7 +234,7 @@ export default function Message() {
       title: '序号',
       dataIndex: 'id',
       key: 'id',
-      render: (text) => <a>{text}</a>,
+      render: (text, record, index) => (params.pageNum - 1) * params.pageSize + index + 1,
     },
     {
       title: '房间号',

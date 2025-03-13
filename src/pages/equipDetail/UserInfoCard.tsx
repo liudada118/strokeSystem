@@ -1,4 +1,4 @@
-import React, { Fragment, memo, useState } from "react";
+import React, { Fragment, memo, useEffect, useState } from "react";
 import { List, Picker, Switch } from 'antd-mobile'
 import { Typography } from 'antd'
 import styles from './message.module.scss';
@@ -109,6 +109,7 @@ interface UserInfoCardProps {
 const UserInfoCard: (props: UserInfoCardProps) => React.JSX.Element = (props) => {
     const navigate = useNavigate();
     const { outer = false, isMobile = false, nurseformValue, submitCloud, setNurseFormValue } = props;
+    console.log(submitCloud, '........submitCloud........')
     const { sexFormat } = equipInfoFormatUtil
     const param = useParams()
     // console.log(param)
@@ -123,7 +124,7 @@ const UserInfoCard: (props: UserInfoCardProps) => React.JSX.Element = (props) =>
     const dispatch: any = useDispatch()
 
 
-    const equipInfo = useSelector(state => selectEquipBySensorname(state, sensorName))
+    const equipInfo = useSelector(state => selectEquipBySensorname(state, sensorName)) || {}
 
 
 
@@ -359,10 +360,15 @@ const UserInfoCard: (props: UserInfoCardProps) => React.JSX.Element = (props) =>
             </div>
         )
     }
-
+    useEffect(() => {
+        let data = {} as any
+        userModal.forEach((item, index) => {
+            data[item.key] = item.value
+        })
+    }, [userModal])
     const handleClickUserEdit = () => {
         if (isMobile) {
-            navigate('/userInfo_editing', { state: { sensorName, type: 'personal' } })
+            navigate('/userInfo_editing', { state: { sensorName, type: 'personal', userModal } })
         } else {
             setUserInfoOpen(true)
         }

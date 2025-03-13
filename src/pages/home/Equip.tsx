@@ -1,7 +1,7 @@
 import { useGetWindowSize } from '@/hooks/hook'
 import { alarmSelect, deleteAlarm, equipPcPlaySelect, equipPcSelect, equipPlaySelect, equipSelect, fetchEquips } from '@/redux/equip/equipSlice'
-import { Carousel, Popover, Spin } from 'antd'
-import React, { useEffect } from 'react'
+import { Carousel, message, Popover, Spin } from 'antd'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 // import { equip } from './Home'
 import { alarmStampToTime, alarmtype, ALARMTYPE } from '@/redux/equip/equipUtil'
@@ -19,9 +19,11 @@ import newRate from '../../assets/image/newRate.png'
 import { nurseInfoClass, OnBedState, onBedState, onBedStateText, onBedStateTime, stateToObj } from './TimeState'
 import { useNavigate } from 'react-router-dom'
 import { equip } from '.'
-
-
-
+import { netUrl, instance, fetchDatarcv } from '../../api/api'
+import AddUseModla from '../../components/Modal/addUseModla'
+import addImg from '../../assets/image/addBlue.png'
+// import Modall from '../../components/bottom/Modal'
+import { valid } from 'semver'
 export default function Equip() {
     const navigate = useNavigate()
     const equip = useSelector(equipPlaySelect)
@@ -32,20 +34,114 @@ export default function Equip() {
         dispatch(deleteAlarm({ sensorName }))
     }
     const dispatch: any = useDispatch()
+    const [fals, setFals] = useState(false)
+
+
+    const phone = localStorage.getItem('phone') || ''
+    const token = localStorage.getItem('token') || ''
+    const [equipPc1, setequipPc] = useState()
+
+    const [datalist, setDataList] = useState([])
+    const [datalistOld, setDataListOld] = useState([])
+
+    useEffect(() => {
+        if (equipPc.length > 0 && JSON.stringify(datalistOld) !== JSON.stringify(equipPc)) {
+            setDataListOld(equipPc)
+            const datalist = JSON.parse(JSON.stringify(equipPc))
+            datalist[datalist.length - 1].push({ type: 'add' })
+            setDataList(datalist)
+        }
+    }, [equipPc])
+    const [i, setI] = useState()
+    const data = () => {
+        instance({
+            method: "get",
+            url: netUrl + "/device/selectDeviceWithPatient",
+            params: {
+                phoneNum: phone,
+                pageSize: 999,
+            },
+            headers: {
+                "content-type": "application/x-www-form-urlencoded",
+                "token": token
+            },
+        }).then((res: any) => {
+            setequipPc(res.data.data.records)
+        });
+
+
+    }
+    useEffect(() => {
+        data()
+    }, [fals])
+    //   设备置顶
+    const setEquipTop = (did: string, index: any) => {
+        instance({
+            method: "post",
+            url: netUrl + "/device/stickDevice",
+            params: {
+                phoneNum: phone,
+                orderNum: index + 1,
+                deviceName: did,
+            },
+        }).then((res: any) => {
+            message.success(res.data.msg)
+            setFals(true)
+            dispatch(fetchEquips())
+
+            setI(index)
+        });
+    };
+    //   设备取消置顶
+    const setEquipUnTop = (did: string, index: any) => {
+        instance({
+            method: "post",
+            url: netUrl + "/device/stickDevice",
+            params: {
+                phoneNum: phone,
+                orderNum: 0,
+                deviceName: did,
+            },
+        }).then((res) => {
+            message.success('取消置顶成功')
+            setFals(false)
+            dispatch(fetchEquips())
+        });
+    };
+    // 添加设备
+    const [isOPen, setOpen] = useState(false)
+    const onOPen = () => {
+        setOpen(true)
+        setFals(true)
+    }
     return (
         <div className="main">
+            {
+                isOPen ? <AddUseModla isAddModalOpen={isOPen} onClose={((val: boolean) => setOpen(val))}></AddUseModla> : null
+            }
             {!isMobile ? <Carousel
+                // afterChange={onChange}
                 autoplaySpeed={6000} >
-                {equipPc.length ? equipPc.map((equips: Array<equip>, indexs: any) => {
+                {datalist.length ? datalist.map((equips: Array<equip>, indexs: any) => {
                     return <div className="equipsContent" key={indexs}>
                         <div className={`equips`}>
                             {equips?.map((item, index) => {
                                 const alarmInfo = alarm.filter((a: any) => {
                                     return a.sensorName == item.sensorName
                                 })
+                                if (item.type === 'add') {
+                                    return <div style={{ width: "13.2rem", height: "14.5rem", borderColor: "#F5F8FA", boxShadow: "0px 0px 10px 0px rgba(164, 176, 188, 0.4)", borderRadius: "0.63rem", marginBottom: "1rem", border: "1px #ccc solid", position: "relative", display: "flex", alignItems: "center", justifyContent: "center" }} key={index}>
+                                        <img onClick={() => onOPen()} src={addImg} alt="" />
+                                    </div>
+                                }
                                 return (
-
-                                    <div className={`equip`} key={item.sensorName}>
+                                    <div className={`equip`} key={item.sensorName}
+                                        onClick={() => {
+                                            navigate(`/report/0/${item.sensorName}`, {
+                                                state: item
+                                            });
+                                        }}
+                                    >
                                         {alarmInfo.length ?
                                             <div className="newAlarmContent">
                                                 <img style={{ position: 'absolute', width: '100%', bottom: '0', left: 0, opacity: '0.5' }} src={newAlarmBgc} alt="" />
@@ -95,7 +191,7 @@ export default function Equip() {
                                                         className="equipTop"
                                                         onClick={(event) => {
                                                             event.stopPropagation();
-                                                            // setEquipUnTop(item.sensorName);
+                                                            setEquipUnTop(item.sensorName, item.orderNum);
                                                         }}
                                                     >
                                                         <img src={item.onBed == 4 ? sitTop : top} alt="" />
@@ -104,10 +200,10 @@ export default function Equip() {
                                                     className="equipUnTop"
                                                     onClick={(event) => {
                                                         event.stopPropagation();
-                                                        // setEquipTop(item.sensorName);
+                                                        setEquipTop(item.sensorName, item.orderNum);
                                                     }}
                                                 >
-                                                    <img src={item.onBed == 4 ? sitSetTop : setTop} alt="" />
+                                                    <img src={item.orderNum == 0 ? setTop : sitSetTop} alt="" />
                                                 </div>}
                                             </div>
                                             <div className="equipData">
@@ -142,18 +238,31 @@ export default function Equip() {
                                     </div>
                                 );
                             })}
+
                         </div>
                     </div>
+
+
                 }) : ''}
             </Carousel> :
                 <div className="equipsContent">
                     <div className={`equips`}>
-                        {equip?.map((item: equip) => {
+                        {datalist?.flat()?.map((item: equip, indexs: any) => {
                             const alarmInfo = alarm.filter((a: any) => {
                                 return a.sensorName == item.sensorName
                             })
                             return (
-                                <div className={`equip`} key={item.sensorName}>
+                                <div className={`equip`} key={item.sensorName}
+                                    onClick={() => {
+                                        console.log(item.deviceId, '.................................................111111111111...............item');
+
+                                        navigate(`/report/0/${item.sensorName}`, {
+                                            state: {
+                                                person: item
+                                            },
+                                        });
+                                    }}
+                                >
                                     {alarmInfo.length ?
                                         <div className="newAlarmContent">
                                             <img style={{ position: 'absolute', width: '100%', bottom: '0', left: 0, opacity: '0.5' }} src={newAlarmBgc} alt="" />
@@ -204,7 +313,7 @@ export default function Equip() {
                                                     className="equipTop"
                                                     onClick={(event) => {
                                                         event.stopPropagation();
-                                                        // setEquipUnTop(item.sensorName);
+                                                        setEquipUnTop(item.sensorName, item.orderNum);
                                                     }}
                                                 >
                                                     <img src={item.onBed == 4 ? sitTop : top} alt="" />
@@ -213,7 +322,7 @@ export default function Equip() {
                                                 className="equipUnTop"
                                                 onClick={(event) => {
                                                     event.stopPropagation();
-                                                    // setEquipTop(item.sensorName);
+                                                    setEquipTop(item.sensorName, item.orderNum);
                                                 }}
                                             >
                                                 <img src={item.onBed == 4 ? sitSetTop : setTop} alt="" />
@@ -251,7 +360,6 @@ export default function Equip() {
                                 </div>
                             );
                         })}
-
                     </div>
                 </div>
             }

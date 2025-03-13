@@ -8,12 +8,12 @@ import { numToTime, stampToTime } from '@/utils/timeConvert';
 import { CardWithoutTitle } from '../../Monitor/realReport/Card';
 // import { netRepUrl, numToTime, reportInstance, secToHourstamp, stampToTime } from '../../assets/util';
 const columns = [
-  
+
   {
     title: '开始时间',
     dataIndex: 'startTime',
     key: 'startTime',
-    width : '4rem'
+    width: '4rem'
   },
   {
     title: '完成时间',
@@ -74,7 +74,7 @@ const columns = [
     title: '护理员',
     dataIndex: 'nurseNum',
     key: 'nurseNum',
-    width : '3rem'
+    width: '3rem'
   },
 
 ];
@@ -83,7 +83,7 @@ interface turnReport {
   sensorName: any
   date: number
   pageRecords: any
-  changeFlag ?:Function
+  changeFlag?: Function
 }
 
 const paginationProps = {
@@ -93,8 +93,8 @@ const paginationProps = {
   total: 8,
 
 }
-let posArrCn = ['平躺', '左侧卧', '右侧卧']
- function TurnReportProps(props: turnReport) {
+let posArrCn = ['仰卧', '左侧卧', '右侧卧']
+function TurnReportProps(props: turnReport) {
   // const [tableLoading, setTableLoading] = useState(false)
   const [dataSource, setDataSource] = useState([])
   const [turnNumber, setTurnNumber] = useState(0)
@@ -211,45 +211,45 @@ let posArrCn = ['平躺', '左侧卧', '右侧卧']
 
   return (
     <CardWithoutTitle>
-    <div className="turnReportContent nurseContent">
-      <div className="nurseTitleName">翻身卡
-        <div className="learnMore" onClick={() => {
-          if(props.changeFlag)  props.changeFlag(true)
-        }}>查看更多</div></div>
-      <div className="nurseValueItems">
-        <div className="nurseValueItem">
-          <div className="nurseValueTitle">实际翻身次数</div>
-          <div className="nurseValueContent">
-            <span className="sleepDataNum"> {turnNumber}</span>
-            <span className="sleepDataUtil">次</span>
+      <div className="turnReportContent nurseContent">
+        <div className="nurseTitleName">翻身卡
+          <div className="learnMore" onClick={() => {
+            if (props.changeFlag) props.changeFlag(true)
+          }}>查看更多</div></div>
+        <div className="nurseValueItems">
+          <div className="nurseValueItem">
+            <div className="nurseValueTitle">实际翻身次数</div>
+            <div className="nurseValueContent">
+              <span className="sleepDataNum"> {turnNumber}</span>
+              <span className="sleepDataUtil">次</span>
+            </div>
+          </div>
+          <div className="nurseValueItem">
+            <div className="nurseValueTitle">最长时间间隔</div>
+            <div className="nurseValueContent"><div className="nurseValueContent">{turnMax ? <>
+              {numToTime(turnMax)[1] ? (
+                <>
+                  <span className="sleepDataNum">{numToTime(turnMax)[1]}</span>
+                  <span className="sleepDataUtil">时</span>
+                </>
+              ) : null}
+              <span className="sleepDataNum">{numToTime(turnMax)[0]}</span>
+              <span className="sleepDataUtil">分</span>
+            </> : <>
+              <span className="sleepDataNum">0</span>
+              <span className="sleepDataUtil">分</span>
+            </>}</div></div>
+          </div>
+          <div className="nurseValueItem">
+            <div className="nurseValueTitle">最频睡姿</div>
+            <div className="nurseValueContent sleepDataNumZh" style={{}}>{posArrCn[posMax] ? posArrCn[posMax] : '无'}</div>
           </div>
         </div>
-        <div className="nurseValueItem">
-          <div className="nurseValueTitle">最长时间间隔</div>
-          <div className="nurseValueContent"><div className="nurseValueContent">{turnMax ? <>
-            {numToTime(turnMax)[1] ? (
-              <>
-                <span className="sleepDataNum">{numToTime(turnMax)[1]}</span>
-                <span className="sleepDataUtil">时</span>
-              </>
-            ) : null}
-            <span className="sleepDataNum">{numToTime(turnMax)[0]}</span>
-            <span className="sleepDataUtil">分</span>
-          </> : <>
-            <span className="sleepDataNum">0</span>
-            <span className="sleepDataUtil">分</span>
-          </>}</div></div>
-        </div>
-        <div className="nurseValueItem">
-          <div className="nurseValueTitle">最频睡姿</div>
-          <div className="nurseValueContent sleepDataNumZh" style={{}}>{posArrCn[posMax] ? posArrCn[posMax] : '无'}</div>
-        </div>
+        <Table onRow={(record: any) => {
+          return {
+          };
+        }} dataSource={dataSource} columns={columns} />
       </div>
-      <Table onRow={(record: any) => {
-        return {
-        };
-      }} dataSource={dataSource} columns={columns} />
-    </div>
     </CardWithoutTitle>
   )
 }

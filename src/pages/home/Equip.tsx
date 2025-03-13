@@ -1,6 +1,6 @@
 import { useGetWindowSize } from '@/hooks/hook'
 import { alarmSelect, deleteAlarm, equipPcPlaySelect, equipPcSelect, equipPlaySelect, equipSelect, fetchEquips } from '@/redux/equip/equipSlice'
-import { Carousel, message, Popover, Spin } from 'antd'
+import { Carousel, message, Popover, Skeleton, Spin } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 // import { equip } from './Home'
@@ -21,9 +21,9 @@ import { useNavigate } from 'react-router-dom'
 import { equip } from '.'
 import { netUrl, instance, fetchDatarcv } from '../../api/api'
 import AddUseModla from '../../components/Modal/addUseModla'
-import addImg from '../../assets/image/addBlue.png'
-// import Modall from '../../components/bottom/Modal'
-import { valid } from 'semver'
+import addImg from '../../assets/image/add.jpg'
+
+
 export default function Equip() {
     const navigate = useNavigate()
     const equip = useSelector(equipPlaySelect)
@@ -122,7 +122,7 @@ export default function Equip() {
             {!isMobile ? <Carousel
                 // afterChange={onChange}
                 autoplaySpeed={6000} >
-                {datalist.length ? datalist.map((equips: Array<equip>, indexs: any) => {
+                {datalist.length > 0 ? datalist.map((equips: Array<equip>, indexs: any) => {
                     return <div className="equipsContent" key={indexs}>
                         <div className={`equips`}>
                             {equips?.map((item, index) => {
@@ -241,13 +241,11 @@ export default function Equip() {
 
                         </div>
                     </div>
-
-
-                }) : ''}
+                }) : <Skeleton active ></Skeleton>}
             </Carousel> :
                 <div className="equipsContent">
                     <div className={`equips`}>
-                        {datalist?.flat()?.map((item: equip, indexs: any) => {
+                        {datalist.length > 0 ? datalist?.flat()?.map((item: equip, indexs: any) => {
                             const alarmInfo = alarm.filter((a: any) => {
                                 return a.sensorName == item.sensorName
                             })
@@ -359,7 +357,7 @@ export default function Equip() {
                                     </div>
                                 </div>
                             );
-                        })}
+                        }) : <Skeleton active ></Skeleton>}
                     </div>
                 </div>
             }

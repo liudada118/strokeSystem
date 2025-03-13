@@ -802,12 +802,12 @@ export function CategoryChart(props: categoryChartProps) {
           barWidth: props.formatter ? 20 : 'unset',
           itemStyle: {
             normal: {
-              color: 
-              // props.strokeArr ? function (params: any) {
-              //   return (props.strokeArr[params.dataIndex] > 0) ? '#cf7445' : '#006CFD'
-              //   return props.strokeArr[params.dataIndex]
-              // } : 
-              '#006CFD'
+              color:
+                // props.strokeArr ? function (params: any) {
+                //   return (props.strokeArr[params.dataIndex] > 0) ? '#cf7445' : '#006CFD'
+                //   return props.strokeArr[params.dataIndex]
+                // } : 
+                '#006CFD'
             }
           }
         }
@@ -925,7 +925,7 @@ export function SleepDateTypeChart(props: SleepDateType) {
   // for (let i = 0; i < 7; i++) {
   //   yArr[i] = dayjs(new Date(props.date).getTime() - 24 * i * 60 * 60 * 1000).format(dateFormat)
   // }
-  let yArr = ['右侧睡', '平躺', '左侧睡']
+  let yArr = ['右侧睡', '仰卧', '左侧睡']
 
   let data = props.data
 
@@ -1025,7 +1025,7 @@ export function SleepSegAndProp(props: SleepSegAndPropType) {
   const { data } = props
 
   useEffect(() => {
-    if(document.querySelector(`.showSleep${1}`)){
+    if (document.querySelector(`.showSleep${1}`)) {
       edgeProcess(1)
     }
   }, [])
@@ -1052,7 +1052,7 @@ export function SleepSegAndProp(props: SleepSegAndPropType) {
     let right = (showSleepRight && sleepStatussRight ? showSleepRight + 50 - sleepStatussRight > 0 ? showSleepRight + 50 - sleepStatussRight : 0 : 0)
     const px = left ? left * (-1) : right ? right : 0
 
-    if(width > 100) {
+    if (width > 100) {
       left = 0
       right = 0
     }
@@ -1148,7 +1148,7 @@ export function SleepSegAndProp(props: SleepSegAndPropType) {
                   <><div className={`showSleep`}
                     // style={{ transform: sleepNowNum.transform ? `translateX(${sleepNowNum.transform}px)` : '' }}
                     style={sleepNowNum.left ? {
-                      left: sleepNowNum.left < 25 ? sleepNowNum.left - 25 : sleepNowNum.left > 40  ? -10  : 0
+                      left: sleepNowNum.left < 25 ? sleepNowNum.left - 25 : sleepNowNum.left > 40 ? -10 : 0
                     } : sleepNowNum.right ? {
                       right: sleepNowNum.right < 25 ? -sleepNowNum.right - 25 : sleepNowNum.right > 40 ? -10 : 0
                     } : {}}

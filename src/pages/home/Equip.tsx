@@ -119,10 +119,13 @@ export default function Equip() {
             {
                 isOPen ? <AddUseModla isAddModalOpen={isOPen} onClose={((val: boolean) => setOpen(val))}></AddUseModla> : null
             }
+            {
+                datalist.length === 0 || datalist.length === 0 ? <Skeleton active ></Skeleton> : ''
+            }
             {!isMobile ? <Carousel
                 // afterChange={onChange}
                 autoplaySpeed={6000} >
-                {datalist.length > 0 ? datalist.map((equips: Array<equip>, indexs: any) => {
+                {datalist.length ? datalist.map((equips: Array<equip>, indexs: any) => {
                     return <div className="equipsContent" key={indexs}>
                         <div className={`equips`}>
                             {equips?.map((item, index) => {
@@ -241,7 +244,7 @@ export default function Equip() {
 
                         </div>
                     </div>
-                }) : <Skeleton active ></Skeleton>}
+                }) : ''}
             </Carousel> :
                 <div className="equipsContent">
                     <div className={`equips`}>
@@ -357,7 +360,7 @@ export default function Equip() {
                                     </div>
                                 </div>
                             );
-                        }) : <Skeleton active ></Skeleton>}
+                        }) : ''}
                     </div>
                 </div>
             }

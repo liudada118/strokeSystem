@@ -51,7 +51,8 @@ Instancercv.interceptors.request.use(function (config: any) {
   let token = localStorage.getItem("token");
   if (token) {
     config.headers = {
-      "token": token
+      "token": token,
+      ...(config.headers || {})
     }
   }
   return config;

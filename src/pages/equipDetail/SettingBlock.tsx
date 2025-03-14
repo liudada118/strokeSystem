@@ -603,23 +603,10 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (props) =>
 
     //设备解绑
     const confirm: PopconfirmProps['onConfirm'] = async (e) => {
+        let res: any = await unbindHheDevice(location.state.deviceId)
+        console.log(res.data.code, '.....................................................res...........');
 
-        // let res = await unbindHheDevice(location.state.deviceId)
-        // console.log(res, '................................................................res');
-        axios({
-            method: "post",
-            url: netUrl + "/device/cancelBindManual",
-
-            headers: {
-                "content-type": "application/x-www-form-urlencoded",
-                "token": token
-            },
-            data: {
-                phone: phone,
-                deviceId: location.state.deviceId,
-            }
-        }).then((e) => {
-
+        if (res.data.code == 500) {
             message.success('解绑成功')
             // navigator.
             navigate('/', {
@@ -627,10 +614,10 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (props) =>
                     unbundle: true
                 }
             })
-        })
-
+        } else {
+            message.error('解绑失败')
+        }
     };
-
     const cancel: PopconfirmProps['onCancel'] = (e) => {
         console.log(e);
         message.error('取消成功');

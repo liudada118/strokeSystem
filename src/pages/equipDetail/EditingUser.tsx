@@ -1,5 +1,5 @@
-import React, { Fragment, useCallback, useState } from "react";
-import { Button, Input, List, Picker, DatePicker, ImageUploader, ImageUploadItem } from "antd-mobile";
+import React, { Fragment, useCallback, useEffect, useState } from "react";
+import { Button, Input, List, Picker, DatePicker, ImageUploader, ImageUploadItem, restoreMotion } from "antd-mobile";
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { userModal } from "./UserInfoCard";
 import avatar from '../../assets/images/avatar.png'
@@ -42,7 +42,19 @@ const EditingUser: React.FC = () => {
 }
 
 // 个人信息修改页面
-const PersonalInfo = () => {
+const PersonalInfo = (props: any) => {
+    const location = useLocation();
+    const { sensorName, type, userModal } = location.state;
+    const [userInfo, setUserInfo] = useState<any>({});
+
+    useEffect(() => {
+        const listData = {} as any
+        userModal.forEach((item: any, index: any) => {
+            listData[item.key] = item.value
+        })
+        setFileList([{ url: listData.headImg || '' }])
+        setUserInfo(listData)
+    }, [])
     const navigate = useNavigate();
     const [editingInputInfo, setEditingInputInfo] = useState<any>({
         show: false,
@@ -50,21 +62,21 @@ const PersonalInfo = () => {
         label: '',
         value: ''
     });
-    const [userInfo, setUserInfo] = useState<any>({
-        avatarUrl: '',
-        name: '老陈',
-        number: '222',
-        age: '15',
-        sex: '男'
-    });
+
+
+
+
+
+
+
     const [pickerInfo, setPickerInfo] = useState<any>({
         visible: false,
         data: [[]]
     })
     const [fileList, setFileList] = useState<ImageUploadItem[]>([{
         key: '1',
-        url: 'https://gw.alipayobjects.com/zos/antfincdn/LlvErxo8H9/photo-1503185912284-5271ff81b9a8.webp',
-        thumbnailUrl: 'https://gw.alipayobjects.com/zos/antfincdn/LlvErxo8H9/photo-1503185912284-5271ff81b9a8.webp',
+        url: userInfo.headImg,
+        thumbnailUrl: userInfo.headImg,
         extra: ''
     }])
     const [dateVisible, setDateVisible] = useState<boolean>(false)
@@ -91,7 +103,7 @@ const PersonalInfo = () => {
 
         const _data = data?.children?.map((item: any) => ({
             label: item.label,
-            value: item.label
+            value: item.value
         }))
         setPickerInfo({
             visible: true,
@@ -108,7 +120,7 @@ const PersonalInfo = () => {
     const renderUploaderAvatar = () => {
         return (
             <ImageUploader
-                multiple={false}
+                multiple={true}
                 maxCount={1}
                 value={fileList}
                 onChange={setFileList}
@@ -122,7 +134,7 @@ const PersonalInfo = () => {
         )
     }
     const renderListItem = () => {
-        return userModal.map(item => {
+        return userModal.map((item: any) => {
             switch (item.mobileType) {
                 case FormType.INPUT:
                     return (
@@ -138,7 +150,7 @@ const PersonalInfo = () => {
                     )
                 case FormType.RADIO:
                     return (
-                        <List.Item className='text-base' key={item.label} extra={userInfo[item.key]} onClick={() => { handlePickerClick(item) }}>
+                        <List.Item className='text-base' key={item.label} extra={userInfo[item.key] === 1 ? '男' : '女'} onClick={() => { handlePickerClick(item) }}>
                             {item.mobileLabel}
                         </List.Item>
                     )
@@ -238,8 +250,9 @@ const PersonalInfo = () => {
                     data: [[]]
                 })}
                 title='选择性别'
-                value={userInfo.sex}
+                value={[userInfo.sex]}
                 onConfirm={v => {
+                    console.log(v, pickerInfo, '2222222')
                     setUserInfo({
                         ...userInfo,
                         sex: v[0]
@@ -296,9 +309,6 @@ const PersonalOtherInfo = (props: otherInfoParam) => {
         {personalOtherInfoObj[type].component}
     </div>)
 }
-
-
-
 interface personalInfoParam {
     title: string
     img: string

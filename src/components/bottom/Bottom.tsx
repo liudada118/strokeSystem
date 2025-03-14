@@ -21,7 +21,7 @@ import unhomepc from '../../assets/icon/unhomepc.png'
 import set from '../../assets/icon/set.svg'
 import onSet from '../../assets/icon/onSet.svg'
 
-import { Input, Modal, Radio, message, Select } from 'antd';
+import { message } from 'antd';
 
 import { useGetWindowSize } from '../../hooks/hook';
 import show from './ScanCode/utils/show';
@@ -30,7 +30,7 @@ import ImgUpload from '../imgUpload/ImgUpload';
 import { useDispatch, useSelector } from 'react-redux';
 import { headImgSelect } from '@/redux/premission/premission';
 import { fetchEquips } from '@/redux/equip/equipSlice';
-
+import AddUseModla from '../Modal/addUseModla'
 
 let timeout: ReturnType<typeof setTimeout> | null;
 let currentValue: string;
@@ -104,6 +104,7 @@ const Bottom = forwardRef((props: bottomProps, refs: any) => {
             callback(data)
           }
         } else {
+
           message.error('该设备未入库,请联系管理员')
         }
       })
@@ -151,155 +152,20 @@ const Bottom = forwardRef((props: bottomProps, refs: any) => {
   const headImg = useSelector(headImgSelect)
 
   const handleSearch = (newValue: string) => {
+
     fetch(newValue, setData);
   };
 
 
-  /**
-   * @param newValue 用户输入设备后六位 然后从数据库选择的完整mac地址
-   */
-  const handleChange = (newValue: string) => {
-    setValue(newValue);
-    setMac(newValue)
-    const value = { ...userinfo, did: newValue, type: macType }
-    setUserInfo(value)
-    Instancercv({
-      method: "get",
-      url: "/device/selectOneDeviceWithPatient",
-      headers: {
-        "content-type": "multipart/form-data",
-        "token": token
-      },
-      params: {
-        mac: newValue,
-      }
-    }).then((res) => {
-      if (res.data.data.length) {
-        setDidData(res.data.data)
-      } else {
-        setDidData([])
-      }
-    })
-  };
 
-  const showModal = () => {
-    setIsModalOpen(true);
-  };
 
-  /**
-   * 确认添加设备弹窗
-   */
-  const handleOk = () => {
 
-    if (mac || userinfo.did.length == 12) {
-      const arr = ['patientName', 'roomNum', 'age', 'did']
-      const zeroArr = []
-      arr.forEach((a) => {
-        if (userinfo[a] == '') {
-          zeroArr.push(a)
-        }
-      })
-
-      if ((didData.length && userinfo['did'] == '') || (!didData.length && zeroArr.length)) {
-        message.error('信息不能为空')
-      } else if (userinfo['did'].length != 12) {
-        console.log(userinfo['did'].length)
-        message.error('请输入正确的mac地址')
-      } else {
-        // if(Object.values(userinfo).some((a)))
-        addEquip()
-        setIsModalOpen(false);
-      }
-    } else {
-      message.error('正在搜索设备')
-    }
-
-  };
 
   const [mac, setMac] = useState('')
 
-  const handleCancel = () => {
-    setIsModalOpen(false);
-  };
 
-  /**
-   * 将用户输入信息清空
-   */
-  const clearInfo = () => {
-    setValue('')
-    setMac('')
-    setDidData([])
-  }
 
-  /**
-   * 如果识别为老设备  那么直接添加
-   */
-  const addOldEquip = () => {
-    Instancercv({
-      method: "post",
-      url: "/device/addBindManual",
-      headers: {
-        "content-type": "application/x-www-form-urlencoded",
-        "token": token
-      },
-      params: {
-        phone: phone,
-        deviceId: didData[0]?.sensorName,
-      },
-    }).then((res) => {
-      addEquipResule(res)
-    })
-  }
 
-  /**
-   * 如果是新设备  那么获取用户输入的信息  添加到数据库
-   */
-  const addNewEquip = () => {
-    Instancercv({
-      method: "post",
-      url: "/device/add",
-      headers: {
-        "content-type": "application/x-www-form-urlencoded",
-        "token": token
-      },
-      params: {
-        phone: phone,
-        ...userinfo,
-        headImg: userinfo.img,
-        type: (userinfo.type).trim(),
-        mac: (userinfo.did).trim(),
-        did: (userinfo.did).trim(),
-      },
-    }).then((res) => {
-      addEquipResule(res)
-    });
-  }
-
-  /**
-   * @param res 服务器返回
-   * 绑定设备成功或者失败之后的操作 
-   */
-  const addEquipResule = (res: any) => {
-    if (res.data.code == 0) {
-      message.success('添加成功')
-
-      // 清空用户输入
-      clearInfo()
-      // if (props.getEquipList) props.getEquipList()
-      dispatch(fetchEquips())
-    } else {
-      message.error('设备绑定失败')
-    }
-  }
-
-  const addEquip = () => {
-    console.log('addEquip')
-    if (didData.length) {
-      addOldEquip()
-    } else {
-      addNewEquip()
-    }
-  }
 
 
   function parseJson(json: string) {
@@ -310,85 +176,6 @@ const Bottom = forwardRef((props: bottomProps, refs: any) => {
     return res
   }
 
-  /**
-   * 
-   * @param multiple 
-   * 扫码
-   */
-  function handleScan(multiple: boolean) {
-    show({
-      multiple,
-      onOk: (code: any, close) => {
-
-        if (!code.includes('{')) {
-          // alert('obj')
-          const did = code
-          const value = { ...userinfo, did: did }
-          setUserInfo(value)
-          if (did.length == 12) {
-            Instancercv({
-              method: "get",
-              url: "/device/selectOneDeviceWithPatient",
-              headers: {
-                "content-type": "multipart/form-data",
-                "token": token
-              },
-              params: {
-                mac: did,
-              }
-            }).then((res) => {
-
-              if (res.data.data.length) {
-                setDidData(res.data.data)
-              } else {
-                setDidData([])
-              }
-            })
-          }
-          close()
-        } else {
-          const res: any = parseJson(code)
-          const did = res.mac
-          const type = parseInt(res.type) == 66 ? 'large' : 'small'
-          const value = { ...userinfo, did: did, type: type }
-          setUserInfo(value)
-          setValue(res.mac)
-          if (did.length == 12) {
-            Instancercv({
-              method: "get",
-              url: "/device/selectOneDeviceWithPatient",
-              headers: {
-                "content-type": "multipart/form-data",
-                "token": token
-              },
-              params: {
-                mac: did,
-              }
-            }).then((res) => {
-
-              if (res.data.data.length) {
-                setDidData(res.data.data)
-              } else {
-                setDidData([])
-              }
-            })
-          }
-          close()
-        }
-
-        // const did = typeof code === 'string' ? code : JSON.parse(code).mac
-
-        // const value = { ...userinfo, did: did }
-        // setUserInfo(value)
-
-
-      },
-      onCancel: (close) => {
-        // alert('cancel')
-        close()
-      }
-    })
-  }
 
   setBottomInfo()
 
@@ -464,98 +251,19 @@ const Bottom = forwardRef((props: bottomProps, refs: any) => {
   //   changeImg
   // }));
 
-  /**
-   * 
-   * @param img uploadImg组件返回的头像
-   */
-  const loadImg = (img: any) => {
-    const value = { ...userinfo }
-    setUserInfo({
-      ...value,
-      img: img
-    })
-  }
-  const onMessage = (val: any) => {
-    console.log(val, '................................................................onClick={(a) => onMessage(a)}');
+  const showModal = () => {
+    console.log('showModal', '............', isModalOpen);
 
+    setIsModalOpen(true);
+  };
+  const onMessage = (val: any) => {
+    navigate('/message')
   }
   return (
     <div className="bottomContent">
-      <Modal title="为新设备添加信息" okText="确定" cancelText="取消" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
-        <div style={{ display: 'flex', alignItems: 'center' }} className='deviceItem'><div style={{ width: '4rem', }}> 头像:</div>
-          <ImgUpload img={userinfo.img} finish={loadImg} />
-        </div>
-
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }} className='deviceItem'>
-          <div className="deviceTitle">设备号:</div>
-          <div style={{ display: 'flex', flex: 1, alignItems: 'center' }}>
-
-            <Select
-              showSearch
-              value={value}
-              placeholder={'请输入6位SN码'}
-              style={{ width: '100%' }}
-              defaultActiveFirstOption={false}
-              suffixIcon={null}
-              filterOption={false}
-              onSearch={handleSearch}
-              onChange={handleChange}
-              notFoundContent={null}
-              options={(data || []).map((d) => ({
-                value: d.value,
-                label: d.text,
-              }))}
-            />
-
-
-            <img style={{ height: '1.6rem', marginLeft: '0.5rem' }} src={photo} onClick={() => { handleScan(false) }} alt="" />
-          </div>
-        </div>
-
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }} className='deviceItem'><div className="deviceTitle"> 姓名:</div>
-          {didData.length ? <div style={{ flex: 1 }}>{didData[0].patientName}</div> : <Input style={{ flex: 1 }} value={userinfo.patientName} onChange={(e) => {
-
-            const value = { ...userinfo, patientName: e.target.value }
-            setUserInfo(value)
-          }} />}
-
-        </div>
-
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }} className='deviceItem'><div className="deviceTitle">年龄:</div>
-          {didData.length ? <div style={{ flex: 1 }}>{didData[0].age}</div> : <Input style={{ flex: 1 }} value={userinfo.age} onChange={(e) => {
-
-            const value = { ...userinfo, age: e.target.value }
-            setUserInfo(value)
-          }} />}
-
-        </div>
-
-        <div style={{ display: 'flex', alignItems: 'center' }} className='deviceItem'><div className="deviceTitle">护理员:</div>
-          {phone?.slice(-4)}</div>
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }} className='deviceItem'><div className="deviceTitle">床号:</div>
-          {didData.length ? <div style={{ flex: 1 }}>{didData[0].roomNum}</div> : <Input style={{ flex: 1 }} value={userinfo.roomNum} onChange={(e) => {
-
-            const value = { ...userinfo, roomNum: e.target.value }
-            setUserInfo(value)
-          }} />}
-
-        </div>
-
-
-        <div style={{
-          display: 'flex', //justifyContent: 'center', alignItems: 'center' 
-        }} className='deviceItem'><div className="deviceTitle">床垫类型:</div>
-          {didData.length ? <div style={{ flex: 1 }}>{didData[0].type == 'small' ? '安护' : '智护'}</div> : <Radio.Group onChange={(e) => {
-
-            const value = { ...userinfo, type: e.target.value }
-            setUserInfo(value)
-          }} value={userinfo.type}>
-            <Radio value={'large'} disabled={true}>智护</Radio>
-            <Radio value={'small'} disabled={true}>安护</Radio>
-          </Radio.Group>
-          }
-        </div>
-      </Modal>
+      {
+        isModalOpen == true ? <AddUseModla isAddModalOpen={isModalOpen} onClose={(val: boolean) => setIsModalOpen(val)}></AddUseModla> : null
+      }
       <div className="bottomItemContent">
         {!isMobile ? <div className="bottomItem">  {<img style={{ width: '2rem', borderRadius: '3px' }} src={headImg ? headImg : logo} alt="" onClick={() => { navigate('/') }} />}</div> : ''}
         {bottomArr.map((a, index) => <div className={`bottomItem ${onIndex == index ? 'bottonSelectItem' : ''} ${!isMobile && onIndex == index ? 'selectItempc' : ''}`} onClick={() => {
@@ -590,7 +298,7 @@ const Bottom = forwardRef((props: bottomProps, refs: any) => {
         </div>
 
       </div>
-    </div>
+    </div >
   )
 })
 

@@ -192,7 +192,7 @@ export const equipConstantSelect = (state: any) => state.equip.equipConstant
 export const alarmSelect = (state: any) => state.equip.realAlarmArr
 export const equipPcSelect = (state: any) => state.equip.equipPc
 export const statusSelect = (state: any) => state.equip.status
-export const selectEquipBySensorname = (state: any, sensorname: any) => state.equip.equipConstant.find((equip: any) => equip.sensorName == sensorname)
+export const selectEquipBySensorname = (state: any, sensorname: any) =>  state.equip.equipConstant.find((equip: any) => equip.sensorName == sensorname)
 
 export const equipPlaySelect = (state: any) => state.equip.equipsPlay
 export const equipPcPlaySelect = (state: any) => state.equip.equipPcPlay

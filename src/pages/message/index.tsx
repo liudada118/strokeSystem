@@ -5,7 +5,7 @@ import { alarmValueToType } from "@/utils/messageInfo";
 import { instance } from "@/api/api";
 import Title from "@/components/title/Title";
 import Bottom from "@/components/bottom/Bottom";
-import type {  TableProps, GetProps, } from 'antd';
+import type { TableProps, GetProps } from 'antd';
 import { DatePicker, Pagination, Button, Table, } from 'antd';
 type RangePickerProps = GetProps<typeof DatePicker.RangePicker>;
 export interface message {
@@ -91,7 +91,7 @@ export default function Message() {
     });
   }
 
-  
+
   const getMessage = async (reqparms: any = {}) => {
 
     const param = {
@@ -124,11 +124,8 @@ export default function Message() {
       setDataLIst(res.data.data.records)
       return res
     } catch (err) {
-
     }
   }
-
-
   /**
    * 
    * @param data  服务器接收的信息
@@ -170,7 +167,7 @@ export default function Message() {
     }, {
       id: 6,
       key: 'situp',
-      title: "起床提醒"
+      title: "坐起提醒"
     },
     {
       id: 7,
@@ -180,7 +177,7 @@ export default function Message() {
     {
       id: 8,
       key: 'otherReminders',
-      title: "其他提醒"
+      title: "其他提醒",
     },
   ]
   // 表格数据
@@ -234,7 +231,7 @@ export default function Message() {
       title: '序号',
       dataIndex: 'id',
       key: 'id',
-      render: (text) => <a>{text}</a>,
+      render: (text, record, index) => (params.pageNum - 1) * params.pageSize + index + 1,
     },
     {
       title: '房间号',
@@ -297,8 +294,7 @@ export default function Message() {
                   return (
                     <Button
                       key={item.id}
-                      className={`bun  ${(index + 1) === titleId ? 'on' : ''} flex  w-[7rem] h-[2.8rem] bg-[#FFFFFF] mr-[3rem]  text-[#000] rounded-lg fz-[1.4rem]`}
-                      style={{ color: "#000", fontSize: "0.8rem", fontWeight: "900", }}
+                      className={`btn  ${(index + 1) === titleId ? 'on' : ''} `}
                       onClick={() => onTitle(item)}
                     >
                       {item.title}
@@ -309,13 +305,13 @@ export default function Message() {
             </div>
           </div>
           <div className="messageMainData">
-            <div className="messageMainDatadiv h-[800px]  bg-[#FFFFFF] rounded-lg ml-[5.8rem]" style={{ width: 'calc(100% - 144px)' }}>
+            <div className="messageMainDatadiv " >
               <div className="messageMainDataTitle" >
                 <div className="messageMainDataTitlediv"  >
-                  <p className=" w-[20px] h-[20px] rounded-[2px] mt-[22px] mr-[16px] opacity-100 bg-[#0072EF]"></p>
+                  <p className="messageMainDataTitledivbac w-[20px] h-[20px] rounded-[2px] mt-[22px] mr-[16px] opacity-100 bg-[#0072EF]"></p>
                   <p className="font-pingfang-sc font-bold text-[1.2rem] leading-normal tracking-normal">护理提醒次数 <span className="font-pingfang-sc font-bold text-[35px] leading-normal tracking-normal " style={{ color: "#0072EF" }}> {total} </span> 次</p>
                 </div>
-                <div className=" flex mt-[2.4rem] mr-[3rem] ml-[0.2rem]" >
+                <div className="messageMainDataTitlediv " >
                   <p className="font-pingfang-sc font-bold text-[1.2rem] leading-normal tracking-normal mr-[1.4rem]">
                     昨天提醒<span className="font-pingfang-sc font-bold text-[1.5rem] leading-normal tracking-normal" style={{ color: "#0072EF" }}> {datarq.yestodayAlarmCount} </span> 次
                   </p>
@@ -324,21 +320,15 @@ export default function Message() {
                   </p>
                 </div>
               </div>
-              <div className="projectContent"
-                style={{
-                  height: 'calc(100% - 150px)',
-
-                  padding: '1rem 1rem ',
-                  backgroundColor: '#fff',
-                }}>
+              <div className="projectContent">
                 <Table
                   pagination={false}
                   dataSource={data}
                   columns={columns}
                 />
               </div>
-              <div className='flex h-[2rem] justify-between'>
-                <div style={{ marginLeft: "25px", fontFamily: 'PingFang SC' }}>单页显示数 <span style={{ color: "#0072EF", fontVariationSettings: "opsz auto", fontSize: "1rem" }}>{data.length}</span> 条</div>
+              <div className='msgToinfoStrPage '>
+                <div className="msgToinfoStrPageDiv">单页显示数 <span style={{ color: "#0072EF", fontVariationSettings: "opsz auto", fontSize: "1rem" }}>{data.length}</span> 条</div>
                 <Pagination style={{ marginRight: "40px" }} pageSize={10} current={params.pageNum} className="pagination" defaultCurrent={1} onChange={onChange} showSizeChanger={false} total={Math.floor(total)} />
               </div>
             </div>

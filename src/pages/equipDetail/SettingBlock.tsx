@@ -1,8 +1,9 @@
 import React, { useContext, useEffect, useState } from "react";
 import CommonFormModal, { FormType } from "../../components/CommonFormModal";
-import { Button, message, Modal, Switch } from "antd";
+import { Button, message, Modal, Popconfirm, Switch } from "antd";
+import type { PopconfirmProps } from 'antd';
 import styles from "./message.module.scss";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { changeEquipAllInfo, changePersonalEquipAlarmInfo, selectEquipBySensorname, statusSelect } from "@/redux/equip/equipSlice";
 import { equipInfoFormatUtil, minToHourText } from "@/utils/dataToFormat";
@@ -16,15 +17,16 @@ import './settingBlock.scss'
 import { Instancercv, netUrl } from "@/api/api";
 import axios from "axios";
 import { DataContext } from ".";
+import { unbindHheDevice } from '../../api/index'
 
 interface SettingBlockProps {
     onModify: (value: boolean) => void
     userInfo: any
     userInfoChange: boolean
     setUserChange: Function
-    submitCloud : any;
-    nurseformValue : any
-    setNurseFormValue : any
+    submitCloud: any;
+    nurseformValue: any
+    setNurseFormValue: any
 }
 
 const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (props) => {
@@ -46,6 +48,7 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (props) =>
     }
 
     const param = useParams()
+    const location = useLocation()
     const sensorName = param.id
     const equipInfo = useSelector(state => selectEquipBySensorname(state, sensorName))
     const phone = useSelector(phoneSelect)
@@ -54,7 +57,7 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (props) =>
     const navigate = useNavigate()
     // const status = useSelector(statusSelect)
     const context = useContext(DataContext)
-    const {nurseformValue,submitCloud,setNurseFormValue} = context
+    const { nurseformValue, submitCloud, setNurseFormValue } = context
     const { onModify, } = props
     // TODO:合并成一个state对象
     const [editing, setEditing] = useState<boolean>(false);
@@ -68,7 +71,7 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (props) =>
 
     const [leaveParamModalOpen, setLeaveParamModalOpen] = useState<boolean>(false)
 
-
+    const [fals, setFalse] = useState(false)
     const [userInfo, setUserInfo] = useState({
         // nurseStart, nurseEnd, fallbedStart, fallbedEnd, leaveBedStart, leaveBedEnd, situpStart, situpEnd, type, deviceId, leavebedParam
         ...equipInfo
@@ -83,42 +86,43 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (props) =>
 
     } = userInfo
 
+    // console.log(nursePeriod, '................................................................nursePeriod');
 
 
     /**
     * 请求护理配置
     */
-    // useEffect(() => {
-    //     Instancercv({
-    //         method: "get",
-    //         url: "/nursing/getNursingConfig",
-    //         headers: {
-    //             "content-type": "multipart/form-data",
-    //             "token": token
-    //         },
-    //         params: {
-    //             deviceId: sensorName
-    //         }
-    //     }).then((res) => {
-    //         console.log(res.data, 'resssssssss')
-    //         const flipbodyConfig = JSON.parse(res.data.flipbodyConfig)
-    //         console.log(flipbodyConfig)
-    //         const { flipbodyCount, flipbodyTime } = flipbodyConfig
-    //         if (flipbodyCount) {
-    //             setNurseFormValue({
-    //                 timeRangeA: `${flipbodyCount}次`,
-    //                 timeIntervalA: `${flipbodyTime/60}小时`,
-    //                 switchA: true,
-    //             })
-    //         } else {
-    //             setNurseFormValue({
-    //                 timeRangeA: `${0}次`,
-    //                 timeIntervalA: `${flipbodyTime/60}小时`,
-    //                 switchA: false,
-    //             })
-    //         }
-    //     })
-    // }, [])
+    useEffect(() => {
+        Instancercv({
+            method: "get",
+            url: "/nursing/getNursingConfig",
+            headers: {
+                "content-type": "multipart/form-data",
+                "token": token
+            },
+            params: {
+                deviceId: sensorName
+            }
+        }).then((res) => {
+            console.log(res.data, 'resssssssss')
+            const flipbodyConfig = JSON.parse(res.data.flipbodyConfig)
+            console.log(flipbodyConfig)
+            const { flipbodyCount, flipbodyTime } = flipbodyConfig
+            if (flipbodyCount) {
+                setNurseFormValue({
+                    timeRangeA: `${flipbodyCount}次`,
+                    timeIntervalA: `${flipbodyTime / 60}小时`,
+                    switchA: true,
+                })
+            } else {
+                setNurseFormValue({
+                    timeRangeA: `${0}次`,
+                    timeIntervalA: `${flipbodyTime / 60}小时`,
+                    switchA: false,
+                })
+            }
+        })
+    }, [])
     // const [switchA, setSwitchA] = useState<boolean>(valueToAlarmFlag(injuryAlarm))
     // const [switchB, setSwitchB] = useState<boolean>(valueToAlarmFlag(leaveBedAlarm))
     // const [switchC, setSwitchC] = useState<boolean>(valueToAlarmFlag(situpAlarm))
@@ -129,7 +133,10 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (props) =>
         [key: string]: string
     }
 
-
+    // useEffect(() => {
+    //     console.log(nursePeriod, 55555555)
+    //     submitCloud(nursePeriod)
+    // }, [nursePeriod])
 
     const [userLeaveBedParamChange, setLeaveBedParamChange] = useState<boolean>(false)
     const [userNurseChange, setNurseChange] = useState<boolean>(false)
@@ -150,15 +157,13 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (props) =>
         const realValue: string = Object.values(values)[0]
         const realKey: string = Object.keys(values)[0]
 
-        console.log(values)
-
-        if(realKey == 'timeRangeA'){
+        if (realKey == 'timeRangeA') {
             setNurseFormValue({
-                ...nurseformValue , timeIntervalA: realValue,
+                ...nurseformValue, timeIntervalA: realValue,
             })
-        }else if(realKey == 'timeIntervalA'){
+        } else if (realKey == 'timeIntervalA') {
             setNurseFormValue({
-                ...nurseformValue , timeRangeA: realValue,
+                ...nurseformValue, timeRangeA: realValue,
             })
         }
 
@@ -219,15 +224,26 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (props) =>
     const settings = [{
         label: '翻身设置',
         id: 'turn_over_switch',
-        value: nursePeriod == 0 ? false : true,
-        handleSwitch: () => {
+        // value: nursePeriod == 0 ? false : true,
+        value: valueToAlarmFlag(injuryAlarm),
+
+        handleSwitch: (value: boolean) => {
+            setUserInfo({ ...userInfo, injuryAlarm: alarmFlagToValue(!!value) })
+            setAlarmParamChange(true)
             // setSwitchA(!switchA)
             // setUserInfo({ ...userInfo, injuryAlarm: alarmFlagToValue(!valueToAlarmFlag(injuryAlarm)) })
-            if (nursePeriod == 0) {
-                setUserInfo({ ...userInfo, nursePeriod: 120 })
-            } else {
-                setUserInfo({ ...userInfo, nursePeriod: 0 })
-            }
+            // if (nursePeriod == 0) {
+            //     console.log(userInfo, '00000000000')
+            //     setUserInfo({ ...userInfo, nursePeriod: 120 })
+            // } else {
+            //     setUserInfo({ ...userInfo, nursePeriod: 0 })
+            // }
+
+            // console.log(value, nurseformValue, '√......')
+            // setNurseFormValue({
+            //     ...nurseformValue,
+            //     switchA: value,
+            // })
             setNurseChange(true)
             // changeAlarmValueToCloud({ injuryAlarm: alarmFlagToValue(!switchA) })
         },
@@ -247,7 +263,7 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (props) =>
                     key: 'timeRangeA',
                     value: nurseformValue.timeIntervalA,
                     type: FormType.SELECT,
-                    children : timeRateColumns
+                    children: timeRateColumns
                 }]}
                 onFinish={(values) => {
                     changeValueToUserInfo(values)
@@ -425,7 +441,8 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (props) =>
         value: bedTypeFormat(type)
     }, {
         label: 'MAC地址',
-        value: deviceId
+        value: deviceId,
+
     }, {
         label: '设备校准',
         value: leavebedParam,
@@ -492,12 +509,11 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (props) =>
             obj.alarmParam = {
                 fallbedStart, fallbedEnd, fallbedAlarm,
                 leaveBedStart, leaveBedEnd, leaveBedPeriod, leaveBedAlarm,
-                situpStart, situpEnd, situpAlarm,
+                situpStart, situpEnd, situpAlarm, injuryAlarm,
                 userName: phone,
                 deviceName: sensorName
             }
         }
-
         if (userLeaveBedParamChange) {
             obj.leaveParam = {
                 leaveBedParam: leavebedParam,
@@ -511,8 +527,11 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (props) =>
         }
 
         if (userNurseChange) {
-            console.log(nurseformValue)
-            submitCloud(nurseformValue)
+            console.log(nurseformValue, '34444444')
+            submitCloud({
+                ...nurseformValue,
+                switchA: !!injuryAlarm
+            })
         }
 
         setNurseChange(false)
@@ -568,16 +587,41 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (props) =>
 
     const [isSettingClick, setIsSettingClick] = useState(false)
     const handleAlarmSettingClick = () => {
+        console.log('handleAlarmSettingClick')
         const flag = !isSettingClick
         setIsSettingClick(flag)
         if (flag) {
+            console.log('999999999')
             handleClickSettingBtn()
         } else {
+            console.log('888888888')
             handleSettingCompleted()
         }
 
     }
 
+
+    //设备解绑
+    const confirm: PopconfirmProps['onConfirm'] = async (e) => {
+        let res: any = await unbindHheDevice(location.state.deviceId)
+        console.log(res.data.code, '.....................................................res...........');
+
+        if (res.data.code == 500) {
+            message.success('解绑成功')
+            // navigator.
+            navigate('/', {
+                replace: true, state: {
+                    unbundle: true
+                }
+            })
+        } else {
+            message.error('解绑失败')
+        }
+    };
+    const cancel: PopconfirmProps['onCancel'] = (e) => {
+        console.log(e);
+        message.error('取消成功');
+    };
     return (
         <div className='overflow-scroll h-[calc(100%-13rem)]'>
             <div className="flex justify-between">
@@ -589,7 +633,7 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (props) =>
                     key={item.label}>
                     <div className='flex items-center justify-between'>
                         <span className='text-base font-semibold'>{item.label}</span>
-                        {editing && <Switch size="small" checked={item.value} onClick={() => item.handleSwitch()} />}
+                        {editing && <Switch size="small" checked={item.value} onClick={(value) => item.handleSwitch(value)} />}
                     </div>
                     {item.value && item.params.map((_item, index) => (
 
@@ -627,25 +671,44 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (props) =>
                 <span className='text-base inline-block font-semibold mb-[10px]'>设备类型</span>
                 <div>
                     {machineType.map(item => (
-                        <div className={[styles.rowItem, 'text-sm', item.label == '设备校准' ? 'justify-between flex ' : '',].join(' ')} key={item.label}>
+
+                        < div className={[styles.rowItem, 'text-sm', item.label == '设备校准' ? 'justify-between flex ' : '',].join(' ')} key={item.label} >
                             <div>
                                 <span className='mr-[2rem]'>{item.label}</span>
                                 <span>{item.value}</span>
+                                {item.label === 'MAC地址' ?
+                                    <Popconfirm
+                                        title="你确定要解除绑定吗？"
+                                        description="解除绑定后，此信息再也没有了。"
+                                        onConfirm={confirm}
+                                        onCancel={cancel}
+                                        okText="是"
+                                        cancelText="否"
+                                    >
+                                        <span className="text-[#0072EF] ml-[1rem] " style={{ cursor: "pointer" }} >解绑设备</span>
+                                    </Popconfirm>
+
+
+                                    : ""
+                                }
                             </div>
-                            {item.params && item.params.map((_item, index) => (
-                                <>
-                                    {editing && <span className='text-sm text-[#0072EF] cursor-pointer pr-[5px]'
-                                        onClick={() => _item.onChange()}>修改</span>}
-                                    {_item.modal}
-                                </>
-                            ))}
+                            {
+                                item.params && item.params.map((_item, index) => (
+                                    <>
+                                        {editing && <span className='text-sm text-[#0072EF] cursor-pointer pr-[5px]'
+                                            onClick={() => _item.onChange()}>修改</span>}
+                                        {_item.modal}
+                                    </>
+                                ))
+                            }
 
                         </div>
+
                     ))}
                 </div>
             </div>
 
-        </div>
+        </div >
     )
 }
 

@@ -11,7 +11,7 @@ import zh_CN from 'antd/es/locale/zh_CN';
 import useWindowSize from "../../hooks/useWindowSize";
 import { NoEquipLoading } from "@/components/noEquipLoading/NoEquipLoading";
 import Title from "@/components/title/Title";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { instance, Instancercv, netUrl } from "@/api/api";
 import { useSelector } from "react-redux";
 import { tokenSelect } from "@/redux/token/tokenSlice";
@@ -269,9 +269,9 @@ function Provide() {
                 deviceId: id
             }
         }).then((res) => {
-            console.log(res.data, 'resssssssss')
+            console.log(res.data, 'resssssssss...............')
             const flipbodyConfig = JSON.parse(res.data.flipbodyConfig)
-            console.log(flipbodyConfig)
+            console.log(flipbodyConfig, 'flipbodyConfig')
             const { flipbodyCount, flipbodyTime } = flipbodyConfig
             if (flipbodyCount) {
                 setNurseFormValue({
@@ -288,16 +288,17 @@ function Provide() {
             }
         })
     }
-
+    // const { state: { deviceId } } = useLocation()
     const [turnAroundPlan, setTurnAroundPlan] = useState<TurnPlanList[]>([])
+
+
     const submitCloud = (newValue: any) => {
         setNurseFormValue(newValue)
-        console.log(newValue)
+        console.log(newValue, 'newValue......')
         const obj = {
             flipbodyCount: parseInt(newValue.timeRangeA),
             flipbodyTime: parseInt(newValue.timeIntervalA) * 60
         }
-
         // 开关关闭后  设置次数为0
         if (!newValue.switchA) {
             obj.flipbodyCount = 0
@@ -320,6 +321,26 @@ function Provide() {
             message.error('修改失败')
         })
 
+
+
+
+        // axios({
+        //     method: "get",
+        //     url: netUrl + "/nursing/getNursingConfig",
+        //     headers: {
+        //         "content-type": "application/json",
+        //         "token": token
+        //     },
+        //     params: {
+        //         deviceId: id,
+        //         // config: JSON.stringify(obj),
+        //     },
+        // }).then((res) => {
+        //     // message.success('修改成功')
+        //     getNurse()
+        // }).catch((err) => {
+        //     message.error('修改失败')
+        // })
     }
 
     /**
@@ -362,7 +383,7 @@ function Provide() {
 
 
         }).catch((err) => {
-            message.error('服务器错误')
+            message.error('服务器错误11111111')
         });;
     }
 

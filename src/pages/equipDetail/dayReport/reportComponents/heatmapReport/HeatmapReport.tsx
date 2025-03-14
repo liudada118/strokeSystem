@@ -188,10 +188,10 @@ function HeatmapReport(props: heatmapProps) {
                             {/* <HeatmapH data={heatmapData} index={5} type={'large'} sensorName={props.sensorName} /> */}
                             <NoRender>
                                 {heatmapData[0].data ? <Heatmap ref={heatMapRef} data={heatmapData[0].data} type={'large'} sensorName={props.sensorName}
-                                width
+                                    width
                                 // width={isMobile ? true : false} height={isMobile ?false  : true} 
                                 /> : ''}
-                                
+
                             </NoRender></div>
                         {/* <Heatmap ref={heatMapRef} data={heatmapData} type={'large'} sensorName={props.sensorName} /> */}
                     </div></div>

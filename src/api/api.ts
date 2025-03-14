@@ -51,7 +51,8 @@ Instancercv.interceptors.request.use(function (config: any) {
   let token = localStorage.getItem("token");
   if (token) {
     config.headers = {
-      "token": token
+      "token": token,
+      ...(config.headers || {})
     }
   }
   return config;
@@ -71,10 +72,12 @@ Instancercv.interceptors.response.use(function (response) {
 })
 
 export async function fetchDatarcv(options: any) {
-  const res = await Instancercv(options)
+  const res:any = await Instancercv(options)
   return res
 }
 
+// export default Instancercv
+export default instance
 export async function fetchData(options: any) {
   const res = await instance(options)
   return res

@@ -81,8 +81,8 @@ export default function CustomOption() {
             </div>
 
             <div className="setItem3">
-                <div className="customTitle">配置日报内容(多选)</div>
-                <div className="customOption">
+                {/* <div className="customTitle">配置日报内容(多选)</div> */}
+                {/* <div className="customOption">
                     <Checkbox
                         onChange={onCheckAllChange} checked={checkAll}>
                         全选
@@ -109,7 +109,7 @@ export default function CustomOption() {
                     </Checkbox>
 
                     <CheckboxGroup options={plainOptions} value={checkedList} onChange={onCheckChange} />
-                </div>
+                </div> */}
             </div>
 
         </div>

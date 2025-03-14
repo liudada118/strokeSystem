@@ -199,7 +199,7 @@ export default forwardRef((props: any, refs: any) => {
       const { wsPointData, timer, resSleep, circleArr } = returnCloudHeatmapData({ res: res.data, sensorName, equipInfo })
       initPage({ wsPointData, timer, resSleep, circleArr })
     }).catch((err) => {
-      message.error('服务器错误')
+      message.error('服务器错误22222222')
     });
   }
 

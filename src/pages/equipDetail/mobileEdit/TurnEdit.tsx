@@ -62,14 +62,14 @@ export function TurnEdit() {
 
     const submitCloud = (newValue: any) => {
         setFormValue(newValue)
-        console.log(newValue)
+        console.log(newValue, '33333333333333')
         const obj = {
-            flipbodyCount : parseInt(newValue.timeRangeA),
-            flipbodyTime : parseInt(newValue.timeIntervalA)*60
+            flipbodyCount: parseInt(newValue.timeRangeA),
+            flipbodyTime: parseInt(newValue.timeIntervalA) * 60
         }
 
         // 开关关闭后  设置次数为0
-        if(!newValue.switchA){
+        if (!newValue.switchA) {
             obj.flipbodyCount = 0
         }
         axios({
@@ -91,7 +91,7 @@ export function TurnEdit() {
 
     }
 
-    
+
     /**
      * 请求护理配置
      */
@@ -110,17 +110,17 @@ export function TurnEdit() {
             console.log(res.data, 'resssssssss')
             const flipbodyConfig = JSON.parse(res.data.flipbodyConfig)
             console.log(flipbodyConfig)
-            const {flipbodyCount , flipbodyTime} =  flipbodyConfig
-            if(flipbodyCount){
+            const { flipbodyCount, flipbodyTime } = flipbodyConfig
+            if (flipbodyCount) {
                 setFormValue({
                     timeRangeA: `${flipbodyCount}次`,
-                    timeIntervalA: `${flipbodyTime/60}小时`,
+                    timeIntervalA: `${flipbodyTime / 60}小时`,
                     switchA: true,
                 })
-            }else{
+            } else {
                 setFormValue({
                     timeRangeA: `${0}次`,
-                    timeIntervalA: `${flipbodyTime/60}小时`,
+                    timeIntervalA: `${flipbodyTime / 60}小时`,
                     switchA: false,
                 })
             }

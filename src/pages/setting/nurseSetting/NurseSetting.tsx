@@ -116,17 +116,18 @@ export const NurseTable = (props: tableProps) => {
   return (
     <div className='flex'>
       <div className='grow'>
-        <div className='bg-[#F5F8FA] flex '>{title.map((a) => {
+        <div className='bg-[#F5F8FA] flex '>{
+        title.map((a) => {
           if (type == 'user' && a.key == 'delete') {
             return <></>
           }
           return (
             <div className={`${a.width ? `w-[${a.width}] text-center` : 'grow text-left'} text-xs py-[10px]`}>{a.titleValue}</div>
           )
-        })}
+        }) }
         </div>
         {
-          data.map((item: any, index) => {
+          data && data.map((item: any, index) => {
             return (
               <div key={item.key} className='flex py-[13px] relative'>
                 {
@@ -179,7 +180,9 @@ export const NurseTable = (props: tableProps) => {
 
             )
           })
-        }</div>
+        }
+        
+        </div>
 
 
     </div>

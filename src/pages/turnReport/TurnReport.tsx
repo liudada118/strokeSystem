@@ -60,8 +60,8 @@ export default function TurnReport() {
 
     console.log(logid)
 
-    const leftRef = useRef<any>()
-    const rightRef = useRef<any>()
+    const leftRef = useRef<any>(null)
+    const rightRef = useRef<any>(null)
 
     useEffect(() => {
 

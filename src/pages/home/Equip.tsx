@@ -141,7 +141,7 @@ export default function Equip() {
                                     <div className={`equip`} key={item.sensorName}
                                         onClick={() => {
                                             navigate(`/report/0/${item.sensorName}`, {
-                                                state: item
+                                                state: 'item'
                                             });
                                         }}
                                     >

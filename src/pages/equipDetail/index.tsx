@@ -405,14 +405,16 @@ function Provide() {
             setNursePersonTemplate(nursingConfig)
         })
     }
-
+    useEffect(() => {
+        getPersonTemplate()
+    }, [id])
     return (
         <DataContext.Provider value={{
             nurseformValue, setNurseFormValue,
             submitCloud,
             turnAroundPlan, setTurnAroundPlan,
             getNurse,
-            nursePersonTemplate , setNursePersonTemplate,getPersonTemplate
+            nursePersonTemplate, setNursePersonTemplate, getPersonTemplate
         }}>
             <EquipDetail />
         </DataContext.Provider>

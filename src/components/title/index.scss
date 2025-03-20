@@ -248,19 +248,14 @@
 //消息页头部
 
 
-@media screen and (min-width: $phoneWidth) and (max-width: $PadWidth) {
-    .messageTitlediv2{
-        width: 35rem;
-        height: 3rem;
+@media screen and (min-width: $PadWidth) and (max-width:$phoneWidth ) {
+    .homeTitle{
         display: flex;
-        align-items: center;
-        justify-content: center;
-        .messageTitlediv2_you{
-            width: 15rem;
-            height: 39px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+        justify-content: normal!important;
+        font-weight: 900;
+
     }
+ 
 }
+
+

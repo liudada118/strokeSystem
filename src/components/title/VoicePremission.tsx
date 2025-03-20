@@ -4,7 +4,7 @@ import voice from '@/assets/audio/y2284.mp3'
 let first = true
 export default function VoicePremission() {
     const [isVoiceModalOpen, setIsVoiceModalOpen] = useState(first)
-    const voiceRef = useRef<any>()
+    const voiceRef = useRef<any>(null)
     const handleVoiceOk = () => {
         // if(voiceRef.current)
         firstPlay()

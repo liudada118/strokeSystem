@@ -110,7 +110,7 @@ export class NoRender extends React.Component<noRenderProp> {
   }
 }
 
-const sleepType = [{ name: '左侧', img: right, unImg: unRight }, { name: '仰卧', img: back, unImg: unBack }, { name: '右侧', img: left, unImg: unLeft }]
+const sleepType = [{ key: "1", name: '左侧', img: right, unImg: unRight }, { key: "2", name: '仰卧', img: back, unImg: unBack }, { key: "3", name: '右侧', img: left, unImg: unLeft }]
 let rateArr: Array<number> = [], heartArr: Array<number> = []
 let realDataInit = [[0]]
 for (let i = 0; i < 68; i++) {
@@ -137,6 +137,7 @@ let globalOnbedState = 0
 export default forwardRef((props: any, refs: any) => {
 
   const param = useParams()
+
   const sensorName = param.id || ''
   const equipInfo = useSelector((state) => selectEquipBySensorname(state, sensorName))
 
@@ -152,8 +153,6 @@ export default forwardRef((props: any, refs: any) => {
    * 渲染这些数据
    */
   const initPage = ({ circleArr, resSleep, timer, wsPointData, type }: any) => {
-
-
 
     // 在床
     if (valueArrRef.current.onbedState) {
@@ -174,12 +173,10 @@ export default forwardRef((props: any, refs: any) => {
    */
   const initRealtimePage = ({ heart, rate, stroke, bodyMove, onBedTime, onbedState }: any) => {
     setValueArr({ heart, rate, stroke, bodyMove, onBedTime, onbedState })
-   
+
     // globalOnbedState = onbedState
     if (moveRef.current) moveRef.current.handChangeChart({ ydata: bodyMove })
   }
-
-
   /**
    * 获取初始矩阵信息
    */
@@ -197,7 +194,18 @@ export default forwardRef((props: any, refs: any) => {
       },
     }).then((res) => {
       const { wsPointData, timer, resSleep, circleArr } = returnCloudHeatmapData({ res: res.data, sensorName, equipInfo })
-      initPage({ wsPointData, timer, resSleep, circleArr })
+      // initPage({ wsPointData, timer, resSleep, circleArr })
+      setValueArr((prevState: any) => {
+        const value = {
+          ...prevState,
+          onbedState: 1, // 为真就会调用initpage
+          // heart: 0, // 心率heartRate
+          // rate: 0,   // 呼吸
+        }
+        valueArrRef.current = value
+        initPage({ wsPointData, timer, resSleep, circleArr })
+        return value
+      })
     }).catch((err) => {
       message.error('服务器错误22222222')
     });
@@ -213,11 +221,11 @@ export default forwardRef((props: any, refs: any) => {
   const isMobile = useGetWindowSize()
   let location: any = useLocation();
   const [matrix, setMatrix] = useState(new Array(1024).fill(0))
-  const heatMapRef = useRef<any>()
-  const progressRef = useRef<any>()
+  const heatMapRef = useRef<any>(null)
+  const progressRef = useRef<any>(null)
   const [spinning, setSpinning] = React.useState<boolean>(false);
   const navigate = useNavigate();
-  const moveRef = useRef<any>()
+  const moveRef = useRef<any>(null)
   const [circleArr, setCircleArr] = useState<Array<any>>([]);
   const mqtt = useSelector(mqttSelect)
   const phone = useSelector(phoneSelect)
@@ -284,7 +292,16 @@ export default forwardRef((props: any, refs: any) => {
       if (progressRef.current) progressRef.current.setCountZero()
     }
   }, []);
+  const dian = (name: string) => {
 
+  }
+
+  const changeSleepPos = (indexs: any) => {
+    // setSleepType(indexs)
+    // changeData({ sleepPos: indexs })
+
+
+  }
   return (
     <div id="realPc" className="pfBold">
 
@@ -322,7 +339,6 @@ export default forwardRef((props: any, refs: any) => {
           <div className="rightContent">
 
             <NurseTextInfo equipInfo={equipInfo} timer={timer} sensorName={sensorName} />
-
             <Card unheight title={'在床体征'}>
               <div className="flex mx-[0.5rem] items-center">
                 <div className="flex-1">
@@ -351,12 +367,12 @@ export default forwardRef((props: any, refs: any) => {
 
                 {
                   sleepType.map((item, index) => {
-                    return <div style={{ flex: '0 0 calc((100% - 1.5rem*2)/3)', height: '100%', borderRadius: '5px', }}>
-                      <div className={`bedSoresSleepItem`} style={{ boxShadow: index == sleep ? "0rem 0.28rem 1.56rem 0.08rem rgba(0,116,254,0.33)" : '', background: index == sleep ? 'linear-gradient( 135deg, #009FFF 0%, #006CFD 100%)' : '#F7F8FD', }} key={item.name}>
+                    return <div onClick={() => changeSleepPos(index)} style={{ flex: '0 0 calc((100% - 1.5rem*2)/3)', height: '100%', borderRadius: '5px', }} key={item.key}>
+                      <div className={`bedSoresSleepItem`} style={{ boxShadow: index == sleep ? "0rem 0.28rem 1.56rem 0.08rem rgba(0,116,254,0.33)" : '', background: index == sleep ? 'linear-gradient( 135deg, #009FFF 0%, #006CFD 100%)' : '#F7F8FD', }} >
                         <img src={item.img} style={{ display: index == sleep ? 'none' : 'unset' }} alt="" />
                         <img src={item.unImg} style={{ display: index == sleep ? 'unset' : 'none' }} alt="" />
                       </div>
-                      <div className="mt-[1.2rem] text-[#929EAB]" style={{ textAlign: 'center' }}>{item.name}</div>
+                      <div onClick={() => dian(item.name)} className="mt-[1.2rem] text-[#929EAB]" style={{ textAlign: 'center' }}>{item.name}</div>
                     </div>
                   })
                 }

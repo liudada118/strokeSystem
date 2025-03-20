@@ -19,7 +19,7 @@ interface heatmapProps {
 
 function HeatmapReport(props: heatmapProps) {
     const token = props.token || localStorage.getItem('token') || ''
-    const heatMapRef = useRef<any>()
+    const heatMapRef = useRef<any>(null)
     const [lineFlag, setLineFlag] = useState(false)
     const [onbedDate, setOnBedDate] = useState(20 * 60 * 60 * 1000)
     const [heatmapData, setHeatmapData] = useState<Array<any>>([{ data: new Array(1024).fill(0) }])

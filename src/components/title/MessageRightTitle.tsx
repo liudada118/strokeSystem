@@ -5,6 +5,7 @@ import dayjs from 'dayjs'
 import { DownOutlined } from "@ant-design/icons";
 import fang from '../../assets/images/容器@2x.png'
 import './index.scss'
+import { useGetWindowSize } from '../../hooks/hook'
 const { RangePicker } = DatePicker;
 interface messageParam {
     titleChangeGetMessage: Function,
@@ -19,6 +20,7 @@ export const MessageRightTitle = (props: messageParam) => {
     const [patientNameRoomNum, setpatientName] = useState<any>('')
     const storedData = localStorage.getItem('dataList');
     const dataList = storedData ? JSON.parse(storedData) : [];
+    const windowSize = useGetWindowSize()
     //去重
     function unique(list: any) {
         if (!Array.isArray(list)) {
@@ -94,35 +96,39 @@ export const MessageRightTitle = (props: messageParam) => {
     };
     return (
 
-        <div className="messageTitlediv2">
-            <Space style={{ width: "50rem", height: "39px", marginLeft: "10px" }} direction="vertical" size={12}>
-                <RangePicker
-                    placeholder={['开始时间', '结束时间']}
+        <>
 
-                    onChange={(dates, dateStrings) => handleDateChange(dates, dateStrings)}
-                    style={{ width: "18rem", height: "39px", marginLeft: "10px" }}
-                    showTime
-                />
-            </Space>
+            {
+                !windowSize ? <div className="messageTitlediv2">
 
-            <div className="messageTitlediv2_you">
-                <Dropdown overlay={menu}>
-                    <a className="ant-dropdown-link " style={{ display: "flex", width: "4rem", marginLeft: "1rem" }} onClick={(e) => e.preventDefault()}>
-                        {
-                            name === 'sub2-2' ? '床号' : '姓名'
-                        } <DownOutlined />
-                    </a>
-                </Dropdown>
+                    <><Space style={{ width: "50rem", height: "39px", marginLeft: "10px" }} direction="vertical" size={12}>
+                        <RangePicker
+                            placeholder={['开始时间', '结束时间']}
 
-                <Input className="messageTitlediv2_you_inp"
-                    allowClear
-                    value={patientNameRoomNum}
-                    //  setpatientName(e.target.value)
-                    onChange={(e) => onChang(e)}
-                    placeholder="请输入姓名/床号" />
-                <img onClick={dian} style={{ width: "1rem", height: "1rem", marginRight: "20px" }} src={fang} alt="" />
-            </div>
-        </div>
+                            onChange={(dates, dateStrings) => handleDateChange(dates, dateStrings)}
+                            style={{ width: "18rem", height: "39px", marginLeft: "10px" }}
+                            showTime />
+                    </Space><div className="messageTitlediv2_you">
+                            <Dropdown overlay={menu}>
+                                <a className="ant-dropdown-link " style={{ display: "flex", width: "4rem", marginLeft: "1rem" }} onClick={(e) => e.preventDefault()}>
+                                    {name === 'sub2-2' ? '床号' : '姓名'} <DownOutlined />
+                                </a>
+                            </Dropdown>
+
+                            <Input className="messageTitlediv2_you_inp"
+                                allowClear
+                                value={patientNameRoomNum}
+                                //  setpatientName(e.target.value)
+                                onChange={(e) => onChang(e)}
+                                placeholder="请输入姓名/床号" />
+                            <img onClick={dian} style={{ width: "1rem", height: "1rem", marginRight: "20px" }} src={fang} alt="" />
+                        </div></>
+
+                </div> : <div className="homeTitle  messageTitledivTitle" style={{ display: "flex", justifyContent: 'normal', fontWeight: "900" }}>JQHEALTHCARE</div>
+            }
+
+        </>
+
 
     )
 }

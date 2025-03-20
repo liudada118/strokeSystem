@@ -100,7 +100,7 @@ export default function NurseProcesst(props: nurseProcessProps) {
   const [sleepTypenur, setSleepType] = useState<any>(0)
   const [onBedTime, setOnBedTime] = useState(0)
   const [remark, setRemark] = useState<any>()
-  const turnOverRef = useRef<any>()
+  const turnOverRef = useRef<any>(null)
 
   const nurseStepArr = [
     {
@@ -462,7 +462,7 @@ const OneClickCare = (props: oneClickCareParam) => {
 
   // const [choosedSleep, setChoosedSleep] = useState<number>(sleepTypenur)
 
-  const handleChooseSleep = (value: number) => {
+  const handleChooseSleep = (item: any, value: number) => {
     // setChoosedSleep(value)
     setSleepType(value)
   }
@@ -497,7 +497,7 @@ const OneClickCare = (props: oneClickCareParam) => {
         <div key={item.value} className='basis-1/3 flex flex-col items-center'>
           <div
             className={`w-[70%] ${sleepTypenur === index ? 'bg-gradient-to-b from-[#009FFF] to-[#006CFD] shadow-md shadow-[#1D79EA]' : 'bg-[#F6F7FD]'} mb-[10px] rounded-[6px]`}
-            onClick={() => handleChooseSleep(index)}>
+            onClick={() => handleChooseSleep(item, index)}>
             {sleepTypenur === index ? item.unimg : item.img}
           </div>
           <span>{item.value}</span>

@@ -1,3 +1,4 @@
+@charset "UTF-8";
 .messagePage {
   box-sizing: border-box;
   display: flex;
@@ -185,5 +186,215 @@
     font-size: 0.6rem;
     margin-right: 1rem;
     font-family: PingFang SC;
+  }
+}
+
+@media screen and (min-width: 300px) and (max-width: 940px) {
+  .MessageYiDong {
+    margin-top: 4rem;
+    display: flex;
+    height: calc(100% - 9.5rem);
+    background: #fff;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+  }
+  .MessageYiDongFanHui {
+    margin-left: 1rem;
+    font-weight: 900;
+    font-size: 2rem;
+    width: 10%;
+  }
+  .MessageYiDongDivInput {
+    display: flex;
+    align-items: center;
+    padding: 0.3rem;
+    border: solid 1px #ccc;
+    border-radius: 0.8rem;
+    width: 72%;
+  }
+  .MessageYiDongDivInput .MessageYiDOngTitlesearchSelect {
+    width: 6.2rem !important;
+  }
+  .MessageYiDongDivInput .MessageYiDOngTitlesearchSelect .ant-select-selector {
+    border: 0 !important;
+  }
+  .MessageYiDongDivInput .MessageYiDOngTitlesearchSelect .ant-select-selector {
+    padding: 0 0.6rem !important;
+    background-color: unset !important;
+    box-shadow: unset !important;
+  }
+  .MessageYiDongDivInput .messageTitlediv2_you_inp {
+    width: 70%;
+    height: 2rem;
+    border: none;
+    outline: none;
+    outline: none;
+    margin-left: 1rem;
+    box-shadow: none;
+  }
+  .MessageYiDongDivInput .MessageYiDongFangDAJing {
+    width: 10%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 2rem;
+    color: #ccc;
+    text-align: center;
+    margin-right: 0.6rem;
+  }
+  .MessageYiDongShiJian {
+    font-size: 1.4rem;
+    font-weight: 500;
+    margin-left: 1rem;
+    width: 15%;
+  }
+  .MessageYiDOngTitle {
+    width: 100%;
+    display: flex;
+    background: #929EAB;
+    height: 4.5rem;
+    padding-top: 1rem;
+    background: #fff;
+    align-items: center;
+    line-height: 4.5rem;
+    overflow-y: scroll;
+    /* 启用竖向滚动 */
+    scrollbar-width: none;
+    /* 对于Firefox */
+    -ms-overflow-style: none;
+    /* 对于IE和Edge */
+  }
+  .MessageYiDOngTitle .btn {
+    border-radius: 2.2rem;
+    color: #929EAB;
+    line-height: 4.5rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    height: 2rem;
+  }
+  .MessageYiDOngTitle .onn {
+    font-weight: 900;
+    color: #A4B0BC;
+  }
+  .MessageYiDOngTitle .btn:nth-child(2) {
+    width: 1px;
+    height: 2rem;
+    border: 1px solid #A4B0BC;
+    padding: 0 !important;
+    display: disabled;
+  }
+  .messageMainDataTitledivcontainer {
+    display: flex;
+    justify-content: space-around;
+    height: 3rem;
+    width: 100%;
+    margin-top: 1rem;
+  }
+  .messageMainDataTitledivcontainercard {
+    border-color: #929EAB;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 47%;
+    height: 8rem;
+    background: #ffffff;
+    border: #CAE4FF solid 0.1rem;
+    font-size: 0.1rem;
+  }
+  .messageMainDataTitlesubtitle {
+    font-size: 0.4rem;
+    font-weight: bold;
+    padding-top: 1.5rem;
+  }
+  .messageMainDataTitledivcount {
+    font-size: 2rem;
+    color: #0072EF;
+    font-weight: 900;
+  }
+  .messageMainDataTitlesubtitle {
+    font-size: 18px;
+    color: #555;
+  }
+  .messageMainDataTitlesubtitlecount {
+    font-size: 1.5rem;
+    color: #007BFF;
+  }
+  .messageMainDataTitledivcontainercarddiv {
+    display: flex;
+    width: 47%;
+    height: 8rem;
+    border-color: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    border: #CAE4FF solid 0.1rem;
+    padding-top: 2rem;
+  }
+  .messageMainDataTitledivcontainercardqiantian {
+    width: 50%;
+    height: 100%;
+    font-size: 1.1rem;
+    padding: 0.3rem;
+  }
+  .messageMainDataTitledivcontainercardqiantian {
+    color: #929EAB;
+  }
+  .messageMainDataTitledivcontainercardqiantiandiv {
+    font-size: 1rem;
+  }
+  .messageMainDataTitledivcontainercardqiantianyesterday {
+    font-size: 1.3rem;
+    color: #007BFF;
+    font-weight: 900;
+  }
+  .messageMainDataTitledivcontainercardqiantian:nth-child(2) {
+    height: 4rem;
+    width: 1px;
+    border: #ccc solid 0.05rem;
+    padding: 0;
+  }
+  .biaogetable {
+    width: 96%;
+    border-radius: 1.4rem;
+    background: #FFFFFF;
+    margin-left: 2%;
+    margin-top: 6rem;
+  }
+  .table-container {
+    margin-top: 5rem;
+    border-radius: 0.4rem;
+    background: #ffffff;
+    width: 100%;
+    height: calc(100% - 5.8rem);
+    font-size: 1rem;
+    border-collapse: collapse;
+    overflow-x: auto;
+    /* 允许在小屏幕上滚动 */
+  }
+  .notification-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .notification-table th,
+  .notification-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+  }
+  .notification-table thead {
+    background-color: #ffffff;
+    border-bottom: solid 1px #ccc;
+  }
+  .notification-table th {
+    background-color: #ffffff;
+    border: none;
+  }
+  .notification-table tr {
+    height: 4rem;
+  }
+  .notification-table tbody td {
+    border: none;
+    border-bottom: solid 1px #ccc;
   }
 }

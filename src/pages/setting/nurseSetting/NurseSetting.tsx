@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState, } from 'react'
 import './index.scss'
 import { Button, Input, message, TimePicker } from 'antd'
 import dayjs from 'dayjs'
@@ -10,12 +10,18 @@ import { useSelector } from 'react-redux'
 import { organizeIdSelect } from '@/redux/premission/premission'
 import { useLocation, useParams } from 'react-router-dom'
 import { DataContext } from '@/pages/equipDetail'
+import NurseRecord from '../../equipDetail/NurseRecord'
+import Recording from '@/pages/equipDetail/nurseprocess/recording'
+import { instance } from '../../../api/api'
 
 interface tableProps {
   data: Array<any>;
   templateId: number;
   getNurseTemplate: Function;
   type: string
+  sensorName?: string
+  childData?: string
+  currentTime?: number
 }
 
 export const NurseTable = (props: tableProps) => {
@@ -43,8 +49,8 @@ export const NurseTable = (props: tableProps) => {
   ]
 
 
-  const { data, templateId, getNurseTemplate, type } = props
-  console.log(data)
+  const { data, templateId, getNurseTemplate, type, sensorName, childData, currentTime } = props
+  const setting = window.location.href.split('/')[4] || ''
   /**
    * 计算图表上面的状态
    * @param curStatus 
@@ -88,7 +94,6 @@ export const NurseTable = (props: tableProps) => {
    * @param time 
    */
   const deleteNurse = (time: string) => {
-    console.log(time)
     if (type == 'project') {
       Instancercv({
         method: "post",
@@ -102,6 +107,7 @@ export const NurseTable = (props: tableProps) => {
           templateTime: time,
         }
       }).then((res) => {
+        message.info('删除成功')
         console.log(res)
         getNurseTemplate()
       })
@@ -109,82 +115,177 @@ export const NurseTable = (props: tableProps) => {
       const res = data.filter((item) => item.key != time)
       getNurseTemplate(res)
     }
-
-
   }
+  const [isFals, setIsfals] = useState(false)
+  const [isShow, setIsShow] = useState(false)
+  const [templateTime, setTemplateTime] = useState()
+
+  // 待完成
+  const toBeCompleted = (item: any) => {
+
+    const currentDate = new Date();
+
+    // 创建一个新的 dayjs 对象，设置时间为 12:12，日期为当前日期
+    const timeWithCurrentDate: any = dayjs(`${currentDate.toISOString().split('T')[0]}T${item.time}:00Z`).valueOf();
+
+    setTemplateTime(timeWithCurrentDate)
+
+    setIsfals(true)
+  }
+  const [listData, setDataLIst] = useState(data || [])
+  console.log(data, '................dataLIst');
+
+  // // 请求数据护理模版
+  const [childDataLIst, setChildData] = useState<string>('');
+  function getDataList() {
+    // 获取当前日期
+    const currentDate = dayjs();
+    // 设置开始时间为当天的 00:00
+    const startTime = currentDate.startOf('day');
+    // 设置结束时间为当天的 23:59
+    const endTime = currentDate.endOf('day');
+    // 获取开始和结束时间戳
+    const startTimeMillis: any = startTime.valueOf();
+    const endTimeMillis: any = endTime.valueOf();
+    console.log(sensorName, '....................sensorName');
+
+    if (sensorName !== 'undefined') {
+      instance({
+        method: "get",
+        url: "/sleep/nurse/getDayNurseData",
+        headers: {
+          "content-type": "application/json",
+          "token": token
+        },
+        params: {
+          did: sensorName,
+          startTimeMillis,
+          endTimeMillis,
+        }
+      }).then((res: any) => {
+        if (res.data.msg === 'success') {
+          const list: any = res.data.data.map((item: any, index: number) => {
+            const dataList = JSON.parse(item.data)
+            return {
+              key: item.id,
+              title: dataList.nurseProject,
+              time: dayjs(item.timeMillis).format('HH:mm'),
+              status: '',
+              nurseProject: dataList.nurseProject,
+              notes: dataList.notes,
+              uploadImage: dataList.uploadImage,
+            }
+          })
+          setDataLIst([...list, ...data])
+        }
+      })
+    }
+  }
+
+
+  // useEffect(() => {
+  //   if (sensorName !== 'undefined') {
+  //     getDataList()
+  //   }
+  // }, [])
+  // useEffect(() => {
+  //   if (sensorName !== 'undefined') {
+  //     getDataList()
+  //   }
+  // }, [currentTime])
+  const handleChildData = (data: string, val: any) => {
+    setChildData(data);
+  };
 
   return (
     <div className='flex'>
-      <div className='grow'>
+      <div className='grow' style={{ overflow: 'hidden' }}>
         <div className='bg-[#F5F8FA] flex '>{
-        title.map((a) => {
-          if (type == 'user' && a.key == 'delete') {
-            return <></>
-          }
-          return (
-            <div className={`${a.width ? `w-[${a.width}] text-center` : 'grow text-left'} text-xs py-[10px]`}>{a.titleValue}</div>
-          )
-        }) }
-        </div>
-        {
-          data && data.map((item: any, index) => {
+          title.map((a) => {
+            if (type == 'user' && a.key == 'delete') {
+              return <></>
+            }
             return (
-              <div key={item.key} className='flex py-[13px] relative'>
-                {
-                  title.map((keys) => {
-                    const key = keys.key
-                    const timeTextColor = item.status == 'todo' ? '#929EAB' : '#6C7784'
-                    const nurseTextColor = item.status == 'todo' ? '#929EAB' : '#32373E'
-                    if (key == "key") {
-                      return
-                    } else {
-                      const titleInfo = title.filter((a) => a.key == key)[0]
-                      if (key == 'time') {
-                        console.log(item[key], 'time')
-                        const color = item.status == 'todo' ? '#E6EBF0' : '#0072EF'
-                        const upConnect = calUpConnect(item.status, data[index - 1]?.status)
-                        const downConnect = calDownConnect(data[index + 1]?.status)
-                        return (
-                          <div className={`text-xs ${titleInfo.width ? `w-[${titleInfo.width}] text-center` : 'grow text-left'} flex justify-center items-center text-[${timeTextColor}]`}> <span className='w-[3.2rem]'>{item[key]}</span>
-                            <div className={`ml-[5px] w-[19px] text-xs h-[19px] rounded-[10px] bg-[${color}] text-[#fff]  flex justify-center items-center`}>
-                              <div className={`w-[3px] h-[60%] bg-[${upConnect}] absolute bottom-[80%] z-0`} style={{ backgroundColor: upConnect }}></div>
-                              <div className={` w-[19px] text-xs h-[19px] rounded-[10px] bg-[${color}] text-[#fff] flex justify-center items-center z-10`} style={{ backgroundColor: color }}>{index + 1}</div>
-                              <div className={`w-[3px] h-[60%] bg-[${downConnect}] absolute top-[80%] z-0`} style={{ backgroundColor: downConnect }}></div>
+              <div className={`${a.width ? `w-[${a.width}] text-center` : 'grow text-left'} text-xs py-[10px]`}>{a.titleValue}</div>
+            )
+          })}
+        </div>
+        <div style={{ overflowY: 'scroll', }}>
+          {
+            data && data.map((item: any, index) => {
+              return (
+                <div key={item.key} className='flex py-[13px] relative' >
+                  {
+                    title.map((keys) => {
+
+                      const key = keys.key
+                      const timeTextColor = item.status == 'todo' ? '#929EAB' : '#6C7784'
+                      const nurseTextColor = item.status == 'todo' ? '#929EAB' : '#32373E'
+                      if (key == "key") {
+                        return
+                      } else {
+                        const titleInfo = title.filter((a) => a.key == key)[0]
+                        console.log(titleInfo, '............................titleInfo');
+
+                        if (key == 'time') {
+                          console.log(item[key], 'time')
+                          const color = item.status == 'todo' ? '#E6EBF0' : '#0072EF'
+                          const upConnect = calUpConnect(item.status, data[index - 1]?.status)
+                          const downConnect = calDownConnect(data[index + 1]?.status)
+                          return (
+                            <div className={`text-xs ${titleInfo.width ? `w-[${titleInfo.width}] text-center` : 'grow text-left'} flex justify-center items-center text-[${timeTextColor}]`}> <span className='w-[3.2rem]'>{item[key]}</span>
+                              <div className={`ml-[5px] w-[19px] text-xs h-[19px] rounded-[10px] bg-[${color}] text-[#fff]  flex justify-center items-center`}>
+                                <div className={`w-[3px] h-[60%] bg-[${upConnect}] absolute bottom-[80%] z-0`} style={{ backgroundColor: upConnect }}></div>
+                                <div className={` w-[19px] text-xs h-[19px] rounded-[10px] bg-[${color}] text-[#fff] flex justify-center items-center z-10`} style={{ backgroundColor: color }}>{index + 1}</div>
+                                <div className={`w-[3px] h-[60%] bg-[${downConnect}] absolute top-[80%] z-0`} style={{ backgroundColor: downConnect }}></div>
+                              </div>
                             </div>
+                          )
+                        } else if (key == 'status') {
+                          if (item[key] == 'todo') {
+                            return <Button disabled={setting === 'setting' ? true : false} onClick={(() => toBeCompleted(item))} className={`${titleInfo.width ? `w-[${titleInfo.width}] text-center` : 'grow text-left'} text-[${timeTextColor}]`} color="default" variant="filled">待完成</Button>
+                          }
+                          return <Button disabled={setting === 'setting' ? true : false} className={`${titleInfo.width ? `w-[${titleInfo.width}] text-center` : 'grow text-left'} text-[${timeTextColor}]`} type="text">已完成</Button>
+                        }
+
+                        else if (key == 'delete' && type == 'user') {
+                          return <></>
+                        }
+                        else if (key == 'delete' && type != 'user') {
+                          return <div key={item.key} onClick={() => { deleteNurse(item.key) }} className='flex relative w-[4rem] flex justify-center flex-col items-center'>
+                            <img className='w-[1rem]' src={sheetDelete} alt="" />
+                            <span className='text-xs text-[#929EAB]'>删除</span>
+                          </div>
+                        }
+                        return (
+                          <div className={`${titleInfo.width ? `w-[${titleInfo.width}] text-center` : 'grow text-left'} text-[${nurseTextColor}] text-sm flex items-center justify-center`}>
+                            <span>   {item[key]}</span>
+                            {/* <img src={item.uploadImage} alt="" /><br />
+                          <span>{item.nurseProject}</span><br />
+                          <span>{item.notes}</span> */}
                           </div>
                         )
-                      } else if (key == 'status') {
-                        if (item[key] == 'todo') {
-                          return <Button className={`${titleInfo.width ? `w-[${titleInfo.width}] text-center` : 'grow text-left'} text-[${timeTextColor}]`} color="default" variant="filled">待完成</Button>
-                        }
-                        return <Button className={`${titleInfo.width ? `w-[${titleInfo.width}] text-center` : 'grow text-left'} text-[${timeTextColor}]`} type="text">已完成</Button>
-                      }
 
-                      else if (key == 'delete' && type == 'user') {
-                        return <></>
                       }
-                      else if (key == 'delete' && type != 'user') {
-                        return <div key={item.key} onClick={() => { deleteNurse(item.key) }} className='flex relative w-[4rem] flex justify-center flex-col items-center'>
-                          <img className='w-[1rem]' src={sheetDelete} alt="" />
-                          <span className='text-xs text-[#929EAB]'>删除</span>
-                        </div>
-                      }
-                      return (
-                        <div className={`${titleInfo.width ? `w-[${titleInfo.width}] text-center` : 'grow text-left'} text-[${nurseTextColor}] text-sm flex items-center justify-center`}>{item[key]}</div>
-                      )
-                    }
-                  })
-                }
+                    })
+                  }
 
-              </div>
+                </div>
 
-            )
-          })
-        }
-        
+              )
+            })
+          }
         </div>
 
+      </div>
 
+      {
+        isFals ? <Recording recordOpen={isFals} type='去完成' nursePersonTemplate1={templateTime}
+          onClose={() => {
+            getDataList()
+            setIsfals(false)
+          }} sensorName={sensorName} handleChildData={handleChildData} nurseConfig={''}></Recording> : ''
+      }
     </div>
   )
 }
@@ -220,36 +321,39 @@ export const templateToData = (str: string) => {
   return arr
 
 }
-
 export default function NurseSetting(props: any) {
   const phone = localStorage.getItem('phone')
   const token = localStorage.getItem('token')
   const organizeId = useSelector(organizeIdSelect)
   const [templateId, setTemplateId] = useState(0)
   const [nurseTemplate, setNurseTemplate] = useState<any>([])
-
   const [personTemplate, setPersonTemplate] = useState<any>([])
-
-  
   const param = useParams()
   console.log(param)
   const location = useLocation()
   const sensorName = param.id || location.state?.sensorName
 
+
+
   const format = 'HH:mm';
   const { type } = props
+  console.log(type, '................................................................type123');
   useEffect(() => {
-
     // if (!type) {
     getNurseTemplate()
     // }
-
   }, [])
 
   /**
    * 新建护理模板的护理项目
    */
   const addNurseProject = () => {
+    if (!templateTime) {
+      return message.info('请输入时间')
+    }
+    if (!templateTitle) {
+      return message.info('请输入项目名称')
+    }
     console.log('add')
     Instancercv({
       method: "post",
@@ -270,6 +374,7 @@ export default function NurseSetting(props: any) {
         // const data = templateObjToData(template)
         // setNurseTemplate(data)
         getNurseTemplate()
+        message.success('添加成功')
       }
 
     })
@@ -280,8 +385,8 @@ export default function NurseSetting(props: any) {
    */
 
   const addUserNurseProject = () => {
-    const res = [...personTemplate, 
-      {
+    const res = [...personTemplate,
+    {
       key: templateTime,
       status: 'todo',
       title: templateTitle,
@@ -372,6 +477,7 @@ export default function NurseSetting(props: any) {
   const [templateArr, setTempplateArr] = useState([])
   const [selectTemplate, setSelectTemplate] = useState()
 
+
   const onChange: TimePickerProps['onChange'] = (time, timeString) => {
     console.log(time, timeString);
     if (typeof timeString == 'string') {
@@ -386,6 +492,9 @@ export default function NurseSetting(props: any) {
   }
 
   const addTemplate = () => {
+    if (!templateNameTitle) {
+      return message.info('请输入模板名称')
+    }
     Instancercv({
       method: "post",
       url: "/nursing/addNursingTempl",
@@ -401,33 +510,39 @@ export default function NurseSetting(props: any) {
     }).then((res) => {
       console.log(res.data.msg)
       if (res.data.msg.includes("success")) {
+        message.success('添加成功')
         getNurseTemplate()
+
       }
 
     })
   }
 
   const context = useContext(DataContext)
-  const {getPersonTemplate} = context
+  const { getPersonTemplate } = context
 
 
   const saveTemplate = () => {
-    if(type == 'person'){
+
+    console.log(type, '................................................................typetype');
+
+    if (type == 'person') {
+      console.log('........................................................................valid');
       Instancercv({
         method: "post",
         url: "/nursing/updateNursingConfig",
         headers: {
-            "content-type": "application/json",
-            "token": token
+          "content-type": "application/json",
+          "token": token
         },
         data: {
-            deviceId: sensorName,
-            config: JSON.stringify(personTemplate),
+          deviceId: sensorName,
+          config: JSON.stringify(personTemplate),
         },
-    }).then((res) => {
+      }).then((res) => {
         message.success('添加成功')
         getPersonTemplate()
-    })
+      })
     }
   }
 
@@ -452,7 +567,7 @@ export default function NurseSetting(props: any) {
                   setTemplateNameTitle(e.target.value)
                 }} />
               </div>
-              <Button onClick={addTemplate}>新建模板</Button>
+              <Button className='mb-8' onClick={addTemplate}>新建模板</Button>
 
               <div className='text-lg font-semibold  relative'>
                 模板列表
@@ -508,13 +623,12 @@ export default function NurseSetting(props: any) {
         </div>
         <div className='flex items-center '>
           <div className='text-sm font-semibold mr-[2.2rem]'>项目时间:</div>
-          <TimePicker onChange={onChange} defaultValue={dayjs('12:08', format)} format={format} />
+          <TimePicker onChange={onChange} placeholder='请输入时间' format={format} />
         </div>
         <div className='absolute bottom-[30px] right-[30px]'>
           <Button className='mr-[20px]' onClick={saveTemplate}>保存为模板</Button>
           <Button type="primary" onClick={addProject}>添加</Button>
         </div>
-
       </div>
       <div className='basis-1/3 bg-[#fff] py-[18px] px-[30px]'>
         <div className='text-lg font-semibold mb-[10px]'>预览护理项目</div>
@@ -522,10 +636,10 @@ export default function NurseSetting(props: any) {
 
         {type == 'person' ?
           // 个人设置
-          <NurseTable type={type} getNurseTemplate={setPersonTemplate} templateId={templateId} data={personTemplate} />
+          <NurseTable type={type} sensorName={sensorName} getNurseTemplate={setPersonTemplate} templateId={templateId} data={personTemplate} />
           :
           // 管理员设置
-          <NurseTable type={type} getNurseTemplate={getNurseTemplate} templateId={templateId} data={nurseTemplate} />
+          <NurseTable type={'project'} sensorName={sensorName} getNurseTemplate={getNurseTemplate} templateId={templateId} data={nurseTemplate} />
         }
 
         {/* <NurseTable type={type} getNurseTemplate={getNurseTemplate} templateId={templateId} data={nurseTemplate} /> */}
@@ -535,5 +649,3 @@ export default function NurseSetting(props: any) {
 
   )
 }
-
-

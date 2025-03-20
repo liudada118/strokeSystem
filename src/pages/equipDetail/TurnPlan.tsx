@@ -69,8 +69,7 @@ const TurnPlan: (props: TurnPlanProps) => React.JSX.Element = (props) => {
     const { nursePeriod, nurseStart, nurseEnd } = equipInfo
 
     const turnType = useSelector(turnbodyFlagSelect)
-
-    console.log(turnType, 'turnTypeturnType')
+ 
 
     useEffect(() => {
         getNurse()
@@ -241,7 +240,7 @@ const BorderProgress = (props: borderProgressParam) => {
     console.log((startPosition + timeTotal * 1000 - new Date().getTime()) / (timeTotal * 1000) * 100)
     const newPosition = (startPosition + timeTotal * 1000 - new Date().getTime()) / (timeTotal * 1000) * 100
     const time = (newPosition) / 100 * timeTotal
-    const progressRef = useRef<any>()
+    const progressRef = useRef<any>(null)
 
     useEffect(() => {
         let timeout: any

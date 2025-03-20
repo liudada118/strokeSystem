@@ -13,8 +13,8 @@ interface dayNurse {
 }
 export default function DayNurseReport(props: any) {
 
-    const heatmapStart = useRef<any>()
-    const heatmapEnd = useRef<any>()
+    const heatmapStart = useRef<any>(null)
+    const heatmapEnd = useRef<any>(null)
 
     useEffect(() => {
 

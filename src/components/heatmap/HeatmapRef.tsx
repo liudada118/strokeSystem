@@ -106,8 +106,8 @@ const Heatmap = React.forwardRef((props: any, refs) => {
     
     const [colorObj , setColorObj] = useState<any>({})
     const [circleArr, setCircleArr] = useState<Array<any>>([{}])
-    const canvasRef = useRef<any>()
-    const contextRef = useRef<any>()
+    const canvasRef = useRef<any>(null)
+    const contextRef = useRef<any>(null)
 
     var options: any = {
         min: 0,

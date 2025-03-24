@@ -14,9 +14,9 @@ import { useSelector } from 'react-redux';
 import { selectEquipBySensorname } from '@/redux/equip/equipSlice';
 interface nurseRecord {
   dayDate: number
- 
+
   heatmap: boolean
-  changeFlag ?: any
+  changeFlag?: any
 }
 
 const { RangePicker } = DatePicker;
@@ -82,7 +82,7 @@ const columns = [
 ];
 
 export const strToObj = (str: any) => {
- 
+
   const newConfig = str.replaceAll("a1a", "[")
   const newConfig1 = newConfig.replaceAll("b1b", "]")
   const newConfig2 = newConfig1.replaceAll("c1c", "{")
@@ -96,7 +96,7 @@ function NurseRecord(props: nurseRecord) {
   const param = useParams()
   const sensorName = param.id
   const isMobile = useGetWindowSize()
-  const equipInfo = useSelector(state => selectEquipBySensorname(state , sensorName))
+  const equipInfo = useSelector(state => selectEquipBySensorname(state, sensorName))
 
   const token = localStorage.getItem('token') || ''
   const [dataSource, setDataSource] = useState<Array<any>>([])
@@ -181,17 +181,17 @@ function NurseRecord(props: nurseRecord) {
       {!location.pathname.includes('small') ? <>
 
         {dataSource[0] && dataSource[0].startMatrix != "undefined" && dataSource[0].startMatrix.length && props.heatmap ? <> <DayNurseReport img={dataSource[0].careImg} sensorName={sensorName} startMatrix={JSON.parse('[' + dataSource[0].startMatrix + ']')} endMatrix={JSON.parse('[' + dataSource[0].endMatrix + ']')} />
-          <TurnReportProps pageRecords={pageRecords} date={props.dayDate} sensorName={sensorName} />
+          <TurnReportProps  pageRecords={pageRecords} date={props.dayDate} sensorName={sensorName} />
         </> : ''}
         { }
-        <div className="nurseContent" style={{margin : 0 , marginTop : isMobile ? '1rem' : 'unset'}} id="nurseContent">
-          <div className="nurseTitleName" style={{justifyContent : 'unset'}}>
+        <div className="nurseContent" style={{ margin: 0, marginTop: isMobile ? '1rem' : 'unset' }} id="nurseContent">
+          <div className="nurseTitleName" style={{ justifyContent: 'unset' }}>
             <img onClick={() => {
               console.log(props.changeFlag)
-              if(props.changeFlag){
+              if (props.changeFlag) {
                 props.changeFlag(false)
               }
-            }} style={{width : '0.8rem' , marginRight : '2rem'}} src={returnblack} alt="" /> 护理记录 </div>
+            }} style={{ width: '0.8rem', marginRight: '2rem' }} src={returnblack} alt="" /> 护理记录 </div>
           {/* <div onClick={() => {
               navigate(`/turnReport`, {
                 state: {

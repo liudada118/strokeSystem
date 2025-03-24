@@ -15,5 +15,5 @@ export function useGetWindowSize() {
             window.removeEventListener('resize', changeRem)
         }
     }, [])
-    return width == 'pc' || width == 'Pad' ? false : true
+    return width == 'pc' || width == 'Pad' || width == 'poen' ? false : true
 }

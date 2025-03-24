@@ -15,6 +15,7 @@ import { NurseTable, templateToData } from "../setting/nurseSetting/NurseSetting
 import { DataContext } from ".";
 import { TimePickerProps } from "antd/lib";
 import ImgUpload from "@/components/imgUpload/ImgUpload";
+import Recording from "./nurseprocess/recording";
 
 const formMap: { [key: string]: string } = {
     state_picture: '记录皮肤状况',
@@ -209,23 +210,6 @@ const NurseRecord: (props: NurseRecordProps) => React.JSX.Element = (props) => {
      * 请求护理列表
      */
 
-    useEffect(() => {
-        instance({
-            method: 'get',
-            url: "/sleep/nurse/getDayNurseData",
-            headers: {
-                "content-type": "application/json",
-                "token": token
-            },
-            params: {
-                did: sensorName,
-                startTimeMillis: new Date(new Date().toLocaleDateString()).getTime() + 0,
-                endTimeMillis: new Date(new Date().toLocaleDateString()).getTime() + 24 * 60 * 60 * 1000
-            }
-        }).then((res) => {
-
-        })
-    }, [])
 
     const [templateId, setTemplateId] = useState(0)
     // const [nursePersonTemplate, setNursePersonTemplate] = useState<any>([])
@@ -289,17 +273,38 @@ const NurseRecord: (props: NurseRecordProps) => React.JSX.Element = (props) => {
             setTemplateTime(`${h * 60 * 60 * 1000 + m * 60 * 1000}`)
         }
     };
-    const [img, setImg] = useState('')
+    const [type, setType] = useState('')
+    const [currentTime, setCurrentTime] = useState(0)
+    const addOpen = () => {
+        setRecordOpen(true)
+        setType('新增一次')
+    }
+    // 请求数据护理模版
+    const [childData, setChildData] = useState<string>('');
 
+    const handleChildData = (data: string, val: any) => {
+        setChildData(data);
+    };
     return (
         <div className='w-[calc(30%-10px)] md:w-full'>
             {!isMobile && (
                 <span className='flex items-center justify-between mb-[10px]'>
                     <span className='text-lg text-[#32373E] font-semibold'>护理</span>
                     <span className='cursor-pointer text-[#0072EF] text-sm font-medium'
-                        onClick={() => setRecordOpen(true)}>记录护理项目</span>
-
-                    <Drawer
+                        onClick={() => addOpen()}>新增一次</span>
+                    {
+                        recordOpen && <Recording handleChildData={handleChildData} type='新增一次' recordOpen={recordOpen}
+                            onClose={() => {
+                                console.log('99999999999999999')
+                                form.resetFields()
+                                setCheckedList([])
+                                setRecordOpen(false)
+                                setCurrentTime(new Date().getTime())
+                            }}
+                            careList={nursePersonTemplate}
+                            nurseConfig={nurseConfig} sensorName={param.id}></Recording>
+                    }
+                    {/* <Drawer
                         width='26rem'
                         className='nurseDrawer'
                         maskClosable={false}
@@ -309,7 +314,7 @@ const NurseRecord: (props: NurseRecordProps) => React.JSX.Element = (props) => {
                             setCheckedList([])
                             setRecordOpen(false)
                         }}
-                        open={recordOpen}>
+                        open={true}>
                         <Form form={form} onFinish={handleRecordForm}>
                             <div>
                                 护理项目
@@ -337,22 +342,22 @@ const NurseRecord: (props: NurseRecordProps) => React.JSX.Element = (props) => {
                                     取消
                                 </Button>
                                 <Button type="primary" onClick={() => {
-                                    // addNurseReport()
+                                    addNurseReport()
                                 }} className='w-[8rem] h-[2.4rem] text-sm'>
                                     保存
                                 </Button>
                             </Form.Item>
                         </Form>
-                    </Drawer>
+                    </Drawer> */}
                 </span>
             )}
-            <div ref={nurseRef} className='bg-[#fff] py-[25px] px-[25px] md:w-[94%] md:rounded-[10px] md:my-[10px] md:mx-auto md:py-[1rem] md:px-[1rem]'>
+            <div ref={nurseRef} className='bg-[#fff] py-[15px] px-[15px] md:w-[94%] md:rounded-[10px] md:my-[10px] md:mx-auto md:py-[1rem] md:px-[1rem]'>
                 <CommonTitle name='护理项目' type={isMobile ? 'rect' : 'square'} />
                 {/* {isMobile && (
                     <Button className='w-full h-[5vh] mb-[0.5rem] text-base' type='primary' onClick={() => navigate('/record', { state: { sensorName } })}>记录护理项目</Button>
                 )}
                 <Table rowClassName='nurseTableRow' id='nurseTable' rowKey="number" columns={nurseTableColumns} dataSource={dataSource} pagination={false} /> */}
-                <NurseTable type='user' getNurseTemplate={getPersonTemplate} templateId={templateId} data={nursePersonTemplate} />
+                <NurseTable type='user' currentTime={currentTime} childData={childData} sensorName={sensorName} getNurseTemplate={getPersonTemplate} templateId={templateId} data={nursePersonTemplate} />
             </div>
         </div>
     )

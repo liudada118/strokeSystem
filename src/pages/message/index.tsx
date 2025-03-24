@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import "./index.scss";
 import dayjs from "dayjs";
 import { alarmValueToType } from "@/utils/messageInfo";
@@ -6,7 +6,12 @@ import { instance } from "@/api/api";
 import Title from "@/components/title/Title";
 import Bottom from "@/components/bottom/Bottom";
 import type { TableProps, GetProps } from 'antd';
-import { DatePicker, Pagination, Button, Table, } from 'antd';
+import { DatePicker, Pagination, Button, Table, Input, Dropdown, Space, Select } from 'antd';
+import { CaretDownOutlined, DownOutlined, LeftOutlined, ZoomInOutlined } from '@ant-design/icons';
+import { useGetWindowSize } from '../../hooks/hook'
+import { calc } from "antd/es/theme/internal";
+import Kdsd from './asass'
+const { RangePicker } = DatePicker;
 type RangePickerProps = GetProps<typeof DatePicker.RangePicker>;
 export interface message {
   roomNum?: string;
@@ -53,7 +58,7 @@ export default function Message() {
   const phone = localStorage.getItem('phone') || ''
   const token = localStorage.getItem('token') || ''
   const [total, setTotal] = useState(0)
-
+  const WindowSize = useGetWindowSize()
   // 昨天提醒 62 次 前天提醒 26 次
   const [datarq, setData] = useState<any>([
     {
@@ -192,12 +197,17 @@ export default function Message() {
       responders: item.responders,
       responseTime: item.responseTime,
       reminderTime: dayjs(item.timeMills).format('YYYY/MM/DD HH:mm:ss'),
+      timeDate: dayjs(item.timeMills).format('HH:mm:ss'),
+      dateTime: dayjs(item.timeMills).format('YYYY/MM/DD'),
     }
   })
   // 标题切换
   const [titleId, setTitleId] = useState(3)
+  console.log(titleId, 'titleId');
+
   // 标题切换
   const onTitle = (item: any) => {
+
     setTitleId(item.id)
     setParams({
       ...params,
@@ -280,17 +290,65 @@ export default function Message() {
       pageNum: 1,
     });
   };
+  const [name, setName] = useState('')
+  const homeSelect = [
+    { value: 'patientName', label: '姓名' },
+    { value: 'roomNum', label: '床号' },
+
+  ]
+  const [selectType, setSelectType] = useState('patientName');
+
+
+  const [fale, seFalse] = useState(false)
+  const onShijian = () => {
+    setPopupVisible(true)
+  }
+  // 时间选择器
+  const handleDateChange = (dates: any, dateStrings: [string, string]) => {
+
+  }
+  // 搜索框
+  const [patientNameRoomNum, setpatientName] = useState<any>('')
+  const [popupVisible, setPopupVisible] = useState(false);
+  useEffect(() => {
+    if (!patientNameRoomNum) {
+      setParams({
+        ...params,
+        pageNum: 1,
+        pageSize: 10,
+      });
+      getMessage({
+        ...params,
+        pageNum: 1,
+        pageSize: 10,
+      });
+    }
+  }, [patientNameRoomNum])
+
+  const onBlur = () => {
+    if (patientNameRoomNum) {
+      setParams({
+        ...params,
+      });
+      getMessage({
+        ...params,
+        patientName: selectType === 'patientName' ? patientNameRoomNum : "",
+        roomNum: selectType === 'roomNum' ? patientNameRoomNum : ""
+      });
+    }
+  }
+  // 标题切换
+  const titleRefs = useRef<(HTMLButtonElement | null)[]>([]);
   return (
     <>
-      <Title titleChangeGetMessage={(item: any) => getSearchValue(item)}></Title>
-      <div className="messagePage" >
+      {
+        !WindowSize ? <><Title titleChangeGetMessage={(item: any) => getSearchValue(item)}></Title><div className="messagePage">
 
-        <div className="messageMain" >
-          <div className="messagetitle">
-            <div className="messageTitleBtn">
+          <div className="messageMain">
+            <div className="messagetitle">
+              <div className="messageTitleBtn">
 
-              {
-                titleList && titleList.map((item: any, index) => {
+                {titleList && titleList.map((item: any, index) => {
                   return (
                     <Button
                       key={item.id}
@@ -300,42 +358,174 @@ export default function Message() {
                       {item.title}
                     </Button>
                   );
-                })
-              }
-            </div>
-          </div>
-          <div className="messageMainData">
-            <div className="messageMainDatadiv " >
-              <div className="messageMainDataTitle" >
-                <div className="messageMainDataTitlediv"  >
-                  <p className="messageMainDataTitledivbac w-[20px] h-[20px] rounded-[2px] mt-[22px] mr-[16px] opacity-100 bg-[#0072EF]"></p>
-                  <p className="font-pingfang-sc font-bold text-[1.2rem] leading-normal tracking-normal">护理提醒次数 <span className="font-pingfang-sc font-bold text-[35px] leading-normal tracking-normal " style={{ color: "#0072EF" }}> {total} </span> 次</p>
-                </div>
-                <div className="messageMainDataTitlediv " >
-                  <p className="font-pingfang-sc font-bold text-[1.2rem] leading-normal tracking-normal mr-[1.4rem]">
-                    昨天提醒<span className="font-pingfang-sc font-bold text-[1.5rem] leading-normal tracking-normal" style={{ color: "#0072EF" }}> {datarq.yestodayAlarmCount} </span> 次
-                  </p>
-                  <p className="font-pingfang-sc font-bold text-[1.2rem] leading-normal tracking-normal mr-[1.4rem] ">
-                    前天提醒 <span className="font-pingfang-sc font-bold text-[1.5rem]  leading-normal tracking-normal" style={{ color: "#0072EF" }}> {datarq.beforeYestodayAlarmCount} </span> 次
-                  </p>
-                </div>
-              </div>
-              <div className="projectContent">
-                <Table
-                  pagination={false}
-                  dataSource={data}
-                  columns={columns}
-                />
-              </div>
-              <div className='msgToinfoStrPage '>
-                <div className="msgToinfoStrPageDiv">单页显示数 <span style={{ color: "#0072EF", fontVariationSettings: "opsz auto", fontSize: "1rem" }}>{data.length}</span> 条</div>
-                <Pagination style={{ marginRight: "40px" }} pageSize={10} current={params.pageNum} className="pagination" defaultCurrent={1} onChange={onChange} showSizeChanger={false} total={Math.floor(total)} />
+                })}
               </div>
             </div>
+            <div className="messageMainData">
+              <div className="messageMainDatadiv ">
+                <div className="messageMainDataTitle">
+                  <div className="messageMainDataTitlediv">
+                    <p className="messageMainDataTitledivbac w-[20px] h-[20px] rounded-[2px] mt-[22px] mr-[16px] opacity-100 bg-[#0072EF]"></p>
+                    <p className="font-pingfang-sc font-bold text-[1.2rem] leading-normal tracking-normal">护理提醒次数 <span className="font-pingfang-sc font-bold text-[35px] leading-normal tracking-normal " style={{ color: "#0072EF" }}> {total} </span> 次</p>
+                  </div>
+                  <div className="messageMainDataTitlediv ">
+                    <p className="font-pingfang-sc font-bold text-[1.2rem] leading-normal tracking-normal mr-[1.4rem]">
+                      昨天提醒<span className="font-pingfang-sc font-bold text-[1.5rem] leading-normal tracking-normal" style={{ color: "#0072EF" }}> {datarq.yestodayAlarmCount} </span> 次
+                    </p>
+                    <p className="font-pingfang-sc font-bold text-[1.2rem] leading-normal tracking-normal mr-[1.4rem] ">
+                      前天提醒 <span className="font-pingfang-sc font-bold text-[1.5rem]  leading-normal tracking-normal" style={{ color: "#0072EF" }}> {datarq.beforeYestodayAlarmCount} </span> 次
+                    </p>
+                  </div>
+                </div>
+                <div className="projectContent">
+                  <Table
+                    pagination={false}
+                    dataSource={data}
+                    columns={columns} />
+                </div>
+                <div className='msgToinfoStrPage '>
+                  <div className="msgToinfoStrPageDiv">单页显示数 <span style={{ color: "#0072EF", fontVariationSettings: "opsz auto", fontSize: "1rem" }}>{data.length}</span> 条</div>
+                  <Pagination style={{ marginRight: "40px" }} pageSize={10} current={params.pageNum} className="pagination" defaultCurrent={1} onChange={onChange} showSizeChanger={false} total={Math.floor(total)} />
+                </div>
+              </div>
+            </div>
           </div>
+          {<Bottom />}
+        </div></> : <div className="message_phone_box">
+          <Title titleChangeGetMessage={(item: any) => getSearchValue(item)}></Title>
+          <div className="MessageYiDong">
+            <LeftOutlined className="MessageYiDongFanHui" />
+            <div className="MessageYiDongDivInput">
+
+              <Select
+                className="MessageYiDOngTitlesearchSelect"
+                defaultValue={selectType}
+                style={{ width: 80 }}
+                onChange={(e) => { setSelectType(e) }}
+                options={homeSelect}
+              />
+              <input
+                className="messageTitlediv2_you_inp" type="text"
+                value={patientNameRoomNum}
+                onChange={(e) => setpatientName(e.target.value)}
+                placeholder="请输入姓名/床号"
+                onBlur={onBlur}
+              />
+              <ZoomInOutlined className="MessageYiDongFangDAJing" />
+            </div>
+            <span onClick={onShijian} className="MessageYiDongShiJian">时间<CaretDownOutlined />
+            </span>
+          </div>
+          {
+            fale ? <Space style={{ width: "50rem", height: "39px", marginLeft: "10px" }} direction="vertical" size={12}>
+              <RangePicker
+                placeholder={['开始时间', '结束时间']}
+
+                onChange={(dates, dateStrings) => handleDateChange(dates, dateStrings)}
+                style={{ width: "18rem", height: "39px", marginLeft: "10px" }}
+                showTime />
+            </Space> : ""
+          }
+          <div className="MessageYiDOngTitle">
+
+            {
+
+              titleList && titleList.map((item, index) => {
+                return (
+
+
+                  <Button
+
+                    key={item.id}
+                    className={`btn  ${(index + 1) === titleId ? 'on' : ''} `}
+                    ref={(el: any) => (titleRefs.current[index] = el)}
+                    onClick={() => onTitle(item)}
+                  >
+                    {item.title}
+                  </Button>
+
+                )
+              })
+            }
+            <div style={{ position: 'fixed', right: "0", background: '#FFFFF', width: "2rem", height: "3rem", backgroundColor: "#fff", zIndex: 99 }}></div>
+          </div>
+
+          <div style={{ background: '#F5F8FA', height: 'calc(100% -30rem)', overflow: "hidden" }}>
+
+            <div className="f-[94%] ml-[3%] mr-[3%] bg-[#ffff] rounded-lg">
+
+              <div className="messageMainDataTitledivcontainercarddiv">
+                <div className="messageMainDataTitledivcontainercardqiantian">
+                  <h2 className="messageMainDataTitledivcontainercardqiantiandiv" >护理提醒次数</h2>
+                  <p className="messageMainDataTitledivcontainercardqiantianyesterday" style={{ color: "#007BFF" }}>{total} 次</p>
+                </div>
+                <div style={{ width: "1px", borderLeft: "1px #ccc dashed", height: "4rem" }}></div>
+                <div className="messageMainDataTitledivcontainercardqiantian" >
+                  <h3 className="messageMainDataTitledivcontainercardqiantiandiv" >昨天提醒次数</h3>
+                  <p className="messageMainDataTitledivcontainercardqiantianyesterday" > {datarq.yestodayAlarmCount} 次</p>
+                </div>
+                <div style={{ width: "1px", borderLeft: "1px #ccc dashed", height: "4rem" }}></div>
+                <div className="messageMainDataTitledivcontainercardqiantian" >
+                  <h3 className="messageMainDataTitledivcontainercardqiantiandiv" >前天提醒次数</h3>
+                  <p className="messageMainDataTitledivcontainercardqiantianyesterday">{datarq.beforeYestodayAlarmCount} 次</p>
+
+
+                </div>
+              </div>
+              <div className="biaogetable">
+                <div className="table-container" style={{ overflowY: "scroll" }}>
+
+                  <table className="notification-table">
+                    <thead className="notification-table-header">
+                      <tr>
+                        <th>序号</th>
+                        <th>房间号/姓名</th>
+                        {/* <th>姓名</th> */}
+                        <th>提醒时间</th>
+
+
+                        <th>类型</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {data.map((item, index) => (
+
+                        <tr key={item.key}>
+                          <td>{(params.pageNum - 1) * params.pageSize + index + 1}</td>
+                          <td>
+                            <p style={{ color: "#000" }}>{item.roomNumber}</p>
+                            <p style={{ color: '##929EAB' }}>{item.name}</p>
+                          </td>
+                          {/* <td>{item.name}</td> */}
+                          <td>{item.timeDate}<br />{item.dateTime}</td>
+
+                          <td>{item.type}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+                  <div className='msgToinfoStrPage '>
+                    <Pagination style={{ marginRight: "40px" }} pageSize={10} current={params.pageNum} className="pagination" defaultCurrent={1} onChange={onChange} showSizeChanger={false} total={Math.floor(total)} />
+                    </div>
+              </div>
+            </div>
+          </div>
+          <Kdsd onConfirm={(val: any) => {
+            setParams({
+              ...params,
+              ...val
+            })
+            getMessage({
+              ...params,
+              ...val
+            })
+            setPopupVisible(false)
+          }} onCancel={() => setPopupVisible(false)} visible={popupVisible}></Kdsd>
+          {<Bottom />}
         </div>
-        {<Bottom />}
-      </div >
+      }
+
     </>
   );
 }

@@ -1,5 +1,5 @@
-import { message, Spin, Tooltip } from 'antd'
 import React, { useImperativeHandle, useRef, useState } from 'react'
+import { message, Spin, Tooltip } from 'antd'
 import HeatmapR1 from "@/components/heatmap/HeatmapModal copy";
 import notice from "@/assets/image/notice.png";
 import ask from "@/assets/image/ask.png";
@@ -32,7 +32,7 @@ const turnOverInfoText = [
     },
 ]
 
-const sleepType = [{ name: '左侧', img: right, unImg: unRight }, { name: '仰卧', img: back, unImg: unBack }, { name: '右侧', img: left, unImg: unLeft }]
+const sleepType = [{ key: "1", name: '左侧', img: right, unImg: unRight }, { key: "2", name: '仰卧', img: back, unImg: unBack }, { key: "3", name: '右侧', img: left, unImg: unLeft }]
 interface nurseTitleParam {
     index: number
     total: number
@@ -72,7 +72,7 @@ interface turnOverParam {
     sensorName: string
 }
 export const TurnOver = React.forwardRef((props: turnOverParam, refs) => {
-    const heatMapRef2 = useRef<any>()
+    const heatMapRef2 = useRef<any>(null)
     const { newPos, nextPos, open, type, sensorName } = props
     // const [open, setOpen] = useState(true);
 
@@ -125,7 +125,8 @@ export const UploadSleep = (props: uploadSleepParam) => {
         setSleepType(indexs)
         changeData({ sleepPos: indexs })
     }
-
+    const dias = (name: string) => {
+    }
     return (
         <div style={{ backgroundColor: '#F7F8FD', width: '100%', padding: '1rem', flex: 1 }}>
             <Spin className="spin" spinning={spinning} fullscreen />
@@ -195,13 +196,13 @@ export const UploadSleep = (props: uploadSleepParam) => {
                 </div>
                 <div className="bedSoresSleepType">
                     {
-                        sleepType.map((item, indexs) => {
-                            return <div onClick={() => changeSleepPos(indexs)} style={{ flex: '0 0 calc((100% - 0.72rem*2)/3)', height: '100%', borderRadius: '5px', paddingBottom: '0.68rem' }}>
-                                <div className={`bedSoresSleepItem`} style={{ boxShadow: indexs == sleepTypenur ? "0rem 0.28rem 1.56rem 0.08rem rgba(0,116,254,0.33)" : '', background: indexs == sleepTypenur ? 'linear-gradient( 135deg, #009FFF 0%, #006CFD 100%)' : '#F7F8FD', }} key={item.name}>
-                                    <img src={item.img} style={{ display: indexs == sleepTypenur ? 'none' : 'unset' }} alt="" />
-                                    <img src={item.unImg} style={{ display: indexs == sleepTypenur ? 'unset' : 'none' }} alt="" />
+                        sleepType.map((item, index) => {
+                            return <div onClick={() => changeSleepPos(index)} style={{ flex: '0 0 calc((100% - 0.72rem*2)/3)', height: '100%', borderRadius: '5px', paddingBottom: '0.68rem' }} key={item.key}>
+                                <div className={`bedSoresSleepItem`} style={{ boxShadow: index == sleepTypenur ? "0rem 0.28rem 1.56rem 0.08rem rgba(0,116,254,0.33)" : '', background: index == sleepTypenur ? 'linear-gradient( 135deg, #009FFF 0%, #006CFD 100%)' : '#F7F8FD', }}>
+                                    <img onClick={(() => dias(item.name))} src={item.img} style={{ display: index == sleepTypenur ? 'none' : 'unset' }} alt="" />
+                                    <img onClick={(() => dias(item.name))} src={item.unImg} style={{ display: index == sleepTypenur ? 'unset' : 'none' }} alt="" />
                                 </div>
-                                <div style={{ textAlign: 'center', marginTop: "0.8rem" }}>{item.name}</div>
+                                <div onClick={(() => dias(item.name))} style={{ textAlign: 'center', marginTop: "0.8rem" }}>{item.name}</div>
                             </div>
                         })
                     }

@@ -109,7 +109,6 @@ interface UserInfoCardProps {
 const UserInfoCard: (props: UserInfoCardProps) => React.JSX.Element = (props) => {
     const navigate = useNavigate();
     const { outer = false, isMobile = false, nurseformValue, submitCloud, setNurseFormValue } = props;
-    console.log(submitCloud, '........submitCloud........')
     const { sexFormat } = equipInfoFormatUtil
     const param = useParams()
     // console.log(param)

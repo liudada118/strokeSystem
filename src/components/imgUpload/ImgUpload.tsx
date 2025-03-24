@@ -16,6 +16,7 @@ export default function ImgUpload(props: imgUploadParam) {
 
     const token = useSelector(tokenSelect)
     const { img, finish } = props
+    console.log(img, 'img......')
     const [spinning, setSpinning] = React.useState<boolean>(false);
     const fileUpload = (e: any) => {
         axios({

@@ -147,7 +147,6 @@ const TurnCardTable: (props: TurnCardTableProps) => React.JSX.Element = (props) 
         render: (text: string) => <span className='whitespace-nowrap'>{text}</span>
     }]
     const columnWidth = turnTableColumns.map(item => item.width).reduce((total, item) => total + item)
-    console.log(columnWidth, 'columnWidth')
 
     const param = useParams()
     const sensorName = param.id

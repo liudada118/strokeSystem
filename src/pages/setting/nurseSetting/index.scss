@@ -54,3 +54,34 @@
         }
     }
 }
+
+.isTemp.care_box {
+    display: flex;
+    align-items: center;
+    &:not(:last-child):before {
+        top: 32px;
+    }
+}
+.care_box {
+    // display: flex;
+    // align-items: center;
+    &:not(:last-child):before {
+        display: inline-block;
+        content: " ";
+        width: 0.2rem;
+        height: calc(100% - 13px);
+        position: absolute;
+        top: 30px;
+        left: 4.5rem;
+    }
+    &.finsh {
+        &::before {
+            background: #0072ef;
+        }
+    }
+    &.todo {
+        &::before {
+            background: #E6EBF0;
+        }
+    }
+}

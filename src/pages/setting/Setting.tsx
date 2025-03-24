@@ -1942,7 +1942,7 @@ export default function Setting() {
                                   }}>入库</Button>
                                   <Button onClick={() => { window.history.back() }}>返回</Button>
 
-                                </div> : current == 'nurse' ? <NurseSetting organizeId={userOrganizeId} organizeName={userOrganizeName} />
+                                </div> : current == 'nurse' ? <NurseSetting type="project" organizeId={userOrganizeId} organizeName={userOrganizeName} />
                                   : current == 'loadImg' ? <UploadImg changeHeadImg={changeHeadImg} userId={userOrganizeId} username={userOrganizeName} img={headImg} />
                                     : current == 'sysIntro' ?
 

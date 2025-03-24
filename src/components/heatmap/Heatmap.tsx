@@ -53,7 +53,7 @@ const Heatmap = React.forwardRef((props: any, refs) => {
 
 
     const [circleArr, setCircleArr] = useState<Array<any>>([{}])
-    const canvasRef = useRef<any>()
+    const canvasRef = useRef<HTMLCanvasElement | null>(null)
 
     function getRandomIntInclusive(min: any, max: any) {
         min = Math.ceil(min);
@@ -211,7 +211,7 @@ const Heatmap = React.forwardRef((props: any, refs) => {
         context.fill()
         return circle
     }
-
+    // 绘制热力图
     function draw(context: any, data: any) {
         // console.log(options)
         let circle = createCircle(options.size)
@@ -591,8 +591,6 @@ const Heatmap = React.forwardRef((props: any, refs) => {
     }
 
     function resize() {
-
-
         if (props.sensorName === 'iJ3X0JSttyoiRPafpIka') {
             canvas.height = canvas.width
             options.size = canvas.width / sitWidth
@@ -716,9 +714,7 @@ const Heatmap = React.forwardRef((props: any, refs) => {
                     )
                 })
                     : ''}
-
         </div>
-
     );
 })
 

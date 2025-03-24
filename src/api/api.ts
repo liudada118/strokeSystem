@@ -1,12 +1,12 @@
 import { message } from "antd";
 import axios from "axios";
 
-// export const netUrl = "http://sensor.bodyta.com:8080/rcv";
-// export const netRepUrl = "http://sensor.bodyta.com:8081";
-// export const voiceUrl = 'http://sensor.bodyta.com'
-export const netUrl = "https://sensor.bodyta.com/rcv";
-export const netRepUrl = "https://sensor.bodyta.com";
-export const voiceUrl = 'https://sensor.bodyta.com'
+export const netUrl = "http://sensor.bodyta.com:8080/rcv";
+export const netRepUrl = "http://sensor.bodyta.com:8081";
+export const voiceUrl = 'http://sensor.bodyta.com'
+// export const netUrl = "https://sensor.bodyta.com/rcv";
+// export const netRepUrl = "https://sensor.bodyta.com";
+// export const voiceUrl = 'https://sensor.bodyta.com'
 
 // export const netUrl = "http://10.100.14.214:8080/rcv";
 // export const netRepUrl = "http://10.100.14.214:8081";

@@ -3,6 +3,7 @@ import axios from "axios";
 
 export const netUrl = "http://sensor.bodyta.com:8080/rcv";
 export const netRepUrl = "http://sensor.bodyta.com:8081";
+
 export const voiceUrl = 'http://sensor.bodyta.com'
 // export const netUrl = "https://sensor.bodyta.com/rcv";
 // export const netRepUrl = "https://sensor.bodyta.com";

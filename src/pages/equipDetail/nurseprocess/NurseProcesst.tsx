@@ -317,20 +317,19 @@ export default function NurseProcesst(props: nurseProcessProps) {
     }
     instance({
       method: "post",
-      // url: '/sleep/nurse/addNursingLog',
-      url: `https://sensor.bodyta.com/sleep/nurse/addNursingLog?deviceName=${yyds.deviceName}&extra=${yyds.extra}&chargeMan=${yyds.chargeMan}&flipbodyTime=${yyds.flipbodyTime}&posture=${yyds.posture}&onbedTime=${yyds.onbedTime}`,
+      url: '/sleep/nurse/addNursingLog',
       headers: {
         // "content-type": "application/json",
         "token": token
       },
-      // data: {
-      //   deviceName: sensorName,
-      //   extra: obj.sleepPosImg || 'extraData',//({ img: img, content: content }),
-      //   chargeMan: phone?.slice(-4),
-      //   flipbodyTime: new Date().getTime(),
-      //   posture: valueToSleep(sleepTypenur),
-      //   onbedTime: Math.floor(onBedTime)
-      // },
+      params: {
+        deviceName: sensorName,
+        extra: obj.sleepPosImg || 'extraData',//({ img: img, content: content }),
+        chargeMan: phone?.slice(-4),
+        flipbodyTime: new Date().getTime(),
+        posture: valueToSleep(sleepTypenur),
+        onbedTime: Math.floor(onBedTime)
+      },
     }).then((res) => {
       message.success('护理成功')
       initNurseData()

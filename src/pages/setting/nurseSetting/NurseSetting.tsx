@@ -525,7 +525,7 @@ export default function NurseSetting(props: any) {
           <NurseTable type={type} getNurseTemplate={setPersonTemplate} templateId={templateId} data={personTemplate} />
           :
           // 管理员设置
-          <NurseTable type={type} getNurseTemplate={getNurseTemplate} templateId={templateId} data={nurseTemplate} />
+          <NurseTable type={'project'} getNurseTemplate={getNurseTemplate} templateId={templateId} data={nurseTemplate} />
         }
 
         {/* <NurseTable type={type} getNurseTemplate={getNurseTemplate} templateId={templateId} data={nurseTemplate} /> */}

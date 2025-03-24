@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import CommonFormModal, { FormType } from "../../components/CommonFormModal";
-import { Button, message, Modal, Popconfirm, Switch } from "antd";
+import { Button, Input, message, Modal, Popconfirm, Switch } from "antd";
 import type { PopconfirmProps } from 'antd';
 import styles from "./message.module.scss";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
@@ -14,7 +14,7 @@ import rigthLogo from '@/assets/image/rigthLogo.png'
 import { DisplayEditNurseContent, PreViewConfig } from "./mobileEdit/NurseEdit";
 import NurseSetting from "../setting/nurseSetting/NurseSetting";
 import './settingBlock.scss'
-import { Instancercv, netUrl } from "@/api/api";
+import { Instancercv, netUrl, instance } from "@/api/api";
 import axios from "axios";
 import { DataContext } from ".";
 import { unbindHheDevice } from '../../api/index'
@@ -622,6 +622,39 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (props) =>
         console.log(e);
         message.error('取消成功');
     };
+    const [switchOpen, setSwitchOpen] = useState(false)
+    const [switchOpenValue, setSwitchOpenValue] = useState('0')
+    const isOpen = () => {
+        setSwitchOpen(true)
+    }
+    const onBlurShezhi = () => {
+        if (!switchOpenValue) return message.info('不能为空')
+        if (switchOpenValue) {
+            try {
+                Instancercv({
+                    method: "post",
+                    url: "/device/updateLeaveBedParam",
+
+                    headers: {
+                        "content-type": "application/x-www-form-urlencoded",
+                        "token": token
+                    },
+                    data: {
+                        deviceId: sensorName,
+                        leaveBedParam: switchOpenValue
+                    }
+                }).then((res: any) => {
+
+                    message.success('修改成功')
+
+                })
+            } catch (error) {
+                message.success('修改成功')
+            }
+        }
+
+        setSwitchOpen(false)
+    }
     return (
         <div className='overflow-scroll h-[calc(100%-13rem)]'>
             <div className="flex justify-between">
@@ -651,7 +684,7 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (props) =>
                 </div>
             ))}
 
-
+            <div className="flex justify-between items-center" style={{ background: "#ffff", height: "4rem", lineHeight: "4rem", marginBottom: "1rem" }}><span className="text-base text-[#32373E] ml-[0.4rem]" style={{ fontWeight: "600" }} >离床参数 <span className="mr-[3rem]">{switchOpenValue}</span></span>{switchOpen ? <Input value={switchOpenValue} placeholder="请输入" onBlur={onBlurShezhi} onChange={((val: any) => setSwitchOpenValue(val.target.value))} className="w-[5rem] mr-[2rem]"></Input> : <span onClick={isOpen} className="mr-[2rem]">设置</span>}</div>
             {/* {renderFooterBtn()} */}
             <CommonTitle name={'健康配置'} type="square" />
             {/* <div className='bg-[#fff] mb-[10px] p-[10px] px-[0.8rem] flex justify-between items-center'>
@@ -724,6 +757,26 @@ const SettingMoDal = () => {
     const close = () => {
         setOpen(false)
     }
+    const [roleId, setRoleId] = useState(0)
+    useEffect(() => {
+        Instancercv({
+            method: "get",
+            url: "/organize/getUserAuthority",
+            headers: {
+                "content-type": "multipart/form-data",
+                "token": localStorage.getItem('token'),
+            },
+            params: {
+                username: localStorage.getItem('phone'),
+            }
+        }).then((res) => {
+
+            const roleId = res.data.data.roleId
+            setRoleId(roleId)
+
+        })
+
+    }, [])
     return (
         <>
             <Modal
@@ -751,10 +804,13 @@ const SettingMoDal = () => {
 
                 <NurseSetting type="person" />
             </Modal>
-            <div onClick={() => { setOpen(true) }} className='bg-[#fff] mb-[10px] p-[10px] px-[0.8rem] flex justify-between items-center'>
+            <div onClick={() => {
+                if (!(roleId == 1 || roleId == 2)) return message.info('权限不足');
+                setOpen(true)
+            }} className='bg-[#fff] mb-[10px] p-[10px] px-[0.8rem] flex justify-between items-center'>
                 <div>护理配置</div>
                 <div><img className="w-[6.5px]" src={rigthLogo} alt="" /></div>
-            </div>
+            </div >
         </>
 
     )

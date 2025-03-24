@@ -9,7 +9,7 @@ import HeatmapR from "@/components/heatmap/HeatmapModal";
 import { secToHourstamp } from '@/utils/timeConvert';
 import { useGetWindowSize } from '@/hooks/hook';
 import Card, { CardContainTitle, CardText } from './Card';
-import { instance } from '@/api/api';
+import { instance, Instancercv } from '@/api/api';
 import { useSelector } from 'react-redux';
 import { tokenSelect } from '@/redux/token/tokenSlice';
 // import { secToHourstamp } from '../../assets/util';
@@ -51,10 +51,11 @@ export default function TurnReport() {
     //     sleepPosImg: ''
     // }
     const [data, setData] = useState<any>({
-        startMatrix: [],
-        endMatrix: [],
-    })
-    const logid = location.state.logid
+        startMatrix: '',
+        endMatrix: '',
+        sensorName: '',
+    }) as any
+    const { logid, id } = location.state
     const token = useSelector(tokenSelect)
     const isMobile = useGetWindowSize()
 
@@ -62,9 +63,31 @@ export default function TurnReport() {
 
     const leftRef = useRef<any>(null)
     const rightRef = useRef<any>(null)
+    const [useNameList, setUseNameList] = useState([])
+    const paramsName: any = window.location.href.split('/')[4] || ''
 
+    // const paramsNameList = paramsName.split('/')
+    console.log(useNameList, '................................................................useNameList');
+    const [dataList, setDataList] = useState<any>([])
     useEffect(() => {
+        Instancercv({
+            method: "get",
+            url: "/device/selectSinglePatient",
+            headers: {
+                "content-type": "multipart/form-data",
+                "token": token
+            },
+            params: {
+                sensorName: id,
+                phoneNum: localStorage.getItem('phone')
+            }
+        }).then((res: any) => {
+            console.log(res.data.data, '........dadaada');
 
+            setDataList(res.data.data)
+
+            // setUseNameList(res.data.data)
+        })
         instance({
             method: "get",
             url: "/sleep/nurse/getFliplog",
@@ -76,10 +99,10 @@ export default function TurnReport() {
                 logid: logid
             }
         }).then((res) => {
-            console.log(res.data.data)
+            // console.log(res.data.data, '999999997777777')
             const data = res.data.data
             const { startMatrix, endMatrix, posture, extra, did, remark, timeMillsEnd } = data
-            console.log(JSON.parse(JSON.parse(startMatrix)))
+            console.log(JSON.parse(JSON.stringify(startMatrix)), '00000001111')
             let obj = {
                 //     normalArrRes: '',
                 //     inputArrRes: '',
@@ -92,8 +115,8 @@ export default function TurnReport() {
                 //     date: '12',
                 //     chargeMan: '123',
                 onBedTime: Number(remark),
-                startMatrix: JSON.parse(JSON.parse(startMatrix)),
-                endMatrix: JSON.parse(JSON.parse(endMatrix)),
+                startMatrix: JSON.parse(JSON.stringify(startMatrix)),
+                endMatrix: JSON.parse(JSON.stringify(endMatrix)),
                 sensorName: did,
                 //     type: '',
                 sleepPos: posture,
@@ -108,12 +131,19 @@ export default function TurnReport() {
         })
     }, [])
 
+    useEffect(() => {
+        console.log(leftRef.current, '000', rightRef.current, '99', data, '222222222222')
+        if (leftRef.current) leftRef.current.bthClickHandle(data.startMatrix || [])
+        if (rightRef.current) rightRef.current.bthClickHandle(data.endMatrix || [])
+    }, [leftRef, rightRef, data.endMatrix,])
+    console.log(dataList, 'dataList');
+
     // console.log(data, normalArr, JSON.parse(data.inputArrRes))
     return (
 
         <div className='nurseReport2 font' style={{ height: '100vh', display: 'flex', flexDirection: "column" }}>
             <div className="nurseTitleReal" style={{ margin: '1rem 0' }}>
-                <img src={returnPng} onClick={() => {
+                <img src={returnPng} alt="" onClick={() => {
                     navigate(-1)
                     // navigate(`${location.state.router}`, { state: { ...location.state.props, date: location.state.date, select: location.state.router.includes('small') ? 1 : 2 } })
                 }} style={{ width: '2rem', position: 'absolute', left: '1rem' }} />护理报告</div>
@@ -130,26 +160,26 @@ export default function TurnReport() {
                             }}></div>
                             {/* <img src={showUserinfo.img} alt="" /> */}
                         </div>
-
+                   
                         <div className="itemContents">
-                            <div className="personalName">{data.name}</div>
+                            <div className="personalName">{dataList.patientName}</div>
 
                             <div className="itemContent">
                                 <div className="itemTitle">年龄</div>
-                                <div className="itemData">{data.age}</div>
+                                <div className="itemData">{dataList.age}</div>
                             </div>
                             <div className="itemContent">
                                 <div className="itemTitle">床号</div>
-                                <div className="itemData">{data.roomNum}</div>
+                                <div className="itemData">{dataList.roomNum}</div>
                             </div>
 
                             <div className="itemContent">
                                 <div className="itemTitle">护理日期</div>
-                                <div className="itemData">{dayjs(data.date).format('YYYY-MM-DD')}</div>
+                                <div className="itemData">{dataList.startTime}</div>
                             </div>
                             <div className="itemContent">
                                 <div className="itemTitle">护理员</div>
-                                <div className="itemData">{data.chargeMan}</div>
+                                <div className="itemData">{dataList.chargeMan}</div>
                             </div>
 
                         </div>
@@ -176,7 +206,7 @@ export default function TurnReport() {
                     <div className="secondHeatmap justify-between">
                         <div style={{ flex: `0 0 calc(50% - 0.4rem)`, display: 'flex', alignItems: 'center', justifyContent: 'center' }} >
                             <div style={{ width: '100%' }}>
-                                <Heatmap ref={leftRef} width={'100%'} data={data.startMatrix} index={5} type={data.type} sensorName={data.sensorName} />
+                                <Heatmap ref={leftRef} width={'100%'} data={data.startMatrix || []} index={5} type={data.type} sensorName={data.sensorName} />
                                 <div style={{ display: 'flex', justifyContent: 'center', marginTop: '0.5rem' }}>
                                     <div className='text-[1rem]' style={{ textAlign: 'center', padding: '0.5rem 1rem', }}>护理前</div>
                                 </div>
@@ -184,7 +214,7 @@ export default function TurnReport() {
                         </div>
                         <div style={{ flex: `0 0 calc(50% - 0.4rem)`, display: 'flex', alignItems: 'center', justifyContent: 'center' }} >
                             <div style={{ width: '100%' }}>
-                                <HeatmapR ref={rightRef} less={3} index={12} data={data.endMatrix} type={data.type} sensorName={data.sensorName} />
+                                <HeatmapR ref={rightRef} less={3} index={12} data={data.endMatrix || []} type={data.type} sensorName={data.sensorName} />
                                 <div style={{ display: 'flex', justifyContent: 'center', marginTop: '0.5rem' }}>
                                     <div className='text-[1rem]' style={{ textAlign: 'center', padding: '0.5rem 1rem', }}>护理后</div>
                                 </div>

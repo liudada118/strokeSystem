@@ -84,6 +84,7 @@ interface turnReport {
   date: number
   pageRecords: any
   changeFlag?: Function
+
 }
 
 const paginationProps = {
@@ -101,7 +102,10 @@ function TurnReportProps(props: turnReport) {
   const [turnMax, setTurnMax] = useState(0)
   const [posMax, setPosMax] = useState(0)
   let location = useLocation()
+  const { logid, id } = location.state || {}
   const navigate = useNavigate()
+
+  console.log(id, '...', logid, '................................................................useLocationyyds');
 
   // const getNurseReport = (date: number) => {
 

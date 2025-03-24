@@ -100,6 +100,7 @@ export default function NurseProcesst(props: nurseProcessProps) {
   const [sleepTypenur, setSleepType] = useState<any>(0)
   const [onBedTime, setOnBedTime] = useState(0)
   const [remark, setRemark] = useState<any>()
+
   const turnOverRef = useRef<any>(null)
 
   const nurseStepArr = [
@@ -113,6 +114,13 @@ export default function NurseProcesst(props: nurseProcessProps) {
     }
   ]
 
+  const [obj, setObj] = useState<any>({}) || []
+  function changeData(param: any) {
+    console.log(param, '................................objobjobjobj');
+
+    setObj({ ...obj, ...param })
+  }
+  console.log(obj.sleepPosImg, '............sleepPosImg');
   const onClose = () => {
     changePos()
   };
@@ -292,23 +300,37 @@ export default function NurseProcesst(props: nurseProcessProps) {
     }
   }
 
+
   /**
    * 提交报告
    */
   const submitReport = () => {
     const phone = localStorage.getItem('phone')
     console.log('submitReport')
+    const yyds = {
+      deviceName: sensorName,
+      extra: obj.sleepPosImg || 'extraData',
+      chargeMan: phone?.slice(-4),
+      flipbodyTime: new Date().getTime(),
+      posture: valueToSleep(sleepTypenur),
+      onbedTime: Math.floor(onBedTime)
+    }
     instance({
       method: "post",
-      url: "/sleep/nurse/addNursingLog",
-      params: {
-        deviceName: sensorName,
-        extra: obj.sleepPosImg,//({ img: img, content: content }),
-        chargeMan: phone?.slice(-4),
-        flipbodyTime: new Date().getTime(),
-        posture: valueToSleep(sleepTypenur),
-        onbedTime: Math.floor(onBedTime)
+      // url: '/sleep/nurse/addNursingLog',
+      url: `https://sensor.bodyta.com/sleep/nurse/addNursingLog?deviceName=${yyds.deviceName}&extra=${yyds.extra}&chargeMan=${yyds.chargeMan}&flipbodyTime=${yyds.flipbodyTime}&posture=${yyds.posture}&onbedTime=${yyds.onbedTime}`,
+      headers: {
+        // "content-type": "application/json",
+        "token": token
       },
+      // data: {
+      //   deviceName: sensorName,
+      //   extra: obj.sleepPosImg || 'extraData',//({ img: img, content: content }),
+      //   chargeMan: phone?.slice(-4),
+      //   flipbodyTime: new Date().getTime(),
+      //   posture: valueToSleep(sleepTypenur),
+      //   onbedTime: Math.floor(onBedTime)
+      // },
     }).then((res) => {
       message.success('护理成功')
       initNurseData()
@@ -326,10 +348,7 @@ export default function NurseProcesst(props: nurseProcessProps) {
   const finishClose = () => {
     setNurseFinish(false)
   }
-  const [obj, setObj] = useState<any>({})
-  function changeData(param: any) {
-    setObj({ ...obj, ...param })
-  }
+
 
   const turnType = useSelector(turnbodyFlagSelect)
   console.log(isModalOpenSend,);

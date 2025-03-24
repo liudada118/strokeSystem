@@ -4,6 +4,7 @@ import { Button, Drawer, Form, Input, message, TimePicker, TimePickerProps } fro
 import dayjs from "dayjs";
 import { instance, Instancercv } from "@/api/api";
 interface proprsType {
+    careList: any,
     sensorName: any
     nurseConfig: string
     recordOpen: boolean
@@ -11,11 +12,10 @@ interface proprsType {
     Time?: any
     type?: string
     handleChildData?: any
-    nursePersonTemplate1?: any
+    currentCare?: any
 }
 function Recording(props: proprsType) {
-    console.log(props, 'props....111222........')
-    const { sensorName, recordOpen, onClose, nursePersonTemplate1, type, handleChildData } = props
+    const { sensorName, recordOpen, onClose, type, handleChildData } = props
     const [recordOpen1, setRecordOpen] = useState<boolean>(props.recordOpen)
     const [checkedList, setCheckedList] = useState<string[]>([]);
     const [dataSource, setDataSource] = useState<any>([])
@@ -34,18 +34,22 @@ function Recording(props: proprsType) {
         if (values) {
             const time = dayjs(values.completionTime).valueOf()
             values.completionTime = time
-            console.log(values, time, '....................completionTime');
+
+            const timeString = dayjs(props.currentCare?.timeWithCurrentDate).format("HH:mm");
+            const fullDateTime = dayjs().format("YYYY-MM-DD") + " " + timeString; // 拼接当天日期
+            const dateTime = dayjs(fullDateTime, "YYYY-MM-DD HH:mm:ss").valueOf(); // 转换为 dayjs 对象
 
             const dataList = type === '新增一次' ?
                 {
                     did: sensorName,
                     timeMillis: time,
+                    templateTime: new Date().getTime(),
                     data: JSON.stringify(values),
                 } :
                 {
                     did: sensorName,
                     timeMillis: time,
-                    templateTime: nursePersonTemplate1,
+                    templateTime: time,
                     data: JSON.stringify(values),
                 }
             instance({
@@ -98,6 +102,10 @@ function Recording(props: proprsType) {
     //         onClose()
     //     })
     // }
+    const setImgVal = (url: string) => {
+        form.setFieldsValue({ uploadImage: url })
+        setImg(url)
+    }
     return (
         <div>
             <Drawer
@@ -112,15 +120,46 @@ function Recording(props: proprsType) {
                     onClose()
                 }}
                 open={recordOpen1}>
-                <Form form={form} onFinish={handleRecordForm}>
-                    <Form.Item name="nurseProject" label="护理项目:" labelCol={{ style: { fontWeight: "600", fontSize: "0.8rem", marginRight: "1rem" } }} wrapperCol={{ style: { width: "calc(100%-100px)" } }}>
-                        <Input placeholder="请输入所有添加护理项目名称" style={{ borderRadius: "0" }} />
+                <Form form={form} onFinish={handleRecordForm}
+                    initialValues={{
+                        nurseProject: props.currentCare?.templateTitle,
+                        completionTime: dayjs(dayjs(props.currentCare?.completionTime).format("HH:mm"), 'HH:mm')
+                    }}
+                >
+
+                    <Form.Item name="nurseProject" label="护理项目:" labelCol={{ style: { fontWeight: "600", fontSize: "0.8rem", marginRight: "1rem" } }} wrapperCol={{ style: { width: "calc(100%-100px)" } }}
+                        rules={[{ required: true, message: '请输入护理项目!' }]}
+                    >
+                        <Input disabled={props.type === '去完成'} placeholder="请输入所有添加护理项目名称" style={{ borderRadius: "0" }} />
                     </Form.Item>
-                    <Form.Item name="completionTime" label="完成时间:" labelCol={{ style: { fontWeight: "600", fontSize: "0.8rem", marginRight: "1rem" } }}>
-                        <TimePicker onChange={onTimeChange} defaultValue={dayjs('12:08', format)} format={format} style={{ borderRadius: "0" }} />
+                    <Form.Item name="completionTime" label="完成时间:" labelCol={{ style: { fontWeight: "600", fontSize: "0.8rem", marginRight: "1rem" } }}
+                        rules={[
+                            { required: true, message: '请选择完成时间!' },
+                            {
+                                validator: (_, value) => {
+                                    if (!value) return Promise.resolve();
+                                    const selectedTime = dayjs(value);
+                                    const isSame = props.careList.find((item: any) => {
+                                        const startTime = dayjs(item.time, 'HH:mm');
+                                        if (selectedTime.isSame(startTime)) {
+                                            return true
+                                        }
+                                    })
+
+                                    if (isSame) {
+                                        return Promise.reject(new Error('护理时间重复，请重新选择！'));
+                                    }
+                                    return Promise.resolve();
+                                },
+                            }
+                        ]}
+                    >
+                        <TimePicker disabled={props.type === '去完成'} popupClassName="time_picker_box" placeholder='请输入时间' format={format} />
                     </Form.Item>
-                    <Form.Item name="uploadImage" label="上传图片:" labelCol={{ style: { fontWeight: "600", fontSize: "0.8rem", marginRight: "1rem" } }}>
-                        <ImgUpload finish={setImg} img={img} />
+                    <Form.Item name="uploadImage" label="上传图片:" labelCol={{ style: { fontWeight: "600", fontSize: "0.8rem", marginRight: "1rem" } }}
+                        rules={[{ required: true, message: '请上传图片!' }]}
+                    >
+                        <ImgUpload finish={(val: string) => setImgVal(val)} img={img} />
                     </Form.Item>
                     <Form.Item name="notes" label="填写备注:" labelCol={{ style: { fontWeight: "600", fontSize: "0.8rem", marginRight: "1rem" } }} wrapperCol={{ style: { width: "calc(100%-100px)", backgroundColor: "#F5F8FA" } }}>
                         <Input placeholder="请输入20字内备注内容" />

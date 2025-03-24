@@ -25,7 +25,7 @@ export default function Login() {
   const permissionStatus = useSelector((state: any) => state.premission.status)
 
 
-  
+
   let navigate = useNavigate();
   useEffect(() => {
     document.documentElement.style.fontSize = `${window.innerWidth / 100}px`;
@@ -92,9 +92,9 @@ export default function Login() {
 
     });
   }
-
   const login = () => {
-
+    if (!phone && !verCode) return message.info(nowType === 0 ? '手机号和验证码不能为空' : '手机号和密码不能为空')
+    if (!verCode) return message.info(nowType === 0 ? '手机号和验证码不能为空' : '手机号和密码不能为空')
     // 管理员
     if (nowType) {
       axios({
@@ -108,21 +108,14 @@ export default function Login() {
           "content-type": "application/x-www-form-urlencoded",
         },
       }).then((res) => {
-
         if (res.data.code === 0) {
           const token = res.data.token
           // localStorage.setItem('token', res.data.token)
-
           // localStorage.setItem('phone', phone)
-
           dispatch(reduxSetPhone(phone))
           dispatch(reduxSetToken(token))
-
           navigate('/')
           message.success('登录成功')
-
-
-
         } else {
           message.error('登录失败')
         }
@@ -141,31 +134,20 @@ export default function Login() {
           "content-type": "application/x-www-form-urlencoded",
         },
       }).then((res) => {
-
         if (res.data.code === 0) {
           const token = res.data.token
           // localStorage.setItem('token', res.data.token)
           // localStorage.setItem('phone', phone)
           dispatch(reduxSetPhone(phone))
           dispatch(reduxSetToken(token))
-
           navigate('/')
           message.success('登录成功')
-
-
-
         } else {
           message.error('登录失败')
         }
       });
     }
-
-
-
-
-
   }
-
   return (
     <div className="loginContainer sy">
       <div className="loginContent">

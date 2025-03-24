@@ -211,7 +211,7 @@ const Heatmap = React.forwardRef((props: any, refs) => {
         context.fill()
         return circle
     }
-// 绘制热力图
+    // 绘制热力图
     function draw(context: any, data: any) {
         // console.log(options)
         let circle = createCircle(options.size)
@@ -249,7 +249,7 @@ const Heatmap = React.forwardRef((props: any, refs) => {
 
         applySharpen(context, canvas.width, canvas.height);
     }
- 
+
     function applySharpen(context: any, width: any, height: any) {
         // 获取原始图像数据
         let originalImageData = context.getImageData(0, 0, width, height);

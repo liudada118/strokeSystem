@@ -127,7 +127,7 @@
     display: flex;
     width: 5rem;
     height: 1.8rem;
-    background: #ffffff;
+    background: #F5F8FA;
     margin-right: 1.1rem;
     color: #000;
     border-radius: 0.4rem;
@@ -210,8 +210,8 @@
     align-items: center;
     padding: 0.3rem;
     border: solid 1px #ccc;
-    border-radius: 0.8rem;
-    width: 72%;
+    background: #F5F8FA;
+    width: 60%;
   }
   .MessageYiDongDivInput .MessageYiDOngTitlesearchSelect {
     width: 6.2rem !important;
@@ -232,6 +232,7 @@
     outline: none;
     margin-left: 1rem;
     box-shadow: none;
+    background: #F5F8FA;
   }
   .MessageYiDongDivInput .MessageYiDongFangDAJing {
     width: 10%;
@@ -246,8 +247,10 @@
   .MessageYiDongShiJian {
     font-size: 1.4rem;
     font-weight: 500;
-    margin-left: 1rem;
-    width: 15%;
+    margin-left: 0.4rem;
+    width: 17%;
+    color: #929EAB;
+    font-family: 'PingFang SC';
   }
   .MessageYiDOngTitle {
     width: 100%;
@@ -256,26 +259,28 @@
     height: 4.5rem;
     padding-top: 1rem;
     background: #fff;
+    overflow-y: scroll;
+    z-index: 1;
     align-items: center;
     line-height: 4.5rem;
     overflow-y: scroll;
-    /* 启用竖向滚动 */
     scrollbar-width: none;
-    /* 对于Firefox */
     -ms-overflow-style: none;
-    /* 对于IE和Edge */
   }
   .MessageYiDOngTitle .btn {
     border-radius: 2.2rem;
     color: #929EAB;
     line-height: 4.5rem;
     margin-left: 1rem;
-    margin-right: 1rem;
+    margin-right: 0.5rem;
     height: 2rem;
+    background: #F5F8FA;
+    border: none;
   }
   .MessageYiDOngTitle .onn {
     font-weight: 900;
-    color: #A4B0BC;
+    color: #fff;
+    background: #0072EF;
   }
   .MessageYiDOngTitle .btn:nth-child(2) {
     width: 1px;
@@ -286,20 +291,18 @@
   }
   .messageMainDataTitledivcontainer {
     display: flex;
-    justify-content: space-around;
     height: 3rem;
     width: 100%;
     margin-top: 1rem;
+    background: #FFFFFF;
   }
   .messageMainDataTitledivcontainercard {
     border-color: #929EAB;
     border-radius: 0.5rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     text-align: center;
     width: 47%;
     height: 8rem;
     background: #ffffff;
-    border: #CAE4FF solid 0.1rem;
     font-size: 0.1rem;
   }
   .messageMainDataTitlesubtitle {
@@ -322,47 +325,42 @@
   }
   .messageMainDataTitledivcontainercarddiv {
     display: flex;
-    width: 47%;
-    height: 8rem;
+    width: 100%;
+    height: 7rem;
     border-color: white;
     border-radius: 0.5rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     text-align: center;
-    border: #CAE4FF solid 0.1rem;
     padding-top: 2rem;
+    margin-top: 1rem;
   }
   .messageMainDataTitledivcontainercardqiantian {
     width: 50%;
-    height: 100%;
+    height: 75%;
     font-size: 1.1rem;
     padding: 0.3rem;
-  }
-  .messageMainDataTitledivcontainercardqiantian {
     color: #929EAB;
   }
   .messageMainDataTitledivcontainercardqiantiandiv {
     font-size: 1rem;
+    color: #000;
+    font-weight: 600;
   }
   .messageMainDataTitledivcontainercardqiantianyesterday {
     font-size: 1.3rem;
-    color: #007BFF;
-    font-weight: 900;
+    color: #000;
+    font-weight: 600;
   }
-  .messageMainDataTitledivcontainercardqiantian:nth-child(2) {
-    height: 4rem;
-    width: 1px;
-    border: #ccc solid 0.05rem;
-    padding: 0;
+  .messageMainDataTitledivcontainercardqiantianyesterday:nth-child(1) {
+    color: #007BFF;
+    font-weight: 600;
   }
   .biaogetable {
     width: 96%;
     border-radius: 1.4rem;
     background: #FFFFFF;
     margin-left: 2%;
-    margin-top: 6rem;
   }
   .table-container {
-    margin-top: 5rem;
     border-radius: 0.4rem;
     background: #ffffff;
     width: 100%;
@@ -383,8 +381,10 @@
     text-align: center;
   }
   .notification-table thead {
-    background-color: #ffffff;
-    border-bottom: solid 1px #ccc;
+    width: 100%;
+    height: 100%;
+    background: #F5F8FA !important;
+    border-bottom: dashed 1px #ccc;
   }
   .notification-table th {
     background-color: #ffffff;

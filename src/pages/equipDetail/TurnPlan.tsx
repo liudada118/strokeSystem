@@ -60,8 +60,9 @@ const TurnPlan: (props: TurnPlanProps) => React.JSX.Element = (props) => {
 
     const context = useContext(DataContext);
 
-    const {turnAroundPlan, setTurnAroundPlan ,getNurse} = context
+    const { turnAroundPlan, setTurnAroundPlan, getNurse, id } = context
     // const [turnAroundPlan, setTurnAroundPlan] = useState<TurnPlanList[]>([])
+
 
     const param = useParams()
     const sensorName = param.id
@@ -69,7 +70,7 @@ const TurnPlan: (props: TurnPlanProps) => React.JSX.Element = (props) => {
     const { nursePeriod, nurseStart, nurseEnd } = equipInfo
 
     const turnType = useSelector(turnbodyFlagSelect)
- 
+
 
     useEffect(() => {
         getNurse()
@@ -171,13 +172,16 @@ const TurnPlan: (props: TurnPlanProps) => React.JSX.Element = (props) => {
     }
 
     // const changeLoadButtonToDownButton
+    console.log(id, '................................................................idyyyds');
+
+
 
     const renderButton = (data: any) => {
         const inactive = inactivePlan(data.status);
         return [TurnPlanStatus.DONE, TurnPlanStatus.TIME_OUT_DONE].includes(data.status) ? (
             <div className="relative" >
                 <Button variant="filled"
-                    onClick={() => isMobile && navigate('/turnReport', { state: { logid: data.logid } })}
+                    onClick={() => isMobile && navigate('/turnReport', { state: { logid: data.logid, id: id } })}
                     className='w-[6rem] h-[2.4rem] text-sm bg-[#ECF0F4] border-none text-[#3E444C] font-medium'>查看报告</Button>
 
             </div>
@@ -192,7 +196,7 @@ const TurnPlan: (props: TurnPlanProps) => React.JSX.Element = (props) => {
             <Button color="primary" variant="solid"
                 onClick={() => handleRecord()}
                 className={`w-[6rem] h-[2.4rem] text-sm ${inactive ? '!bg-[#ECF0F4] !text-[#C2CDD6]' : ''} ${isTimeOut(data.status) ? 'bg-[#EC6E38]' : ''} border-none`}
-               >去记录</Button>
+            >去记录</Button>
     }
 
     return (
@@ -200,7 +204,7 @@ const TurnPlan: (props: TurnPlanProps) => React.JSX.Element = (props) => {
             <NurseProcesst isModalOpenSend={recordModal} setIsModalOpenSend={setRecordModal} getNurse={getNurse} />
             <CommonTitle name='翻身计划' type={isMobile ? 'rect' : 'square'} />
             <div className='w-full'>
-                {turnAroundPlan.map((item:any, index:any) => (
+                {turnAroundPlan.map((item: any, index: any) => (
                     <div key={index} className={`flex items-center w-full ${inactivePlan(item.status) ? 'disabledPlan' : ''}`}>
                         <img src={renderImagIcon(item)}
                             alt="" className='w-xl h-xl mr-[10px]' />

@@ -295,11 +295,13 @@ const NurseRecord: (props: NurseRecordProps) => React.JSX.Element = (props) => {
                     {
                         recordOpen && <Recording handleChildData={handleChildData} type='新增一次' recordOpen={recordOpen}
                             onClose={() => {
+                                console.log('99999999999999999')
                                 form.resetFields()
                                 setCheckedList([])
                                 setRecordOpen(false)
                                 setCurrentTime(new Date().getTime())
                             }}
+                            careList={nursePersonTemplate}
                             nurseConfig={nurseConfig} sensorName={param.id}></Recording>
                     }
                     {/* <Drawer
@@ -349,7 +351,7 @@ const NurseRecord: (props: NurseRecordProps) => React.JSX.Element = (props) => {
                     </Drawer> */}
                 </span>
             )}
-            <div ref={nurseRef} className='bg-[#fff] py-[25px] px-[25px] md:w-[94%] md:rounded-[10px] md:my-[10px] md:mx-auto md:py-[1rem] md:px-[1rem]'>
+            <div ref={nurseRef} className='bg-[#fff] py-[15px] px-[15px] md:w-[94%] md:rounded-[10px] md:my-[10px] md:mx-auto md:py-[1rem] md:px-[1rem]'>
                 <CommonTitle name='护理项目' type={isMobile ? 'rect' : 'square'} />
                 {/* {isMobile && (
                     <Button className='w-full h-[5vh] mb-[0.5rem] text-base' type='primary' onClick={() => navigate('/record', { state: { sensorName } })}>记录护理项目</Button>

@@ -51,6 +51,7 @@ const EquipDetail = () => {
 
     const param = useParams()
     const { type, id } = param
+
     const navigate = useNavigate()
     const token = useSelector(tokenSelect)
     const [activeKey, setActiveKey] = useState(activeKeyArr[(type || 0)])
@@ -290,8 +291,6 @@ function Provide() {
     }
     // const { state: { deviceId } } = useLocation()
     const [turnAroundPlan, setTurnAroundPlan] = useState<TurnPlanList[]>([])
-
-
     const submitCloud = (newValue: any) => {
         setNurseFormValue(newValue)
         console.log(newValue, 'newValue......')
@@ -321,28 +320,7 @@ function Provide() {
             message.error('修改失败')
         })
 
-
-
-
-        // axios({
-        //     method: "get",
-        //     url: netUrl + "/nursing/getNursingConfig",
-        //     headers: {
-        //         "content-type": "application/json",
-        //         "token": token
-        //     },
-        //     params: {
-        //         deviceId: id,
-        //         // config: JSON.stringify(obj),
-        //     },
-        // }).then((res) => {
-        //     // message.success('修改成功')
-        //     getNurse()
-        // }).catch((err) => {
-        //     message.error('修改失败')
-        // })
     }
-
     /**
    * 请求护理计划
    */
@@ -376,18 +354,12 @@ function Provide() {
                         nurseArr[i].status = calNurseItemStatus(4)
                     }
                 }
-
             }
             setTurnAroundPlan(nurseArr)
-
-
-
         }).catch((err) => {
             message.error('服务器错误11111111')
         });;
     }
-
-
     const [nursePersonTemplate, setNursePersonTemplate] = useState<any>([])
     const getPersonTemplate = () => {
         Instancercv({
@@ -405,16 +377,18 @@ function Provide() {
             setNursePersonTemplate(nursingConfig)
         })
     }
+
     useEffect(() => {
         getPersonTemplate()
     }, [id])
+
     return (
         <DataContext.Provider value={{
             nurseformValue, setNurseFormValue,
             submitCloud,
             turnAroundPlan, setTurnAroundPlan,
             getNurse,
-            nursePersonTemplate, setNursePersonTemplate, getPersonTemplate
+            nursePersonTemplate, setNursePersonTemplate, getPersonTemplate, id
         }}>
             <EquipDetail />
         </DataContext.Provider>

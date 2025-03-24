@@ -94,9 +94,7 @@ export default function NurseSetting(props: any) {
 
 
   // const width = useGetWindowSize()
-
   const [checkedList, setCheckedList] = useState<string[]>(['']);
-
   const { token } = theme.useToken();
   const [tags, setTags] = useState<string[]>([]);
   const [inputVisible, setInputVisible] = useState(false);

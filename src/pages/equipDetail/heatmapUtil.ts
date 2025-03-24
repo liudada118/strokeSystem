@@ -34,9 +34,9 @@ export const initRealCircleArr = (pressureInjurePoints: any) => {
 export function cloudSleepToPageSleep(posture: number) {
     switch (Number(posture)) {
         case 0:
-            return 1;
+            return 0;
         case 1:
-            return 0
+            return 1
         default:
             return 2
     }

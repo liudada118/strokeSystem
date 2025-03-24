@@ -24,7 +24,6 @@ import img204 from '../../assets/info/2.2/2.按键.png'
 import img205 from '../../assets/info/2.2/3.配置wifi.png'
 import img206 from '../../assets/info/2.2/4.连接成功.png'
 
-import QRCode from 'react-qr-code';
 
 import img207 from '../../assets/info/2.3/1.账号登录.png'
 import img208 from '../../assets/info/2.3/2.扫码.png'
@@ -36,7 +35,7 @@ import img208 from '../../assets/info/2.3/2.扫码.png'
 // import SeeUser from '../../phoneComponents/settingComponents/seeUser/SeeUser';
 // import CustomOption from '../../phoneComponents/settingComponents/customOption/CustomOption';
 import { useGetWindowSize } from '../../hooks/hook';
-import { instance, Instancercv, netUrl } from '@/api/api';
+import { instance, Instancercv } from '@/api/api';
 import SeeUser from './settingComponents/seeUser/SeeUser';
 import { compressionFile } from '@/utils/imgCompressUtil';
 // import Title from 'antd/es/skeleton/Title';
@@ -54,8 +53,6 @@ import { loginOut, roleIdSelect } from '@/redux/premission/premission';
 import { equipLoginOut } from '@/redux/equip/equipSlice';
 import { tokenLoginout } from '@/redux/token/tokenSlice';
 import { mqttLoginout } from '@/redux/mqtt/mqttSlice';
-import axios from 'axios';
-import { QrReader } from 'react-qr-reader';
 
 
 const sysIntroObj = {
@@ -1401,7 +1398,7 @@ export default function Setting() {
       method: "post",
       url: "/login/updatePwdWithAdmin",
       headers: {
-        'Content-Type': 'multipart/form-data',
+        "content-type": "multipart/form-data",
         "token": token
       },
       params: {
@@ -1425,49 +1422,7 @@ export default function Setting() {
       bottomRef.current.changeImg(headImg)
     }
   }
-  const [imgFile, setImgFile] = useState('')
-  const fileUpload = (e: any) => {
-    console.log('shanc');
 
-    axios({
-      method: "post",
-      url: netUrl + "/file/fileUpload",
-      headers: {
-        "content-type": "multipart/form-data",
-        "token": token
-      },
-      data: {
-        file: e,
-      }
-    }).then((res) => {
-
-      setSpinning(false);
-      message.success('上传成功')
-      const imgUrl = res.data.data.src
-      setImgFile(imgUrl)
-    });
-  }
-  const imgChange = async (e: any) => {
-    console.log(e)
-    setSpinning(true);
-    if (e.target.files) {
-      fileUpload(e.target.files[0])
-    } else {
-      message.error('获取文件失败')
-    }
-  }
-  const handleScan = (data: any) => {
-    if (data) {
-      setImgFile(data);
-      // 跳转到下载链接  
-      window.open(data, '_blank');
-    }
-  };
-
-  const handleError = (err: any) => {
-    console.error(err);
-  };
-  const [scanResult, setScanResult] = useState('')
   return (
     <>
       <Modal title="是否删除当前设备" open={isModalAdminDeleteDeviceOpen} onOk={handleAdminDeleteDeviceOk} onCancel={handleAdminDeleteDeviceCancel}>
@@ -1763,9 +1718,7 @@ export default function Setting() {
           <div className='setTitle' onClick={() => {
             navigate('/productInfo')
           }}><div className="setTitleInfo flex"><img className='setTitleImg' src={setItem} alt="" /> 产品功能介绍</div> <img src={goRight} alt="" /></div>
-          <div className="setTitleInfo flex" style={{ width: '100%', height: '3rem', background: "#cccc" }}>
-            扫描二维码
-          </div>
+
           {/* <div className='setTitle' onClick={() => {
             navigate('/nurseSetting')
           }}><div className="setTitleInfo"><img className='setTitleImg' src={setItem} alt="" /> 护理选项</div> <img src={goRight} alt="" /></div> */}
@@ -1793,26 +1746,6 @@ export default function Setting() {
           <div className='setBoxPc'>
             <div className="selectBox">
               <Menu onClick={onClick} selectedKeys={[current]} mode="inline" items={items} />
-              {/* <div style={{ height: "4rem", borderRadius: "0.3rem", paddingLeft: "1.8rem", background: "#fff", fontWeight: "900", display: "flex", alignItems: "center" }}>
-                <span>上传</span><input type="file" style={{ fontSize: "0.7rem" }} onChange={((e: any) => imgChange(e))} />
-
-              </div>
-
-              <div style={{ height: "20rem", borderRadius: "0.3rem", paddingLeft: "1.8rem", background: "#fff", fontWeight: "900", display: "flex", alignItems: "center" }}>
-                <QRCode value={imgFile} size={256} />
-                <QrReader
-                  constraints={{ facingMode: 'environment' }} // 使用后置摄像头
-                  scanDelay={300}
-                  onResult={(result, error) => {
-                    if (result) {
-                      setScanResult(imgFile);
-                    }
-                    if (error) {
-                      console.error(error);
-                    }
-                  }}
-                />
-              </div> */}
               <div className='loginOut' onClick={showDrawer}>
                 <div className="loginOutButton">退出登录</div>
               </div>
@@ -2009,7 +1942,7 @@ export default function Setting() {
                                   }}>入库</Button>
                                   <Button onClick={() => { window.history.back() }}>返回</Button>
 
-                                </div> : current == 'nurse' ? <NurseSetting  organizeId={userOrganizeId} organizeName={userOrganizeName} />
+                                </div> : current == 'nurse' ? <NurseSetting type="project" organizeId={userOrganizeId} organizeName={userOrganizeName} />
                                   : current == 'loadImg' ? <UploadImg changeHeadImg={changeHeadImg} userId={userOrganizeId} username={userOrganizeName} img={headImg} />
                                     : current == 'sysIntro' ?
 

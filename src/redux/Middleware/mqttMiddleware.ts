@@ -251,9 +251,11 @@ function message({ payload, storeApi, data }: any) {
                     const onbed = alarmJudge.onBedJudge({ item, getFlag: true, alarm })
                     const dropbed = alarmJudge.dropBedJudge({ item, getFlag: true, alarm })
                     const sitBed = alarmJudge.situpJudge({ item, getFlag: true, alarm })
-
-
-
+                    const sos = alarmJudge.sosJudge({ item, getFlag: true, alarm })
+                    if(item.sensorName == 'B2QB26FXWWwQPjRXozP2'){
+                        console.log(sos)
+                    }
+                    
                     const alarmRules = [
                         // {
                         //   flag: sos,
@@ -279,6 +281,11 @@ function message({ payload, storeApi, data }: any) {
                             flag: sitBed,
                             type: ALARMTYPE.sitBed.type,// 'sitBed',
                             voiceText: ALARMTYPE.sitBed.text,// '坐起提醒'
+                        },
+                        {
+                            flag: sos,
+                            type: ALARMTYPE.sos.type,// 'sitBed',
+                            voiceText: ALARMTYPE.sos.text,// '坐起提醒'
                         }
                     ]
 
@@ -320,6 +327,8 @@ function message({ payload, storeApi, data }: any) {
                                     type: alarmRule.type,
                                     time: new Date().getTime()
                                 })
+
+                                // console.log(first)
 
                                 newVoiceExample.voicePush(`${item.roomNum}号床${alarmRule.voiceText}`, `${item.roomNum}号床${alarmRule.voiceText}`)
                                 // sosArrOver = arr

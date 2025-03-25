@@ -33,11 +33,15 @@ const ALARMVALUE = {
     },
     dropBed: {
         value: 3,
-        alarmArrName: 'cArr'
+        alarmArrName: 'fallbedArr'
     },
     situp: {
         value: 4,
         alarmArrName: 'situpArr'
+    },
+    sos: {
+        value: 5,
+        alarmArrName: 'sosArr'
     }
 }
 
@@ -63,7 +67,7 @@ interface alarmType {
 }
 
 // 所有告警类型
-export type alarmtype = 'sitBed' | 'dropBed' | 'onBed'
+export type alarmtype = 'sitBed' | 'dropBed' | 'onBed' | 'sos'
 export type alarmSwitchType = 'situpArr' | 'fallbedArr' | 'leaveBedArr' | 'sosArr'
 
 type totalAlarmType = {
@@ -144,10 +148,12 @@ export function alarmJudgeBase({ item, type }: alarmBase) {
         if (!stampInScope({ start: item.situpStart, end: item.situpEnd })) {
             return false
         }
-    } else {
+    } else if(type == 'fallbed'){
         if (!stampInScope({ start: item.fallbedStart, end: item.fallbedEnd })) {
             return false
         }
+    }else if(type == 'sos'){
+        return true
     }
 
     return true
@@ -259,6 +265,18 @@ export const alarmJudge = {
             return false
         }
     }
+    ,
+    sosJudge : function ({ item, getFlag, alarm }: onBedType) {
+
+
+        const flag = alarmJudgeFn({ item, getFlag, alarm, onBedValue: ALARMVALUE.sos.value, alarmArrName: ALARMVALUE.sos.alarmArrName, type: 'sos' })
+
+        if (flag) {
+            return true
+        } else {
+            return false
+        }
+    }
 }
 
 // 所有告警信息
@@ -284,11 +302,13 @@ export const ALARMTYPE: totalAlarmType = {
         cloudAlarmName: 'leavebed',
         cloudSwitchName: 'leaveBedAlarm'
     },
-    // sos: {
-    //     type: SOS_ALARM,
-    //     text: SOS_ALARM_TEXT,
-    //     switchName: SOS_ALARM_SWITCH
-    // }
+    sos: {
+        type: SOS_ALARM,
+        text: SOS_ALARM_TEXT,
+        switchName: SOS_ALARM_SWITCH,
+        cloudAlarmName: 'sos',
+        cloudSwitchName: 'sosAlarm'
+    }
 }
 
 
@@ -403,6 +423,7 @@ export const findAlarmToCatch = ({ equips, cloudAlarmArr }: any) => {
         'fallbed': ALARMTYPE.dropBed.type,
         'leavebed': ALARMTYPE.onBed.type,
         'situp': ALARMTYPE.sitBed.type,
+        'sos': ALARMTYPE.sos.type,
     }
 
     // const alarmMap = cloudToProgramObj
@@ -435,12 +456,14 @@ export const findAlarmToCatch = ({ equips, cloudAlarmArr }: any) => {
         const leaveTimeFlag = alarmJudgeBase({ item: obj, type: 'leave' })
         const situpTimeFlag = alarmJudgeBase({ item: obj, type: 'situp' })
         const fallbedTimeFlag = alarmJudgeBase({ item: obj, type: 'fallbed' })
+        const sosTimeFlag = alarmJudgeBase({ item: obj, type: 'sos' })
 
 
 
         let fallbed = alarm.fallbed || 0
         let leavebed = alarm.leavebed || 0
         let situp = alarm.situp || 0
+        let sos = alarm.sos || 0
 
         if (!leaveTimeFlag) {
             leavebed = 0
@@ -454,8 +477,12 @@ export const findAlarmToCatch = ({ equips, cloudAlarmArr }: any) => {
             fallbed = 0
         }
 
+        if (!sosTimeFlag) {
+            sos = 0
+        }
 
-        const timeArr: Array<number> = [Number(fallbed), Number(leavebed), Number(situp)]
+
+        const timeArr: Array<number> = [Number(fallbed), Number(leavebed), Number(situp) , Number(sos)]
         const keyArr = Object.keys(alarmMap)
         const maxTime = Math.max(...timeArr)
         const index = timeArr.indexOf(maxTime)
@@ -501,7 +528,7 @@ export const findAlarmSwitch = ({ equip, cloudCatchAlarmArr }: findAlarmSwitchPr
             }
         })
     })
-
+    res.sosArr.push('B2QB26FXWWwQPjRXozP2')
     return res
 }
 

@@ -2,7 +2,7 @@ import { List, Picker } from "antd-mobile"
 import { useEffect, useState } from "react"
 import { RenderListItem } from "../EditingUser"
 import { FormType } from "@/components/CommonFormModal"
-import { useSelector } from "react-redux"
+import { useSelector, useDispatch } from "react-redux"
 import { selectEquipBySensorname } from "@/redux/equip/equipSlice"
 import { useLocation, useParams } from "react-router-dom"
 import { Instancercv, netUrl } from "@/api/api"
@@ -67,7 +67,7 @@ export function TurnEdit() {
             flipbodyCount: parseInt(newValue.timeRangeA),
             flipbodyTime: parseInt(newValue.timeIntervalA) * 60
         }
-
+     
         // 开关关闭后  设置次数为0
         if (!newValue.switchA) {
             obj.flipbodyCount = 0
@@ -153,6 +153,7 @@ export function TurnEdit() {
                 title={pickerInfo.title}
                 value={pickerInfo.value}
                 onConfirm={v => {
+             
                     const result = v.length > 1 ? `${v[0]}:${v[1]} - ${v[2]}:${v[3]}` : v[0]
                     submitCloud({
                         ...formValue,

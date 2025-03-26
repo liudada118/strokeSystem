@@ -8,25 +8,13 @@ import { useSelector } from "react-redux";
 import { tokenSelect } from "@/redux/token/tokenSlice";
 import dayjs from "dayjs";
 import { posNumToposText } from "@/utils/dataToFormat";
-
+import { selectEquipBySensorname } from '@/redux/equip/equipSlice'
 interface CardItem {
     label: string;
-    value: number;
+    value: any;
     unit: string;
 }
-const turnAroundCard: CardItem[] = [{
-    label: '翻身次数',
-    value: 9,
-    unit: '次/10次'
-}, {
-    label: '有效翻身',
-    value: 8,
-    unit: '次/分'
-}, {
-    label: '翻身超时',
-    value: 1,
-    unit: '次'
-}]
+
 // const turnTableDatasource: {[key: string]: unknown}[] = [{
 //     key: '1',
 //     plan: '08:00',
@@ -91,7 +79,26 @@ const TurnCardTable: (props: TurnCardTableProps) => React.JSX.Element = (props) 
     const { isMobile = false } = props;
 
     const [turnTableDatasource, setTurnTableDatasource] = useState<any>([])
+    const [dataList, setDataList] = useState<any>({})
 
+    const param = useParams()
+    const sensorName = param.id
+    const token = useSelector(tokenSelect)
+
+
+    const turnAroundCard: CardItem[] = [{
+        label: '翻身次数',
+        value: `${dataList.flipBodyCount}`,
+        unit: '次'
+    }, {
+        label: '有效翻身',
+        value: `${dataList.effectiveFlipBodyCount}`,
+        unit: '次/分'
+    }, {
+        label: '翻身超时',
+        value: `${dataList.flipBodyTimeoutCount}`,
+        unit: '次'
+    }]
     const commonClass = 'inline-block w-[20px] h-[20px] md:w-[12px] md:h-[12px] rounded-full'
     const turnTableColumns = [{
         title: '翻身计划',
@@ -99,12 +106,7 @@ const TurnCardTable: (props: TurnCardTableProps) => React.JSX.Element = (props) 
         key: 'plan',
         width: 10,
     }, {
-        title: '实际执行',
-        dataIndex: 'actual_exa',
-        key: 'actual_exa',
-        width: 10,
-    }, {
-        title: '左侧卧',
+        title: '右侧',
         dataIndex: 'left',
         key: 'left',
         width: 70,
@@ -128,7 +130,7 @@ const TurnCardTable: (props: TurnCardTableProps) => React.JSX.Element = (props) 
             }
         }
     }, {
-        title: '右侧卧',
+        title: '左侧卧',
         dataIndex: 'right',
         key: 'right',
         width: 70,
@@ -148,11 +150,10 @@ const TurnCardTable: (props: TurnCardTableProps) => React.JSX.Element = (props) 
     }]
     const columnWidth = turnTableColumns.map(item => item.width).reduce((total, item) => total + item)
 
-    const param = useParams()
-    const sensorName = param.id
-    const token = useSelector(tokenSelect)
+
 
     useEffect(() => {
+
         instance({
             method: "get",
             url: "/sleep/nurse/getRecords",
@@ -168,6 +169,12 @@ const TurnCardTable: (props: TurnCardTableProps) => React.JSX.Element = (props) 
                 "token": token
             },
         }).then((res) => {
+
+            setDataList({
+                flipBodyCount: res.data.flipBodyCount,
+                effectiveFlipBodyCount: res.data.effectiveFlipBodyCount,
+                flipBodyTimeoutCount: res.data.flipBodyTimeoutCount
+            })
             const record = res.data.page.records//.map((item :any )=> item.posture)
             let obj = {
                 key: '1',
@@ -178,8 +185,8 @@ const TurnCardTable: (props: TurnCardTableProps) => React.JSX.Element = (props) 
                 right: false,
                 nurser: '张爱铃',
             }
-            let newArr:any = []
-            record.forEach((item: any , index:any) => {
+            let newArr: any = []
+            record.forEach((item: any, index: any) => {
                 let obj = {
                     key: index,
                     plan: dayjs(item.timeMills).format('HH:mm'),

@@ -163,7 +163,7 @@ export default function NurseSetting(props: any) {
   //   console.log(list)
   //   setCheckedList(list);
   // };
-
+  // 切换翻身设置
   const onChange = (e: RadioChangeEvent) => {
     console.log('radio checked', e.target.value);
     // setValue(e.target.value);

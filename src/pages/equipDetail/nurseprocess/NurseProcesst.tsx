@@ -464,7 +464,7 @@ const OneClickCare = (props: oneClickCareParam) => {
   const { isModalOpenSend, setIsModalOpenSend, setSleepType, sleepTypenur, submitReport } = props
 
   const sleepPose = [{
-    value: '左侧卧',
+    value: '右侧',
     img: <img src={left} alt='' />,
     unimg: <img src={unLeft} alt='' />
   }, {
@@ -472,7 +472,7 @@ const OneClickCare = (props: oneClickCareParam) => {
     img: <img src={back} alt='' />,
     unimg: <img src={unBack} alt='' />
   }, {
-    value: '右侧卧',
+    value: '左侧',
     img: <img src={left} alt='' className='scale-x-[-1]' />,
     unimg: <img src={unLeft} alt='' className='scale-x-[-1]' />
   }]

@@ -83,7 +83,7 @@ const MqttMiddleware = (storeApi: any) => (next: any) => (action: any) => {
             const device = message({ payload, storeApi });
             // console.log(device);
             // console.log('messagemessagemessage')
-
+            
         }));
 
         client.on("error", (error: any) => {
@@ -181,17 +181,14 @@ function message({ payload, storeApi, data }: any) {
     const jsonObj = JSON.parse(payload);
 
     if (jsonObj.type === 'alarm') {
-
         // let message = [...overMessage]
-
         if (jsonObj.alarmMsg.includes('offline')) {
             // console.log('offline')
             resData.forEach((item, index) => {
                 if (item.sensorName == jsonObj.deviceName) {
-
                     item.onBedState = 100
 
-
+                    
                 }
             })
             // setEquips(resData)

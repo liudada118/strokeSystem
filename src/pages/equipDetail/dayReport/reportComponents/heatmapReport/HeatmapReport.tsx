@@ -121,7 +121,7 @@ function HeatmapReport(props: heatmapProps) {
 
         const lineLocaltion = moveValue({ value: relativeDisplace, width: lineWidth - progressWidth })
 
-        pressProgressIndex.style.left = `${lineLocaltion}px`;
+
 
         const lineleft = parseInt(pressProgressIndex.style.left);
 
@@ -136,6 +136,8 @@ function HeatmapReport(props: heatmapProps) {
         // }
         renderDate(value)
     }
+
+
 
     const renderDate = (value: any) => {
         if (heatmapData[value] && heatmapData[value].data) {
@@ -168,6 +170,29 @@ function HeatmapReport(props: heatmapProps) {
 
 
     }, [lineFlag])
+
+    const afterAnHour = () => {
+        const pressProgressIndex = document.querySelector(".pressProgressIndex") as HTMLElement
+        pressProgressIndex.style.left = `0px`;
+        if (onbedDate < (20 + 15) * 60 * 60 * 1000) {
+            const newDate = onbedDate + 1 * 60 * 60 * 1000
+            setOnBedDate(newDate)
+            getDayPressData(newDate)
+        } else {
+            message.error('不能超过午间十二点')
+        }
+    }
+    const oneHourBefore = () => {
+        const pressProgressIndex = document.querySelector(".pressProgressIndex") as HTMLElement
+        pressProgressIndex.style.left = `0px`;
+        if (onbedDate > 20 * 60 * 60 * 1000) {
+            const newDate = onbedDate - 1 * 60 * 60 * 1000
+            setOnBedDate(newDate)
+            getDayPressData(newDate)
+        } else {
+            message.error('不能小于晚间八点')
+        }
+    }
 
     return (
         <CardWithoutTitle>
@@ -216,34 +241,14 @@ function HeatmapReport(props: heatmapProps) {
                     <div className="pressProgressIndex" style={{ left: 0 }}></div>
                 </div> : ''}
                 <div className="progressButtonContent">
-                    <div className="progressLeftButton" onClick={() => {
-                        if (onbedDate > 20 * 60 * 60 * 1000) {
-                            const newDate = onbedDate - 1 * 60 * 60 * 1000
-                            setOnBedDate(newDate)
-                            getDayPressData(newDate)
-                        } else {
-                            message.error('不能小于晚间八点')
-                        }
-
-
-                    }}> <img style={{ height: '0.8rem', marginRight: '0.2rem' }} src={last} alt="" /> 前一小时</div>
+                    <div className="progressLeftButton" onClick={() => oneHourBefore()}> <img style={{ height: '0.8rem', marginRight: '0.2rem' }} src={last} alt="" /> 前一小时</div>
                     <div className="progressTime">
                         {dayjs(new Date(props.dayDate).setHours(0, 0, 0, 0) + onbedDate).format('HH:mm')}-{dayjs(new Date(props.dayDate).setHours(0, 0, 0, 0) + onbedDate + 1 * 59 * 60 * 1000).format('HH:mm')}
                     </div>
-                    <div className="progressRightButton" onClick={() => {
-                        if (onbedDate < (20 + 15) * 60 * 60 * 1000) {
-                            const newDate = onbedDate + 1 * 60 * 60 * 1000
-                            setOnBedDate(newDate)
-                            getDayPressData(newDate)
-                        } else {
-                            message.error('不能超过午间十二点')
-                        }
-
-
-                    }}>  后一小时 <img style={{ height: '0.8rem', marginLeft: '0.2rem' }} src={next} alt="" /></div>
+                    <div className="progressRightButton" onClick={() => afterAnHour()}>  后一小时 <img style={{ height: '0.8rem', marginLeft: '0.2rem' }} src={next} alt="" /></div>
                 </div>
             </div>
-        </CardWithoutTitle>
+        </CardWithoutTitle >
     )
 }
 

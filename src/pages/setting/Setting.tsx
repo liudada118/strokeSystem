@@ -1588,7 +1588,7 @@ export default function Setting() {
         </div>
       </Modal>
 
-      <Modal title="添加新护工" open={isModalNurseOpen} onOk={handleNurseOk} onCancel={handleNurseCancel}>
+      <Modal title="添加新护工" okText='确认' cancelText='取消' open={isModalNurseOpen} onOk={handleNurseOk} onCancel={handleNurseCancel}>
         <div style={{ padding: '0.5rem 3rem' }}>
 
           <div style={{ display: 'flex', alignItems: 'center' }} className="deviceItem"><div style={{ width: '5rem', }}> 用户名:</div> <Input value={nurseUser.user} style={{ flex: 1 }} onChange={(e) => {
@@ -1616,7 +1616,7 @@ export default function Setting() {
         </div>
       </Modal>
 
-      <Modal title="添加新家属" open={isModalPersonOpen} onOk={handlePersonOk} onCancel={handlePersonCancel}>
+      <Modal title="添加新家属" okText='确认' cancelText='取消' open={isModalPersonOpen} onOk={handlePersonOk} onCancel={handlePersonCancel}>
         <div style={{ padding: '0.5rem 3rem' }}>
 
           <div style={{ display: 'flex', alignItems: 'center' }} className="deviceItem"><div style={{ width: '5rem', }}> 手机号:</div> <Input value={nurseUser.user} style={{ flex: 1 }} onChange={(e) => {
@@ -1636,7 +1636,7 @@ export default function Setting() {
         </div>
       </Modal>
 
-      <Modal title="修改项目" open={isChangeModalOpen} onOk={handleChangeOk} onCancel={handleChangeCancel}>
+      <Modal title="修改项目"  okText='确认' cancelText='取消'  open={isChangeModalOpen} onOk={handleChangeOk} onCancel={handleChangeCancel}>
         <div style={{ padding: '0.5rem 3rem' }}>
           <div style={{ display: 'flex', alignItems: 'center' }} className="deviceItem"><div style={{ width: '5rem', }}> 项目名称:</div> <Input value={projectName} style={{ flex: 1 }} onChange={(e) => {
             setProjectName(e.target.value)
@@ -1648,11 +1648,11 @@ export default function Setting() {
         </div>
       </Modal>
 
-      <Modal title="删除项目" open={isModalDeleteOpen} onOk={handleDeleteOk} onCancel={handleDeleteCancel}>
+      <Modal title="删除项目"  okText='确认' cancelText='取消'  open={isModalDeleteOpen} onOk={handleDeleteOk} onCancel={handleDeleteCancel}>
         是否要删除<span style={{ fontWeight: 'bold' }}>{deleteManObj.organizeName}</span> 项目
       </Modal>
 
-      <Modal title="添加关联用户" open={isModalAssocOpen} onOk={handleAssocOk} onCancel={handleAssocCancel}>
+      <Modal title="添加关联用户"  okText='确认' cancelText='取消'  open={isModalAssocOpen} onOk={handleAssocOk} onCancel={handleAssocCancel}>
         <Select
           showSearch
           placeholder="Select a person"
@@ -1663,19 +1663,19 @@ export default function Setting() {
         />
       </Modal>
 
-      <Modal title="删除" open={isModalDeviceDeleteOpen} onOk={handleDeviceDeleteOk} onCancel={handleDeviceDeleteCancel}>
+      <Modal  okText='确认' cancelText='取消'  title="删除" open={isModalDeviceDeleteOpen} onOk={handleDeviceDeleteOk} onCancel={handleDeviceDeleteCancel}>
         确定要删除关联用户“{deleteDeviceObj.user}”吗?
       </Modal>
 
-      <Modal title="删除" open={isModalDeviceUserOpen} onOk={handleDeviceUserOk} onCancel={handleDeviceUserCancel}>
+      <Modal  okText='确认' cancelText='取消'  title="删除" open={isModalDeviceUserOpen} onOk={handleDeviceUserOk} onCancel={handleDeviceUserCancel}>
         确定要删除护工“{deleteObj.username}”以及下面所属的设备吗?
       </Modal>
 
-      <Modal title="删除" open={isModalDeletePersonOpen} onOk={handleDeletePersonOk} onCancel={handleDeletePersonCancel}>
+      <Modal  okText='确认' cancelText='取消'  title="删除" open={isModalDeletePersonOpen} onOk={handleDeletePersonOk} onCancel={handleDeletePersonCancel}>
         确定要删除家属“{deleteObj.username}”不再推送吗?
       </Modal>
 
-      <Modal title="请输入新的密码" open={isModalChangePasswordOpen} onOk={handleChangePasswordOk} onCancel={handleChangePasswordCancel}>
+      <Modal  okText='确认' cancelText='取消'  title="请输入新的密码" open={isModalChangePasswordOpen} onOk={handleChangePasswordOk} onCancel={handleChangePasswordCancel}>
         <Input onChange={(e) => {
           setmanPassword(e.target.value)
         }} />

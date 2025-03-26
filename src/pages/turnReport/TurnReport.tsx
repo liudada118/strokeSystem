@@ -23,7 +23,7 @@ const skinObj: any = {
     '9': '破溃',
 }
 
-const sleepArr = ['仰卧', '左侧躺', '右侧躺']
+const sleepArr = ['仰卧', '左侧', '右侧']
 
 
 
@@ -101,7 +101,7 @@ export default function TurnReport() {
         }).then((res) => {
             // console.log(res.data.data, '999999997777777')
             const data = res.data.data
-            const { startMatrix, endMatrix, posture, extra, did, remark, timeMillsEnd } = data
+            const { startMatrix, endMatrix, posture, extra, did, remark, timeMillsEnd, timeMills, id } = data
             console.log(JSON.parse(JSON.stringify(startMatrix)), '00000001111')
             let obj = {
                 //     normalArrRes: '',
@@ -122,6 +122,8 @@ export default function TurnReport() {
                 sleepPos: posture,
                 sleepPosImg: extra,
                 turnTime: timeMillsEnd,
+                timeMills: timeMills,
+                id: id
             }
             setData(obj)
             // if (leftRef.current) leftRef.current.bthClickHandle(startMatrix)
@@ -138,7 +140,8 @@ export default function TurnReport() {
     }, [leftRef, rightRef, data.endMatrix,])
     console.log(dataList, 'dataList');
 
-    // console.log(data, normalArr, JSON.parse(data.inputArrRes))
+    const timeName = data.id && data.id.substring(0, 10);
+    const imgradioChecked = useSelector((state: any) => state.mqtt.radioChecked)
     return (
 
         <div className='nurseReport2 font' style={{ height: '100vh', display: 'flex', flexDirection: "column" }}>
@@ -160,7 +163,7 @@ export default function TurnReport() {
                             }}></div>
                             {/* <img src={showUserinfo.img} alt="" /> */}
                         </div>
-                   
+
                         <div className="itemContents">
                             <div className="personalName">{dataList.patientName}</div>
 
@@ -175,7 +178,7 @@ export default function TurnReport() {
 
                             <div className="itemContent">
                                 <div className="itemTitle">护理日期</div>
-                                <div className="itemData">{dataList.startTime}</div>
+                                <div className="itemData">{timeName}-{dayjs((data.timeMills)).format('HH:mm')}</div>
                             </div>
                             <div className="itemContent">
                                 <div className="itemTitle">护理员</div>
@@ -195,7 +198,7 @@ export default function TurnReport() {
                 <CardText>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                         <div>翻身时间</div>
-                        <div>{dayjs((data.turnTime)).format('HH:mm')}</div>
+                        <div>{dayjs((data.timeMills)).format('HH:mm')}</div>
                     </div>
                 </CardText>
 
@@ -229,9 +232,11 @@ export default function TurnReport() {
                         <div>睡姿</div>
                         <div>{sleepArr[data.sleepPos]}</div>
                     </div>
-                    {data.sleepPosImg ? <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '1rem' }}>
+
+                    {data.headImg ? <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '1rem' }}>
+
                         <div>在床照片</div>
-                        <div><img src={data.sleepPosImg} style={{ height: '6rem' }} alt="" /></div>
+                        <div><img src={data.headImg} style={{ height: '6rem' }} alt="" /></div>
                     </div> : ''}
                 </CardContainTitle>
 

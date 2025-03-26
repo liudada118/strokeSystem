@@ -110,6 +110,7 @@ const addUseModla = forwardRef((props: addUseModlaProps, ref) => {
      * @param newValue 用户输入设备后六位 然后从数据库选择的完整mac地址
      */
     const handleChange = (newValue: string) => {
+
         setValue(newValue);
         setMac(newValue)
         const value = { ...userinfo, did: newValue, type: macType }
@@ -139,7 +140,15 @@ const addUseModla = forwardRef((props: addUseModlaProps, ref) => {
      * 确认添加设备弹窗
      */
     const handleOk = () => {
-
+        if (!userinfo.patientName) {
+            return message.info('请输入姓名')
+        } else if (!userinfo.roomNum) {
+            return message.info('请输入床号')
+        } else if (!userinfo.age) {
+            return message.info('请输入年龄')
+        } else if (!userinfo.did) {
+            return message.info('请输入设备号')
+        }
         if (mac || userinfo.did.length == 12) {
             const arr = ['patientName', 'roomNum', 'age', 'did']
             const zeroArr = []

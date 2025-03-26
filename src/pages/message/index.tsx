@@ -10,7 +10,9 @@ import { DatePicker, Pagination, Button, Table, Input, Dropdown, Space, Select }
 import { CaretDownOutlined, DownOutlined, LeftOutlined, ZoomInOutlined } from '@ant-design/icons';
 import { useGetWindowSize } from '../../hooks/hook'
 import { calc } from "antd/es/theme/internal";
-import Kdsd from './asass'
+// import Kdsd from './messageDatePicker'
+import { CalendarPicker } from "antd-mobile";
+import fang from '../.././assets/images/容器@2x.png'
 const { RangePicker } = DatePicker;
 type RangePickerProps = GetProps<typeof DatePicker.RangePicker>;
 export interface message {
@@ -156,6 +158,7 @@ export default function Message() {
       key: '',
       title: ""
     },
+
     {
       id: 3,
       key: 'nursing',
@@ -203,19 +206,28 @@ export default function Message() {
   })
   // 标题切换
   const [titleId, setTitleId] = useState(3)
+  const [title, setTitle] = useState('护理提醒')
   console.log(titleId, 'titleId');
 
   // 标题切换
   const onTitle = (item: any) => {
+    console.log(item, '.title');
 
+    setTitle(item.title)
     setTitleId(item.id)
     setParams({
       ...params,
       types: item.key,
+
+      startMills: timeArr[0],
+      endMills: timeArr[1],
     })
     getMessage({
       ...params,
       types: item.key,
+
+      startMills: timeArr[0],
+      endMills: timeArr[1],
     })
   }
   //请求数据接收
@@ -339,6 +351,33 @@ export default function Message() {
   }
   // 标题切换
   const titleRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const defaultRange: [Date, Date] = [
+
+
+    dayjs().toDate(),
+    dayjs().add(2, 'day').toDate(),
+  ]
+
+  const [val, setVal] = useState<any>([])
+
+  const [setDefaultRange, setsetDefaultRange] = useState()
+  console.log(setDefaultRange);
+  useEffect(() => {
+    if (val[0] && val[1]) {
+
+      setParams({
+        ...params,
+
+        startMills: val[0] && val[0].getTime(),
+        endMills: val[1] && val[1].getTime(),
+      })
+      getMessage({
+        ...params,
+        startMills: val[0] && val[0].getTime(),
+        endMills: val[1] && val[1].getTime(),
+      })
+    }
+  }, [val])
   return (
     <>
       {
@@ -404,6 +443,7 @@ export default function Message() {
                 onChange={(e) => { setSelectType(e) }}
                 options={homeSelect}
               />
+              <div style={{ border: "solid 0.5px #B4C0CA", width: "1px", height: "1rem" }}></div>
               <input
                 className="messageTitlediv2_you_inp" type="text"
                 value={patientNameRoomNum}
@@ -411,7 +451,8 @@ export default function Message() {
                 placeholder="请输入姓名/床号"
                 onBlur={onBlur}
               />
-              <ZoomInOutlined className="MessageYiDongFangDAJing" />
+              <img src={fang} style={{ width: "1.5rem", height: "1.5rem" }} alt="" />
+              {/* <ZoomInOutlined className="MessageYiDongFangDAJing" /> */}
             </div>
             <span onClick={onShijian} className="MessageYiDongShiJian">时间<CaretDownOutlined />
             </span>
@@ -447,83 +488,92 @@ export default function Message() {
                 )
               })
             }
-            <div style={{ position: 'fixed', right: "0", background: '#FFFFF', width: "2rem", height: "3rem", backgroundColor: "#fff", zIndex: 99 }}></div>
+            <div className="MessageYiDOngTitledivMessageYiDOngTitlediv" style={{ position: 'fixed', right: "0", background: '#FFFFF', width: "2rem", height: "3rem", zIndex: 99 }}></div>
           </div>
 
-          <div style={{ background: '#F5F8FA', height: 'calc(100% -30rem)', overflow: "hidden" }}>
+          <div style={{ background: '#F5F8FA', overflow: "hidden", height: '100%', }}>
 
-            <div className="f-[94%] ml-[3%] mr-[3%] bg-[#ffff] rounded-lg">
+            <div className="f-[96%] ml-[2%] mr-[2%] bg-[#ffff] rounded-lg h-full">
 
-              <div className="messageMainDataTitledivcontainercarddiv">
+              <div className="messageMainDataTitledivcontainercarddiv" style={{ fontWeight: 600 }}>
                 <div className="messageMainDataTitledivcontainercardqiantian">
-                  <h2 className="messageMainDataTitledivcontainercardqiantiandiv" >护理提醒次数</h2>
-                  <p className="messageMainDataTitledivcontainercardqiantianyesterday" style={{ color: "#007BFF" }}>{total} 次</p>
+                  <h2 className="messageMainDataTitledivcontainercardqiantiandiv" style={{ color: "#000", fontWeight: 600 }}>{title}</h2>
+                  <p className="messageMainDataTitledivcontainercardqiantianyesterday" style={{ color: "#000", fontSize: "1.7rem", marginLeft: "0" }}><span style={{ fontSize: "20px", fontFamily: 'PingFang SC', color: "#0072EF" }}>{total}</span> <span style={{ fontSize: "14px" }}>次</span></p>
                 </div>
-                <div style={{ width: "1px", borderLeft: "1px #ccc dashed", height: "4rem" }}></div>
-                <div className="messageMainDataTitledivcontainercardqiantian" >
+                <div style={{ width: "1px", borderLeft: "1px #F5F8FA solid", height: "3rem", marginTop: "10px" }}></div>
+                <div className="messageMainDataTitledivcontainercardqiantian1" style={{ color: "#000", fontWeight: 600 }}>
                   <h3 className="messageMainDataTitledivcontainercardqiantiandiv" >昨天提醒次数</h3>
                   <p className="messageMainDataTitledivcontainercardqiantianyesterday" > {datarq.yestodayAlarmCount} 次</p>
                 </div>
-                <div style={{ width: "1px", borderLeft: "1px #ccc dashed", height: "4rem" }}></div>
-                <div className="messageMainDataTitledivcontainercardqiantian" >
+                <div style={{ width: "1px", borderLeft: "1px #F5F8FA solid", height: "3rem", marginTop: "10px" }}></div>
+                <div className="messageMainDataTitledivcontainercardqiantian2" style={{ color: "#000", fontWeight: 600 }} >
                   <h3 className="messageMainDataTitledivcontainercardqiantiandiv" >前天提醒次数</h3>
                   <p className="messageMainDataTitledivcontainercardqiantianyesterday">{datarq.beforeYestodayAlarmCount} 次</p>
-
-
                 </div>
               </div>
               <div className="biaogetable">
-                <div className="table-container" style={{ overflowY: "scroll" }}>
+                <div className="table-container" style={{ overflowY: "auto" }}>
 
-                  <table className="notification-table">
-                    <thead className="notification-table-header">
-                      <tr>
-                        <th>序号</th>
-                        <th>房间号/姓名</th>
-                        {/* <th>姓名</th> */}
-                        <th>提醒时间</th>
+                  <div className="flex w-[98%] h-[3.3rem] ml-[1%] mr-[1%] bg-[#F5F8FA] rounded-xl">
 
+                    <p className="notificationTable w-[20%] ml-[1rem]">序号</p>
+                    <p className="notificationTable w-[30%]" >床号/姓名</p>
+                    <p className="notificationTable w-[30%] pl-[1rem]">提醒时间</p>
+                    <p className="notificationTable w-[20%] ml-[4rem]">类型</p>
+                  </div>
+                  <div className="w-[98%] h-[3.3rem] mt-4">
 
-                        <th>类型</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {data.map((item, index) => (
+                    {
+                      data && data.map((item: any, index: number) => {
+                        return <div key='index' className="flex" style={{ borderBottom: "solid 1px #F5F8FA" }}>
+                          <div className="notificationTable  w-[20%] ml-[1.3rem] " style={{ fontSize: "1.25rem", color: "#000" }}>
+                            {(params.pageNum - 1) * params.pageSize + index + 1}
+                          </div>
+                          <div className="notificationTableDiv w-[30%] " style={{}}>
+                            <p style={{ fontSize: "1.25rem", color: "#32373E" }}>   {
+                              item.roomNumber
+                            }</p>
+                            <p style={{ fontSize: "1rem", color: "#929EAB" }}>
+                              {
+                                item.name
+                              }
+                            </p>
+                          </div>
+                          <div className="notificationTableDiv w-[30%] pl-[1rem]">
+                            <p style={{ fontSize: "1.25rem", color: "#32373E", paddingLeft: "1.2rem" }}> {item.timeDate}</p>
+                            <p style={{ fontSize: "1rem", color: "#929EAB", paddingLeft: "1.2rem" }}> {item.dateTime}</p>
+                          </div>
+                          <div className="notificationTableDiv w-[20%] ml-[4rem]" style={{ textAlign: "center", fontSize: "1.25rem" }}>
+                            {item.type}
+                          </div>
+                        </div>
+                      })
+                    }
 
-                        <tr key={item.key}>
-                          <td>{(params.pageNum - 1) * params.pageSize + index + 1}</td>
-                          <td>
-                            <p style={{ color: "#000" }}>{item.roomNumber}</p>
-                            <p style={{ color: '##929EAB' }}>{item.name}</p>
-                          </td>
-                          {/* <td>{item.name}</td> */}
-                          <td>{item.timeDate}<br />{item.dateTime}</td>
-
-                          <td>{item.type}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-                  <div className='msgToinfoStrPage '>
-                    <Pagination style={{ marginRight: "40px" }} pageSize={10} current={params.pageNum} className="pagination" defaultCurrent={1} onChange={onChange} showSizeChanger={false} total={Math.floor(total)} />
+                    <div className='msgToinfoStrPage '>
+                      <Pagination style={{ marginRight: "40px" }} pageSize={10} current={params.pageNum} className="pagination" defaultCurrent={1} onChange={onChange} showSizeChanger={false} total={Math.floor(total)} />
                     </div>
+                  </div>
+
+                </div>
               </div>
             </div>
           </div>
-          <Kdsd onConfirm={(val: any) => {
-            setParams({
-              ...params,
-              ...val
-            })
-            getMessage({
-              ...params,
-              ...val
-            })
-            setPopupVisible(false)
-          }} onCancel={() => setPopupVisible(false)} visible={popupVisible}></Kdsd>
+          <CalendarPicker
+            visible={popupVisible}
+            defaultValue={defaultRange}
+            selectionMode='range'
+            onClose={() => setPopupVisible(false)}
+            onMaskClick={() => setPopupVisible(false)}
+            shouldDisableDate={(date: any) => {
+              return dayjs(date).isAfter(dayjs(), 'day'); // 禁用今天之后的日期  
+            }}
+            onChange={(val: [Date, Date] | null) => {
+              setVal(val)
+            }}
+          />
           {<Bottom />}
-        </div>
+        </div >
       }
 
     </>

@@ -37,9 +37,10 @@ export default function Login() {
   const [nowType, setNowType] = useState<number>(0);
   const [phone, setPhone] = useState<string>('');
   const [verCode, setVerCode] = useState<string>('')
-
+  console.log(nowType, '................................................................nowType')
   const img = localStorage.getItem('headImg') ? localStorage.getItem('headImg') : logo
   const [headImg, setHeadImg] = useState(img)
+  console.log(phone, '................................................................phoneyyyds');
 
   // 获取头像
   useEffect(() => {
@@ -93,8 +94,17 @@ export default function Login() {
     });
   }
   const login = () => {
-    if (!phone && !verCode) return message.info(nowType === 0 ? '手机号和验证码不能为空' : '手机号和密码不能为空')
-    if (!verCode) return message.info(nowType === 0 ? '手机号和验证码不能为空' : '手机号和密码不能为空')
+    if (!phone) {
+      return message.info('手机号不能为空')
+    }
+    if (!verCode && nowType === 0) {
+      return message.info('验证码不能为空')
+    }
+    if (!verCode && nowType === 1) {
+      return message.info('密码不能为空')
+    }
+    // if (!phone && !verCode) return message.info(nowType === 1 ? '手机号和验证码不能为空' : '手机号和密码不能为空')
+    // if (!verCode) return message.info(nowType === 0 ? '手机号和验证码不能为空' : '手机号和密码不能为空')
     // 管理员
     if (nowType) {
       axios({
@@ -147,6 +157,16 @@ export default function Login() {
         }
       });
     }
+  }
+  let timer: any;
+  // const 
+  const debounce = (fn: Function, ms: number) => {
+    if (timer) {
+      clearTimeout(timer)
+    }
+    timer = setTimeout(() => {
+      fn()
+    }, ms);
   }
   return (
     <div className="loginContainer sy">
@@ -207,7 +227,7 @@ export default function Login() {
           style={{ color: "#0033A1" }}
           block
           type="primary"
-          onClick={() => { login() }}
+          onClick={() => { debounce(login, 1000) }}
         >
           登录
         </Button>

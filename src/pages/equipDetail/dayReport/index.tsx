@@ -379,7 +379,7 @@ export default function DayReport() {
         "token": token
       },
     }).then((res) => {
-
+ 
       let data = res.data
       if (data.errCode == 666) {
 
@@ -767,7 +767,7 @@ export default function DayReport() {
           <div className="dayRight">
 
             {!nurseReportFlag ? <>
-              <FirstItem dayData={dayDate} stroke={storke} posChangeHour={posChangeHour} posChangeDay={posChangeDay} onbedList={onbedList} bodymove={bodymove} data={data} />
+              <FirstItem sensorName={sensorName} dayData={dayDate} stroke={storke} posChangeHour={posChangeHour} posChangeDay={posChangeDay} onbedList={onbedList} bodymove={bodymove} data={data} />
               <SecondItem outBed={outoffbed} data={data} alarm={alarm} nurse={nurse} sleepNums={sleepNums} posChangeDay={posChangeDay} posChangeHour={posChangeHour} allTime={allTime} />
               {!location.pathname.includes('small') ?
 

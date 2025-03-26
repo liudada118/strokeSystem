@@ -41,13 +41,12 @@ export const MessageRightTitle = (props: messageParam) => {
         patientName.push(item.patientName)
         roomNum.push(item.roomNum)
     })
-    console.log(unique(patientName), unique(roomNum), '....................................123');
 
 
 
     const [name, setName] = useState('')
     const menu = (
-        <Menu z-index onClick={(e) => dingtalkCircleFilled(e)}>
+        <Menu style={{ color: "929EAB" }} z-index onClick={(e) => dingtalkCircleFilled(e)}>
             <>
                 <Menu.SubMenu key={`sub1-1`} title='姓名'>
                     {unique(patientName)?.map((item: any, index: number) => (
@@ -110,7 +109,7 @@ export const MessageRightTitle = (props: messageParam) => {
                             showTime />
                     </Space><div className="messageTitlediv2_you">
                             <Dropdown overlay={menu}>
-                                <a className="ant-dropdown-link " style={{ display: "flex", width: "4rem", marginLeft: "1rem" }} onClick={(e) => e.preventDefault()}>
+                                <a className="ant-dropdown-link " style={{ display: "flex", width: "4rem", marginLeft: "1rem", color: "#929EAB" }} onClick={(e) => e.preventDefault()}>
                                     {name === 'sub2-2' ? '床号' : '姓名'} <DownOutlined />
                                 </a>
                             </Dropdown>
@@ -124,7 +123,7 @@ export const MessageRightTitle = (props: messageParam) => {
                             <img onClick={dian} style={{ width: "1rem", height: "1rem", marginRight: "20px" }} src={fang} alt="" />
                         </div></>
 
-                </div> : <div className="homeTitle  messageTitledivTitle" style={{ display: "flex", justifyContent: 'normal', fontWeight: "900" }}>JQHEALTHCARE</div>
+                </div> : <div className="homeTitle  messageTitledivTitle" style={{ display: "flex", justifyContent: 'normal', fontWeight: "900", fontSize: "1rem" }}>JQHEALTHCARE</div>
             }
 
         </>

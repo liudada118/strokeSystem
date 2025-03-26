@@ -254,7 +254,7 @@ export default function Equip() {
                             })
                             return (
                                 <div className={`equip`} key={item.sensorName}
-                                    onClick={() => {
+                                    onClick={(e) => {
                                         console.log(item.deviceId, '.................................................111111111111...............item');
 
                                         navigate(`/report/0/${item.sensorName}`, {
@@ -280,7 +280,9 @@ export default function Equip() {
                                                 </div>
                                             </div>
                                             <div className="newAlarmButton"
-                                                onClick={() => {
+                                                onClick={(e) => {
+
+                                                    e.stopPropagation();
                                                     alarmConfirmFunSensorName({ a: alarmInfo[0], sensorName: item.sensorName })
                                                 }}
                                             >我已知晓</div>

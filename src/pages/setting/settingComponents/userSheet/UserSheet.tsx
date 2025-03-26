@@ -2,7 +2,7 @@ import { Input, message, Modal, Table } from 'antd'
 import React, { useState } from 'react'
 import add from "@/assets/image/addBlue.png"
 import axios from 'axios'
-import { Instancercv } from '@/api/api'
+import { Instancercv, instance } from '@/api/api'
 
 interface userSheetProps {
     manageSource: any
@@ -44,6 +44,10 @@ export default function UserSheet(props: userSheetProps) {
     }
 
     const handleNurseOk = () => {
+        if (!nurseUser.user || !nurseUser.password || !nurseUser.name) {
+            message.info('请填写完整信息');
+            return;
+        }
         if (nurseUser.user.length > 5) {
             Instancercv({
                 method: "post",
@@ -301,21 +305,26 @@ export default function UserSheet(props: userSheetProps) {
             <Modal title="删除" open={isModalDeviceUserOpen} onOk={handleDeviceUserOk} onCancel={handleDeviceUserCancel}>
                 确定要删除护工“{deleteObj.username}”以及下面所属的设备吗?
             </Modal>
-            <Modal title="添加新护工" open={isModalNurseOpen} onOk={handleNurseOk} onCancel={handleNurseCancel}>
+            <Modal title="添加新护工" okText='确认' cancelText='取消' open={isModalNurseOpen} onOk={handleNurseOk} onCancel={handleNurseCancel}>
                 <div style={{ padding: '0.5rem 3rem' }}>
 
                     <div style={{ display: 'flex', alignItems: 'center' }} className="deviceItem"><div style={{ width: '5rem', }}> 用户名:</div>
-                        <Input value={nurseUser.user} style={{ flex: 1 }} onChange={(e) => {
-                            // setProjectAddress(e.target.value)
+                        <Input value={nurseUser.user} style={{ flex: 1 }} onBlur={(e) => {
+                            const inputValue = e.target.value;
+                            // 正则表达式匹配汉字和字母
+                            const regex = /^[\u4e00-\u9fa5a-zA-Z]*$/;
+                            if (!regex.test(inputValue)) return message.info('英文或者汉字')
                             let obj = { ...nurseUser }
                             obj.user = e.target.value
                             setnurseUser(obj)
                         }} /></div>
 
                     <div style={{ display: 'flex', alignItems: 'center' }} className="deviceItem"><div style={{ width: '5rem', }}> 密码:</div>
-                        <Input value={nurseUser.password} style={{ flex: 1 }} onChange={(e) => {
-                            // setProjectAddress(e.target.value)
-
+                        <Input value={nurseUser.password} style={{ flex: 1 }} onBlur={(e) => {
+                            const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]{6,16}$/;
+                            const inputValue = e.target.value;
+                            // 正则表达式匹配密码规则
+                            if (!passwordRegex.test(inputValue)) return message.info("密码必须包含字母和数字，长度在6到16个字符之间");
                             let obj = { ...nurseUser }
                             obj.password = e.target.value
                             setnurseUser(obj)

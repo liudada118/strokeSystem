@@ -163,6 +163,7 @@ export function CurveChart(props: curveIndex) {
 
   }, [props.xdata]);
   const initCharts = (props: curveChartData) => {
+    // series
     const {
       xdata,
       ydata,
@@ -925,7 +926,7 @@ export function SleepDateTypeChart(props: SleepDateType) {
   // for (let i = 0; i < 7; i++) {
   //   yArr[i] = dayjs(new Date(props.date).getTime() - 24 * i * 60 * 60 * 1000).format(dateFormat)
   // }
-  let yArr = ['右侧睡', '仰卧', '左侧睡']
+  let yArr = ['左侧睡', '仰卧', '右侧睡']
 
   let data = props.data
 

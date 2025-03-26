@@ -230,7 +230,8 @@ export const NurseTable = (props: tableProps) => {
     console.log('111111', data)
     setChildData(data);
   };
-
+  const updateDelet = (val: any) => {
+  }
   return (
     <div className='flex'>
       <div className='grow' style={{ overflow: 'hidden' }}>
@@ -240,73 +241,76 @@ export const NurseTable = (props: tableProps) => {
               return <></>
             }
             return (
-              <div className={`${a.width ? `w-[${a.width}] text-center` : 'grow text-left'} text-xs py-[10px]`}>{a.titleValue}</div>
+              <div onClick={(a: any) => updateDelet(a)} className={`${a.width ? `w-[${a.width}] cursor-pointer  text-center` : 'grow text-left'} text-xs py-[10px] `}>{a.titleValue}</div>
             )
           })}
         </div>
         <div style={{ overflowY: 'scroll', }}>
           {
-            listData.map((item: any, index: number) => {
-              return (
-                <div key={'listData' + index} className={`${type !== 'project' && type !== 'person' ? '' : 'isTemp'} ${item.status ? 'finsh' : 'todo'} flex py-[13px] relative items-start care_box`}>
-                  {
-                    title.map((keys) => {
+            listData.sort((a: any, b: any) => {
+              return Number(a.completionTime) - Number(b.completionTime)
+            })
+              .map((item: any, index: number) => {
+                return (
+                  <div key={'listData' + index} className={`${type !== 'project' && type !== 'person' ? '' : 'isTemp'} ${item.status ? 'finsh' : 'todo'} flex py-[13px] relative items-start care_box`}>
+                    {
+                      title.map((keys) => {
 
-                      const key = keys.key
-                      const timeTextColor = item.status == 'todo' ? '#929EAB' : '#6C7784'
-                      const nurseTextColor = item.status == 'todo' ? '#929EAB' : '#32373E'
-                      if (key == "key") {
-                        return
-                      } else {
-                        const titleInfo = title.filter((a) => a.key == key)[0]
+                        const key = keys.key
+                        const timeTextColor = item.status == 'todo' ? '#929EAB' : '#6C7784'
+                        const nurseTextColor = item.status == 'todo' ? '#929EAB' : '#32373E'
+                        if (key == "key") {
+                          return
+                        } else {
+                          const titleInfo = title.filter((a) => a.key == key)[0]
 
-                        if (key == 'completionTime') {
+                          if (key == 'completionTime') {
 
-                          const color = item.status ? '#0072EF' : '#E6EBF0'
-                          const upConnect = calUpConnect(item.status, data[index - 1]?.status)
-                          const downConnect = calDownConnect(data[index + 1]?.status)
-                          return (
-                            <div className={`w-[5rem] shrink-0 text-xs ${titleInfo.width ? `w-[${titleInfo.width}] text-center` : 'grow text-left'} flex justify-center items-center text-[${timeTextColor}]`}>
-                              <span className='w-[3.2rem]'>{dayjs(item[keys.key]).format("HH:mm")}</span>
-                              <div className={`w-[1.52rem] text-xs h-[1.52rem] rounded-[10px] bg-[${color}] text-[#fff]  flex justify-center items-center`}>
-                                {/* <div className={`w-[3px] h-[60%] bg-[${upConnect}] absolute bottom-[80%] z-0`} style={{ backgroundColor: upConnect }}></div> */}
-                                <div className={` w-[1.52rem] text-xs h-[1.52rem] rounded-[10px] bg-[${color}] text-[#fff] flex justify-center items-center z-10`} style={{ backgroundColor: color }}>{index + 1}</div>
-                                {/* <div className={`w-[3px] h-[60%] bg-[${downConnect}] absolute top-[80%] z-0`} style={{ backgroundColor: downConnect }}></div> */}
+                            const color = item.status ? '#0072EF' : '#E6EBF0'
+                            const upConnect = calUpConnect(item.status, data[index - 1]?.status)
+                            const downConnect = calDownConnect(data[index + 1]?.status)
+                            return (
+                              <div className={`w-[5rem] shrink-0 text-xs ${titleInfo.width ? `w-[${titleInfo.width}] text-center` : 'grow text-left'} flex justify-center items-center text-[${timeTextColor}]`}>
+                                <span className='w-[3.2rem]'>{dayjs(item[keys.key]).format("HH:mm")}</span>
+                                <div className={`w-[1.52rem] text-xs h-[1.52rem] rounded-[10px] bg-[${color}] text-[#fff]  flex justify-center items-center`}>
+                                  {/* <div className={`w-[3px] h-[60%] bg-[${upConnect}] absolute bottom-[80%] z-0`} style={{ backgroundColor: upConnect }}></div> */}
+                                  <div className={` w-[1.52rem] text-xs h-[1.52rem] rounded-[10px] bg-[${color}] text-[#fff] flex justify-center items-center z-10`} style={{ backgroundColor: color }}>{index + 1}</div>
+                                  {/* <div className={`w-[3px] h-[60%] bg-[${downConnect}] absolute top-[80%] z-0`} style={{ backgroundColor: downConnect }}></div> */}
+                                </div>
                               </div>
+                            )
+                          } else if (key == 'status') {
+                            if (!item[key]) {
+                              return <Button disabled={setting === 'setting' ? true : false} onClick={(() => toBeCompleted(item))} className={`${titleInfo.width ? `w-[${titleInfo.width}] text-center` : 'grow text-left'} text-[${timeTextColor}]`} color="default" variant="filled">待完成</Button>
+                            }
+                            return <Button disabled={setting === 'setting' ? true : false} className={`${titleInfo.width ? `w-[${titleInfo.width}] text-center` : 'grow text-left'} text-[${timeTextColor}]`} type="text">已完成</Button>
+                          }
+
+                          else if (key == 'delete' && type == 'user') {
+                            return <></>
+                          }
+                          else if (key == 'delete' && type != 'user') {
+                            return <div key={item.key} onClick={() => { deleteNurse(item) }} className='flex cursor-pointer relative w-[4rem] flex justify-center flex-col items-center'>
+                              <img className='w-[1rem]' src={sheetDelete} alt="" />
+                              <span className='text-xs text-[#929EAB]'>删除</span>
+                            </div>
+                          }
+                          return (
+                            <div className={`${titleInfo.width ? `w-[${titleInfo.width}] text-center` : 'grow text-left'} text-[${nurseTextColor}] text-sm flex flex-col flex-1`}>
+                              <span className='font-bold'>{item[key]}</span>
+                              <span>{item.notes}</span>
+                              <img src={item.uploadImage} alt="" />
                             </div>
                           )
-                        } else if (key == 'status') {
-                          if (!item[key]) {
-                            return <Button disabled={setting === 'setting' ? true : false} onClick={(() => toBeCompleted(item))} className={`${titleInfo.width ? `w-[${titleInfo.width}] text-center` : 'grow text-left'} text-[${timeTextColor}]`} color="default" variant="filled">待完成</Button>
-                          }
-                          return <Button disabled={setting === 'setting' ? true : false} className={`${titleInfo.width ? `w-[${titleInfo.width}] text-center` : 'grow text-left'} text-[${timeTextColor}]`} type="text">已完成</Button>
+
                         }
+                      })
+                    }
 
-                        else if (key == 'delete' && type == 'user') {
-                          return <></>
-                        }
-                        else if (key == 'delete' && type != 'user') {
-                          return <div key={item.key} onClick={() => { deleteNurse(item) }} className='flex cursor-pointer relative w-[4rem] flex justify-center flex-col items-center'>
-                            <img className='w-[1rem]' src={sheetDelete} alt="" />
-                            <span className='text-xs text-[#929EAB]'>删除</span>
-                          </div>
-                        }
-                        return (
-                          <div className={`${titleInfo.width ? `w-[${titleInfo.width}] text-center` : 'grow text-left'} text-[${nurseTextColor}] text-sm flex flex-col flex-1`}>
-                            <span className='font-bold'>{item[key]}</span>
-                            <span>{item.notes}</span>
-                            <img src={item.uploadImage} alt="" />
-                          </div>
-                        )
+                  </div>
 
-                      }
-                    })
-                  }
-
-                </div>
-
-              )
-            })
+                )
+              })
           }
         </div>
 
@@ -430,6 +434,12 @@ export default function NurseSetting(props: any) {
 
   // 添加护理模板里面的内容
   const addProject = () => {
+    if (!templateTitle) {
+      return message.info('请输入你要添加的项目名称')
+    }
+    if (!templateTime) {
+      return message.info('请输入项目时间')
+    }
     // 个人页面
     if (type == 'person') {
       addUserNurseProject()
@@ -510,7 +520,6 @@ export default function NurseSetting(props: any) {
 
 
   const onChange: TimePickerProps['onChange'] = (time, timeString) => {
-    console.log(time, timeString);
     if (typeof timeString == 'string') {
 
       setTemplateTime(new Date(`1970-01-01 ${timeString}`).getTime())
@@ -542,7 +551,7 @@ export default function NurseSetting(props: any) {
       if (res.data.msg.includes("success")) {
         message.success('添加成功')
         getNurseTemplate()
-
+        setTemplateNameTitle('')
       }
 
     })
@@ -589,10 +598,12 @@ export default function NurseSetting(props: any) {
               </div>
               <div className='flex items-center mt-[20px] mb-[20px]'>
                 <div className='text-sm font-semibold mr-[2.2rem]'>模板名称:</div>
-                <Input className='grow w-[unset]' onChange={(e) => {
-                  console.log(e.target.value)
-                  setTemplateNameTitle(e.target.value)
-                }} />
+                <Input className='grow w-[unset]'
+                  allowClear
+                  onChange={(e) => {
+                    console.log(e.target.value)
+                    setTemplateNameTitle(e.target.value)
+                  }} />
               </div>
               <Button className='mb-8' onClick={addTemplate}>新建模板</Button>
 
@@ -659,7 +670,7 @@ export default function NurseSetting(props: any) {
           {
             setting === 'setting' ? <Button className='mr-[20px]' onClick={saveTemplate}>保存为模板</Button> : <Button className='mr-[20px]' onClick={saveTemplate}>保存为当前版本</Button>
           }
-
+          
           <Button type="primary" onClick={addProject}>添加</Button>
         </div>
       </div>

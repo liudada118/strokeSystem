@@ -19,7 +19,6 @@ import axios from "axios";
 import { selectEquipBySensorname } from "@/redux/equip/equipSlice";
 
 
-
 const TabTheme = {
     components: {
         Tabs: {
@@ -293,11 +292,12 @@ function Provide() {
     const [turnAroundPlan, setTurnAroundPlan] = useState<TurnPlanList[]>([])
     const submitCloud = (newValue: any) => {
         setNurseFormValue(newValue)
-        console.log(newValue, 'newValue......')
+      
         const obj = {
             flipbodyCount: parseInt(newValue.timeRangeA),
             flipbodyTime: parseInt(newValue.timeIntervalA) * 60
         }
+      
         // 开关关闭后  设置次数为0
         if (!newValue.switchA) {
             obj.flipbodyCount = 0

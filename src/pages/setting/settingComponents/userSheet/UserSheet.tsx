@@ -312,8 +312,8 @@ export default function UserSheet(props: userSheetProps) {
                         <Input value={nurseUser.user} style={{ flex: 1 }} onBlur={(e) => {
                             const inputValue = e.target.value;
                             // 正则表达式匹配汉字和字母
-                            const regex = /^[\u4e00-\u9fa5a-zA-Z]*$/;
-                            if (!regex.test(inputValue)) return message.info('英文或者汉字')
+                            // const regex = /^[a-zA-Z0-9_]{3,16}${2}/;
+                            // if (!regex.test(inputValue)) return message.info('英文或者汉字')
                             let obj = { ...nurseUser }
                             obj.user = e.target.value
                             setnurseUser(obj)

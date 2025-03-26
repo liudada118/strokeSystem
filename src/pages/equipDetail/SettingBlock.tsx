@@ -51,6 +51,8 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (props) =>
     const location = useLocation()
     const sensorName = param.id
     const equipInfo = useSelector(state => selectEquipBySensorname(state, sensorName))
+    console.log(equipInfo, '................................equipInfo');
+
     const phone = useSelector(phoneSelect)
     const token = useSelector(tokenSelect)
     const dispatch: any = useDispatch()
@@ -74,7 +76,7 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (props) =>
     const [fals, setFalse] = useState(false)
     const [userInfo, setUserInfo] = useState({
         // nurseStart, nurseEnd, fallbedStart, fallbedEnd, leaveBedStart, leaveBedEnd, situpStart, situpEnd, type, deviceId, leavebedParam
-        ...equipInfo
+        ...equipInfo 
     })
     const {
         nurseStart, nurseEnd, nursePeriod, injuryAlarm,
@@ -435,7 +437,42 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (props) =>
                 }}
             />
         }]
-    }]
+    },
+    {
+        label: 'SOS提醒设置',
+        id: 'SOS_switch',
+        value: valueToAlarmFlag(fallbedAlarm),
+        handleSwitch: () => {
+            // setSwitchD(!switchD)
+            setUserInfo({ ...userInfo, fallbedAlarm: alarmFlagToValue(!valueToAlarmFlag(fallbedAlarm)) })
+            setAlarmParamChange(true)
+        },
+        params: [{
+            label: '监测时间段',
+            id: 'timeRangeD',
+            value: `${timePeriodInitFormat({ timeStamp: fallbedStart, type: 'start' })}-${timePeriodInitFormat({ timeStamp: fallbedEnd, type: 'end' })}`,
+            onChange: () => {
+                setTimeDModalOpen(true)
+            },
+            modal: <CommonFormModal
+                title='坠床提醒设置'
+                open={timeDModalOpen}
+                close={() => setTimeDModalOpen(false)}
+                formList={[{
+                    label: '监测时间段',
+                    key: 'timeRangeD',
+                    value: `${timePeriodInitFormat({ timeStamp: fallbedStart, type: 'start' })}-${timePeriodInitFormat({ timeStamp: fallbedEnd, type: 'end' })}`,
+                    type: FormType.SOS,
+                }]}
+                onFinish={(values) => {
+                    // setTimeRangeD(values.timeRangeD)
+                    changeValueToUserInfo(values)
+                    setAlarmParamChange(true)
+                }}
+            />
+        }]
+    }
+    ]
     const machineType = [{
         label: '床垫类型',
         value: bedTypeFormat(type)
@@ -684,7 +721,7 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (props) =>
                 </div>
             ))}
 
-            <div className="flex justify-between items-center" style={{ background: "#ffff", height: "4rem", lineHeight: "4rem", marginBottom: "1rem" }}><span className="text-base text-[#32373E] ml-[0.4rem]" style={{ fontWeight: "600" }} >离床参数 <span className="mr-[3rem]">{switchOpenValue}</span></span>{switchOpen ? <Input value={switchOpenValue} placeholder="请输入" onBlur={onBlurShezhi} onChange={((val: any) => setSwitchOpenValue(val.target.value))} className="w-[5rem] mr-[2rem]"></Input> : <span onClick={isOpen} className="mr-[2rem]">设置</span>}</div>
+            <div className="flex justify-between items-center" style={{ background: "#ffff", height: "4rem", lineHeight: "4rem", marginBottom: "1rem" }}><span className="text-base text-[#32373E] ml-[0.4rem]" style={{ fontWeight: "600" }} >离床参数 <span className="mr-[3rem]">{switchOpenValue}</span></span>{switchOpen ? <Input value={switchOpenValue} placeholder="请输入" onBlur={onBlurShezhi} onChange={((val: any) => setSwitchOpenValue(val.target.value))} className="w-[5rem] mr-[2rem]"></Input> : <span onClick={isOpen} className="mr-[2rem] " style={{ cursor: 'pointer' }}>设置</span>}</div>
             {/* {renderFooterBtn()} */}
             <CommonTitle name={'健康配置'} type="square" />
             {/* <div className='bg-[#fff] mb-[10px] p-[10px] px-[0.8rem] flex justify-between items-center'>

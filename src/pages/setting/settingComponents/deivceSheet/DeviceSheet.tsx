@@ -203,8 +203,8 @@ export default function DeviceSheet(props: DeviceSheet) {
             if (res.data.code == 0) {
                 message.success('绑定成功')
                 setBindUser(undefined)
-            } else {
-                message.success('绑定失败')
+            } else if (res.data.code == 500) {
+                message.success(res.data.msg)
             }
         })
     }
@@ -244,7 +244,7 @@ export default function DeviceSheet(props: DeviceSheet) {
                 />
             </Modal>
 
-             <div className="projectContent">
+            <div className="projectContent">
                 <div className="projectTitle">设备管理</div>
                 <Table dataSource={props.deviceSource} onRow={(record: any) => {
                     return {

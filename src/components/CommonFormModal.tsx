@@ -18,7 +18,8 @@ export enum FormType {
     INPUTNUMBER = 'INPUTNUMBER',
     SECONDRATE = 'SECONDRATE',
     TIME_SINGLE_TIME = 'TIME_SINGLE_TIME',
-    SELECT = 'SELECT'
+    SELECT = 'SELECT',
+    SOS = 'SOS'
 }
 type CommonFormItem = {
     label: string;

@@ -162,7 +162,7 @@ function Recording(props: proprsType) {
                         <ImgUpload finish={(val: string) => setImgVal(val)} img={img} />
                     </Form.Item>
                     <Form.Item name="notes" label="填写备注:" labelCol={{ style: { fontWeight: "600", fontSize: "0.8rem", marginRight: "1rem" } }} wrapperCol={{ style: { width: "calc(100%-100px)", backgroundColor: "#F5F8FA" } }}>
-                        <Input placeholder="请输入20字内备注内容" />
+                        <Input maxLength={20} placeholder="请输入20字内备注内容" />
                     </Form.Item>
                     <Form.Item className='flex justify-around w-full'>
                         <Button color="primary" variant="outlined" className='w-[8rem] h-[2.4rem] mr-[10px] text-sm' onClick={() => {

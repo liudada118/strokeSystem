@@ -162,7 +162,7 @@ export default function Message() {
     {
       id: 3,
       key: 'nursing',
-      title: "护理提醒"
+      title: "SOS提醒 "
     },
     {
       id: 4,
@@ -182,11 +182,20 @@ export default function Message() {
       key: 'offline',
       title: "离线提醒"
     },
+
     {
       id: 8,
       key: 'otherReminders',
       title: "其他提醒",
+      children: [
+        {
+          id: 8_1,
+          key: 'nursing',
+          title: "护理提醒"
+        },
+      ]
     },
+
   ]
   // 表格数据
   const data: any[] = dataList.map((item: any, index: number) => {

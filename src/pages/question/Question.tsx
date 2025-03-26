@@ -84,7 +84,7 @@ export default function Question() {
 
             }).then((res) => {
 
-                if (res.data.msg == '更新成功') {
+                if (res.data.msg == 'update success') {
                     message.success('提交成功')
                     // navigate(`${location.state.router}`, { state: { ...location.state, select: location.state.router.includes('small') ? 0 : 1 } })
                     navigate(-1)

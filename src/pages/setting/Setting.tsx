@@ -1753,12 +1753,12 @@ export default function Setting() {
             <div className="contentBox">
               {
                 current == 'use' ?
-                  <video width="80%" controls>
-                    <source src="https://images.bodyta.com/nursing.mp4" type="video/mp4" />
-                    <source src="movie.ogg" type="video/ogg" />
+                  // <video width="80%" controls>
+                  //   <source src="https://images.bodyta.com/nursing.mp4" type="video/mp4" />
+                  //   <source src="movie.ogg" type="video/ogg" />
 
-                  </video>
-
+                  // </video>
+''
                   : current == 'project' || current == 'projectTitle' ?
 
                     <>

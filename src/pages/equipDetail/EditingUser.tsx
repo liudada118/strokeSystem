@@ -315,11 +315,15 @@ interface personalInfoParam {
 }
 const PersonalContentInfo = (props: personalInfoParam) => {
     const { title, img } = props
+    console.log(title, '................................................................trtrthtrh');
+
     return (
         <div className="w-[92%] mx-auto bg-[#fff] flex flex-col items-center pt-[36px] pb-[13px] rounded-[10px] mb-[20px]">
             <img src={img} className="w-[44px] mb-[6px]" alt="" />
             <div className="text-lg text-[#3D3D3D] ">{title}</div>
-            <div className="text-sm w-[60%] text-[#6C7784] text-center">设置老人的提醒类型与内容设置老人的提醒类型与内容</div>
+            {
+                title === '推送日报设置' ? '' : title === '推送日报设置' ? '设备类型设置' : <div className="text-sm w-[60%] text-[#6C7784] text-center">设置老人的提醒类型与内容设置老人的提醒类型与内容</div>
+            }
         </div>
     )
 }

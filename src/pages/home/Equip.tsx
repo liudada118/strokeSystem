@@ -139,11 +139,11 @@ export default function Equip() {
                                 }
                                 return (
                                     <div className={`equip`} key={item.sensorName}
-                                        onClick={() => {
-                                            navigate(`/report/0/${item.sensorName}`, {
-                                                state: 'item'
-                                            });
-                                        }}
+                                        // onClick={() => {
+                                        //     navigate(`/report/0/${item.sensorName}`, {
+                                        //         state: 'item'
+                                        //     });
+                                        // }}
                                     >
                                         {alarmInfo.length ?
                                             <div className="newAlarmContent">

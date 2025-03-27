@@ -206,6 +206,7 @@ export default function Equip() {
                                                         setEquipTop(item.sensorName, item.orderNum);
                                                     }}
                                                 >
+
                                                     <img src={item.orderNum == 0 ? setTop : sitSetTop} alt="" />
                                                 </div>}
                                             </div>

@@ -19,7 +19,7 @@ export enum FormType {
     SECONDRATE = 'SECONDRATE',
     TIME_SINGLE_TIME = 'TIME_SINGLE_TIME',
     SELECT = 'SELECT',
-    SOS = 'SOS'
+    SOS_ALARM_SWITCH = "SOS_ALARM_SWITCH"
 }
 type CommonFormItem = {
     label: string;
@@ -136,6 +136,15 @@ const CommonFormModal: (props: CommonFormModalProps) => React.JSX.Element = (pro
                                 </Form.Item>
                             )
                         case 'TIME_RANGE':
+                            // console.log(item.value?.split('-')[0], 'item')
+                            return (
+                                <Form.Item label={item.label} name={item.key} key={item.key} className='flex items-center'>
+                                    <TimePicker placeholder='' onChange={onChangeTimeStart} needConfirm={false} defaultValue={dayjs((item.value as string)?.split('-')[0], 'HH:mm')} className='rounded-[1rem] w-[38%]' format='HH:mm' />
+                                    <span className='bg-[#b4c0ca] w-[0.8rem] h-[1px] my-0 mx-[4px]' />
+                                    <TimePicker placeholder='' onChange={onChangeTimeEnd} needConfirm={false} defaultValue={dayjs((item.value as string)?.split('-')[1], 'HH:mm')} className='rounded-[1rem] w-[38%]' format='HH:mm' />
+                                </Form.Item>
+                            )
+                        case 'SOS_ALARM_SWITCH':
                             // console.log(item.value?.split('-')[0], 'item')
                             return (
                                 <Form.Item label={item.label} name={item.key} key={item.key} className='flex items-center'>

@@ -581,13 +581,40 @@ export default function NurseSetting(props: any) {
       })
     }
   }
-
+  const [titleName, setTitleName] = useState(
+    [
+      {
+        id: "0",
+        title: "自理老人"
+      },
+      {
+        id: "1",
+        title: "半自理老人"
+      },
+      {
+        id: "2",
+        title: "完全失能老人"
+      },
+      {
+        id: "3",
+        title: "自定义模版"
+      }
+    ]
+  )
   return (
     <div className='setContent nurseSetContent sy'>
 
 
       {/* 管理员新建模板 */}
-
+      {/* <div>
+        {
+          titleName.map((item: any, index: any) => {
+            return <div key={index} className=''>
+              {item.title}
+            </div>
+          })
+        }
+      </div> */}
 
       <div className='basis-2/3 mr-[10px] py-[18px] px-[30px] bg-[#fff] relative'>
         {
@@ -670,7 +697,7 @@ export default function NurseSetting(props: any) {
           {
             setting === 'setting' ? <Button className='mr-[20px]' onClick={saveTemplate}>保存为模板</Button> : <Button className='mr-[20px]' onClick={saveTemplate}>保存为当前版本</Button>
           }
-          
+
           <Button type="primary" onClick={addProject}>添加</Button>
         </div>
       </div>
@@ -690,6 +717,5 @@ export default function NurseSetting(props: any) {
 
       </div>
     </div >
-
   )
 }

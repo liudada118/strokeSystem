@@ -272,6 +272,7 @@ export default function NurseSetting(props: any) {
           </Flex></div> : ''}
       </Modal>
       <Title />
+
       <div className='setBox'>
         {nurseArr.length ? nurseArr.map((a: any) => {
           return (

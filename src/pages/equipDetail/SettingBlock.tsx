@@ -70,23 +70,24 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (props) =>
     const [timeBModalOpen, setTimeBModalOpen] = useState<boolean>(false)
     const [timeCModalOpen, setTimeCModalOpen] = useState<boolean>(false)
     const [timeDModalOpen, setTimeDModalOpen] = useState<boolean>(false)
-
+    const [sosOpen, setSosOpen] = useState<boolean>(false)
     const [leaveParamModalOpen, setLeaveParamModalOpen] = useState<boolean>(false)
 
     const [fals, setFalse] = useState(false)
     const [userInfo, setUserInfo] = useState({
         // nurseStart, nurseEnd, fallbedStart, fallbedEnd, leaveBedStart, leaveBedEnd, situpStart, situpEnd, type, deviceId, leavebedParam
-        ...equipInfo 
+        ...equipInfo
     })
     const {
         nurseStart, nurseEnd, nursePeriod, injuryAlarm,
         fallbedStart, fallbedEnd, fallbedAlarm,
         leaveBedStart, leaveBedEnd, leaveBedPeriod, leaveBedAlarm,
-        situpStart, situpEnd, situpAlarm,
+        situpStart, situpEnd, situpAlarm, sosAlarm,
         type, deviceId,
         leavebedParam,
-
+        sosFlag
     } = userInfo
+    console.log(userInfo, '................................userInfo');
 
     // console.log(nursePeriod, '................................................................nursePeriod');
 
@@ -156,6 +157,8 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (props) =>
 
 
     const changeValueToUserInfo = (values: modelUserInfo) => {
+        console.log(values, '。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。values');
+
         const realValue: string = Object.values(values)[0]
         const realKey: string = Object.keys(values)[0]
 
@@ -440,34 +443,36 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (props) =>
     },
     {
         label: 'SOS提醒设置',
-        id: 'SOS_switch',
-        value: valueToAlarmFlag(fallbedAlarm),
+        id: 'sosArr',
+        value: valueToAlarmFlag(sosAlarm),
         handleSwitch: () => {
             // setSwitchD(!switchD)
-            setUserInfo({ ...userInfo, fallbedAlarm: alarmFlagToValue(!valueToAlarmFlag(fallbedAlarm)) })
+            setUserInfo({ ...userInfo, sosAlarm: alarmFlagToValue(!valueToAlarmFlag(sosFlag)) })
             setAlarmParamChange(true)
         },
         params: [{
             label: '监测时间段',
-            id: 'timeRangeD',
-            value: `${timePeriodInitFormat({ timeStamp: fallbedStart, type: 'start' })}-${timePeriodInitFormat({ timeStamp: fallbedEnd, type: 'end' })}`,
+            id: 'sosArr',
+            value: `${timePeriodInitFormat({ timeStamp: sosAlarm, type: 'start' })}-${timePeriodInitFormat({ timeStamp: sosAlarm, type: 'end' })}`,
             onChange: () => {
-                setTimeDModalOpen(true)
+                setSosOpen(true)
             },
             modal: <CommonFormModal
-                title='坠床提醒设置'
-                open={timeDModalOpen}
-                close={() => setTimeDModalOpen(false)}
+                title='SOS提醒设置'
+                open={sosOpen}
+                close={() => setSosOpen(false)}
                 formList={[{
                     label: '监测时间段',
-                    key: 'timeRangeD',
-                    value: `${timePeriodInitFormat({ timeStamp: fallbedStart, type: 'start' })}-${timePeriodInitFormat({ timeStamp: fallbedEnd, type: 'end' })}`,
-                    type: FormType.SOS,
+                    key: 'sosArr',
+                    value: `${timePeriodInitFormat({ timeStamp: sosAlarm, type: 'start' })}-${timePeriodInitFormat({ timeStamp: sosAlarm, type: 'end' })}`,
+                    type: FormType.SOS_ALARM_SWITCH,
                 }]}
                 onFinish={(values) => {
+                    console.log(values, '................................valuesssssssss');
+
                     // setTimeRangeD(values.timeRangeD)
                     changeValueToUserInfo(values)
-                    setAlarmParamChange(true)
+                    setSosOpen(true)
                 }}
             />
         }]
@@ -657,7 +662,7 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (props) =>
     };
     const cancel: PopconfirmProps['onCancel'] = (e) => {
         console.log(e);
-        message.error('取消成功');
+        message.info('取消成功');
     };
     const [switchOpen, setSwitchOpen] = useState(false)
     const [switchOpenValue, setSwitchOpenValue] = useState('0')

@@ -367,6 +367,7 @@ interface leaveParam {
 export const changePersonalEquipLeaveBedInfo = createAsyncThunk('equip/changeLeaveBedInfo', async (options: leaveParam, { getState }) => {
     const state: any = getState()
     const token = state.token.token
+    
     const realOption = {
         method: 'post',
         url: `/device/updateLeaveBedParam`,

@@ -150,7 +150,7 @@ export default function Message() {
   const titleList = [
     {
       id: 1,
-      key: 'nursing,fallbed,outOffBed,situp,offline,otherReminders',
+      key: 'nursing,fallbed,outOffBed,situp,offline,sos',
       title: "全部提醒"
     },
     {
@@ -161,7 +161,7 @@ export default function Message() {
 
     {
       id: 3,
-      key: 'nursing',
+      key: 'sos',
       title: "SOS提醒 "
     },
     {
@@ -217,13 +217,15 @@ export default function Message() {
   const [titleId, setTitleId] = useState(3)
   const [title, setTitle] = useState('护理提醒')
   console.log(titleId, 'titleId');
-
+  const [nursing, setNursing] = useState(false)
   // 标题切换
   const onTitle = (item: any) => {
     console.log(item, '.title');
-
     setTitle(item.title)
     setTitleId(item.id)
+    if (item.key === 'otherReminders') return setNursing(true)
+
+
     setParams({
       ...params,
       types: item.key,
@@ -298,6 +300,7 @@ export default function Message() {
 
 
   ];
+
   const getSearchValue = (item: any) => {
     setParams({
       ...params,
@@ -315,10 +318,13 @@ export default function Message() {
   const homeSelect = [
     { value: 'patientName', label: '姓名' },
     { value: 'roomNum', label: '床号' },
-
   ]
+  const otherReminders = [
+    { value: 'nursing', label: '护理提醒' },
+  ]
+  const [otherRemindersType, setOtherRemindersType] = useState('');
   const [selectType, setSelectType] = useState('patientName');
-
+  const [otherReminders1, setOtherReminders] = useState<any>('nursing')
 
   const [fale, seFalse] = useState(false)
   const onShijian = () => {
@@ -387,6 +393,7 @@ export default function Message() {
       })
     }
   }, [val])
+
   return (
     <>
       {
@@ -407,6 +414,36 @@ export default function Message() {
                     </Button>
                   );
                 })}
+                {
+                  nursing ? <div>
+                    {
+                      otherReminders && otherReminders.map((item, index) => {
+                        return <Button key={index} className={`btn  ${(index + 1) === titleId ? 'on' : ''} `} onClick={() => {
+                          setTitle(item.label)
+                          setParams({
+                            ...params,
+                            types: item.value,
+
+                            startMills: timeArr[0],
+                            endMills: timeArr[1],
+                          })
+                          getMessage({
+                            ...params,
+                            types: item.value,
+
+                            startMills: timeArr[0],
+                            endMills: timeArr[1],
+                          })
+                          setNursing(false)
+                        }}>
+                          {item.label}
+                        </Button>
+                      })
+                    }
+
+                  </div>
+                    : ''
+                }
               </div>
             </div>
             <div className="messageMainData">
@@ -496,6 +533,39 @@ export default function Message() {
 
                 )
               })
+            }
+            {
+              nursing ? <div>
+
+                {
+                  otherReminders && otherReminders.map((item, index) => {
+                    return <div key={index}>
+                      <Button className="btn" onClick={() => {
+                        setTitle(item.label)
+                        setParams({
+                          ...params,
+                          types: item.value,
+
+                          startMills: timeArr[0],
+                          endMills: timeArr[1],
+                        })
+                        getMessage({
+                          ...params,
+                          types: item.value,
+
+                          startMills: timeArr[0],
+                          endMills: timeArr[1],
+                        })
+                        setNursing(false)
+                      }}>
+                        {item.label}
+                      </Button>
+                    </div>
+                  })
+                }
+
+              </div>
+                : ''
             }
             <div className="MessageYiDOngTitledivMessageYiDOngTitlediv" style={{ position: 'fixed', right: "0", background: '#FFFFF', width: "2rem", height: "3rem", zIndex: 99 }}></div>
           </div>

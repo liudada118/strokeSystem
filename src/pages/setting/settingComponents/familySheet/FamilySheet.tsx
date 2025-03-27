@@ -127,8 +127,12 @@ export default function FamilySheet(props: familySheetProps) {
     const handleDeletePersonCancel = () => {
         setIsModalDeletePersonOpen(false)
     }
-
+    const phoneRegex = /^1[3-9]\d{9}$/
     const handlePersonOk = () => {
+        console.log(nurseUser, '................................................................lengthnurseUser');
+        if (!phoneRegex.test()) {
+            return message.info('手机号不正确,请输入正确的手机号')
+        }
         if (nurseUser.user.length > 5) {
             Instancercv({
                 method: "post",
@@ -167,13 +171,16 @@ export default function FamilySheet(props: familySheetProps) {
                 <div style={{ padding: '0.5rem 3rem' }}>
 
                     <div style={{ display: 'flex', alignItems: 'center' }} className="deviceItem"><div style={{ width: '5rem', }}> 手机号:</div>
-                        <Input value={nurseUser.user} style={{ flex: 1 }} onChange={(e) => {
-                            // setProjectAddress(e.target.value)
+                        <Input value={nurseUser.user} style={{ flex: 1 }} onBlur={(e) => {
+                            if (!phoneRegex.test(e.target.value)) {
+                                return message.info('手机号不正确,请输入正确的手机号')
+                            }
                             let obj = { ...nurseUser }
                             obj.user = e.target.value
                             setnurseUser(obj)
+                        }} onChange={(e) => {
+                            // setProjectAddress(e.target.value)
                         }} /></div>
-
                     <div style={{ display: 'flex', alignItems: 'center' }} className="deviceItem"><div style={{ width: '5rem', }}> 姓名:</div>
                         <Input value={nurseUser.name} style={{ flex: 1 }} onChange={(e) => {
                             // setProjectAddress(e.target.value)
@@ -181,7 +188,6 @@ export default function FamilySheet(props: familySheetProps) {
                             obj.name = e.target.value
                             setnurseUser(obj)
                         }} /></div>
-
                 </div>
             </Modal>
             <Modal title="删除" open={isModalDeletePersonOpen} onOk={handleDeletePersonOk} onCancel={handleDeletePersonCancel}>

@@ -32,6 +32,7 @@ import Card from "./Card";
 import { cloudSleepToPageSleep, initCircleArr, initRealCircleArr, minDataParam, returnCloudHeatmapData, returnMinData, returnRealtimeData } from "../../heatmapUtil";
 import CommonTitle from "@/components/CommonTitle";
 import { phoneSelect } from "@/redux/token/tokenSlice";
+import { log } from "node:console";
 
 
 export const rainbowTextColors = [
@@ -141,8 +142,9 @@ export default forwardRef((props: any, refs: any) => {
   const sensorName = param.id || ''
   const equipInfo = useSelector((state) => selectEquipBySensorname(state, sensorName))
   let location: any = useLocation();
-  // console.log(location.state)
-  const onbedState = location.state.person.onBed
+  console.log(location.state, '................................................................qweqweqew')
+  const onbedState = location.state.person.onBed || '1'
+  console.log(location.state.person, '................................?////////////////');
 
   const [valueArr, setValueArr] = useState<any>({ rate: 0, onBedTime: 0, onbedState })
 
@@ -177,7 +179,7 @@ export default forwardRef((props: any, refs: any) => {
    * @param param0 heart 心率, rate 呼吸, stroke 脑卒中, bodyMove 体动, onBedTime 在床时间
    */
   const initRealtimePage = ({ heart, rate, stroke, bodyMove, onBedTime, onbedState }: any) => {
-  
+
 
     // globalOnbedState = onbedState
     if (onbedState) {

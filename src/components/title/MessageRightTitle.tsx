@@ -1,4 +1,4 @@
-import { DatePicker, Dropdown, Input, Menu, Space } from "antd";
+import { DatePicker, Dropdown, Input, Menu, Select, Space } from "antd";
 import { useState } from "react";
 import zhCN from 'antd/locale/zh_CN';
 import dayjs from 'dayjs'
@@ -49,14 +49,14 @@ export const MessageRightTitle = (props: messageParam) => {
         <Menu style={{ color: "929EAB" }} z-index onClick={(e) => dingtalkCircleFilled(e)}>
             <>
                 <Menu.SubMenu key={`sub1-1`} title='姓名'>
-                    {unique(patientName)?.map((item: any, index: number) => (
+                    {/* {unique(patientName)?.map((item: any, index: number) => (
                         <Menu.Item onClick={() => SubMenu(item)} key={`name-${index}`}>{item}</Menu.Item>
-                    ))}
+                    ))} */}
                 </Menu.SubMenu>
                 <Menu.SubMenu key={`sub2-2`} title="床号">
-                    {unique(roomNum)?.map((item: any, index: number) => (
+                    {/* {unique(roomNum)?.map((item: any, index: number) => (
                         <Menu.Item onClick={() => SubMenu(item)} key={`name1-${index}`}>{item}</Menu.Item>
-                    ))}
+                    ))} */}
                 </Menu.SubMenu>
             </>
         </Menu>
@@ -66,20 +66,27 @@ export const MessageRightTitle = (props: messageParam) => {
 
         setName(e.keyPath[1])
     }
-    const onChang = (e: any) => {
 
-        setpatientName(e.target.value)
-    }
+
+
+
 
     const SubMenu = (item: any) => {
         setpatientName(item)
     }
     const dian = () => {
-        console.log(name, 'name')
-        titleChangeGetMessage({
-            patientName: name === 'sub1-1' ? patientNameRoomNum : '',
-            roomNum: name === 'sub2-2' ? patientNameRoomNum : ''
-        })
+
+        if (homeSelect == 'patientName') {
+            titleChangeGetMessage({
+                patientName: patientNameRoomNum,
+                roomNum: ''
+            })
+        } else if (homeSelect == 'roomNum') {
+            titleChangeGetMessage({
+                patientName: '',
+                roomNum: patientNameRoomNum
+            })
+        }
     }
 
     // 时间选择器
@@ -93,13 +100,15 @@ export const MessageRightTitle = (props: messageParam) => {
         })
 
     };
+    const homeSelect: any = [
+        { value: 'patientName', label: '姓名' },
+        { value: 'roomNum', label: '床号' },
+    ]
+    const [selectType, setSelectType] = useState('patientName');
     return (
-
         <>
-
             {
                 !windowSize ? <div className="messageTitlediv2">
-
                     <><Space style={{ width: "50rem", height: "39px", marginLeft: "10px" }} direction="vertical" size={12}>
                         <RangePicker
                             placeholder={['开始时间', '结束时间']}
@@ -108,17 +117,45 @@ export const MessageRightTitle = (props: messageParam) => {
                             style={{ width: "18rem", height: "39px", marginLeft: "10px" }}
                             showTime />
                     </Space><div className="messageTitlediv2_you">
-                            <Dropdown overlay={menu}>
-                                <a className="ant-dropdown-link " style={{ display: "flex", width: "4rem", marginLeft: "1rem", color: "#929EAB" }} onClick={(e) => e.preventDefault()}>
-                                    {name === 'sub2-2' ? '床号' : '姓名'} <DownOutlined />
-                                </a>
-                            </Dropdown>
-
+                            <Select
+                                className="MessageYiDOngTitlesearchSelect"
+                                defaultValue={selectType}
+                                style={{ width: 80, height: "1.5rem", border: 'none', }}
+                                onChange={(e) => { setSelectType(e) }}
+                                options={homeSelect}
+                            />
                             <Input className="messageTitlediv2_you_inp"
                                 allowClear
                                 value={patientNameRoomNum}
                                 //  setpatientName(e.target.value)
-                                onChange={(e) => onChang(e)}
+                                onBlur={(e: any) => {
+                                    if (homeSelect == 'patientName') {
+                                        titleChangeGetMessage({
+                                            patientName: e.target.value,
+                                            roomNum: ''
+                                        })
+                                    } else if (homeSelect == 'roomNum') {
+                                        titleChangeGetMessage({
+                                            patientName: '',
+                                            roomNum: e.target.value
+                                        })
+                                    }
+                                }}
+                                onChange={(e) => {
+                                    setpatientName(e.target.value)
+                                    if (homeSelect == 'patientName') {
+                                        titleChangeGetMessage({
+                                            patientName: e.target.value,
+                                            roomNum: ''
+                                        })
+                                    } else if (homeSelect == 'roomNum') {
+                                        titleChangeGetMessage({
+                                            patientName: '',
+                                            roomNum: e.target.value
+                                        })
+                                    }
+                                }
+                                }
                                 placeholder="请输入姓名/床号" />
                             <img onClick={dian} style={{ width: "1rem", height: "1rem", marginRight: "20px" }} src={fang} alt="" />
                         </div></>

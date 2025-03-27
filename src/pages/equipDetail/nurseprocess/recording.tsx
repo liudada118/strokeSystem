@@ -15,7 +15,7 @@ interface proprsType {
     currentCare?: any
 }
 function Recording(props: proprsType) {
-    const { sensorName, recordOpen, onClose, type, handleChildData } = props
+    const { sensorName, recordOpen, onClose, type, handleChildData, currentCare } = props
     const [recordOpen1, setRecordOpen] = useState<boolean>(props.recordOpen)
     const [checkedList, setCheckedList] = useState<string[]>([]);
     const [dataSource, setDataSource] = useState<any>([])
@@ -29,12 +29,15 @@ function Recording(props: proprsType) {
     /**
      * 添加护理报告
      */
+    console.log();
+
     const handleRecordForm = (values: any) => {
+
 
         if (values) {
             const time = dayjs(values.completionTime).valueOf()
             values.completionTime = time
-
+            console.log(values, time, props, '................................................................values');
             const timeString = dayjs(props.currentCare?.timeWithCurrentDate).format("HH:mm");
             const fullDateTime = dayjs().format("YYYY-MM-DD") + " " + timeString; // 拼接当天日期
             const dateTime = dayjs(fullDateTime, "YYYY-MM-DD HH:mm:ss").valueOf(); // 转换为 dayjs 对象
@@ -48,8 +51,8 @@ function Recording(props: proprsType) {
                 } :
                 {
                     did: sensorName,
-                    timeMillis: time,
-                    templateTime: time,
+                    timeMillis: new Date().getTime(),
+                    templateTime: props.currentCare.templateTime,
                     data: JSON.stringify(values),
                 }
             instance({
@@ -123,7 +126,7 @@ function Recording(props: proprsType) {
                 <Form form={form} onFinish={handleRecordForm}
                     initialValues={{
                         nurseProject: props.currentCare?.templateTitle,
-                        completionTime: dayjs(dayjs(props.currentCare?.completionTime).format("HH:mm"), 'HH:mm')
+                        completionTime: dayjs(new Date().getTime())
                     }}
                 >
 

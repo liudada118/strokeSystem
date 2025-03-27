@@ -124,6 +124,8 @@ export const NurseTable = (props: tableProps) => {
 
   // 待完成
   const toBeCompleted = (item: any) => {
+    console.log(item, '................................................................itemaass');
+
     setCurrentCare(item)
     setIsfals(true)
   }
@@ -157,6 +159,7 @@ export const NurseTable = (props: tableProps) => {
         [unixTimestamp]: item.title
       }
     })
+    console.log(templateData, '................................................................templateData');
 
     instance({
       method: "post",
@@ -227,7 +230,7 @@ export const NurseTable = (props: tableProps) => {
     }
   }, [data])
   const handleChildData = (data: string, val: any) => {
-    console.log('111111', data)
+
     setChildData(data);
   };
   const updateDelet = (val: any) => {

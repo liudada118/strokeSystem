@@ -45,6 +45,7 @@ export function cloudSleepToPageSleep(posture: number) {
 export interface minDataParam {
     jsonObj: any
     sensorName: string
+    leavebedParam ?: number
 }
 
 export interface cloudDataParam {
@@ -92,9 +93,9 @@ interface realtimeReturn {
  * @param param0 jsonObj : 实时数据 sensorName 设备sensorName
  * @returns heart :心率   rate : 呼吸 , stroke : 卒中 ,onBedTime : 在床时间 ,  bodyMove : 体动数组
  */
-export const returnRealtimeData: (param: minDataParam) => realtimeReturn = ({ jsonObj, sensorName }) => {
+export const returnRealtimeData: (param: minDataParam) => realtimeReturn = ({ jsonObj, sensorName,leavebedParam }) => {
 
-    const { realtimeStrokeRisk, heartRateRandom, realtimeBreathRate, onOutOffBedTimeMillis, realtimeBodyMoveArr, realtimeOnbedState } = jsonObj
+    const { realtimeStrokeRisk, heartRateRandom, realtimeBreathRate, onOutOffBedTimeMillis, realtimeBodyMoveArr, realtimeOnbedState ,realtimeLeaveBedParam  } = jsonObj
 
     const res = {
         heart: heartRateRandom,
@@ -102,7 +103,7 @@ export const returnRealtimeData: (param: minDataParam) => realtimeReturn = ({ js
         stroke: realtimeStrokeRisk,
         onBedTime: (new Date().getTime() - onOutOffBedTimeMillis) / 1000,
         bodyMove: realtimeBodyMoveArr,
-        onbedState: realtimeOnbedState
+        onbedState: leavebedParam ? ( realtimeLeaveBedParam < leavebedParam ? 0 : 1):   realtimeOnbedState
     }
 
     // 如果是假数据设备

@@ -140,11 +140,16 @@ export default forwardRef((props: any, refs: any) => {
 
   const sensorName = param.id || ''
   const equipInfo = useSelector((state) => selectEquipBySensorname(state, sensorName))
+  let location: any = useLocation();
+  // console.log(location.state)
+  const onbedState = location.state.person.onBed
 
-  const [valueArr, setValueArr] = useState<any>({ rate: 0, onBedTime: 0 })
+  const [valueArr, setValueArr] = useState<any>({ rate: 0, onBedTime: 0, onbedState })
+
   const valueArrRef = useRef(valueArr);
 
   useEffect(() => {
+    // console.log(valueArrRef.current,equipInfo)
     valueArrRef.current = valueArr; // 同步最新 count
   });
   /**
@@ -172,10 +177,16 @@ export default forwardRef((props: any, refs: any) => {
    * @param param0 heart 心率, rate 呼吸, stroke 脑卒中, bodyMove 体动, onBedTime 在床时间
    */
   const initRealtimePage = ({ heart, rate, stroke, bodyMove, onBedTime, onbedState }: any) => {
-    setValueArr({ heart, rate, stroke, bodyMove, onBedTime, onbedState })
+  
 
     // globalOnbedState = onbedState
-    if (moveRef.current) moveRef.current.handChangeChart({ ydata: bodyMove })
+    if (onbedState) {
+      setValueArr({ heart, rate, stroke, bodyMove, onBedTime, onbedState })
+      if (moveRef.current) moveRef.current.handChangeChart({ ydata: bodyMove })
+    } else {
+      if (moveRef.current) moveRef.current.handChangeChart({ ydata: new Array(24).fill(0) })
+    }
+
   }
   /**
    * 获取初始矩阵信息
@@ -194,18 +205,18 @@ export default forwardRef((props: any, refs: any) => {
       },
     }).then((res) => {
       const { wsPointData, timer, resSleep, circleArr } = returnCloudHeatmapData({ res: res.data, sensorName, equipInfo })
-      // initPage({ wsPointData, timer, resSleep, circleArr })
-      setValueArr((prevState: any) => {
-        const value = {
-          ...prevState,
-          onbedState: 1, // 为真就会调用initpage
-          // heart: 0, // 心率heartRate
-          // rate: 0,   // 呼吸
-        }
-        valueArrRef.current = value
-        initPage({ wsPointData, timer, resSleep, circleArr })
-        return value
-      })
+      initPage({ wsPointData, timer, resSleep, circleArr })
+      // setValueArr((prevState: any) => {
+      //   const value = {
+      //     ...prevState,
+      //     onbedState: 1, // 为真就会调用initpage
+      //     // heart: 0, // 心率heartRate
+      //     // rate: 0,   // 呼吸
+      //   }
+      //   valueArrRef.current = value
+      //   initPage({ wsPointData, timer, resSleep, circleArr })
+      //   return value
+      // })
     }).catch((err) => {
       message.error('当前设备已离线')
     });
@@ -219,7 +230,7 @@ export default forwardRef((props: any, refs: any) => {
   const [timer, setTimer] = useState<any>(0)
   const [sleep, setSleep] = useState<any>(4)
   const isMobile = useGetWindowSize()
-  let location: any = useLocation();
+
   const [matrix, setMatrix] = useState(new Array(1024).fill(0))
   const heatMapRef = useRef<any>(null)
   const progressRef = useRef<any>(null)
@@ -236,10 +247,10 @@ export default forwardRef((props: any, refs: any) => {
       initPage({ circleArr, timer, resSleep, wsPointData })
     },
     realtime({ jsonObj, sensorName }: minDataParam) {
-      const { heart, rate, stroke, bodyMove, onBedTime, onbedState } = returnRealtimeData({ jsonObj, sensorName })
+      const { heart, rate, stroke, bodyMove, onBedTime, onbedState } = returnRealtimeData({ jsonObj, sensorName, leavebedParam: equipInfo.leavebedParam })
       // console.log( heart, rate, stroke, bodyMove, onBedTime, onbedState)
-      initRealtimePage({ heart, rate, stroke, bodyMove, onBedTime, onbedState })
-      if (!jsonObj.realtimeOnbedState) {
+      initRealtimePage({ heart, rate, stroke, bodyMove, onBedTime, onbedState, })
+      if (!onbedState) {
         initPage({ circleArr: [], wsPointData: new Array(1024).fill(0), resSleep: 4, type: 'realtime' })
       }
     },

@@ -160,7 +160,7 @@ const EquipDetail = () => {
                                 centered
                                 items={tabList}
                                 onChange={(e) => {
-                                    console.log(e, 'native')
+                                 
                                     navigate(`/report/${activeKeyArr.indexOf(e)}/${id}`)
                                 }}
                             />
@@ -205,7 +205,7 @@ const EquipDetail = () => {
                             centered
                             items={tabList}
                             onChange={(e) => {
-                                console.log(e, 'native')
+                               
                                 navigate(`/report/${activeKeyArr.indexOf(e)}/${id}`)
                             }}
                         />

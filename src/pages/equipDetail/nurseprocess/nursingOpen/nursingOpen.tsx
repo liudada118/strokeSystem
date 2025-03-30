@@ -219,6 +219,7 @@ function NursingOpen(props: propsType) {
    * @returns
    */
   const templateToData = (str: string) => {
+    
     const arr: any = [];
     const splitArr = str.replace("{", "").replace("}", "").split(",");
     console.log(splitArr);

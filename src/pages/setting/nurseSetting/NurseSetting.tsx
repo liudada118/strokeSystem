@@ -62,7 +62,8 @@ export default function NurseTable(props: tableProps) {
   const token = localStorage.getItem("token");
   const dispatch = useDispatch();
   const [checkedList, setCheckedList] = useState(false);
-  const nurseOpne = useSelector((state: any) => state.nurse.opne)
+  const nurseOpne = useSelector((state: any) => state.nurse.open)
+
   const title = [
     {
       key: "completionTime",
@@ -311,7 +312,7 @@ export default function NurseTable(props: tableProps) {
         </>
       }
       <div className="flex">
-        <div className="grow" style={{ overflow: "hidden", textAlign: "center" }}>
+        <div className="grow" style={{ overflow: "hidden", textAlign: "center", }}>
           <div className="bg-[#F5F8FA] flex ">
             {title.map((a) => {
               if (type == "user" && a.key == "delete") {

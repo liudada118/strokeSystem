@@ -46,7 +46,7 @@ import FamilySheet from './settingComponents/familySheet/FamilySheet';
 import Bottom from '@/components/bottom/Bottom';
 import UserInfo from './user/UserInfo';
 import UploadImg from './uploadImg/UploadImg';
-import NurseSetting from './nurseSetting/NurseSetting';
+// import NurseSetting from './nurseSetting/NurseSetting';
 import Title from '@/components/title/Title';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginOut, roleIdSelect } from '@/redux/premission/premission';
@@ -1940,7 +1940,8 @@ export default function Setting() {
                                   }}>入库</Button>
                                   <Button onClick={() => { window.history.back() }}>返回</Button>
 
-                                </div> : current == 'nurse' ? <NurseSetting type="project" organizeId={userOrganizeId} organizeName={userOrganizeName} />
+                                </div> 
+                                // : current == 'nurse' ? <NurseSetting type="project" organizeId={userOrganizeId} organizeName={userOrganizeName} />
                                   : current == 'loadImg' ? <UploadImg changeHeadImg={changeHeadImg} userId={userOrganizeId} username={userOrganizeName} img={headImg} />
                                     : current == 'sysIntro' ?
 

@@ -27,3 +27,21 @@
 .nursingStencildivBox:last-child .nursingStencildiv::before {
   display: none;
 }
+
+.nursingStencildiv1::before {
+  content: "";
+  position: relative;
+  left: 7.2rem;
+  top: 2.6rem;
+  width: 3px;
+  height: 4rem;
+  background: #D8D8D8;
+}
+
+.nursingStencildivBox:last-child .nursingStencildiv1::before {
+  display: none;
+}
+
+.qx {
+  border: none;
+}

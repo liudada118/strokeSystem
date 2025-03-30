@@ -858,9 +858,7 @@ const SettingMoDal = () => {
 
         if (!(roleId == 1 || roleId == 2)) return message.info('权限不足');
         setOpen(true)
-        dispatch(nurseOpen({ nurseOpen: !open }))
-        // setOpen(true)
-
+        dispatch(nurseOpen({ nurseOpen: open }))
     }
     return (
         <>

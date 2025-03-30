@@ -11,7 +11,7 @@ import { instance, Instancercv } from "@/api/api";
 import { useSelector } from "react-redux";
 import { tokenSelect } from "@/redux/token/tokenSlice";
 import { PreViewConfig } from "./mobileEdit/NurseEdit";
-import { NurseTable, templateToData } from "../setting/nurseSetting/NurseSetting";
+import NurseTable from "../setting/nurseSetting/NurseSetting";
 import { DataContext } from ".";
 import { TimePickerProps } from "antd/lib";
 import ImgUpload from "@/components/imgUpload/ImgUpload";
@@ -215,6 +215,7 @@ const NurseRecord: (props: NurseRecordProps) => React.JSX.Element = (props) => {
     // const [nursePersonTemplate, setNursePersonTemplate] = useState<any>([])
 
     const context = useContext(DataContext)
+    console.log(context, 'context.............')
     const { nursePersonTemplate, setNursePersonTemplate, getPersonTemplate } = context
 
     useEffect(() => {
@@ -285,6 +286,13 @@ const NurseRecord: (props: NurseRecordProps) => React.JSX.Element = (props) => {
     const handleChildData = (data: string, val: any) => {
         setChildData(data);
     };
+    const [recordOpenNurseOpne, setRecordOpenNurseOpne] = useState()
+    const nurseOpne = useSelector((state: any) => state.nurse.opne)
+
+    useEffect(() => {
+        setRecordOpenNurseOpne(nurseOpne)
+    }, [])
+    console.log(nurseOpne, recordOpenNurseOpne, '....nurseOpne');
     return (
         <div className='w-[calc(30%-10px)] md:w-full'>
             {!isMobile && (
@@ -304,51 +312,6 @@ const NurseRecord: (props: NurseRecordProps) => React.JSX.Element = (props) => {
                             careList={nursePersonTemplate}
                             nurseConfig={nurseConfig} sensorName={param.id}></Recording>
                     }
-                    {/* <Drawer
-                        width='26rem'
-                        className='nurseDrawer'
-                        maskClosable={false}
-                        title={<span className='text-2xl'>记录护理项目</span>}
-                        onClose={() => {
-                            form.resetFields()
-                            setCheckedList([])
-                            setRecordOpen(false)
-                        }}
-                        open={true}>
-                        <Form form={form} onFinish={handleRecordForm}>
-                            <div>
-                                护理项目
-                                <Input />
-                            </div>
-                            <div>
-                                完成时间
-                                <TimePicker onChange={onTimeChange} defaultValue={dayjs('12:08', format)} format={format} />
-                            </div>
-                            <div>
-                                上传图片
-                                <ImgUpload finish={setImg} img={img} />
-                            </div>
-                            <div>
-                                填写备注
-                                <Input />
-                            </div>
-
-                            <Form.Item className='flex justify-around w-full'>
-                                <Button color="primary" variant="outlined" className='w-[8rem] h-[2.4rem] mr-[10px] text-sm' onClick={() => {
-                                    form.resetFields()
-                                    setCheckedList([])
-                                    setRecordOpen(false)
-                                }}>
-                                    取消
-                                </Button>
-                                <Button type="primary" onClick={() => {
-                                    addNurseReport()
-                                }} className='w-[8rem] h-[2.4rem] text-sm'>
-                                    保存
-                                </Button>
-                            </Form.Item>
-                        </Form>
-                    </Drawer> */}
                 </span>
             )}
             <div ref={nurseRef} className='bg-[#fff] py-[15px] px-[15px] md:w-[94%] md:rounded-[10px] md:my-[10px] md:mx-auto md:py-[1rem] md:px-[1rem]'>

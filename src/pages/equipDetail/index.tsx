@@ -376,6 +376,7 @@ function Provide() {
             }
         }).then((res) => {
             const nursingConfig = JSON.parse(res.data.nursingConfig)
+            console.log(nursingConfig, '......nursingConfig...........11111...............................................nursePersonTemplate');
             setNursePersonTemplate(nursingConfig)
         })
     }

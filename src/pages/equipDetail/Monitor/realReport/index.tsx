@@ -16,7 +16,7 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { message, Spin } from "antd";
 
 import { useGetWindowSize } from "@/hooks/hook";
-import Heatmap from "@/components/heatmap/Heatmap";
+import Heatmap from "@/components/heatmap/HeatmapModal copy 2";
 import { RealChart } from "@/components/charts";
 import ProgressCom from "../progress/Progress";
 import { numToHour, numToMin, stampToTime } from "@/utils/timeConvert";
@@ -24,7 +24,7 @@ import { instance } from "@/api/api";
 import { scrollToAnchor } from "../util";
 import { useSelector } from "react-redux";
 import { mqttSelect } from "@/redux/mqtt/mqttSlice";
-import { selectEquipBySensorname } from "@/redux/equip/equipSlice";
+import { selectEquipBySensorname, selectRealEquipBySensorname } from "@/redux/equip/equipSlice";
 import { OUTBEDTYPE } from "@/redux/equip/equipUtil";
 import { fakeData } from "../../fakeData";
 import NurseTextInfo from "./NurseTextInfo";
@@ -32,7 +32,7 @@ import Card from "./Card";
 import { cloudSleepToPageSleep, initCircleArr, initRealCircleArr, minDataParam, returnCloudHeatmapData, returnMinData, returnRealtimeData } from "../../heatmapUtil";
 import CommonTitle from "@/components/CommonTitle";
 import { phoneSelect } from "@/redux/token/tokenSlice";
-import { log } from "node:console";
+
 
 
 export const rainbowTextColors = [
@@ -121,7 +121,7 @@ for (let i = 0; i < 68; i++) {
   }
 }
 
-let startMatrix: any = new Array(1024).fill(0)
+
 
 export function valueToSleep(num: number) {
   if (num == 0) {
@@ -136,17 +136,15 @@ export function valueToSleep(num: number) {
 
 let globalOnbedState = 0
 export default forwardRef((props: any, refs: any) => {
-
+  let startMatrix: any = new Array(1024).fill(0)
   const param = useParams()
 
   const sensorName = param.id || ''
-  const equipInfo = useSelector((state) => selectEquipBySensorname(state, sensorName))
+  const equipInfo = useSelector((state) => selectRealEquipBySensorname(state, sensorName))
   let location: any = useLocation();
-  console.log(location.state, '................................................................qweqweqew')
-  const onbedState = location.state.person.onBed || '1'
-  console.log(location.state.person, '................................?////////////////');
+  // const onbedState = location.state ? location.state.person.onBed : 0
 
-  const [valueArr, setValueArr] = useState<any>({ rate: 0, onBedTime: 0, onbedState })
+  const [valueArr, setValueArr] = useState<any>({ rate: 0, onBedTime: 0, onbedState: equipInfo.onBed })
 
   const valueArrRef = useRef(valueArr);
 
@@ -154,6 +152,15 @@ export default forwardRef((props: any, refs: any) => {
     // console.log(valueArrRef.current,equipInfo)
     valueArrRef.current = valueArr; // 同步最新 count
   });
+
+  const initOnbedOrLeaveBedPage = ({ circleArr, resSleep, timer, wsPointData, type }: any) => {
+    console.log(valueArrRef.current)
+    if (valueArrRef.current.onbedState) {
+      initPage({ circleArr, resSleep, timer, wsPointData, type })
+    } else {
+      initPage({ circleArr: [], wsPointData: new Array(1024).fill(0), resSleep: 4, type: 'realtime' })
+    }
+  }
   /**
    * 
    * @param param0 circleArr 传入压疮点 ,resSleep 睡姿 , timer 压疮倒计时,wsPointData 矩阵数据
@@ -162,11 +169,11 @@ export default forwardRef((props: any, refs: any) => {
   const initPage = ({ circleArr, resSleep, timer, wsPointData, type }: any) => {
 
     // 在床
-    if (valueArrRef.current.onbedState) {
-      if (heatMapRef.current) heatMapRef.current.setCircleArr(circleArr)
-      setSleep(resSleep)
-      if (heatMapRef.current) heatMapRef.current.bthClickHandle(wsPointData)
-    }
+    // if (valueArrRef.current.onbedState) {
+    if (heatMapRef.current) heatMapRef.current.setCircleArr(circleArr)
+    setSleep(resSleep)
+    if (heatMapRef.current) heatMapRef.current.bthClickHandle(wsPointData)
+    // }
 
     if (timer) setTimer(timer ? timer : 0)
 
@@ -180,10 +187,10 @@ export default forwardRef((props: any, refs: any) => {
    */
   const initRealtimePage = ({ heart, rate, stroke, bodyMove, onBedTime, onbedState }: any) => {
 
-
+    setValueArr({ heart, rate, stroke, bodyMove, onBedTime, onbedState })
     // globalOnbedState = onbedState
     if (onbedState) {
-      setValueArr({ heart, rate, stroke, bodyMove, onBedTime, onbedState })
+
       if (moveRef.current) moveRef.current.handChangeChart({ ydata: bodyMove })
     } else {
       if (moveRef.current) moveRef.current.handChangeChart({ ydata: new Array(24).fill(0) })
@@ -207,7 +214,8 @@ export default forwardRef((props: any, refs: any) => {
       },
     }).then((res) => {
       const { wsPointData, timer, resSleep, circleArr } = returnCloudHeatmapData({ res: res.data, sensorName, equipInfo })
-      initPage({ wsPointData, timer, resSleep, circleArr })
+      // console.log(first)
+      initOnbedOrLeaveBedPage({ wsPointData, timer, resSleep, circleArr })
       // setValueArr((prevState: any) => {
       //   const value = {
       //     ...prevState,
@@ -246,18 +254,23 @@ export default forwardRef((props: any, refs: any) => {
   const mqttEvent: any = {
     minute({ jsonObj, sensorName }: minDataParam) {
       const { wsPointData, circleArr, timer, resSleep } = returnMinData({ jsonObj, sensorName })
-      initPage({ circleArr, timer, resSleep, wsPointData })
+      initOnbedOrLeaveBedPage({ circleArr, timer, resSleep, wsPointData })
     },
     realtime({ jsonObj, sensorName }: minDataParam) {
       const { heart, rate, stroke, bodyMove, onBedTime, onbedState } = returnRealtimeData({ jsonObj, sensorName, leavebedParam: equipInfo.leavebedParam })
-      // console.log( heart, rate, stroke, bodyMove, onBedTime, onbedState)
+    
       initRealtimePage({ heart, rate, stroke, bodyMove, onBedTime, onbedState, })
-      if (!onbedState) {
-        initPage({ circleArr: [], wsPointData: new Array(1024).fill(0), resSleep: 4, type: 'realtime' })
+      // console.log(onbedState)
+      if(!valueArrRef.current.onbedState){
+        initOnbedOrLeaveBedPage({ circleArr: [], wsPointData: new Array(1024).fill(0), resSleep: 4, type: 'realtime' })
       }
+     
+      // }
     },
     matrix({ jsonObj, sensorName }: minDataParam) {
       const wsPointData = jsonObj.matrixList
+      console.log('matrix')
+  
       if (heatMapRef.current) heatMapRef.current.bthClickHandle(wsPointData)
     }
   }
@@ -340,7 +353,7 @@ export default forwardRef((props: any, refs: any) => {
                 </div>
                 <div className="heatmapContent ">
                   <NoRender>
-                    <Heatmap height ref={heatMapRef} data={matrix} type={props.type} sensorName={props.sensorName} />
+                    <Heatmap height ref={heatMapRef} index={'real'} data={matrix} type={props.type} sensorName={props.sensorName} />
                     <div style={{ position: 'absolute', bottom: '2rem', right: '2rem', height: '4rem', width: '4rem' }}>
                       <ProgressCom ref={progressRef} /></div>
                   </NoRender>

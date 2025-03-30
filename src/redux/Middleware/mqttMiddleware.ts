@@ -218,6 +218,8 @@ function message({ payload, storeApi, data }: any) {
                     item.breath = jsonObj.realtimeBreathRate
                     item.heartRate = jsonObj.heartRateRandom
                     item.sos = jsonObj.realtimeStrokeRisk
+                    // console.log(jsonObj, 'jsonObj.......')
+                    // item.nurse = jsonObj.realtimeOnbedState
                     if (item.sensorName == 'KgvDXUvdEs9M9AEQDcVc' || item.sensorName == 'iJ3X0JSttyoiRPafpIka') {
 
                         //   rate: (16 - 4 * (Math.random())).toFixed(0),
@@ -249,6 +251,7 @@ function message({ payload, storeApi, data }: any) {
                     const dropbed = alarmJudge.dropBedJudge({ item, getFlag: true, alarm })
                     const sitBed = alarmJudge.situpJudge({ item, getFlag: true, alarm })
                     const sos = alarmJudge.sosJudge({ item, getFlag: true, alarm })
+                    const nurse =  alarmJudge.nurseJudge({ item, getFlag: true, alarm })
                     if(item.sensorName == 'B2QB26FXWWwQPjRXozP2'){
                         console.log(sos)
                     }
@@ -283,6 +286,11 @@ function message({ payload, storeApi, data }: any) {
                             flag: sos,
                             type: ALARMTYPE.sos.type,// 'sitBed',
                             voiceText: ALARMTYPE.sos.text,// '坐起提醒'
+                        },
+                        {
+                            flag: nurse,
+                            type: ALARMTYPE.nurse.type,// 'sitBed',
+                            voiceText: ALARMTYPE.nurse.text,// '坐起提醒'
                         }
                     ]
 

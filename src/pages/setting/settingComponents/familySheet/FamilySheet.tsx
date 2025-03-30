@@ -129,38 +129,38 @@ export default function FamilySheet(props: familySheetProps) {
     }
     const phoneRegex = /^1[3-9]\d{9}$/
     const handlePersonOk = () => {
-        console.log(nurseUser, '................................................................lengthnurseUser');
-        if (!phoneRegex.test()) {
+        if (!phoneRegex.test(nurseUser.user)) {
             return message.info('手机号不正确,请输入正确的手机号')
         }
-        if (nurseUser.user.length > 5) {
-            Instancercv({
-                method: "post",
-                url: "/organize/addOrganizeManager",
-                headers: {
-                    "content-type": "application/x-www-form-urlencoded",
-                    "token": token
-                },
-                params: {
-                    userName: nurseUser.user,
-                    nickName: nurseUser.name,
-                    password: 123,
-                    organizeId: localStorage.getItem('organizeId'),
-                    roleId: 4
-                },
-            }).then((res) => {
-                getItemPerson(deleteObj.id)
-                if (res.data.code == 500) {
-                    message.error('该家属已绑定过其他的项目')
-                }
-            }).catch((e) => {
-                message.error('服务器异常')
-            })
-            setIsModalPersonOpen(false)
-            setnurseUser({})
-        } else {
-            message.error('用户名长度需要大于5')
+        if (!nurseUser.user || !nurseUser.name) {
+            return message.info('用户名和手机号不能为空')
         }
+
+        Instancercv({
+            method: "post",
+            url: "/organize/addOrganizeManager",
+            headers: {
+                "content-type": "application/x-www-form-urlencoded",
+                "token": token
+            },
+            params: {
+                userName: nurseUser.user,
+                nickName: nurseUser.name,
+                password: 123,
+                organizeId: localStorage.getItem('organizeId'),
+                roleId: 4
+            },
+        }).then((res) => {
+            getItemPerson(deleteObj.id)
+            if (res.data.code == 500) {
+                message.error('该家属已绑定过其他的项目')
+            }
+        }).catch((e) => {
+            message.error('服务器异常')
+        })
+        setIsModalPersonOpen(false)
+        setnurseUser({})
+
     }
     const handlePersonCancel = () => {
         setIsModalPersonOpen(false)

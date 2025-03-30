@@ -80,6 +80,8 @@ interface curveIndex {
 }
 
 export function Charts(props: circleData) {
+  console.log(props.xdata, '................................................................propsxdata');
+
   useEffect(() => {
     const chart1 = document.getElementById(`chart${props.index}`);
     var myChart: any;
@@ -199,8 +201,9 @@ export function CurveChart(props: curveIndex) {
       color: ["#006EFF", "#67E0E3", "#9FE6B8"],
       xAxis: {
         type: "category",
-        data: xdata,
+        data: ['20:00', '22:00', '00:00', '02:00', '04:00', '06:00', '08:00', '10:00', '12:00'],
         axisLine: {
+
           show: true,
           color: '#B0B3B8',
           lineStyle: {
@@ -208,6 +211,8 @@ export function CurveChart(props: curveIndex) {
           }
         },
         axisLabel: {
+          interval: 0,
+          fontSize: 10,
           show: true,
           // interval: interval != undefined ? interval >= 0 ? interval : 2000 : 2000, //x轴间隔多少显示刻度
           showMinLabel: true,

@@ -238,17 +238,6 @@ function FirstItem(props: firstItemProps) {
 
         return mostCommon; // 返回最多的值  
     }
-    function calMinExcludingZero(arr: any) {
-        if (!Array.isArray(arr)) {
-            return 0;
-        }
-        const filteredArr = arr.filter((a: any) => a > 0);
-        if (filteredArr.length === 0) {
-            return 0;
-        }
-        return Math.min(...filteredArr);
-    }
-    const [dataList, setDataList] = useState([])
     useEffect(() => {
         instance({
             method: "get",
@@ -270,17 +259,33 @@ function FirstItem(props: firstItemProps) {
             const data = flat.flat()
             const res = data.map((item: any) => item.perMinuteBreathRate)
             const xinLv: any = rateArrToHeart(res)
+            console.log(xinLv, '................................................................xinLvxinLvxinLv');
+            // const filteredData = xinLv.filter((item: any) => item >= 50 || item === 0);
             // 最大心率计算
             const max: any = Math.max(...xinLv)
             // 最小心率计算
             const min: any = calMinExcludingZero(xinLv)
-          setDataList(xinLv)
+            setDataList(xinLv)
             srtHeartRateMin(min)
 
             srtHeartRateMax(max)
         }).catch((err: any) => {
         });
     }, [])
+    function calMinExcludingZero(arr: any) {
+        if (!Array.isArray(arr)) {
+            return 0;
+        }
+        const filteredArr = arr.filter((a: any) => a > 0);
+        if (filteredArr.length === 0) {
+            return 0;
+        }
+        return Math.min(...filteredArr);
+    }
+    const [dataList, setDataList] = useState([])
+    console.log(dataList, '.........dataList');
+
+
 
     return (
         <div className="firstItem">

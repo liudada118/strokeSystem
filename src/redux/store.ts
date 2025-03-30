@@ -4,12 +4,15 @@ import equipSlice from "./equip/equipSlice";
 import MqttMiddleware from "./Middleware/mqttMiddleware";
 import mqttSlice from "./mqtt/mqttSlice";
 import premissionSlice from './premission/premission'
+import nurseSlice from './Nurse/Nurse'
+
 const store = configureStore({
     reducer: {
         token: tokenSlice,
         equip: equipSlice,
         mqtt: mqttSlice,
-        premission: premissionSlice
+        premission: premissionSlice,
+        nurse:nurseSlice
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware({
         serializableCheck: false

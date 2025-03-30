@@ -13,8 +13,9 @@ import { NoEquipLoading } from "@/components/noEquipLoading/NoEquipLoading";
 import Title from "@/components/title/Title";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { instance, Instancercv, netUrl } from "@/api/api";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { tokenSelect } from "@/redux/token/tokenSlice";
+import { nurseOpen } from '../../redux/Nurse/Nurse'
 import axios from "axios";
 import { selectEquipBySensorname } from "@/redux/equip/equipSlice";
 
@@ -125,8 +126,8 @@ const EquipDetail = () => {
 
     // }
     const { isMobile } = useWindowSize()
-
-
+    // const nurse = useSelector((state: any) => state.nurse.open)
+    const dispale = useDispatch()
     const tabList = [{
         label: '监测',
         key: 'monitor',
@@ -159,7 +160,8 @@ const EquipDetail = () => {
                                 centered
                                 items={tabList}
                                 onChange={(e) => {
-                                    console.log(e, 'native')
+                                    console.log(e, '................................................................weweweweewe');
+                                    dispale(nurseOpen(false))
                                     navigate(`/report/${activeKeyArr.indexOf(e)}/${id}`)
                                 }}
                             />
@@ -204,7 +206,7 @@ const EquipDetail = () => {
                             centered
                             items={tabList}
                             onChange={(e) => {
-                                console.log(e, 'native')
+                                dispale(nurseOpen(false))
                                 navigate(`/report/${activeKeyArr.indexOf(e)}/${id}`)
                             }}
                         />
@@ -292,12 +294,12 @@ function Provide() {
     const [turnAroundPlan, setTurnAroundPlan] = useState<TurnPlanList[]>([])
     const submitCloud = (newValue: any) => {
         setNurseFormValue(newValue)
-      
+
         const obj = {
             flipbodyCount: parseInt(newValue.timeRangeA),
             flipbodyTime: parseInt(newValue.timeIntervalA) * 60
         }
-      
+
         // 开关关闭后  设置次数为0
         if (!newValue.switchA) {
             obj.flipbodyCount = 0
@@ -357,7 +359,7 @@ function Provide() {
             }
             setTurnAroundPlan(nurseArr)
         }).catch((err) => {
-            message.error('服务器错误11111111')
+            // message.error('')
         });;
     }
     const [nursePersonTemplate, setNursePersonTemplate] = useState<any>([])
@@ -381,6 +383,7 @@ function Provide() {
     useEffect(() => {
         getPersonTemplate()
     }, [id])
+    console.log(nurseformValue, '................................................................nursePersonTemplate');
 
     return (
         <DataContext.Provider value={{

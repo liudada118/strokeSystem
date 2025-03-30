@@ -176,7 +176,6 @@ export default function UserSheet(props: userSheetProps) {
             setPersonSource(res.data.data)
         })
     }
-
     const deleteUserByOrganizeIdAndUsername = ({ user, id, type }: any) => {
         Instancercv({
             method: "get",
@@ -190,7 +189,9 @@ export default function UserSheet(props: userSheetProps) {
                 organizeId: id
             }
         }).then((res) => {
-
+            if (res.data.msg == "delete success") {
+                message.info('删除成功')
+            }
             if (type == 'device') {
                 getItemManage(id)
                 getProjectManage({ id, user: manUseruser })
@@ -200,21 +201,23 @@ export default function UserSheet(props: userSheetProps) {
 
         })
     }
-
-
     const handleDeviceUserCancel = () => {
         setIsModalDeviceUserOpen(false)
     }
-
     const handleDeviceUserOk = () => {
         deleteUserByOrganizeIdAndUsername({ user: deleteObj.username, id: localStorage.getItem('organizeId'), type: 'device' })
         setIsModalDeviceUserOpen(false)
     }
+    // 密码 8-16位，至少1个大写字母，1个小写字母，1个数字和1个特殊字符
+    const checkPassword = /^(?=.*[a-z])[\w$@$!%*?.&-]{8,16}/;
+
 
     const handleChangePasswordOk = () => {
         console.log(deleteObj)
+        if (!checkPassword.test(manPassword)) {
+            return message.info('密码 8-16位，至少1个大写字母，1个小写字母，1个数字和1个特殊字符')
+        }
         setIsModalChangePasswordOpen(false)
-
         Instancercv({
             method: "post",
             url: "/login/updatePwdWithAdmin",
@@ -231,12 +234,10 @@ export default function UserSheet(props: userSheetProps) {
                 message.success('更新成功')
             }
         })
-
     }
     const handleChangePasswordCancel = () => {
         setIsModalChangePasswordOpen(false)
     }
-
     const manage = [
         {
             title: '序号',
@@ -248,13 +249,10 @@ export default function UserSheet(props: userSheetProps) {
             dataIndex: 'nickname',
             key: 'nickname',
             render: (record: any) => {
-
                 return (
-
                     <div className='projectName' style={{ color: '#0256FF' }} onClick={() => {
 
                     }}>{record} </div>
-
                 )
             }
         },
@@ -277,7 +275,6 @@ export default function UserSheet(props: userSheetProps) {
                         }}>重置密码 </div>
                         <div className='delete' style={{ marginRight: '1rem' }}
                             onClick={() => {
-
                                 setDelete(record)
                                 setIsModalDeviceUserOpen(true)
                             }}
@@ -292,11 +289,9 @@ export default function UserSheet(props: userSheetProps) {
                 )
             }
         },
-
     ]
     return (
         <>
-
             <Modal title="请输入新的密码" open={isModalChangePasswordOpen} onOk={handleChangePasswordOk} onCancel={handleChangePasswordCancel}>
                 <Input onChange={(e) => {
                     setmanPassword(e.target.value)
@@ -307,20 +302,21 @@ export default function UserSheet(props: userSheetProps) {
             </Modal>
             <Modal title="添加新护工" okText='确认' cancelText='取消' open={isModalNurseOpen} onOk={handleNurseOk} onCancel={handleNurseCancel}>
                 <div style={{ padding: '0.5rem 3rem' }}>
-
                     <div style={{ display: 'flex', alignItems: 'center' }} className="deviceItem"><div style={{ width: '5rem', }}> 用户名:</div>
-                        <Input value={nurseUser.user} style={{ flex: 1 }} onBlur={(e) => {
-                            const inputValue = e.target.value;
-                            // 正则表达式匹配汉字和字母
-                            // const regex = /^[a-zA-Z0-9_]{3,16}${2}/;
-                            // if (!regex.test(inputValue)) return message.info('英文或者汉字')
+                        <Input value={nurseUser.user} style={{ flex: 1 }} onChange={(e) => {
                             let obj = { ...nurseUser }
                             obj.user = e.target.value
                             setnurseUser(obj)
+                        }} onBlur={(e) => {
+                            // const inputValue = e.target.value;
+                            // 正则表达式匹配汉字和字母
+                            // const regex = /^[a-zA-Z0-9_]{3,16}${2}/;
+                            // if (!regex.test(inputValue)) return message.info('英文或者汉字')
+
                         }} /></div>
 
                     <div style={{ display: 'flex', alignItems: 'center' }} className="deviceItem"><div style={{ width: '5rem', }}> 密码:</div>
-                        <Input value={nurseUser.password} style={{ flex: 1 }} onBlur={(e) => {
+                        <Input value={nurseUser.password} style={{ flex: 1 }} onChange={(e) => {
                             const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]{6,16}$/;
                             const inputValue = e.target.value;
                             // 正则表达式匹配密码规则

@@ -67,7 +67,7 @@ function HeatmapReport(props: heatmapProps) {
 
     const changeLeftProgress = (e: any) => {
         // 当帧条被按住调节帧时
-        if (lineFlag) {
+        if (lineFlag &&  document.querySelector(".pressProgressIndex")) {
             // const leftX = document.querySelector(".progress").getBoundingClientRect().x;
             // var moveX = e.clientX;
             // const left = parseInt(document.querySelector(".leftProgress").style.left);

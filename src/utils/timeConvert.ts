@@ -17,18 +17,23 @@ export function numToMin(num: number): string {
  * @param num 一个单位为秒的时间
  * @returns 时:分
  */
-export function secToHourstamp(num: any): string {
-  // let min = Math.floor(num / 60);
-  if (!num) {
-    return '-'
-  }
+// export function secToHourstamp(num: any): string {
+//   // let min = Math.floor(num / 60);
+//   if (!num) {
+//     return '-'
+//   }
 
-  let hour = Math.floor(num / 3600);
-  let min = Math.floor((num % 3600) / 60)
-  let sec = (num % 60)
-  return `${hour}:${min < 10 ? '0' + min : min}`
+//   let hour = Math.floor(num / 3600);
+//   let min = Math.floor((num % 3600) / 60)
+//   let sec = (num % 60)
+//   return `${hour}:${min < 10 ? '0' + min : min}`
+// }
+
+export function secToHourstamp(seconds: number): string {
+  const hour = Math.floor(seconds / 3600).toString().padStart(2, '0');
+  const minute = Math.floor((seconds % 3600) / 60).toString().padStart(2, '0');
+  return `${hour}:${minute}`;
 }
-
 /**
  * 
  * @param num 一个单位为秒的时间

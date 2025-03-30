@@ -116,11 +116,11 @@ export default function NurseProcesst(props: nurseProcessProps) {
 
   const [obj, setObj] = useState<any>({}) || []
   function changeData(param: any) {
-    console.log(param, '................................objobjobjobj');
+ 
 
     setObj({ ...obj, ...param })
   }
-  console.log(obj.sleepPosImg, '............sleepPosImg');
+
   const onClose = () => {
     changePos()
   };
@@ -350,7 +350,7 @@ export default function NurseProcesst(props: nurseProcessProps) {
 
 
   const turnType = useSelector(turnbodyFlagSelect)
-  console.log(isModalOpenSend,);
+
 
   return (
     <> {!isMobile ? '' :

@@ -205,6 +205,8 @@ export default function Equip() {
                                                     className="equipUnTop"
                                                     onClick={(event) => {
                                                         event.stopPropagation();
+                                                     
+
                                                         setEquipTop(item.sensorName, item.orderNum);
                                                     }}
                                                 >
@@ -258,8 +260,6 @@ export default function Equip() {
                             return (
                                 <div className={`equip`} key={item.sensorName}
                                     onClick={(e) => {
-                                        console.log(item.deviceId, '.................................................111111111111...............item');
-
                                         navigate(`/report/0/${item.sensorName}`, {
                                             state: {
                                                 person: item

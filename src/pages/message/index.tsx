@@ -281,16 +281,16 @@ export default function Message() {
       dataIndex: 'reminderTime',
       key: 'reminderTime',
     },
-    {
-      title: '响应时间',
-      dataIndex: 'responseTime',
-      key: 'responseTime',
-    },
-    {
-      title: '响应人',
-      dataIndex: 'responders',
-      key: 'responders',
-    },
+    // {
+    //   title: '响应时间',
+    //   dataIndex: 'responseTime',
+    //   key: 'responseTime',
+    // },
+    // {
+    //   title: '响应人',
+    //   dataIndex: 'responders',
+    //   key: 'responders',
+    // },
     {
       title: '类型',
       dataIndex: 'type',

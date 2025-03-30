@@ -59,7 +59,8 @@ const CommonFormModal: (props: CommonFormModalProps) => React.JSX.Element = (pro
     }
 
     const onChangeTimeEnd = (date: Dayjs, dateString: string | string[]) => {
-        // console.log(dateString)
+        console.log(date, dateString, new Date(51300000), '.........33333333333333....')
+
         const stamp = date.hour() * 60 * 60 * 1000 + date.minute() * 60 * 1000
         setTimeEnd(stamp)
     }
@@ -136,14 +137,25 @@ const CommonFormModal: (props: CommonFormModalProps) => React.JSX.Element = (pro
                                 </Form.Item>
                             )
                         case 'TIME_RANGE':
-                            // console.log(item.value?.split('-')[0], 'item')
+                            const valueTime = (item.value as string)?.split('-')
+                            const start = dayjs(valueTime[0], 'HH:mm')
+                            const end = dayjs(valueTime[1], 'HH:mm')
                             return (
                                 <Form.Item label={item.label} name={item.key} key={item.key} className='flex items-center'>
-                                    <TimePicker placeholder='' onChange={onChangeTimeStart} needConfirm={false} defaultValue={dayjs((item.value as string)?.split('-')[0], 'HH:mm')} className='rounded-[1rem] w-[38%]' format='HH:mm' />
+                                    <TimePicker placeholder='' onChange={onChangeTimeStart} needConfirm={false} defaultValue={start} className='rounded-[1rem] w-[38%]' format='HH:mm' />
                                     <span className='bg-[#b4c0ca] w-[0.8rem] h-[1px] my-0 mx-[4px]' />
-                                    <TimePicker placeholder='' onChange={onChangeTimeEnd} needConfirm={false} defaultValue={dayjs((item.value as string)?.split('-')[1], 'HH:mm')} className='rounded-[1rem] w-[38%]' format='HH:mm' />
+                                    <TimePicker placeholder='' onChange={onChangeTimeEnd} needConfirm={false} defaultValue={end} className='rounded-[1rem] w-[38%]' format='HH:mm' />
                                 </Form.Item>
                             )
+                        // case 'TIME_RANGE':
+                        //     // console.log(item.value?.split('-')[0], 'item')
+                        //     return (
+                        //         <Form.Item label={item.label} name={item.key} key={item.key} className='flex items-center'>
+                        //             <TimePicker placeholder='' onChange={onChangeTimeStart} needConfirm={false} defaultValue={dayjs((item.value as string)?.split('-')[0], 'HH:mm')} className='rounded-[1rem] w-[38%]' format='HH:mm' />
+                        //             <span className='bg-[#b4c0ca] w-[0.8rem] h-[1px] my-0 mx-[4px]' />
+                        //             <TimePicker placeholder='' onChange={onChangeTimeEnd} needConfirm={false} defaultValue={dayjs((item.value as string)?.split('-')[1], 'HH:mm')} className='rounded-[1rem] w-[38%]' format='HH:mm' />
+                        //         </Form.Item>
+                        //     )
                         case 'SOS_ALARM_SWITCH':
                             // console.log(item.value?.split('-')[0], 'item')
                             return (

@@ -6,14 +6,14 @@ import greyNotice from '@/assets/image/greyNotice.png'
 import { Instancercv } from '@/api/api'
 import { TimePickerProps } from 'antd/lib'
 import sheetDelete from '@/assets/image/sheetDelete.png'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { organizeIdSelect } from '@/redux/premission/premission'
 import { useLocation, useParams } from 'react-router-dom'
 import { DataContext } from '@/pages/equipDetail'
 import NurseRecord from '../../equipDetail/NurseRecord'
 import Recording from '@/pages/equipDetail/nurseprocess/recording'
 import { instance } from '../../../api/api'
-
+import { nurseDataList } from '../../../redux/Nurse/Nurse'
 interface tableProps {
   data: Array<any>;
   templateId: number;
@@ -26,11 +26,13 @@ interface tableProps {
 
 export const NurseTable = (props: tableProps) => {
   const token = localStorage.getItem('token')
+  const dispatch = useDispatch()
   const title = [
     {
       key: 'completionTime',
       titleValue: '时间',
-      width: '6rem'
+      width: '6rem',
+      type: "按时时间自动排序"
     },
     {
       key: 'templateTitle',
@@ -43,9 +45,14 @@ export const NurseTable = (props: tableProps) => {
     },
     {
       key: 'delete',
-      titleValue: '修改/删除',
+      titleValue: '删除',
       width: '4rem'
     },
+    // {
+    //   key: 'update',
+    //   titleValue: '修改/删除',
+    //   width: '4rem'
+    // },
   ]
 
 
@@ -124,23 +131,14 @@ export const NurseTable = (props: tableProps) => {
 
   // 待完成
   const toBeCompleted = (item: any) => {
-    console.log(item, '................................................................itemaass');
-
     setCurrentCare(item)
     setIsfals(true)
   }
   const [listData, setDataLIst] = useState<any>([])
 
-  // // 请求数据护理模版
+
+  // 请求数据护理模版
   const [childDataLIst, setChildData] = useState<string>('');
-
-  //   const dataList = data.map((item) => {
-  //     return {
-
-  //       time: new Date(item.time),
-
-  //     }
-  //   })
 
   function getDataList() {
     // 获取当前日期
@@ -159,8 +157,6 @@ export const NurseTable = (props: tableProps) => {
         [unixTimestamp]: item.title
       }
     })
-    console.log(templateData, '................................................................templateData');
-
     instance({
       method: "post",
       url: "/sleep/nurse/getDayNurseDataTempl",
@@ -188,6 +184,7 @@ export const NurseTable = (props: tableProps) => {
               completionTime: item.templateTime,
               key: timeItem.key,
               isTemp: true, // 标识是否是模版数据
+              ...dataList,
             }
           }
           delete item.data
@@ -202,18 +199,20 @@ export const NurseTable = (props: tableProps) => {
     })
 
   }
+  const shuju = useSelector((state: any) => state.nurse.dataList)
+
 
   useEffect(() => {
     if (sensorName) {
       getDataList()
     }
   }, [currentTime])
-
   useEffect(() => {
     if (sensorName && type !== 'project' && type !== 'person') {
       getDataList()
+
     }
-  }, [data, sensorName])
+  }, [data, sensorName, listData])
   useEffect(() => {
     if (type === 'project' || type === 'person') {
       const list: any = (props.data || []).map((item: any) => {
@@ -230,7 +229,6 @@ export const NurseTable = (props: tableProps) => {
     }
   }, [data])
   const handleChildData = (data: string, val: any) => {
-
     setChildData(data);
   };
   const updateDelet = (val: any) => {
@@ -244,7 +242,11 @@ export const NurseTable = (props: tableProps) => {
               return <></>
             }
             return (
-              <div onClick={(a: any) => updateDelet(a)} className={`${a.width ? `w-[${a.width}] cursor-pointer  text-center` : 'grow text-left'} text-xs py-[10px] `}>{a.titleValue}</div>
+              <div onClick={(a: any) => updateDelet(a)} className={`${a.width ? `w-[${a.width}] cursor-pointer  text-center` : 'grow text-left'} text-xs py-[10px] `}>{a.titleValue}
+                {
+                  a.type === '' ? <span>111</span> : ""
+                }
+              </div>
             )
           })}
         </div>
@@ -258,7 +260,6 @@ export const NurseTable = (props: tableProps) => {
                   <div key={'listData' + index} className={`${type !== 'project' && type !== 'person' ? '' : 'isTemp'} ${item.status ? 'finsh' : 'todo'} flex py-[13px] relative items-start care_box`}>
                     {
                       title.map((keys) => {
-
                         const key = keys.key
                         const timeTextColor = item.status == 'todo' ? '#929EAB' : '#6C7784'
                         const nurseTextColor = item.status == 'todo' ? '#929EAB' : '#32373E'
@@ -273,11 +274,18 @@ export const NurseTable = (props: tableProps) => {
                             const upConnect = calUpConnect(item.status, data[index - 1]?.status)
                             const downConnect = calDownConnect(data[index + 1]?.status)
                             return (
+                              //   .isTemp.care_box {
+                              //     display: flex;
+                              //     align-items: center;
+                              //     &:not(:last-child):before {
+                              //         top: 32px;
+                              //     }
+                              // }
                               <div className={`w-[5rem] shrink-0 text-xs ${titleInfo.width ? `w-[${titleInfo.width}] text-center` : 'grow text-left'} flex justify-center items-center text-[${timeTextColor}]`}>
                                 <span className='w-[3.2rem]'>{dayjs(item[keys.key]).format("HH:mm")}</span>
-                                <div className={`w-[1.52rem] text-xs h-[1.52rem] rounded-[10px] bg-[${color}] text-[#fff]  flex justify-center items-center`}>
+                                <div className={`w-[1.52rem] text-xs h-[1.52rem] rounded-[50%] bg-[${color}] text-[#fff]  flex justify-center items-center`}>
                                   {/* <div className={`w-[3px] h-[60%] bg-[${upConnect}] absolute bottom-[80%] z-0`} style={{ backgroundColor: upConnect }}></div> */}
-                                  <div className={` w-[1.52rem] text-xs h-[1.52rem] rounded-[10px] bg-[${color}] text-[#fff] flex justify-center items-center z-10`} style={{ backgroundColor: color }}>{index + 1}</div>
+                                  <div className={` w-[1.52rem] text-xs h-[1.52rem] rounded-[50%] bg-[${color}] text-[#fff] flex justify-center items-center z-10`} style={{ backgroundColor: color }}>{index + 1}</div>
                                   {/* <div className={`w-[3px] h-[60%] bg-[${downConnect}] absolute top-[80%] z-0`} style={{ backgroundColor: downConnect }}></div> */}
                                 </div>
                               </div>
@@ -302,6 +310,8 @@ export const NurseTable = (props: tableProps) => {
                             <div className={`${titleInfo.width ? `w-[${titleInfo.width}] text-center` : 'grow text-left'} text-[${nurseTextColor}] text-sm flex flex-col flex-1`}>
                               <span className='font-bold'>{item[key]}</span>
                               <span>{item.notes}</span>
+
+
                               <img src={item.uploadImage} alt="" />
                             </div>
                           )
@@ -375,7 +385,7 @@ export default function NurseSetting(props: any) {
   const setting = window.location.href.split('/')[4] || ''
 
   const format = 'HH:mm';
-  const { type } = props
+  const { type, onClick } = props
   useEffect(() => {
     // if (!type) {
     getNurseTemplate()
@@ -463,7 +473,8 @@ export default function NurseSetting(props: any) {
         "token": token
       },
       params: {
-        organizeId: organizeId
+        organizeId: organizeId,
+        type: 1
       }
     }).then((res) => {
 
@@ -605,9 +616,7 @@ export default function NurseSetting(props: any) {
     ]
   )
   return (
-    <div className='setContent nurseSetContent sy'>
-
-
+    <div className=' w-full'>
       {/* 管理员新建模板 */}
       {/* <div>
         {
@@ -619,7 +628,7 @@ export default function NurseSetting(props: any) {
         }
       </div> */}
 
-      <div className='basis-2/3 mr-[10px] py-[18px] px-[30px] bg-[#fff] relative'>
+      {/* <div className='basis-2/3 mr-[10px] py-[18px] px-[30px] bg-[#fff] relative'>
         {
           setting === 'setting' ?
             <>
@@ -703,10 +712,11 @@ export default function NurseSetting(props: any) {
 
           <Button type="primary" onClick={addProject}>添加</Button>
         </div>
-      </div>
+      </div> */}
+
       <div className='basis-1/3 bg-[#fff] py-[18px] px-[15px]'>
-        <div className='text-lg font-semibold mb-[10px]'>预览护理项目</div>
-        <div className='flex items-center mb-[20px]'><img className='w-[0.8rem] h-[0.8rem] mr-[5px]' src={greyNotice} alt="" /><span className='text-xs text-[#929EAB]'>当前内容仅作为效果预览，不可作为实际页面使用</span></div>
+        <div className='text-[1.3rem] font-semibold ml-[1rem] mb-[10px]'>预览老陈护理项目 <span className='text-[#929EAB] text-[0.8rem] ml-[9rem]'>清空模版</span></div>
+        <div className='flex items-center ml-[1rem] mb-[20px]'><img className='w-[0.8rem] h-[0.8rem] mr-[5px]' src={greyNotice} alt="" /><span className='text-xs text-[#929EAB]'>当前内容仅作为效果预览，不可作为实际页面使用</span></div>
 
         {type == 'person' ?
           // 个人设置

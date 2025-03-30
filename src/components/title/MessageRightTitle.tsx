@@ -41,64 +41,14 @@ export const MessageRightTitle = (props: messageParam) => {
         patientName.push(item.patientName)
         roomNum.push(item.roomNum)
     })
-
-
-
-    const [name, setName] = useState('')
-    const menu = (
-        <Menu style={{ color: "929EAB" }} z-index onClick={(e) => dingtalkCircleFilled(e)}>
-            <>
-                <Menu.SubMenu key={`sub1-1`} title='姓名'>
-                    {/* {unique(patientName)?.map((item: any, index: number) => (
-                        <Menu.Item onClick={() => SubMenu(item)} key={`name-${index}`}>{item}</Menu.Item>
-                    ))} */}
-                </Menu.SubMenu>
-                <Menu.SubMenu key={`sub2-2`} title="床号">
-                    {/* {unique(roomNum)?.map((item: any, index: number) => (
-                        <Menu.Item onClick={() => SubMenu(item)} key={`name1-${index}`}>{item}</Menu.Item>
-                    ))} */}
-                </Menu.SubMenu>
-            </>
-        </Menu>
-    );
-    // 记录
-    const dingtalkCircleFilled = (e: any) => {
-
-        setName(e.keyPath[1])
-    }
-
-
-
-
-
-    const SubMenu = (item: any) => {
-        setpatientName(item)
-    }
-    const dian = () => {
-
-        if (homeSelect == 'patientName') {
-            titleChangeGetMessage({
-                patientName: patientNameRoomNum,
-                roomNum: ''
-            })
-        } else if (homeSelect == 'roomNum') {
-            titleChangeGetMessage({
-                patientName: '',
-                roomNum: patientNameRoomNum
-            })
-        }
-    }
-
     // 时间选择器
     const handleDateChange = (dates: any, dateStrings: [string, string]) => {
-
         const startMills = dayjs(dateStrings[0]).format('YYYY-MM-DD HH:mm:ss');
         const endMills = dayjs(dateStrings[1]).format('YYYY-MM-DD HH:mm:ss');
         titleChangeGetMessage({
             startMills: dateStrings[0] ? new Date(startMills).valueOf() : timeArr[0],
             endMills: dateStrings[1] ? new Date(endMills).valueOf() : timeArr[1]
         })
-
     };
     const homeSelect: any = [
         { value: 'patientName', label: '姓名' },
@@ -112,7 +62,6 @@ export const MessageRightTitle = (props: messageParam) => {
                     <><Space style={{ width: "50rem", height: "39px", marginLeft: "10px" }} direction="vertical" size={12}>
                         <RangePicker
                             placeholder={['开始时间', '结束时间']}
-
                             onChange={(dates, dateStrings) => handleDateChange(dates, dateStrings)}
                             style={{ width: "18rem", height: "39px", marginLeft: "10px" }}
                             showTime />
@@ -127,45 +76,22 @@ export const MessageRightTitle = (props: messageParam) => {
                             <Input className="messageTitlediv2_you_inp"
                                 allowClear
                                 value={patientNameRoomNum}
-                                //  setpatientName(e.target.value)
-                                onBlur={(e: any) => {
-                                    if (homeSelect == 'patientName') {
-                                        titleChangeGetMessage({
-                                            patientName: e.target.value,
-                                            roomNum: ''
-                                        })
-                                    } else if (homeSelect == 'roomNum') {
-                                        titleChangeGetMessage({
-                                            patientName: '',
-                                            roomNum: e.target.value
-                                        })
-                                    }
-                                }}
+
                                 onChange={(e) => {
+
                                     setpatientName(e.target.value)
-                                    if (homeSelect == 'patientName') {
-                                        titleChangeGetMessage({
-                                            patientName: e.target.value,
-                                            roomNum: ''
-                                        })
-                                    } else if (homeSelect == 'roomNum') {
-                                        titleChangeGetMessage({
-                                            patientName: '',
-                                            roomNum: e.target.value
-                                        })
-                                    }
+                                    titleChangeGetMessage({
+                                        patientName: selectType === 'patientName' ? patientNameRoomNum : "",
+                                        roomNum: selectType === 'roomNum' ? patientNameRoomNum : ""
+                                    })
                                 }
                                 }
                                 placeholder="请输入姓名/床号" />
-                            <img onClick={dian} style={{ width: "1rem", height: "1rem", marginRight: "20px" }} src={fang} alt="" />
+                            <img style={{ width: "1rem", height: "1rem", marginRight: "20px" }} src={fang} alt="" />
                         </div></>
-
                 </div> : <div className="homeTitle  messageTitledivTitle" style={{ display: "flex", justifyContent: 'normal', fontWeight: "900", fontSize: "1rem" }}>JQHEALTHCARE</div>
             }
-
         </>
-
-
     )
 }
 

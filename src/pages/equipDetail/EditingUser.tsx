@@ -322,7 +322,7 @@ const PersonalContentInfo = (props: personalInfoParam) => {
             <img src={img} className="w-[44px] mb-[6px]" alt="" />
             <div className="text-lg text-[#3D3D3D] ">{title}</div>
             {
-                title === '推送日报设置' ? '' : title === '推送日报设置' ? '设备类型设置' : <div className="text-sm w-[60%] text-[#6C7784] text-center">设置老人的提醒类型与内容设置老人的提醒类型与内容</div>
+                title === '推送日报设置' ? '' : title === '设备类型设置' ? '' : <div className="text-sm w-[60%] text-[#6C7784] text-center">设置老人的提醒类型与内容设置老人的提醒类型与内容</div>
             }
         </div>
     )

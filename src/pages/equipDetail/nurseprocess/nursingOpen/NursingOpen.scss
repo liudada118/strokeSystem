@@ -1,0 +1,105 @@
+
+
+
+
+
+.NursingOpenVal{
+    display: flex;
+    width: 100%;
+    margin-bottom: 1.35rem;
+    height: 2.48;
+    align-items: center
+}
+.NursingOpenTitle{
+    font-size: 0.8rem;
+    font-style: 600;
+    font-family:' PingFang SC';
+    color: #000;
+    margin-right: 5px;
+}
+
+.nursingStencildiv::before{
+
+    content: ""; 
+
+    position: relative;
+
+    left: 6.27rem;
+    top: 2.6rem;
+    width: 3px;
+    height: 4rem;
+    
+    background: #D8D8D8;
+}
+.nursingStencildivBox:last-child{
+    .nursingStencildiv::before{
+        display: none;
+    }
+}
+
+
+// .nursingStencildivBox{
+//     height: 25.4rem;
+//     height: auto;
+//     border-bottom: solid 1px #D8D8D8;
+//     .nursingStencilDoxcount{
+//         display: flex;
+//         width: 7rem;
+
+//         padding: 0 0.5rem;
+//         .nursingStencilDoxcountdiv{
+//             display: flex;
+//             width:7rem;
+//             margin-right: 2.25rem;
+//             line-height: 4rem;
+//             .nursingStencilDoxcountdivShiJian{
+//                 width: 2.5rem;
+//                 height: 0.7rem;
+//                 font-size: 0.75rem;
+//                 margin-top: 0.2rem;
+//                 margin-left: 2.1rem;
+//                 margin-right: 0.9rem;
+//             }
+//             .nursingStencilDoxcountdivShiIndex{
+//                 width: 1.5rem;
+//                 height: 1.5rem;
+//                 border-radius: 3.75rem;
+//                 color: #fff;
+//                 background: #D1D9E1;
+//                 display: flex;
+//                 align-items: center;
+//                 justify-content: center;
+//                 border-radius: 1.37rem;
+//                 position: relative;
+//                 top: 1.5rem;
+
+//             }
+//         }
+//         .nursingStencilDoxcountdiv1{
+//             display: flex;
+//             width: 21rem;
+//             padding: 1.5rem 0;
+//             border: solid 1px #D8D8D8;
+//             .nursingStencilDoxcountdivTitleImg{
+//                 display: flex;
+//                 .nursingStencilDoxcountdivTitle{
+//                     color: #32373E;
+//                     font-weight: 500;
+//                     margin-top: 0.1rem;
+//                 }
+//             }
+//             .nursingStencilDoxcountdivTitleImgstatus{
+//                 width: 3.5rem;
+//                 height: 2rem;
+//                 margin-left: 15rem;
+//                 display: flex;
+//                 align-items: center;
+//                 color: #929EAB;
+//                 background:#E6EBF0 ;
+//                 border-radius: 0.375rem;
+//                 font-weight: 500;
+//                 justify-content: center;
+//             }
+//         }
+//     }
+// }

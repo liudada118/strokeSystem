@@ -205,7 +205,7 @@ export default function Equip() {
                                                     className="equipUnTop"
                                                     onClick={(event) => {
                                                         event.stopPropagation();
-                                                     
+
 
                                                         setEquipTop(item.sensorName, item.orderNum);
                                                     }}

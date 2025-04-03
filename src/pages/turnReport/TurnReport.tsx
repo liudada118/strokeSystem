@@ -24,12 +24,19 @@ const skinObj: any = {
 }
 
 const sleepArr = ['仰卧', '左侧', '右侧']
+interface PropsType {
+    turnOver?: any
+    idturnOver?: string
+    id?: any
+    logid?: any
+}
 
 
-
-export default function TurnReport() {
+export default function TurnReport(props: PropsType) {
+    const { idturnOver, turnOver } = props
     let location = useLocation()
     const navigate = useNavigate()
+    const WindowSize = useGetWindowSize()
     // const data = location.state
     // const data = {
     //     normalArrRes: '',
@@ -55,19 +62,15 @@ export default function TurnReport() {
         endMatrix: '',
         sensorName: '',
     }) as any
-    const { logid, id } = location.state
-    const token = useSelector(tokenSelect)
     const isMobile = useGetWindowSize()
 
-    console.log(logid)
+    const { logid, id } = isMobile ? location.state : props
 
+    const token = useSelector(tokenSelect)
     const leftRef = useRef<any>(null)
     const rightRef = useRef<any>(null)
-    const [useNameList, setUseNameList] = useState([])
-    const paramsName: any = window.location.href.split('/')[4] || ''
-
-    // const paramsNameList = paramsName.split('/')
-    console.log(useNameList, '................................................................useNameList');
+    // const [useNameList, setUseNameList] = useState([])
+    // const paramsName: any = window.location.href.split('/')[4] || ''
     const [dataList, setDataList] = useState<any>([])
     useEffect(() => {
         Instancercv({
@@ -82,12 +85,7 @@ export default function TurnReport() {
                 phoneNum: localStorage.getItem('phone')
             }
         }).then((res: any) => {
-            console.log(res.data.data, '........dadaada');
-          
-            
             setDataList(res.data.data)
-
-            // setUseNameList(res.data.data)
         })
         instance({
             method: "get",
@@ -97,7 +95,7 @@ export default function TurnReport() {
                 "token": token
             },
             params: {
-                logid: logid
+                logid: id
             }
         }).then((res) => {
             // console.log(res.data.data, '999999997777777')
@@ -131,122 +129,201 @@ export default function TurnReport() {
             // if (leftRef.current) leftRef.current.bthClickHandle(arr)
             // if (rightRef.current) rightRef.current.bthClickHandle(JSON.parse(endMatrix))
         }).catch((err) => {
-
         })
     }, [])
-
     // useEffect(() => {
     //     console.log(leftRef.current, '000', rightRef.current, '99', data.startMatrix, '222222222222')
-        // if (leftRef.current) leftRef.current.bthClickHandle(data.startMatrix || [])
-        // if (rightRef.current) rightRef.current.bthClickHandle(data.endMatrix || [])
+    // if (leftRef.current) leftRef.current.bthClickHandle(data.startMatrix || [])
+    // if (rightRef.current) rightRef.current.bthClickHandle(data.endMatrix || [])
     // }, [leftRef, rightRef, data.endMatrix,])
     console.log(dataList, 'dataList');
 
     const timeName = data.id && data.id.substring(0, 10);
-    const imgradioChecked = useSelector((state: any) => state.mqtt.radioChecked)
+    const timeMills = logid.split(' ')[0]
     return (
-
-        <div className='nurseReport2 font' style={{ height: '100vh', display: 'flex', flexDirection: "column" }}>
-            <div className="nurseTitleReal" style={{ margin: '1rem 0' }}>
-                <img src={returnPng} alt="" onClick={() => {
-                    navigate(-1)
-                    // navigate(`${location.state.router}`, { state: { ...location.state.props, date: location.state.date, select: location.state.router.includes('small') ? 1 : 2 } })
-                }} style={{ width: '2rem', position: 'absolute', left: '1rem' }} />护理报告</div>
-            <div className="nurseReportContent">
-                <Card>
-                    {/* <div className="bgc">
+        <>
+            {
+                isMobile ? <div className='nurseReport2 font' style={{ height: '100vh', display: 'flex', flexDirection: "column" }}>
+                    <div className="nurseTitleReal" style={{ margin: '1rem 0' }}>
+                        <img src={returnPng} alt="" onClick={() => {
+                            navigate(-1)
+                            // navigate(`${location.state.router}`, { state: { ...location.state.props, date: location.state.date, select: location.state.router.includes('small') ? 1 : 2 } })
+                        }} style={{ width: '2rem', position: 'absolute', left: '1rem' }} />护理报告</div>
+                    <div className="nurseReportContent">
+                        <Card>
+                            {/* <div className="bgc">
                         <img src={data.img} style={{ width: '6rem',}} alt="" />
                     </div> */}
-                    <div className="personLeft">
-                        <div className="personalImg">
-                            <div className="img" style={{
-                                background: `url(${data.headImg ? data.headImg : nullImg
-                                    })  center center / cover no-repeat`,
-                            }}></div>
-                            {/* <img src={showUserinfo.img} alt="" /> */}
-                        </div>
+                            <div className="personLeft">
+                                <div className="personalImg">
+                                    <div className="img" style={{
+                                        background: `url(${data.headImg ? data.headImg : nullImg
+                                            })  center center / cover no-repeat`,
+                                    }}></div>
+                                    {/* <img src={showUserinfo.img} alt="" /> */}
+                                </div>
 
-                        <div className="itemContents">
-                            <div className="personalName">{dataList.patientName}</div>
+                                <div className="itemContents">
+                                    <div className="personalName">{dataList.patientName}</div>
 
-                            <div className="itemContent">
-                                <div className="itemTitle">年龄</div>
-                                <div className="itemData">{dataList.age}</div>
+                                    <div className="itemContent">
+                                        <div className="itemTitle">年龄</div>
+                                        <div className="itemData">{dataList.age}</div>
+                                    </div>
+                                    <div className="itemContent">
+                                        <div className="itemTitle">床号</div>
+                                        <div className="itemData">{dataList.roomNum}</div>
+                                    </div>
+
+                                    <div className="itemContent">
+                                        <div className="itemTitle">护理日期</div>
+                                        <div className="itemData">{logid}-{dayjs((data.timeMills)).format('HH:mm')}</div>
+                                    </div>
+                                    <div className="itemContent">
+                                        <div className="itemTitle">护理员</div>
+                                        <div className="itemData">{dataList.chargeMan}</div>
+                                    </div>
+
+                                </div>
                             </div>
-                            <div className="itemContent">
-                                <div className="itemTitle">床号</div>
-                                <div className="itemData">{dataList.roomNum}</div>
+                        </Card>
+                        <CardText>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                <div>在床时间</div>
+                                <div>{secToHourstamp(parseInt(data.onBedTime))}</div>
                             </div>
-
-                            <div className="itemContent">
-                                <div className="itemTitle">护理日期</div>
-                                <div className="itemData">{timeName}-{dayjs((data.timeMills)).format('HH:mm')}</div>
+                        </CardText>
+                        <CardText>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                <div>翻身时间</div>
+                                <div>{dayjs((data.timeMills)).format('HH:mm')}</div>
                             </div>
-                            <div className="itemContent">
-                                <div className="itemTitle">护理员</div>
-                                <div className="itemData">{dataList.chargeMan}</div>
-                            </div>
-
-                        </div>
-                    </div>
-                </Card>
-                <CardText>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <div>在床时间</div>
-                        <div>{secToHourstamp(parseInt(data.onBedTime))}</div>
-                    </div>
-                </CardText>
-
-                <CardText>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <div>翻身时间</div>
-                        <div>{dayjs((data.timeMills)).format('HH:mm')}</div>
-                    </div>
-                </CardText>
-
-                <CardContainTitle title={'护理前后对比'}>
-                    {/* <div className="secondHint">
+                        </CardText>
+                        <CardContainTitle title={'护理前后对比'}>
+                            {/* <div className="secondHint">
                         护理前后对比
                     </div> */}
-                    <div className="secondHeatmap justify-between">
-                        <div style={{ flex: `0 0 calc(50% - 0.4rem)`, display: 'flex', alignItems: 'center', justifyContent: 'center' }} >
-                            <div style={{ width: '100%' }}>
-                                <Heatmap ref={leftRef} width={'100%'} 
-                                data={data.startMatrix|| []} 
-                                index={5} type={data.type} sensorName={data.sensorName} />
-                                <div style={{ display: 'flex', justifyContent: 'center', marginTop: '0.5rem' }}>
-                                    <div className='text-[1rem]' style={{ textAlign: 'center', padding: '0.5rem 1rem', }}>护理前</div>
+                            <div className="secondHeatmap justify-between">
+                                <div style={{ flex: `0 0 calc(50% - 0.4rem)`, display: 'flex', alignItems: 'center', justifyContent: 'center' }} >
+                                    <div style={{ width: '100%' }}>
+                                        <Heatmap ref={leftRef} width={'100%'}
+                                            data={data.startMatrix || []}
+                                            index={5} type={data.type} sensorName={data.sensorName} />
+                                        <div style={{ display: 'flex', justifyContent: 'center', marginTop: '0.5rem' }}>
+                                            <div className='text-[1rem]' style={{ textAlign: 'center', padding: '0.5rem 1rem', }}>护理前</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style={{ flex: `0 0 calc(50% - 0.4rem)`, display: 'flex', alignItems: 'center', justifyContent: 'center' }} >
+                                    <div style={{ width: '100%' }}>
+                                        <HeatmapR ref={rightRef} less={3} index={12}
+                                            data={data.endMatrix || []}
+                                            type={data.type} sensorName={data.sensorName} />
+                                        <div style={{ display: 'flex', justifyContent: 'center', marginTop: '0.5rem' }}>
+                                            <div className='text-[1rem]' style={{ textAlign: 'center', padding: '0.5rem 1rem', }}>护理后</div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
+
+                        </CardContainTitle>
+
+                        <CardContainTitle title={'睡姿记录'}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '1rem' }}>
+                                <div>睡姿</div>
+                                <div>{sleepArr[data.sleepPos]}</div>
+                            </div>
+
+                            {data.headImg ? <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '1rem' }}>
+
+                                <div>在床照片</div>
+                                <div><img src={data.headImg} style={{ height: '6rem' }} alt="" /></div>
+                            </div> : ''}
+                        </CardContainTitle>
+
+                    </div>
+                </div> : <div className='w-[35rem] h-[33rem]  bg-[#F7F8FD]'>
+                    <div className='w-full h-[10rem] bg-[#FFFFFF] rounded-md'>
+                        <div className='h-[3.8rem] w-full flex lh-[3,7rem]' style={{ borderBottom: "solid 1px #ccc" }}>
+                            <div className='h-[1.35rem] w- text-[1rem] font-bold ml-[10rem] mt-[1.3rem]' style={{ fontSize: " Source Han Sans" }}>{dataList.patientName}的护理报告</div>
+                            <div className='mt-[1.78rem] ml-[6.9rem] text-[#888888]'>护理员编号{dataList.chargeMan}</div>
                         </div>
-                        <div style={{ flex: `0 0 calc(50% - 0.4rem)`, display: 'flex', alignItems: 'center', justifyContent: 'center' }} >
-                            <div style={{ width: '100%' }}>
-                                <HeatmapR ref={rightRef} less={3} index={12}
-                                 data={data.endMatrix|| []} 
-                                 type={data.type} sensorName={data.sensorName} />
-                                <div style={{ display: 'flex', justifyContent: 'center', marginTop: '0.5rem' }}>
-                                    <div className='text-[1rem]' style={{ textAlign: 'center', padding: '0.5rem 1rem', }}>护理后</div>
+                        <div className='mt-[0.8rem] flex'>
+                            <div className="">
+                                <img style={{ width: "4rem", height: "4rem" }} src={data.headImg ? data.headImg : nullImg} alt="" />
+                            </div>
+                            <div className="ml-[1.35rem]">
+                                <div className="w-[5.7rem] h-[1.3rem] text-[#3D3D3D]  font-bold" style={{ fontFamily: 'Source Han Sans' }}>{dataList.patientName}</div>
+                                <div className='flex mt-[7px]'>
+                                    <div className="w-[10rem]">
+                                        <div className=" "><span className='text-[#888888]'>年龄</span><span className='font-bold ml-[0.75rem]' style={{ fontFamily: 'Source Han Sans' }}>{dataList.age}</span></div>
+                                        <div><span className=' text-[#888888]'>ID</span><span className='font-bold ml-[1rem]' style={{ fontFamily: 'Source Han Sans' }}>{dataList.chargeMan}</span></div>
+                                    </div>
+                                    <div className="w-[11rem]">
+                                        <div className=""><span className=' text-[#888888]'>床号</span><span style={{ fontFamily: 'Source Han Sans' }} className='font-bold  ml-[0.75rem]'>{dataList.roomNum}</span></div>
+                                        <div className='w-[10rem]'><span className=' text-[#888888]'>护理日期</span><span style={{ fontFamily: 'Source Han Sans' }} className='font-bold w-[8rem]  ml-[0.7rem]'>{timeMills}</span></div>
+                                    </div>
+                                    <div className="w-[5rem] ml-[3rem]">
+                                        <div><span className=' text-[#888888]'>性别</span><span style={{ fontFamily: 'Source Han Sans' }} className='font-bold  ml-[0.75rem]'>男</span></div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <div className='w-full h-[20.6rem] mt-[0.6rem] flex bg-[#F7F8FD]' >
+                        <div className='mr-[0.6rem]'>
+                            <div className='w-[8.3rem] h-[5.4rem] bg-[#fff] rounded-md' style={{}}>
+                                <div className='text-[#000000] text-[0.9rem] font-bold pt-[1rem]  pl-[1.1rem]' style={{ fontFamily: 'Source Han Sans' }}>在床时间</div>
+                                <div className=' pt-[1rem] pl-[1.1rem]'>{dayjs((data.timeMills)).format('HH:mm')}分钟</div>
+                            </div>
+                            <div className='w-[8.3rem]  mt-[0.6rem] h-[5.4rem] bg-[#fff] rounded-md' style={{}}>
+                                <div className='text-[#000000] text-[0.9rem] font-bold pt-[1rem]  pl-[1.1rem]' style={{ fontFamily: 'Source Han Sans' }}>护理时间段</div>
+                                <div className=' pt-[1rem] pl-[1.1rem]'>{dayjs((data.timeMills)).format('HH:mm')}</div>
+                            </div>
+                            <div className='h-[10rem] w-[8.3rem] mt-[0.6rem]  bg-[#fff] rounded-md'>
+                                <div className='text-[#000000] text-[0.9rem] font-bold pt-[1rem]  pl-[1.1rem]' style={{ fontFamily: 'Source Han Sans' }}>睡姿记录</div>
+                                <div className='pt-[1rem] pl-[1.1rem]'>{sleepArr[data.sleepPos]}111</div>
+                                <img className='pt-[1rem] pl-[1.1rem]' style={{ width: "6.6rem", height: "4rem", }} src={data.headImg ? data.headImg : nullImg} alt="" />
+                                {/* <img src={data.headImg} style={{ height: '6rem' }} alt="" /> */}
+                            </div>
 
-                </CardContainTitle>
 
-                <CardContainTitle title={'睡姿记录'}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '1rem' }}>
-                        <div>睡姿</div>
-                        <div>{sleepArr[data.sleepPos]}</div>
-                    </div>
+                        </div>
+                        <div className='w-[32rem] h-[22rem]'>
+                            <CardContainTitle style={{ color: "#000000", }} title={'护理前后压力对比'}>
+                                <div className="secondHeatmap justify-between" style={{ height: isMobile ? '' : '17.6rem' }}>
+                                    <div style={{ width: "8.5rem", height: "3rem" }}>
+                                        <div style={{ display: 'flex', justifyContent: 'center', marginTop: isMobile ? '0.5rem' : "0" }}>
+                                            <div style={{ textAlign: 'center', padding: isMobile ? '0.5rem 1rem' : "0", fontSize: isMobile ? '1rem' : '0.75rem', fontFamily: isMobile ? '' : 'Source Han Sans', color: isMobile ? "" : "#ccc" }}>护理前</div>
+                                        </div>
+                                        <div style={{ width: '100%' }}>
+                                            <Heatmap ref={leftRef} width={'100%'}
+                                                data={data.startMatrix || []}
+                                                index={5} type={data.type} sensorName={data.sensorName} />
 
-                    {data.headImg ? <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '1rem' }}>
+                                        </div>
+                                    </div>
+                                    <div style={{ width: "8.5rem", height: "3rem" }}>
+                                        <div style={{ display: 'flex', justifyContent: 'center', marginTop: isMobile ? '0.5rem' : "0" }}>
+                                            <div style={{ textAlign: 'center', padding: isMobile ? '0.5rem 1rem' : "0", fontSize: isMobile ? '1rem' : '0.75rem', fontFamily: isMobile ? '' : 'Source Han Sans', color: isMobile ? '' : "#ccc" }}>护理后</div>
+                                        </div>
+                                        <div style={{ width: '100%' }}>
+                                            <HeatmapR ref={rightRef} less={3} index={12}
+                                                data={data.endMatrix || []}
+                                                type={data.type} sensorName={data.sensorName} />
 
-                        <div>在床照片</div>
-                        <div><img src={data.headImg} style={{ height: '6rem' }} alt="" /></div>
-                    </div> : ''}
-                </CardContainTitle>
+                                        </div>
+                                    </div>
+                                </div>
 
-            </div>
-        </div>
+                            </CardContainTitle>
+
+                        </div>
+                    </div >
+                </div >
+            }
+
+        </>
+
     )
 }

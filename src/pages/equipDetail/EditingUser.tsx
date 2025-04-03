@@ -19,21 +19,24 @@ import { NurseEdit } from "./mobileEdit/NurseEdit";
 import { RemindEdit } from "./mobileEdit/RemindEdit";
 import DayReportEdit from "./mobileEdit/DayReportEdit";
 import EquipTypeEdit from "./mobileEdit/EquipTypeEdit";
-
+import { useDispatch } from 'react-redux'
+import { nurseSensorName } from '../../redux/Nurse/Nurse'
 const EditingUser: React.FC = () => {
 
     const param = useParams()
     console.log(param)
     const location = useLocation()
-
+    const dispatch = useDispatch()
     const sensorName = param.id || location.state.sensorName
     const type = location.state.type
-
+    useEffect(() => {
+        dispatch(nurseSensorName(sensorName))
+    }, [])
     // const typeToComponent : any = {
     //     personal : <PersonalInfo />,
     //     remind : 
     // }
-
+    
     if (type == 'personal') {
         return <PersonalInfo />
     }
@@ -44,7 +47,7 @@ const EditingUser: React.FC = () => {
 // 个人信息修改页面
 const PersonalInfo = (props: any) => {
     const location = useLocation();
-    const { sensorName, type, userModal } = location.state;
+    const { sensorName, type, userModal } = location.state || props;
     const [userInfo, setUserInfo] = useState<any>({});
 
     useEffect(() => {
@@ -283,7 +286,7 @@ export const personalOtherInfoObj: any = {
     nurse: {
         img: mobileNurse,
         title: '护理设置',
-        component: <NurseEdit />
+        component: <NurseEdit />,
     },
     pushReport: {
         img: mobilePush,
@@ -315,7 +318,7 @@ interface personalInfoParam {
 }
 const PersonalContentInfo = (props: personalInfoParam) => {
     const { title, img } = props
-    console.log(title, '................................................................trtrthtrh');
+
 
     return (
         <div className="w-[92%] mx-auto bg-[#fff] flex flex-col items-center pt-[36px] pb-[13px] rounded-[10px] mb-[20px]">

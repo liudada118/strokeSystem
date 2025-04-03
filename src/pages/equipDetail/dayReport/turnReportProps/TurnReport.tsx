@@ -105,7 +105,6 @@ function TurnReportProps(props: turnReport) {
   const { logid, id } = location.state || {}
   const navigate = useNavigate()
 
-  console.log(id, '...', logid, '................................................................useLocationyyds');
 
   // const getNurseReport = (date: number) => {
 

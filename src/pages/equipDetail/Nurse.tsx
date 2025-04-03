@@ -26,15 +26,12 @@ const Nurse: React.FC = () => {
     const sensorName = window.location.href.split('/')[6] || ''
     const [nursePersonTemplate, setNursePersonTemplate] = useState([])
     const [isModifyNurse, setIsModifyNurse] = useState(false)
-
     const renderEmpty: GetProp<typeof ConfigProvider, 'renderEmpty'> = (componentName) => {
 
         if (componentName === 'Table') {
             return <Empty image={<span></span>} description="还没有护理记录哦 快去记录吧～" />;
         }
     };
-
-
     const openNurse = useSelector((state: any) => state.nurse.open)
     const [isOpen, setIsOpen] = useState(false)
     const dispatch = useDispatch()
@@ -42,8 +39,6 @@ const Nurse: React.FC = () => {
         setIsOpen(true)
         dispatch(nurseIsOpenAdd(true))
     }
-    console.log(openNurse, openNurse.nurseOpen, '......openNurse');
-
     const getPersonTemplate = () => {
         Instancercv({
             method: "get",
@@ -76,9 +71,8 @@ const Nurse: React.FC = () => {
         setIsOpen(false)
         dispatch(nurseOpen(false))
         getPersonTemplate()
-      }
+    }
     if (isMobile) return (
-
         <ConfigProvider theme={ThemeTable} renderEmpty={renderEmpty}>
             <TurnPlan isMobile />
             <TurnCardTable isMobile />
@@ -90,16 +84,13 @@ const Nurse: React.FC = () => {
         <ConfigProvider theme={ThemeTable} renderEmpty={renderEmpty}>
             <div className={`flex w-full h-full`}>
                 {/* {openNurse} */}
-
                 {
                     openNurse ?
-                     
-
-                        !isModifyNurse && (nursePersonTemplate||[]).length > 0 ? <div className="w-full h-full flex justify-between bg-[#fff]" > <div className="h-full w-full">
+                        !isModifyNurse && (nursePersonTemplate || []).length > 0 ? <div className="w-full h-full flex justify-between bg-[#fff]" > <div className="h-full w-full">
                             <NursingStencil nursePersonTemplate={nursePersonTemplate} statue={1} />
                             {/* <NurseTable type={'project'} sensorName={sensorName} getNurseTemplate={getNurseTemplate} templateId={templateId} data={nurseTemplate || []} /> */}
                             <Button onClick={modifyNurseTemplate}
-                                    className="h-[2rem] w-[10rem]" type='primary' style={{ position: 'absolute', bottom: '2rem', right: '2rem', }}>
+                                className="h-[2rem] w-[10rem]" type='primary' style={{ position: 'absolute', bottom: '2rem', right: '2rem', }}>
                                 修改当前模版
                             </Button >
                         </div></div>
@@ -110,7 +101,7 @@ const Nurse: React.FC = () => {
                                         <p className="mb-[1rem] text-[1rem] text-[#A4B0BC]">当前无护理项</p>
                                         <Button onClick={() => onOpen()} type="primary" className="h-[2.7rem] w-[13rem]">创建护理项</Button>
                                     </div>
-                                </div> : <NursingOpen saveNurseTemplate={saveNurseTemplate} setIsOpen={setIsOpen} setIsModifyNurse={setIsModifyNurse} nursePersonTemplate={nursePersonTemplate||[]} />
+                                </div> : <NursingOpen saveNurseTemplate={saveNurseTemplate} setIsOpen={setIsOpen} setIsModifyNurse={setIsModifyNurse} nursePersonTemplate={nursePersonTemplate || []} />
                         : <>
                             <div className='w-[70%] mr-[10px]'>
                                 <span className='inline-block text-lg text-[#32373E] font-semibold mb-[10px]'>翻身</span>

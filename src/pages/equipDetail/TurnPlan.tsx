@@ -1,4 +1,4 @@
-import { Button, message } from "antd";
+import { Button, message, Modal } from "antd";
 import { Popup } from 'antd-mobile'
 import CommonTitle from '../../components/CommonTitle';
 import React, { useContext, useEffect, useImperativeHandle, useRef, useState } from "react";
@@ -23,7 +23,9 @@ import unBack from '@/assets/icon/unBack.png'
 import unLeft from '@/assets/icon/unLeft.png'
 import { convertToChinaNum } from "@/utils/math";
 import { DataContext } from ".";
-
+import { useGetWindowSize } from '@/hooks/hook'
+import TurnReport from '@/pages/turnReport/TurnReport'
+import './settingBlock.scss'
 enum TurnPlanStatus {
     DONE = '已完成',
     TIME_OUT_DONE = '超时完成',
@@ -170,26 +172,48 @@ const TurnPlan: (props: TurnPlanProps) => React.JSX.Element = (props) => {
     const handleChooseSleep = (value: string) => {
         setChoosedSleep(value)
     }
-
     // const changeLoadButtonToDownButton
-    console.log(id, '................................................................idyyyds');
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
+    const showModal = () => {
+        setIsModalOpen(true);
+    };
 
+    const handleOk = () => {
+        setIsModalOpen(false);
+    };
 
+    const handleCancel = () => {
+        setIsModalOpen(false);
+    };
+    const [logid, setDataList] = useState('');
+    const WindowSize = useGetWindowSize()
     const renderButton = (data: any) => {
+
         const inactive = inactivePlan(data.status);
         return [TurnPlanStatus.DONE, TurnPlanStatus.TIME_OUT_DONE].includes(data.status) ? (
-            <div className="relative" >
+            <div onClick={() => {
+                setDataList(data.logid)
+                setIsModalOpen(true)
+            }} className="relative" >
                 <Button variant="filled"
-                    onClick={() => isMobile && navigate('/turnReport', { state: { logid: data.logid, id: id } })}
-                    className='w-[6rem] h-[2.4rem] text-sm bg-[#ECF0F4] border-none text-[#3E444C] font-medium'>查看报告</Button>
+                    // isMobile && navigate('/turnReport', { state: { logid: data.logid, id: id } })
+                    onClick={() => {
+                        // setDataList(data.logid)
+                        console.log(data.logid, '............................1111....location');
 
-            </div>
+                        isMobile && navigate('/turnReport', { state: { logid: data.logid, id: id } })
+
+                        // setIsModalOpen(true)
+                    }
+                    }
+                    className='w-[6rem] h-[2.4rem] text-sm bg-[#ECF0F4] border-none text-[#3E444C] font-medium'>查看报告</Button>
+            </div >
         ) : data.status == TurnPlanStatus.LOADING ?
             <div className="relative" onClick={() => { message.info('报告正在生成中，请稍后查看') }}>
                 <Button variant="solid"
                     className={`w-[6rem] h-[2.4rem] text-sm bg-[#ECF0F4] border-none text-[#3E444C] font-medium`}
-                    disabled={inactive}>查看报告</Button>
+                >查看报告</Button>
                 <BorderProgress getNurse={getNurse} height={4} startPosition={(data.time)} timeTotal={150} />
             </div>
             :
@@ -198,6 +222,7 @@ const TurnPlan: (props: TurnPlanProps) => React.JSX.Element = (props) => {
                 className={`w-[6rem] h-[2.4rem] text-sm ${inactive ? '!bg-[#ECF0F4] !text-[#C2CDD6]' : ''} ${isTimeOut(data.status) ? 'bg-[#EC6E38]' : ''} border-none`}
             >去记录</Button>
     }
+
 
     return (
         <div className='bg-[#fff] w-full md:w-[94%] md:rounded-[10px] md:my-[10px] md:mx-auto border-b border-b-[#ECF0F4] md:border-0 pt-[25px] pl-[25px] md:pt-[1rem] md:pl-[1rem] pb-[10px]'>
@@ -222,9 +247,13 @@ const TurnPlan: (props: TurnPlanProps) => React.JSX.Element = (props) => {
                     </div>
                 ))}
             </div>
+            {
+                isModalOpen ? <Modal className="ModalStyle" closeIcon={false} width={"37rem"} height={'37rem'} style={{ background: "#F7F8FD" }} open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+                    <TurnReport id={id} logid={logid} ></TurnReport>
+                </Modal> : null
+            }
 
-
-        </div>
+        </div >
     )
 }
 

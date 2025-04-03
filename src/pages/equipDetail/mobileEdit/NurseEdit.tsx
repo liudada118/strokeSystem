@@ -15,12 +15,14 @@ import axios from 'axios'
 import { instance, Instancercv, netUrl } from '@/api/api'
 import { useSelector } from 'react-redux'
 import { phoneSelect, tokenSelect } from '@/redux/token/tokenSlice'
-import { useLocation, useParams } from 'react-router-dom'
+import { useLocation, useParams, useNavigate } from 'react-router-dom'
 import UploadImg from '@/pages/setting/uploadImg/UploadImg'
 import ImgUpload from '@/components/imgUpload/ImgUpload'
 import { CheckboxProps } from 'antd/lib'
 import CommonTitle from '@/components/CommonTitle'
 import { useGetWindowSize } from '@/hooks/hook'
+import NursingStencil from '../nurseprocess/nursingOpen/nursingStencil'
+import NursingOpen from '../nurseprocess/nursingOpen/nursingOpen'
 
 const CheckboxGroup = Checkbox.Group;
 
@@ -69,9 +71,12 @@ export function NurseEdit() {
     const location = useLocation()
     const sensorName = param.id || location.state.sensorName
 
+
     const phone = useSelector(phoneSelect)
     const token = useSelector(tokenSelect)
-
+    const dddddd = useSelector((state: any) => state.nurse.sensorName)
+    console.log(sensorName, dddddd, '...............sensorName.................................................sensorNamesensorName');
+    const navigate = useNavigate()
     /**
      * 保存护理项目
      */
@@ -271,24 +276,33 @@ export function NurseEdit() {
                     </>
 
                 }
-
+import NursingStencil from "./nursingStencil";
                 {selectIndex >= 0 || isSelectChild >= 0 ? <div onClick={() => {
                     saveNurseItem()
                 }} className="absolute bottom-[38px] left-[4%] w-full m-auto mt-[15px] py-[16px] bg-[#0072EF] flex items-center justify-center text-[#fff] text-base rounded-[10px]">
                     保存护理项
                 </div> : ''} */}
 
-                <DisplayEditNurseContent onFinish={onFinish} nurseConfig={nurseConfig} setNurseConfig={setNurseConfig} />
+                <NursingOpen />
             </Popup>
-            <div onClick={() => { setVisible1(true) }} className="w-full m-auto mt-[15px] py-[16px] bg-[#0072EF] flex items-center justify-center text-[#fff] text-base rounded-[10px]">
-                添加护理项
+            <div onClick={() => {
+
+                // setNurseConfig([])
+                // setVisible1(true) 
+                navigate('/userInfo_NursingOpen')
+            }} className="w-full m-auto mt-[15px] py-[16px] bg-[#0072EF] flex items-center justify-center text-[#fff] text-base rounded-[10px]">
+                 创建护理计划
                 <img src={nurseAdd} className='w-[1rem] ml-[5px]' alt="" />
+            </div>
+            <div className='pt-[8rem] flex justify-around text-[#C2CDD6] text-sm' style={{ fontFamily: 'PingFang SC' }}>
+
+                暂无护理项
             </div>
             <div className='pt-[20px] w-[full] m-auto'>
                 <PreViewConfig display={false} nurseConfig={nurseConfig} setNurseConfig={setNurseConfig} /></div>
-            <div onClick={() => { saveNurseConfigToCloud() }} className="w-full m-auto mt-[15px] py-[16px] bg-[#0072EF] flex items-center justify-center text-[#fff] text-base rounded-[10px]">
+            {/* <div onClick={() => { saveNurseConfigToCloud() }} className="w-full m-auto mt-[15px] py-[16px] bg-[#0072EF] flex items-center justify-center text-[#fff] text-base rounded-[10px]">
                 保存护理项
-            </div>
+            </div> */}
         </div>
     )
 }
@@ -324,7 +338,6 @@ export const DisplayEditNurseContent = (props: displayEditParams) => {
                     type: nurseItemIncludeChild[isSelectChild].type,
                     arr: singleItemArr
                 }
-
             }
             // 用户自定义多选框
             else {
@@ -348,12 +361,10 @@ export const DisplayEditNurseContent = (props: displayEditParams) => {
         // setNurseConfig(config)
         onFinish(config)
     }
-
     const changeTitle = (e: any) => {
         const value = e.target.value
         setTitle(value)
     }
-
     if (isMobile) {
         return (
             <>
@@ -781,7 +792,7 @@ function RenderNurseConfig({ type, index, title, arr, changeItemValue, display }
                             {
                                 arr ? arr.map((item: nurseSelectItemParam, itemIndex: number) => {
                                     return (
-                                        <div className='relative flex' key={itemIndex+'radio'}>
+                                        <div className='relative flex' key={itemIndex + 'radio'}>
                                             <div className='flex'>
                                                 <Radio className='pl-[5px]' value={item.value}>{item.value}</Radio>
                                             </div>

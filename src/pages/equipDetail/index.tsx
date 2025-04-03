@@ -142,7 +142,7 @@ const EquipDetail = () => {
         children: <Reporter />
     }]
 
-
+    
     if (isMobile) {
         return (
             <MenuLayouts isMobile={isMobile}>
@@ -160,7 +160,6 @@ const EquipDetail = () => {
                                 centered
                                 items={tabList}
                                 onChange={(e) => {
-                                    console.log(e, '................................................................weweweweewe');
                                     dispale(nurseOpen(false))
                                     navigate(`/report/${activeKeyArr.indexOf(e)}/${id}`)
                                 }}
@@ -341,6 +340,7 @@ function Provide() {
         }).then((res) => {
             const nurseArr: any = []
             const flipbodyData = res.data.flipbodyData
+
             const nurseTotal = res.data.flipbodyCount
             const flipbodyLen = Object.keys(flipbodyData).length
             for (let i = 0; i < nurseTotal; i++) {
@@ -360,7 +360,7 @@ function Provide() {
             setTurnAroundPlan(nurseArr)
         }).catch((err) => {
             // message.error('')
-        });;
+        });
     }
     const [nursePersonTemplate, setNursePersonTemplate] = useState<any>([])
     const getPersonTemplate = () => {
@@ -376,16 +376,12 @@ function Provide() {
             }
         }).then((res) => {
             const nursingConfig = JSON.parse(res.data.nursingConfig)
-            console.log(nursingConfig, '......nursingConfig...........11111...............................................nursePersonTemplate');
             setNursePersonTemplate(nursingConfig)
         })
     }
-
     useEffect(() => {
         getPersonTemplate()
     }, [id])
-    console.log(nurseformValue, '................................................................nursePersonTemplate');
-
     return (
         <DataContext.Provider value={{
             nurseformValue, setNurseFormValue,

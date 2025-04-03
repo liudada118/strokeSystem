@@ -1,0 +1,11 @@
+.personNurseSetting {
+  width: 80vw !important;
+}
+
+.setContent {
+  display: flex;
+}
+
+.custom-modal .ant-modal-content {
+  background-color: #F7F8FD !important;
+}

@@ -5,3 +5,8 @@
 .setContent{
     display: flex;
 }
+.custom-modal {
+    .ant-modal-content {
+        background-color: #F7F8FD!important; // 你想要的背景色
+    }
+}

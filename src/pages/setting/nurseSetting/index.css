@@ -1,3 +1,4 @@
+@charset "UTF-8";
 .setContent.nurseSetContent {
   flex-direction: row;
 }
@@ -74,8 +75,42 @@
 
 .care_box.finsh::before {
   background: #0072ef;
+  height: 100%;
 }
 
 .care_box.todo::before {
   background: #E6EBF0;
+  height: 100%;
+}
+
+.NurseTableImg::before {
+  content: '';
+  position: absolute;
+  left: 7.9rem;
+  top: 1rem;
+  width: 0.9rem;
+  height: 0.9rem;
+  background: url("../../../assets/images/shijian.png") no-repeat center center;
+  /* 设置背景图片 */
+  background-size: 100% 100%;
+  /* 确保图片覆盖整个伪元素 */
+}
+
+.NurseTableImgBox::before {
+  content: '';
+  position: absolute;
+  left: 6rem;
+  top: 1.4rem;
+  width: 0.9rem;
+  height: 0.9rem;
+  background: url("../../../assets/images/shijian.png") no-repeat center center;
+  /* 设置背景图片 */
+  background-size: 100% 100%;
+  /* 确保图片覆盖整个伪元素 */
+}
+
+.NurseTableTitle {
+  line-height: 2.3rem;
+  padding-left: 1.5rem;
+  padding-right: 2.6rem;
 }

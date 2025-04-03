@@ -6,11 +6,6 @@ import logo from "@/assets/image/logo.png";
 import { MessageRightTitle } from './MessageRightTitle'
 import { HomeRightTitle } from './HomeRightTitle'
 import { headImgSelect } from '@/redux/premission/premission'
-
-
-
-
-
 export default function ReportTitle() {
     const location = useLocation()
     const pathname = location.pathname
@@ -20,7 +15,6 @@ export default function ReportTitle() {
         other: '工作台'
     }
     const isMobile = useGetWindowSize()
-
     /**
      * 
      * @param pathname 路由pathname
@@ -28,7 +22,6 @@ export default function ReportTitle() {
      */
 
     type convertPathReturn = 'home' | 'report' | 'message' | 'setting' | 'other'
-
     const convertPath: (pathname: string) => convertPathReturn = (pathname: string) => {
         if (pathname == '/' || pathname.includes('home')) {
             return 'home'
@@ -42,9 +35,7 @@ export default function ReportTitle() {
             return 'other'
         }
     }
-
     const path = convertPath(pathname)
-
     /**
      * 
      * @param pathname 路由pathname
@@ -58,9 +49,7 @@ export default function ReportTitle() {
             return pathToText.other
         }
     }
-
     const text = calTitleText(pathname)
-
     return (
         <div className="homeTitle">
             <TitleLeftInfo text={text} path={path} isMobile={isMobile} />
@@ -68,13 +57,14 @@ export default function ReportTitle() {
         </div>
     )
 }
-
 export const TitleLeftInfo = (props: any) => {
     const headImg = useSelector(headImgSelect)
     return (
-        <>{(!props.isMobile) ? <PcLeftTitle text={props.text} path={props.path} /> : <div className="titleLeft" >
-            <img src={headImg ? headImg : logo} alt="" />
-        </div>}</>
+        <>
+            {(!props.isMobile) ? <PcLeftTitle text={props.text} path={props.path} /> : <div style={{ width: "100px" }} className="titleLeft" >
+                <img src={headImg ? headImg : logo} alt="" />
+            </div>}
+        </>
     )
 }
 
@@ -90,19 +80,21 @@ export const PcLeftTitle = (props: any) => {
         </div> : <>{props.text}</>}</>
     )
 }
-
-
-
 export const TitleRightInfo = (props: any) => {
-    const { setMessages, titleChangeGetMessage,  } = props
+    const { setMessages, titleChangeGetMessage, } = props
     const phone = localStorage.getItem('phone')
+    const windo: any = window.location.href.split('/')[4]
+    console.log(windo, '................................................................windo');
+
     if (props.path == 'home') {
         return <HomeRightTitle />
     }
     else if (props.path == 'message') {
-        return <MessageRightTitle  titleChangeGetMessage={titleChangeGetMessage} />
+        return <MessageRightTitle titleChangeGetMessage={titleChangeGetMessage} />
     } else if (props.path == 'setting') {
         return <div className="titleRight">{phone}</div>
+    } else if (windo == 'userInfo_NursingOpen') {
+        return <div className="" style={{ display: "flex", justifyContent: "normal" }}>JQ HEALTHCARE</div>
     }
     return <></>
 }

@@ -4,6 +4,7 @@ const initialState: any = {
         open: false,
         dataList:[],
         nurseOpen: false,
+        sensorName:''
 }
 
 const mqttSlice = createSlice({
@@ -19,10 +20,13 @@ const mqttSlice = createSlice({
      nurseIsOpenAdd(state,action){
         console.log(action.payload, '..openNurse1111111....')
       state.nurseOpen = action.payload
+   },
+   nurseSensorName(state,action){
+      state.sensorName = action.payload
    }
     }
 })
-export const {nurseOpen ,nurseDataList,nurseIsOpenAdd} = mqttSlice.actions
+export const {nurseOpen ,nurseDataList,nurseIsOpenAdd,nurseSensorName} = mqttSlice.actions
 export const mqttSelect = (state: any) => state.mqtt.client
 
 export default mqttSlice.reducer

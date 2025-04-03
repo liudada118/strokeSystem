@@ -419,7 +419,6 @@ const UserInfoCard: (props: UserInfoCardProps) => React.JSX.Element = (props) =>
             <div className='md:pt-[5rem] h-full'>
                 <div
                     className='bg-[#fff] rounded-[2px] pt-[1.2rem] pl-[1rem] pb-[1rem] md:w-[96%] md:mx-auto md:rounded-[10px]'>
-
                     <div className='flex items-center justify-between mb-[0.8rem]'>
                         <span className='text-base font-semibold'>个人信息</span>
                         {isModifying && <span className='text-[#0072EF] text-sm cursor-pointer mr-[10px]'
@@ -442,7 +441,6 @@ const UserInfoCard: (props: UserInfoCardProps) => React.JSX.Element = (props) =>
                         </div>
                     </div>
                 </div>
-
                 <div
                     className='flex justify-between bg-[#fff] rounded-[2px] md:rounded-[10px] h-[2.8rem] items-center my-[10px] mx-0 md:mx-auto p-[15px] text-sm md:w-[96%]'>
                     <span className='text-sm font-semibold'>

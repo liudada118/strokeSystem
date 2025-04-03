@@ -84,8 +84,26 @@ const TurnCardTable: (props: TurnCardTableProps) => React.JSX.Element = (props) 
     const param = useParams()
     const sensorName = param.id
     const token = useSelector(tokenSelect)
+    const [flipbodyData, setFlipbodyData] = useState([])
+    const getNurse = () => {
+        instance({
+            method: "post",
+            url: "/sleep/nurse/getMatrixListByName",
+            params: {
+                deviceName: sensorName,
+                scheduleTimePeriod: 2 * 60 * 60 * 1000,
+                startTimeMillis: new Date(new Date().toLocaleDateString()).getTime() + 0,
+                endTimeMills: new Date(new Date().toLocaleDateString()).getTime() + 24 * 60 * 60 * 1000
+            },
+        }).then((res) => {
 
-
+            const flipbodyData = res.data.flipbodyData
+            const dataList: any = Object.values(res.data.flipbodyData).filter((item: any, index) => item.status >= 3).length
+            setFlipbodyData(dataList)
+        }).catch((err) => {
+            // message.error('')
+        });
+    }
     const turnAroundCard: CardItem[] = [{
         label: '翻身次数',
         value: `${dataList.flipBodyCount}`,
@@ -96,7 +114,7 @@ const TurnCardTable: (props: TurnCardTableProps) => React.JSX.Element = (props) 
         unit: '次/分'
     }, {
         label: '翻身超时',
-        value: `${dataList.flipBodyTimeoutCount}`,
+        value: `${flipbodyData}`,
         unit: '次'
     }]
     const commonClass = 'inline-block w-[20px] h-[20px] md:w-[12px] md:h-[12px] rounded-full'
@@ -153,7 +171,7 @@ const TurnCardTable: (props: TurnCardTableProps) => React.JSX.Element = (props) 
 
 
     useEffect(() => {
-
+        getNurse()
         instance({
             method: "get",
             url: "/sleep/nurse/getRecords",
@@ -168,7 +186,7 @@ const TurnCardTable: (props: TurnCardTableProps) => React.JSX.Element = (props) 
                 "content-type": "application/x-www-form-urlencoded",
                 "token": token
             },
-        }).then((res) => {
+        }).then((res: any) => {
 
             setDataList({
                 flipBodyCount: res.data.flipBodyCount,

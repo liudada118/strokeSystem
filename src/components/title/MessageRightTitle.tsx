@@ -1,11 +1,12 @@
 import { DatePicker, Dropdown, Input, Menu, Select, Space } from "antd";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import zhCN from 'antd/locale/zh_CN';
 import dayjs from 'dayjs'
 import { DownOutlined } from "@ant-design/icons";
 import fang from '../../assets/images/容器@2x.png'
 import './index.scss'
 import { useGetWindowSize } from '../../hooks/hook'
+import useDebounce from '../../utils/publicInput'
 const { RangePicker } = DatePicker;
 interface messageParam {
     titleChangeGetMessage: Function,
@@ -55,6 +56,34 @@ export const MessageRightTitle = (props: messageParam) => {
         { value: 'roomNum', label: '床号' },
     ]
     const [selectType, setSelectType] = useState('patientName');
+    const [timeoutId, setTimeoutId] = useState<any>(null);
+    const debouncedPatientNameRoomNum = useDebounce(patientNameRoomNum, 1000);
+
+    const handleInputChange = (value: any) => {
+
+        setpatientName(value);
+
+        if (timeoutId) {
+            clearTimeout(timeoutId);
+        }
+
+        const newTimeoutId = setTimeout(() => {
+            titleChangeGetMessage({
+                patientName: selectType === 'patientName' ? value : "",
+                roomNum: selectType === 'roomNum' ? value : ""
+            });
+        }, 1000);
+
+        setTimeoutId(newTimeoutId);
+    };
+    useEffect(() => {
+        return () => {
+            if (timeoutId) {
+                clearTimeout(timeoutId);
+            }
+        };
+    }, [timeoutId]);
+
     return (
         <>
             {
@@ -76,16 +105,14 @@ export const MessageRightTitle = (props: messageParam) => {
                             <Input className="messageTitlediv2_you_inp"
                                 allowClear
                                 value={patientNameRoomNum}
-
-                                onChange={(e) => {
-
-                                    setpatientName(e.target.value)
-                                    titleChangeGetMessage({
-                                        patientName: selectType === 'patientName' ? patientNameRoomNum : "",
-                                        roomNum: selectType === 'roomNum' ? patientNameRoomNum : ""
-                                    })
-                                }
-                                }
+                                // onBlur={((e: any) => {
+                                //     setpatientName(e.target.value)
+                                //     titleChangeGetMessage({
+                                //         patientName: selectType === 'patientName' ? patientNameRoomNum : "",
+                                //         roomNum: selectType === 'roomNum' ? patientNameRoomNum : ""
+                                //     })
+                                // })}
+                                onChange={(e: any) => handleInputChange(e.target.value)}
                                 placeholder="请输入姓名/床号" />
                             <img style={{ width: "1rem", height: "1rem", marginRight: "20px" }} src={fang} alt="" />
                         </div></>

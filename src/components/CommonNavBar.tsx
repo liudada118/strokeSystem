@@ -1,5 +1,5 @@
 import React from "react";
-import {NavBar} from "antd-mobile";
+import { NavBar } from "antd-mobile";
 
 interface NavProps {
     title: string;

@@ -4,18 +4,14 @@ import { HashRouter, Route, Routes } from 'react-router-dom';
 import { Loading } from './components/pageLoading';
 import RequirAuthRoute from './components/auth/RequirAuthRoute';
 import Question from './pages/question/Question';
-
 import {
   StyleProvider,
   legacyLogicalPropertiesTransformer,
 } from '@ant-design/cssinjs'
 import { UAParser } from 'ua-parser-js'
-
 const getHashPriorty = () => {
   let ua: any = UAParser(navigator.userAgent)
-
   const { browser } = ua
-
   let major = browser.version.split('.')[0] - 0
   if (browser.name === 'Chrome' && major > 88) {
     return 'low'
@@ -26,10 +22,7 @@ const getHashPriorty = () => {
   } else {
     return 'high'
   }
-
-
 }
-
 const Home = React.lazy(() => import('./pages/home/Home'))
 const Login = React.lazy(() => import('./pages/login'))
 const EquipDetail = React.lazy(() => import('./pages/equipDetail'))
@@ -39,7 +32,8 @@ const UserInfoCard = React.lazy(() => import('./pages/equipDetail/UserInfoCard')
 const TurnReport = React.lazy(() => import('./pages/turnReport/TurnReport'))
 const EditingUser = React.lazy(() => import('./pages/equipDetail/EditingUser'))
 const RecordForm = React.lazy(() => import('./pages/equipDetail/RecordForm'))
-
+const NursingOpen = React.lazy(() => import('./pages/equipDetail/nurseprocess/nursingOpen/nursingOpen'))
+const NurseTable = React.lazy(() => import('./pages/setting/nurseSetting/NurseSetting'))
 function App() {
   return (
     <HashRouter>
@@ -64,21 +58,23 @@ function App() {
             <Route path="/turnReport" element={
               <RequirAuthRoute> <TurnReport /></RequirAuthRoute>
             } />
-            <Route path="/report/:type/:id" element={
+            <Route path="/report/:type/:id/" element={
               <RequirAuthRoute><EquipDetail /></RequirAuthRoute>} />
 
             <Route path="/equipInfo/:id" element={
               <RequirAuthRoute><UserInfoCard isMobile /></RequirAuthRoute>
             } />
-
             <Route path="/que" element={
               <RequirAuthRoute>  <Question /></RequirAuthRoute>
             }
             />
-
             <Route path="/record" element={<RecordForm />} />
             <Route path="/userInfo_editing" element={
               <RequirAuthRoute><EditingUser /></RequirAuthRoute>} />
+            <Route path="/userInfo_NursingOpen" element={
+              <RequirAuthRoute><NursingOpen /></RequirAuthRoute>} />
+            <Route path="/userInfo_NurseTable" element={
+              <RequirAuthRoute><NurseTable data={[]} type={''} /></RequirAuthRoute>} />
           </Routes>
         </Suspense>
       </StyleProvider>

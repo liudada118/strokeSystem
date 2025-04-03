@@ -13,6 +13,7 @@ import { calc } from "antd/es/theme/internal";
 // import Kdsd from './messageDatePicker'
 import { CalendarPicker } from "antd-mobile";
 import fang from '../.././assets/images/容器@2x.png'
+import { log } from "node:console";
 const { RangePicker } = DatePicker;
 type RangePickerProps = GetProps<typeof DatePicker.RangePicker>;
 export interface message {
@@ -62,10 +63,13 @@ export default function Message() {
   const [total, setTotal] = useState(0)
   const WindowSize = useGetWindowSize()
   // 昨天提醒 62 次 前天提醒 26 次
+  console.log(total, '......total');
+
   const [datarq, setData] = useState<any>([
     {
       yestodayAlarmCount: "",
-      beforeYestodayAlarmCount: ""
+      beforeYestodayAlarmCount: "",
+      todayAlarmCoun: ""
     }
   ])
   // 接口参数
@@ -115,6 +119,7 @@ export default function Message() {
   */
   const [dataList, setDataLIst] = useState([])
   localStorage.setItem('dataList', JSON.stringify(dataList));
+  // const [todayAlarmCount, setTodayAlarmCount] = useState(0)
   // 接口请求
   const baseFetch = async (param: any) => {
     try {
@@ -129,10 +134,14 @@ export default function Message() {
       }
       const res = await instance(option)
       setDataLIst(res.data.data.records)
+      console.log(res.data.todayAlarmCount, '................................resdata');
+
+      // setTodayAlarmCount(res.data.todayAlarmCoun)
       return res
     } catch (err) {
     }
   }
+  console.log(datarq, datarq.todayAlarmCount, '................................datarq');
   /**
    * 
    * @param data  服务器接收的信息
@@ -195,7 +204,6 @@ export default function Message() {
         },
       ]
     },
-
   ]
   // 表格数据
   const data: any[] = dataList.map((item: any, index: number) => {
@@ -214,7 +222,7 @@ export default function Message() {
     }
   })
   // 标题切换
-  const [titleId, setTitleId] = useState(3)
+  const [titleId, setTitleId] = useState(5)
   const [title, setTitle] = useState('护理提醒')
   console.log(titleId, 'titleId');
   const [nursing, setNursing] = useState(false)
@@ -224,19 +232,15 @@ export default function Message() {
     setTitle(item.title)
     setTitleId(item.id)
     if (item.key === 'otherReminders') return setNursing(true)
-
-
     setParams({
       ...params,
       types: item.key,
-
       startMills: timeArr[0],
       endMills: timeArr[1],
     })
     getMessage({
       ...params,
       types: item.key,
-
       startMills: timeArr[0],
       endMills: timeArr[1],
     })
@@ -245,14 +249,15 @@ export default function Message() {
   const initMessagesPage = (res: any) => {
     try {
       const data = res.data.data.records
-      const total = res.data.data.total
+      const total = res.data.beforeYestodayAlarmCount
       const pages = res.data.data.pages
       const message = initMessage(data)
       setMessages(message)
       setTotal(total)
       setData({
         yestodayAlarmCount: res.data.yestodayAlarmCount,
-        beforeYestodayAlarmCount: res.data.beforeYestodayAlarmCount
+        beforeYestodayAlarmCount: res.data.beforeYestodayAlarmCount,
+        todayAlarmCoun: res.beforeYestodayAlarmCount,
 
       })
     } catch (err) {
@@ -296,11 +301,7 @@ export default function Message() {
       dataIndex: 'type',
       key: 'type',
     },
-
-
-
   ];
-
   const getSearchValue = (item: any) => {
     setParams({
       ...params,
@@ -451,7 +452,7 @@ export default function Message() {
                 <div className="messageMainDataTitle">
                   <div className="messageMainDataTitlediv">
                     <p className="messageMainDataTitledivbac w-[20px] h-[20px] rounded-[2px] mt-[22px] mr-[16px] opacity-100 bg-[#0072EF]"></p>
-                    <p className="font-pingfang-sc font-bold text-[1.2rem] leading-normal tracking-normal">护理提醒次数 <span className="font-pingfang-sc font-bold text-[35px] leading-normal tracking-normal " style={{ color: "#0072EF" }}> {total} </span> 次</p>
+                    <p className="font-pingfang-sc font-bold text-[1.2rem] leading-normal tracking-normal">{title} <span className="font-pingfang-sc font-bold text-[35px] leading-normal tracking-normal " style={{ color: "#0072EF" }}> {total} </span> 次</p>
                   </div>
                   <div className="messageMainDataTitlediv ">
                     <p className="font-pingfang-sc font-bold text-[1.2rem] leading-normal tracking-normal mr-[1.4rem]">

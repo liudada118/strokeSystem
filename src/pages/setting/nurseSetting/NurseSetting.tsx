@@ -583,10 +583,10 @@ export default function NurseTable(props: tableProps) {
                         return <div style={{ lineHeight: "3.3rem", background: "#F5F8FA", width: "35%", }}> <span className="text-[1.2rem] rounded-md">{a.titleValue}</span><span className="text-[0.8rem] text-[#929EAB]">{a.type}</span></div>
                       }
                       if (a.key === "templateTitle") {
-                        return <div style={{ lineHeight: "3.3rem", background: "#F5F8FA", width: "15%" }}>护理内容</div>
+                        return <div style={{ lineHeight: "3.3rem", background: "#F5F8FA", width: "20%" }}>护理内容</div>
                       }
                       if (a.key === "status") {
-                        return <div className="cursor-pointer" style={{ lineHeight: "3.3rem", background: "#F5F8FA", width: "25%" }}>状态</div>
+                        return <div className="cursor-pointer" style={{ lineHeight: "3.3rem", background: "#F5F8FA", width: "15%" }}>状态</div>
                       }
                       if (a.key === "delete") {
                         return <div style={{ lineHeight: "3.3rem", background: "#F5F8FA", width: "25%", borderRadius: "0 3px 3px 0" }}>删除</div>

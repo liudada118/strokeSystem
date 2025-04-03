@@ -201,6 +201,8 @@ function NursingOpen(props: propsType) {
     }
   };
   const addTempNurse = () => {
+    console.log();
+
     const hoursVal = parseFloat(hours) + 1;
     const minutesVal = parseFloat(minutes) + 1;
     const hoursFormat = hoursVal < 10 ? `0${hoursVal}` : hoursVal;
@@ -229,7 +231,10 @@ function NursingOpen(props: propsType) {
         getNurseTemplate();
         getPersonTemplate();
         message.success("添加成功");
-        navigator('/userInfo_NurseTable')
+        if (!useSelect) {
+          navigator('/userInfo_NurseTable')
+        }
+
       } else {
         message.error(res.data.msg);
       }

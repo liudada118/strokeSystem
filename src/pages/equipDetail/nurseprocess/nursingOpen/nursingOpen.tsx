@@ -501,7 +501,7 @@ function NursingOpen(props: propsType) {
             <div className="flex w-[28%] mr-[3%] items-center text-[#000] font-bold"><img style={{ width: "6px", height: "6px" }} src={dianyuanquan} alt="" /><p className="text-[1.2rem] pl-[0.6rem] font-medium">护理名称 :</p> </div>
 
             <Input
-              style={{ height: "3rem", width: "70%", background: "#F5F8FA", border: "none", marginLeft: '0.1rem' }}
+              style={{ height: "3rem", width: "80%", background: "#F5F8FA", border: "none", marginLeft: '2%' }}
               placeholder="请输入所添加护理项目名称"
               value={template}
               onChange={(e) => setTemplate(e.target.value)}
@@ -513,7 +513,7 @@ function NursingOpen(props: propsType) {
             <Select
               showSearch
               style={{
-                width: "35%",
+                width: "38%",
                 height: "3rem",
                 marginRight: "0.7rem",
                 paddingLeft: "0.6rem"
@@ -532,7 +532,7 @@ function NursingOpen(props: propsType) {
             </Select> :
             <Select
               showSearch
-              style={{ width: "35%", height: "3rem", marginLeft: "0.5rem" }}
+              style={{ width: "38%", height: "3rem", marginLeft: "0.5rem" }}
               placeholder="分钟"
               optionFilterProp="children"
               value={minutes}

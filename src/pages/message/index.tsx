@@ -234,12 +234,16 @@ export default function Message() {
     if (item.key === 'otherReminders') return setNursing(true)
     setParams({
       ...params,
+      pageNum: 1,
+      pageSize: 10,
       types: item.key,
       startMills: timeArr[0],
       endMills: timeArr[1],
     })
     getMessage({
       ...params,
+      pageNum: 1,
+      pageSize: 10,
       types: item.key,
       startMills: timeArr[0],
       endMills: timeArr[1],
@@ -272,7 +276,7 @@ export default function Message() {
       render: (text, record, index) => (params.pageNum - 1) * params.pageSize + index + 1,
     },
     {
-      title: '房间号',
+      title: '床号',
       dataIndex: 'roomNumber',
       key: 'roomNumber',
     },
@@ -405,6 +409,7 @@ export default function Message() {
               <div className="messageTitleBtn">
 
                 {titleList && titleList.map((item: any, index) => {
+                
                   return (
                     <Button
                       key={item.id}

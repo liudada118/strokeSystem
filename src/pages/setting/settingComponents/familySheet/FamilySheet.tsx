@@ -99,6 +99,7 @@ export default function FamilySheet(props: familySheetProps) {
 
 
             props.setPersonSource(res.data.data)
+
         })
     }
 
@@ -115,7 +116,11 @@ export default function FamilySheet(props: familySheetProps) {
                 organizeId: id
             }
         }).then((res) => {
+
             getItemPerson(id)
+            if (res.data.msg === 'delete success') {
+                return message.info('删除成功')
+            }
         })
     }
 
@@ -130,7 +135,7 @@ export default function FamilySheet(props: familySheetProps) {
     const phoneRegex = /^1[3-9]\d{9}$/
     const handlePersonOk = () => {
         if (!phoneRegex.test(nurseUser.user)) {
-            return message.info('手机号不正确,请输入正确的手机号')
+            return message.info('请输入正确的手机号，手机号错误')
         }
         if (!nurseUser.user || !nurseUser.name) {
             return message.info('用户名和手机号不能为空')
@@ -152,8 +157,9 @@ export default function FamilySheet(props: familySheetProps) {
             },
         }).then((res) => {
             getItemPerson(deleteObj.id)
-            if (res.data.code == 500) {
-                message.error('该家属已绑定过其他的项目')
+
+            if (res.data.msg === 'add Manager Success') {
+                return message.info('添加成功')
             }
         }).catch((e) => {
             message.error('服务器异常')
@@ -171,14 +177,10 @@ export default function FamilySheet(props: familySheetProps) {
                 <div style={{ padding: '0.5rem 3rem' }}>
 
                     <div style={{ display: 'flex', alignItems: 'center' }} className="deviceItem"><div style={{ width: '5rem', }}> 手机号:</div>
-                        <Input value={nurseUser.user} style={{ flex: 1 }} onBlur={(e) => {
-                            if (!phoneRegex.test(e.target.value)) {
-                                return message.info('手机号不正确,请输入正确的手机号')
-                            }
+                        <Input value={nurseUser.user} style={{ flex: 1 }} onChange={(e) => {
                             let obj = { ...nurseUser }
                             obj.user = e.target.value
                             setnurseUser(obj)
-                        }} onChange={(e) => {
                             // setProjectAddress(e.target.value)
                         }} /></div>
                     <div style={{ display: 'flex', alignItems: 'center' }} className="deviceItem"><div style={{ width: '5rem', }}> 姓名:</div>

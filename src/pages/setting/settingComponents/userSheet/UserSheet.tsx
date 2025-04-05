@@ -43,11 +43,16 @@ export default function UserSheet(props: userSheetProps) {
         })
     }
 
+    const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]{6,16}$/;
     const handleNurseOk = () => {
         if (!nurseUser.user || !nurseUser.password || !nurseUser.name) {
             message.info('请填写完整信息');
             return;
         }
+
+
+        // 正则表达式匹配密码规则
+        if (!passwordRegex.test(nurseUser.password)) return message.info("密码必须包含字母和数字，长度在6到16个字符之间");
         if (nurseUser.user.length > 5) {
             Instancercv({
                 method: "post",
@@ -317,10 +322,7 @@ export default function UserSheet(props: userSheetProps) {
 
                     <div style={{ display: 'flex', alignItems: 'center' }} className="deviceItem"><div style={{ width: '5rem', }}> 密码:</div>
                         <Input value={nurseUser.password} style={{ flex: 1 }} onChange={(e) => {
-                            const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]{6,16}$/;
-                            const inputValue = e.target.value;
-                            // 正则表达式匹配密码规则
-                            if (!passwordRegex.test(inputValue)) return message.info("密码必须包含字母和数字，长度在6到16个字符之间");
+
                             let obj = { ...nurseUser }
                             obj.password = e.target.value
                             setnurseUser(obj)

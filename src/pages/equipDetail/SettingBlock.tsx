@@ -360,6 +360,8 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (props) =>
                     type: FormType.TIME_RANGE,
                 }]}
                 onFinish={(values) => {
+                    console.log(values, '............valuessssss');
+
                     // setTimeRangeB(values.timeRangeB)
                     changeValueToUserInfo(values)
                     setAlarmParamChange(true)

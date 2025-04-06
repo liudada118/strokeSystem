@@ -375,7 +375,7 @@ function Provide() {
                 deviceId: id
             }
         }).then((res) => {
-            const nursingConfig = JSON.parse(res.data.nursingConfig)
+            const nursingConfig = JSON.parse(res.data.nursingConfig || '{}')
             setNursePersonTemplate(nursingConfig)
         })
     }

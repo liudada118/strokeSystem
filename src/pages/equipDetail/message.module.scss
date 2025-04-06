@@ -6,7 +6,7 @@
       font-size: 0.875rem;
     }
     .ant-tabs-content-holder {
-      overflow-y: scroll;
+      overflow-y: auto;
       .ant-tabs-content {
         height: 100%;
         .ant-tabs-tabpane {

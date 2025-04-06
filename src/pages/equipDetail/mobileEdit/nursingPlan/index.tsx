@@ -1,0 +1,205 @@
+import { selectEquipBySensorname } from "@/redux/equip/equipSlice";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { useLocation, useParams, useNavigate } from "react-router-dom";
+import CommonNavBar from "../../../../components/CommonNavBar";
+import { Instancercv, instance } from "@/api/api";
+import greyNotice from "@/assets/image/greyNotice.png";
+import NurseList from "./nurseList/index";
+import NurseConfEdit from "./nurseEdit/index";
+import "./index.scss";
+import { Button, message, Modal } from "antd";
+import { ExclamationCircleOutlined } from "@ant-design/icons";
+import mobileNurse from "@/assets/image/mobileNurseBig.png";
+import dayjs from "dayjs";
+import { PersonalContentInfo } from "@/pages/equipDetail/EditingUser";
+const { confirm } = Modal;
+
+export default function NursingPlan() {
+  const param = useParams();
+  const location = useLocation();
+  const sensorName = param.id || location.state.sensorName;
+  const [title, setTitle] = useState("护理配置");
+  const [nurseList, setNurseList] = useState([]) as any;
+  const [operType, setOperType] = useState("init");
+  const [isEdit, setIsEdit] = useState(false);
+  const navigate = useNavigate();
+
+  const editNurseConf = () => {
+    setOperType("add");
+  };
+  const addNurseConf = () => {
+    setIsEdit(true);
+  };
+
+  const addNurseTask = (param: any) => {
+    setNurseList([...nurseList, param]);
+    setIsEdit(false);
+  };
+
+  const getPersonTemplate = (type?: any) => {
+    Instancercv({
+      method: "get",
+      url: "/nursing/getNursingConfig",
+      headers: {
+        "content-type": "multipart/form-data",
+        token: localStorage.getItem("token"),
+      },
+      params: {
+        deviceId: sensorName,
+        ...(type ? { type } : {}),
+      },
+    }).then((res: any) => {
+      if (res.data.code === 0) {
+        const nursingConfig = JSON.parse(res.data.nursingConfig || "[]");
+        if (nursingConfig.length > 0) {
+          setTitle("护理计划");
+        }
+        setNurseList(nursingConfig);
+      }
+    });
+  };
+
+  const saveTemplate = () => {
+    confirm({
+      title: "",
+      icon: <ExclamationCircleOutlined />,
+      content: "确认应用该护理计划?",
+      okText: "确认",
+      cancelText: "取消",
+      onOk() {
+        const list = nurseList.map((item: any) => {
+          return {
+            key: item.key,
+            title: item.templateTitle || item.title,
+            status: "todo",
+            time: dayjs(+item.key).format("HH:mm"),
+          };
+        });
+
+        Instancercv({
+          method: "post",
+          url: "/nursing/updateNursingConfig",
+          headers: {
+            "content-type": "application/json",
+            token: localStorage.getItem("token"),
+          },
+          data: {
+            deviceId: sensorName,
+            config: JSON.stringify(list),
+          },
+        }).then((res) => {
+          message.success("保存成功");
+          setOperType("init");
+          getPersonTemplate();
+        });
+      },
+      onCancel() {
+        console.log("取消删除模版");
+        // 取消删除不执行任何逻辑
+      },
+    });
+  };
+  const delTemp = (params: any) => {
+    confirm({
+      title: "删除模版",
+      icon: <ExclamationCircleOutlined />,
+      content: "确认删除模版?",
+      okText: "确认",
+      cancelText: "取消",
+      onOk() {
+        const delList = nurseList.filter((item: any) => {
+          return +item.key !== +params.key;
+        });
+        setNurseList(delList);
+      },
+    });
+  };
+  useEffect(() => {
+    getPersonTemplate();
+  }, []);
+  return (
+    <>
+      <CommonNavBar title={title} onBack={() => navigate(-1)} />
+      <div
+        className={`${nurseList.length === 0 ? "nurse_box_empty" : ""
+          } nurse_box`}
+      >
+        {isEdit ? (
+          <NurseConfEdit
+            nurseList={nurseList}
+            sensorName={sensorName}
+            setNurseTask={addNurseTask}
+          />
+        ) : (operType === "init" || operType === "add") &&
+          nurseList.length > 0 ? (
+          <>
+            <div className="title">
+              <p>
+                <span className="text-[1rem]">老陈的护理计划</span>
+                {operType === "init" && (
+                  <span
+                    className="mr-[1rem] cursor-pointer"
+                    style={{ marginLeft: "auto", color: "#1677ff" }}
+                    onClick={() => editNurseConf()}
+                  >
+                    修改
+                  </span>
+                )}
+                {operType === "add" && (
+                  <span
+                    className="mr-[1rem] cursor-pointer"
+                    style={{ marginLeft: "auto", color: "#1677ff" }}
+                    onClick={() => addNurseConf()}
+                  >
+                    添加
+                  </span>
+                )}
+              </p>
+              {operType === "add" && (
+                <div className="tip flex items-center h-[2rem]  bg-[#F5F8FA] mt-[0.5rem]">
+                  <img
+                    className="w-[1rem] h-[1rem] mr-[5px] ml-2"
+                    src={greyNotice}
+                    alt=""
+                  />
+                  <span className="text-[1rem] text-[#929EAB]">
+                    当前内容仅作为效果预览，不可作为实际页面使用
+                  </span>
+                </div>
+              )}
+            </div>
+            <NurseList list={nurseList} operType={operType} delTemp={delTemp} />
+            {operType === "add" && (
+              <div className="bg-[#f4f5f6] w-[full]">
+                <Button
+                  type="primary"
+                  onClick={saveTemplate}
+                  className="mt-[1rem] w-[full]"
+                  style={{ width: '100%' }}
+                >
+                  应用护理计划
+                </Button>
+              </div>
+            )}
+          </>
+        ) : (
+          <>
+            <PersonalContentInfo title={"护理配置"} img={mobileNurse} />
+            <Button
+              type="primary"
+              onClick={() => {
+                setOperType("add");
+                setIsEdit(true);
+              }}
+              style={{}}
+              className="mx-[1rem] h-[4rem]"
+            >
+              创建护理计划
+            </Button>
+          </>
+        )}
+      </div>
+    </>
+  );
+}

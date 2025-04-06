@@ -1,0 +1,46 @@
+.use_nurse_template {
+    display: flex;
+    align-items: center;
+    p {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      &.active {
+        span {
+          &:nth-child(1) {
+            outline: 0.4rem solid #1677ff;
+            width: 0.25rem;
+            height: 0.25rem;
+          }
+        }
+      }
+      span {
+        &:nth-child(1) {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 0.6rem;
+          height: 0.6rem;
+          outline: 0.2rem solid #d9d9d9;
+          border-radius: 100%;
+          margin-right: 0.9rem;
+          background: #fff;
+        }
+      }
+      &:nth-child(1) {
+        margin-right: 2rem;
+      }
+    }
+  }
+.default-popup {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+.use_nurse_form.ant-form.ant-form-vertical {
+    padding: 1rem;
+    .ant-form-item, .time_box {
+        display: flex;
+        flex-wrap: nowrap;
+    }
+}

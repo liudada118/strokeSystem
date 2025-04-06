@@ -1,0 +1,94 @@
+.nurse_scroll {
+    // height: calc(100% - 2rem);
+    flex: 1;
+    overflow: auto;
+    // padding-bottom: 2rem;
+    margin-top: 1rem;
+}
+.nurse_list {
+    padding: 0 0.5rem 0.5rem;
+    .list_item {
+        position: relative;
+        display: flex;
+        padding: 0.5rem;
+        &:nth-child(1) {
+            background: #F5F8FA;
+            p {
+                font-weight: 600;
+            }
+        }
+        p {
+            flex-shrink: 1;
+            &:nth-child(1) {
+                width: 5rem;
+            }
+            &:nth-child(2) {
+                flex: 1;
+                flex-wrap: wrap;
+                word-break: break-all;
+            }
+            &:nth-child(3) {
+                display: flex;
+                align-items: center;
+                width: 3.4rem;
+                color: #929EAB;
+                justify-content: center;
+                span {
+                    width: 100%;
+                    text-align: center;
+                    padding: 0.2rem;
+                    margin-right: 0.2rem;
+                }
+            }
+            &:nth-child(4) {
+                width: 3rem;
+                text-align: center;
+            }
+        }
+        &:not(:first-child) {
+            p {
+                &:nth-child(1) {
+                    span {
+                        &:nth-child(2) {
+                            position: relative;
+                            z-index: 2;
+                            display: inline-block;
+                            background: #E6EBF0;
+                            border-radius: 100%;
+                            color: #fff;
+                            width: 1.2rem;
+                            height: 1.2rem;
+                            margin-left: 0.5rem;
+                            text-align: center;
+                            line-height: 1.2rem;
+                        }
+                    }
+                }
+                &:nth-child(3) {
+                    span {
+                        background: #E6EBF0;
+                        border-radius: 0.3rem;
+                    }
+                }
+                &:nth-child(4) {
+                    color: #0072EF;
+                }
+            }
+        }
+        &.todo::before {
+            background: #E6EBF0;
+            height: 100%;
+        }
+        &.is_line:not(:last-child):before {
+            display: inline-block;
+            content: " ";
+            width: 0.2rem;
+            height: 100%;
+            position: absolute;
+            top: 1rem;
+            left: 3.55rem;
+            background: #E6EBF0;
+            z-index: 1;
+        }
+    }
+}

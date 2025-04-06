@@ -51,7 +51,7 @@ const Nurse: React.FC = () => {
                 deviceId: sensorName
             }
         }).then((res: any) => {
-            const nursingConfig = JSON.parse(res.data.nursingConfig)
+            const nursingConfig = JSON.parse(res.data.nursingConfig || '{}')
 
             setNursePersonTemplate(nursingConfig)
         })

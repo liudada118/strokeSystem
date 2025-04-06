@@ -75,7 +75,7 @@ const RecordForm: React.FC = () => {
                 deviceId: sensorName
             }
         }).then((res) => {
-            const nursingConfig = JSON.parse(res.data.nursingConfig)
+            const nursingConfig = JSON.parse(res.data.nursingConfig || '{}')
             setNurseConfig(nursingConfig)
         })
     }, [])

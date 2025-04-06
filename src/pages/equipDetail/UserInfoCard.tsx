@@ -416,7 +416,7 @@ const UserInfoCard: (props: UserInfoCardProps) => React.JSX.Element = (props) =>
             {isMobile && (
                 <CommonNavBar title='个人信息及设置' onBack={() => navigate(-1)} />
             )}
-            <div className='md:pt-[5rem] h-full'>
+            <div className='md:pt-[4.5rem] h-full'>
                 <div
                     className='bg-[#fff] rounded-[2px] pt-[1.2rem] pl-[1rem] pb-[1rem] md:w-[96%] md:mx-auto md:rounded-[10px]'>
                     <div className='flex items-center justify-between mb-[0.8rem]'>

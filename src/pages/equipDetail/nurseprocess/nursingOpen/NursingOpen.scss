@@ -1,63 +1,62 @@
-
-
-
-
-
-.NursingOpenVal{
-    display: flex;
-    width: 100%;
-    margin-bottom: 1.35rem;
-    height: 2.48;
-    align-items: center
+.NursingOpenVal {
+  display: flex;
+  width: 100%;
+  margin-bottom: 1.35rem;
+  height: 2.48;
+  align-items: center;
 }
-.NursingOpenTitle{
-    font-size: 0.8rem;
-    font-style: 600;
-    font-family:' PingFang SC';
-    color: #000;
-    margin-right: 5px;
+.NursingOpenTitle {
+  font-size: 0.8rem;
+  font-style: 600;
+  font-family: " PingFang SC";
+  color: #000;
+  margin-right: 5px;
 }
 
-.nursingStencildiv::before{
+.nursingStencildiv::before {
+  content: "";
 
-    content: ""; 
+  position: relative;
 
-    position: relative;
+  left: 7.4rem;
+  top: 2.6rem;
+  width: 3px;
+  height: 100%;
 
-    left: 6.27rem;
-    top: 2.6rem;
-    width: 3px;
-    height: 100%;
-    
-    background: #D8D8D8;
+  background: #d8d8d8;
 }
-.nursingStencildivBox:last-child{
-    .nursingStencildiv::before{
-        display: none;
-        // border-bottom: none;
-    }
+.nursingStencildiv:last-child {
+  .nursingStencildiv1::before {
+    display: none;
+    border-bottom: none;
+  }
 }
-.nursingStencildiv1::before{
-    content: ""; 
-    position: relative;
-    left: 7.2rem;
-    top: 2.6rem;
-    width: 3px;
-    height: 100%;
-    background: #D8D8D8;
+.nursingStencildivBox:last-child {
+  .nursingStencildiv::before {
+    display: none;
+    // border-bottom: none;
+  }
 }
-
-.nursingStencildivBox:last-child{
-    .nursingStencildiv1::before{
-        display: none;
-        border-bottom: none;
-    }
+.nursingStencildiv1::before {
+  content: "";
+  position: relative;
+  left: 6.3rem;
+  top: 2.6rem;
+  width: 3px;
+  height: 100%;
+  background: #d8d8d8;
 }
 
-.qx{
-    border: none;
+.nursingStencildivBox:last-child {
+  .nursingStencildiv1::before {
+    display: none;
+    border-bottom: none;
+  }
 }
 
+.qx {
+  border: none;
+}
 
 // :where(.css-dev-only-do-not-override-u4freh).ant-btn{
 //     margin-right: 2.15rem;
@@ -66,29 +65,85 @@
 //     margin-top: 1rem;
 // }
 
-
-@media screen and (min-width: $PadWidth) and (max-width:$phoneWidth ) {
-    .homeTitle{
-        display: flex;
-        justify-content: normal!important;
-        font-weight: 900;
-    }
+@media screen and (min-width: $PadWidth) and (max-width: $phoneWidth) {
+  .homeTitle {
+    display: flex;
+    justify-content: normal !important;
+    font-weight: 900;
+  }
 }
 // .adm-popup-body adm-popup-body-position-bottom{
 //     height: 79vh;
 // }
-.nursingStencildivyidong::before{
-    content: ""; 
-    position: relative;
-    left: 79%;
-    top: 2.6rem;
-    width: 3px;
-    height: 100%;
-    background: #D1D9E1;
+.nursingStencildivyidong::before {
+  content: "";
+  position: relative;
+  left: 79%;
+  top: 2.6rem;
+  width: 3px;
+  height: 100%;
+  background: #d1d9e1;
 }
-@media screen and (min-width: $PadWidth) and (max-width:$phoneWidth ) {
+@media screen and (min-width: $PadWidth) and (max-width: $phoneWidth) {
+  // .adm-popup-body adm-popup-body-position-bottom{
+  //     height: 79vh;
+  // }
+}
 
-    // .adm-popup-body adm-popup-body-position-bottom{
-        //     height: 79vh;
-        // }
+.use_nurse_template {
+  display: flex;
+  align-items: center;
+  p {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    &.active {
+      span {
+        &:nth-child(1) {
+          outline: 0.46rem solid #1677ff;
+          width: 0.5rem;
+          height: 0.5rem;
+        }
+      }
+    }
+    span {
+      &:nth-child(1) {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 1rem;
+        height: 1rem;
+        outline: 0.2rem solid #d9d9d9;
+        border-radius: 100%;
+        margin-right: 0.9rem;
+        background: #fff;
+      }
+    }
+    &:nth-child(1) {
+      margin-right: 2rem;
+    }
+  }
+}
+
+/* 整个滚动条 */
+.scrollbar::-webkit-scrollbar {
+  width: 5px; /* 设置垂直滚动条宽度 */
+  height: 5px; /* 设置水平滚动条高度 */
+}
+
+/* 滚动条轨道 */
+.scrollbar::-webkit-scrollbar-track {
+  background: transparent; /* 滚动条轨道背景 */
+}
+
+/* 滚动条滑块 */
+.scrollbar::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2); /* 滑块颜色 */
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+/* 滑块 hover 效果 */
+.scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(0, 0, 0, 0.4);
 }

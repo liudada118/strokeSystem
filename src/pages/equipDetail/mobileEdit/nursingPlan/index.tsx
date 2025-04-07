@@ -120,10 +120,24 @@ export default function NursingPlan() {
   }, []);
   return (
     <>
-      <CommonNavBar title={title} onBack={() => navigate(-1)} />
+      <CommonNavBar
+        title={
+          nurseList.length === 0
+            ? "护理配置"
+            : operType === "init"
+            ? "护理计划"
+            : operType === "add" && !isEdit
+            ? "设置护理计划"
+            : operType === "add" && isEdit
+            ? "创建护理计划"
+            : "护理配置"
+        }
+        onBack={() => navigate(-1)}
+      />
       <div
-        className={`${nurseList.length === 0 ? "nurse_box_empty" : ""
-          } nurse_box`}
+        className={`${
+          nurseList.length === 0 ? "nurse_box_empty" : ""
+        } nurse_box`}
       >
         {isEdit ? (
           <NurseConfEdit
@@ -176,7 +190,7 @@ export default function NursingPlan() {
                   type="primary"
                   onClick={saveTemplate}
                   className="mt-[1rem] w-[full]"
-                  style={{ width: '100%' }}
+                  style={{ width: "100%" }}
                 >
                   应用护理计划
                 </Button>

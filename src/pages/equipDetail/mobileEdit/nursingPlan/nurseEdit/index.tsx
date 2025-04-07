@@ -85,7 +85,7 @@ export default function NurseConfEdit(props: any) {
       },
     }).then((res: any) => {
       if (res.data.code === 0) {
-        const nursingConfig = JSON.parse(res.data.nursingConfig || '{}');
+        const nursingConfig = JSON.parse(res.data.nursingConfig || "{}");
         if (nursingConfig.length > 0) {
           setTempList(nursingConfig);
         }
@@ -103,10 +103,10 @@ export default function NurseConfEdit(props: any) {
     <>
       <Form
         name="basic"
-        layout={'vertical'}
+        layout={"vertical"}
         labelCol={{ span: 8 }}
         wrapperCol={{ span: 16 }}
-        style={{ maxWidth: 600, }}
+        style={{ maxWidth: 600 }}
         initialValues={{ remember: true }}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
@@ -114,96 +114,103 @@ export default function NurseConfEdit(props: any) {
         className="use_nurse_form"
         requiredMark={false}
       >
-        {props.nurseList.length === 0 && <Form.Item
-          label="应用护理模版"
-          name="use"
-          rules={[{ required: false, message: "Please input your username!" }]}
-        >
-          <div className="use_nurse_template" style={{}}>
-            {[
-              { value: 1, label: "否" },
-              { value: 2, label: "是" },
-            ].map((item, index) => {
-              return (
-                <p
-                  className={isUseDefault === item.value ? "active" : ""}
-                  onClick={async (e) => {
-                    setIsUseDefault(item.value);
-                    if (item.value === 2) {
-                      setIsShowChooseTemp(true);
-                      getPersonTemplate(1);
-                    }
-                  }}
-                  key={index + "_radio"}
-                >
-                  <span></span>
-                  <span>{item.label}</span>
-                </p>
-              );
-            })}
-          </div>
-        </Form.Item>}
+        {props.nurseList.length === 0 && (
+          <Form.Item
+            label=""
+            name="use"
+            rules={[
+              { required: false, message: "Please input your username!" },
+            ]}
+          >
+            <span>应用护理模版：</span>
+            <div className="use_nurse_template" style={{}}>
+              {[
+                { value: 1, label: "否" },
+                { value: 2, label: "是" },
+              ].map((item, index) => {
+                return (
+                  <p
+                    className={isUseDefault === item.value ? "active" : ""}
+                    onClick={async (e) => {
+                      setIsUseDefault(item.value);
+                      if (item.value === 2) {
+                        setIsShowChooseTemp(true);
+                        getPersonTemplate(1);
+                      }
+                    }}
+                    key={index + "_radio"}
+                  >
+                    <span></span>
+                    <span>{item.label}</span>
+                  </p>
+                );
+              })}
+            </div>
+          </Form.Item>
+        )}
 
         <Form.Item
-          label="护理名称"
+          label=""
           name="title"
-          rules={[{ required: true, message: "Please input your password!" }]}
+          rules={[{ required: true, message: "请填写护理名称!" }]}
         >
+          <span>护理名称：</span>
           <Input className="w-[23rem] h-10" />
         </Form.Item>
 
         <div className="time_box">
-          <span>护理时间</span>
-          <Form.Item
-            label=""
-            name="hours"
-            rules={[{ required: true, message: "请选择!" }]}
-          >
-            <Select
-              showSearch
-              style={{
-                width: "8.1rem",
-                height: "2.48rem",
-                marginLeft: "0.7rem",
-              }}
-              placeholder="小时"
-              optionFilterProp="children"
+          <span className="form_title">护理时间：</span>
+          <div className="time_item">
+            <Form.Item
+              label=""
+              name="hours"
+              rules={[{ required: true, message: "请选择!" }]}
             >
-              {[...Array(23)].map((_, index) => (
-                <Select.Option key={index} value={(index + 1).toString()}>
-                  {index + 1}小时
-                </Select.Option>
-              ))}
-            </Select>
-          </Form.Item> :
-          <Form.Item
-            label=""
-            name="minutes"
-            rules={[{ required: true, message: "请选择!" }]}
-          >
-            <Select
-              showSearch
-              style={{
-                width: "8.1rem",
-                height: "2.48rem",
-                marginLeft: "0.7rem",
-              }}
-              placeholder="分钟"
-              optionFilterProp="children"
+              <Select
+                showSearch
+                style={{
+                  width: "8.1rem",
+                  height: "2.48rem",
+                  marginLeft: "0.7rem",
+                }}
+                placeholder="小时"
+                optionFilterProp="children"
+              >
+                {[...Array(23)].map((_, index) => (
+                  <Select.Option key={index} value={(index + 1).toString()}>
+                    {index + 1}小时
+                  </Select.Option>
+                ))}
+              </Select>
+            </Form.Item>
+            <span className="split"> : </span>
+            <Form.Item
+              label=""
+              name="minutes"
+              rules={[{ required: true, message: "请选择!" }]}
             >
-              {[...Array(59)].map((_, index) => (
-                <Select.Option key={index} value={(index + 1).toString()}>
-                  {index + 1}分钟
-                </Select.Option>
-              ))}
-            </Select>
-          </Form.Item>
+              <Select
+                showSearch
+                style={{
+                  width: "8.1rem",
+                  height: "2.48rem",
+                  marginLeft: "0.7rem",
+                }}
+                placeholder="分钟"
+                optionFilterProp="children"
+              >
+                {[...Array(59)].map((_, index) => (
+                  <Select.Option key={index} value={(index + 1).toString()}>
+                    {index + 1}分钟
+                  </Select.Option>
+                ))}
+              </Select>
+            </Form.Item>
+          </div>
         </div>
-        <Form.Item label={null}>
-          <Button type="primary" htmlType="submit">
-            {props.nurseList.length === 0 ? "添加护理任务" : "保存护理任务"}
-          </Button>
-        </Form.Item>
+        <Button type="primary" htmlType="submit" style={{width: '100%', height: '3rem'}}>
+          {props.nurseList.length === 0 ? "添加护理任务" : "保存护理任务"}
+        </Button>
       </Form>
       {isShowChooseTemp && (
         <Popup

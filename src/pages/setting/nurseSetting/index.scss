@@ -74,7 +74,7 @@
     height: calc(100% - 13px);
     position: absolute;
     top: 30px;
-    left: 4.3rem;
+    left: 4.4rem;
   }
   &.finsh {
     &::before {
@@ -120,10 +120,19 @@
 .NurseTableTitle1 {
 }
 
-@media screen and (min-width: $phoneWidth) and (max-width: $PadWidth) {
+@media screen and (min-width: $phoneWidth) and (max-width: 760px) {
   .care_box {
     &:not(:last-child):before {
-      left: 3.8rem;
+      left: 5.1rem;
+    }
+  }
+}
+
+
+@media screen and (min-width: 760px) and (max-width: 980px) {
+  .care_box {
+    &:not(:last-child):before {
+      left: 4.1rem;
     }
   }
 }

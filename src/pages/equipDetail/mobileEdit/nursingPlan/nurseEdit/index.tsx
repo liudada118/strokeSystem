@@ -156,7 +156,7 @@ export default function NurseConfEdit(props: any) {
           rules={[{ required: true, message: "请填写护理名称!" }]}
         >
           <span>护理名称：</span>
-          <Input className="w-[23rem] h-10" />
+          <Input className="h-10" />
         </Form.Item>
 
         <div className="time_box">
@@ -169,13 +169,9 @@ export default function NurseConfEdit(props: any) {
             >
               <Select
                 showSearch
-                style={{
-                  width: "8.1rem",
-                  height: "2.48rem",
-                  marginLeft: "0.7rem",
-                }}
                 placeholder="小时"
                 optionFilterProp="children"
+                className="h-10"
               >
                 {[...Array(23)].map((_, index) => (
                   <Select.Option key={index} value={(index + 1).toString()}>
@@ -192,13 +188,9 @@ export default function NurseConfEdit(props: any) {
             >
               <Select
                 showSearch
-                style={{
-                  width: "8.1rem",
-                  height: "2.48rem",
-                  marginLeft: "0.7rem",
-                }}
                 placeholder="分钟"
                 optionFilterProp="children"
+                className="h-10"
               >
                 {[...Array(59)].map((_, index) => (
                   <Select.Option key={index} value={(index + 1).toString()}>

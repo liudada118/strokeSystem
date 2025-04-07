@@ -28,6 +28,7 @@ import dianyuanquan from "../../../../assets/images/yanquan.png";
 import { Picker, Popup } from "antd-mobile";
 import NurseTitle from "./NurseTitle";
 import { useNavigate, useLocation } from "react-router-dom";
+
 type MenuItem = Required<MenuProps>["items"][number];
 type DefaultOptionType = {
   value: string | number;
@@ -380,7 +381,7 @@ function NursingOpen(props: propsType) {
                 className="w-[27.5rem] h-[2.7rem]"
                 type="primary"
               >
-                新建护理项目111
+                新建护理项目
               </Button>
             </div>
           </div>
@@ -406,15 +407,16 @@ function NursingOpen(props: propsType) {
           </div>
           <Modal
             width={"40.45rem"}
-            okText="应用此模版"
+            okText="选择此模版"
             cancelText="取消"
             open={isModalOpen}
             onOk={handleOk}
             onCancel={handleCancel}
+            className="ModalNursingOpen"
             footer={[
               // 自定义页脚，只包含确认按钮
-              <Button key="ok" type="primary" onClick={handleOk}>
-                应用此模版11111
+              <Button key="ok" type="primary" style={{ width: "6.8rem", height: "2rem" }} onClick={handleOk}>
+                选择此模版
               </Button>,
             ]}
             maskClosable={false}

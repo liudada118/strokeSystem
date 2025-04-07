@@ -13,7 +13,7 @@ import { ExclamationCircleOutlined } from "@ant-design/icons";
 import mobileNurse from "@/assets/image/mobileNurseBig.png";
 import dayjs from "dayjs";
 import { PersonalContentInfo } from "@/pages/equipDetail/EditingUser";
-
+import loog from '../../../../assets/images/logo.png'
 const { confirm } = Modal;
 
 export default function NursingPlan() {
@@ -152,8 +152,8 @@ export default function NursingPlan() {
   return (
     <>
       <div className="nurse_header_logo">
-        <img src="" alt="" />
-        logologo
+        <img style={{ width: "2rem", height: "2rem", marginLeft: "1rem" }} src={loog} alt="" />
+        <p style={{ fontWeight: "600", fontSize: "1rem", marginLeft: "1rem" }}>JQ HEALTHCARE</p>
       </div>
       <CommonNavBar
         style={{ position: "inherit" }}
@@ -171,7 +171,7 @@ export default function NursingPlan() {
         onBack={() => navigate(-1)}
       />
       <div
-        className={`${nurseList.length === 0 ? "nurse_box_empty" : ""
+        className={`${nurseList.length === 0 && !isEdit ? "nurse_box_empty" : ""
           } nurse_box`}
       >
         {isEdit ? (

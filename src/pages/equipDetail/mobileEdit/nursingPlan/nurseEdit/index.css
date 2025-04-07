@@ -1,0 +1,136 @@
+.use_nurse_template {
+  display: flex;
+  align-items: center;
+}
+
+.use_nurse_template p {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.use_nurse_template p.active span:nth-child(1) {
+  outline: 0.4rem solid #1677ff;
+  width: 0.25rem;
+  height: 0.25rem;
+}
+
+.use_nurse_template p span:nth-child(1) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 0.6rem;
+  height: 0.6rem;
+  outline: 0.2rem solid #d9d9d9;
+  border-radius: 100%;
+  margin-right: 0.9rem;
+  background: #fff;
+}
+
+.use_nurse_template p:nth-child(1) {
+  margin-right: 2rem;
+}
+
+.default-popup {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.use_nurse_form.ant-form.ant-form-vertical {
+  padding: 1rem;
+  background: #fff;
+  border-radius: 1rem;
+  width: 100%;
+  max-width: 100% !important;
+}
+
+.use_nurse_form.ant-form.ant-form-vertical .use_nurse_template {
+  margin-left: 1rem;
+}
+
+.use_nurse_form.ant-form.ant-form-vertical .ant-form-item {
+  display: flex;
+  flex-wrap: nowrap;
+  margin-bottom: 1rem;
+}
+
+.use_nurse_form.ant-form.ant-form-vertical .ant-form-item .ant-row {
+  width: 100%;
+}
+
+.use_nurse_form.ant-form.ant-form-vertical .ant-form-item .ant-form-item-control {
+  width: 100%;
+  max-width: 100% !important;
+}
+
+.use_nurse_form.ant-form.ant-form-vertical .ant-form-item .ant-form-item-control-input-content {
+  display: flex;
+  align-items: center;
+}
+
+.use_nurse_form.ant-form.ant-form-vertical .ant-form-item .ant-form-item-control-input-content > span {
+  display: flex;
+  align-items: center;
+  max-width: 7.3rem;
+  min-width: 5.5rem;
+}
+
+.use_nurse_form.ant-form.ant-form-vertical .ant-form-item .ant-form-item-control-input-content > span::before {
+  display: flex;
+  content: ' ';
+  width: 0.5rem;
+  height: 0.5rem;
+  background: #1677ff;
+  border-radius: 100%;
+  margin-right: 0.5rem;
+}
+
+.use_nurse_form.ant-form.ant-form-vertical .time_box {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  margin-bottom: 1rem;
+}
+
+.use_nurse_form.ant-form.ant-form-vertical .time_box > .form_title {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  width: 5.5rem;
+}
+
+.use_nurse_form.ant-form.ant-form-vertical .time_box > .form_title::before {
+  display: flex;
+  content: ' ';
+  width: 0.5rem;
+  height: 0.5rem;
+  background: #1677ff;
+  border-radius: 100%;
+  margin-right: 0.5rem;
+}
+
+.use_nurse_form.ant-form.ant-form-vertical .time_box .split {
+  width: 1rem;
+  text-align: center;
+  height: 2.48rem;
+  line-height: 2.48rem;
+  flex-shrink: 0;
+}
+
+.use_nurse_form.ant-form.ant-form-vertical .time_box .time_item {
+  display: flex;
+  width: calc(100% - 5.5rem);
+}
+
+.use_nurse_form.ant-form.ant-form-vertical .time_box .time_item .ant-form-item {
+  flex: 1;
+  margin-bottom: 0 !important;
+  width: calc(50% - 1rem);
+}
+
+.use_nurse_form.ant-form.ant-form-vertical .time_box .time_item .ant-form-item .ant-select {
+  margin-left: 0 !important;
+  width: 100%;
+  max-width: 100%;
+}

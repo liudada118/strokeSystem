@@ -39,6 +39,10 @@
   }
   .use_nurse_form.ant-form.ant-form-vertical {
     padding: 1rem;
+    background: #fff;
+    border-radius: 1rem;
+    width: 100%;
+    max-width: 100% !important;
     
     .use_nurse_template {
       margin-left: 1rem;
@@ -49,6 +53,10 @@
       margin-bottom: 1rem;
       .ant-row {
           width: 100%;
+      }
+      .ant-form-item-control {
+        width: 100%;
+        max-width: 100% !important;
       }
       .ant-form-item-control-input-content {
         display: flex;
@@ -107,6 +115,8 @@
               width: calc(50% - 1rem);
               .ant-select {
                   margin-left: 0 !important;
+                  width: 100%;
+                  max-width: 100%;
               }
               // &:nth-child(1) {
               //   .ant-form-item {

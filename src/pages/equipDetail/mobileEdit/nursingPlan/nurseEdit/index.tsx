@@ -28,12 +28,12 @@ import dayjs from "dayjs";
 export default function NurseConfEdit(props: any) {
   const items = [
     {
-      key: "49",
+      key: "1",
       label: "自理老人护理模版",
       value: "意识清醒，行动自如，需生活辅助",
     },
     {
-      key: "47",
+      key: "2",
       label: "半自理老人护理模版",
       value: "部分活动受限，需助行/如厕协助",
     },
@@ -59,7 +59,7 @@ export default function NurseConfEdit(props: any) {
     const isHasTemp = props.nurseList.find((item: any) => {
       return +item.key === +templateTime;
     });
-    if (isHasTemp) return message.warning("该护理时间已存在重重新选择！");
+    if (isHasTemp) return message.warning("该护理时间已存在请重新选择！");
     props.setNurseTask({
       key: templateTime.toString(),
       status: "todo",
@@ -81,11 +81,12 @@ export default function NurseConfEdit(props: any) {
       },
       params: {
         deviceId: props.sensorName,
-        type,
+        // 这个type展示献先写死 到时候要换成 这个里面的 iditems
+        type: 'common'
       },
     }).then((res: any) => {
       if (res.data.code === 0) {
-        const nursingConfig = JSON.parse(res.data.nursingConfig || "{}");
+        const nursingConfig = JSON.parse(res.data.nursingConfig || "[]");
         if (nursingConfig.length > 0) {
           setTempList(nursingConfig);
         }
@@ -208,7 +209,7 @@ export default function NurseConfEdit(props: any) {
             </Form.Item>
           </div>
         </div>
-        <Button type="primary" htmlType="submit" style={{width: '100%', height: '3rem'}}>
+        <Button type="primary" htmlType="submit" style={{ width: '100%', height: '3rem' }}>
           {props.nurseList.length === 0 ? "添加护理任务" : "保存护理任务"}
         </Button>
       </Form>

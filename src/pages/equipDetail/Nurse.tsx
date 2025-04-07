@@ -10,7 +10,9 @@ import NursingOpen from '../equipDetail/nurseprocess/nursingOpen/nursingOpen'
 import { nurseOpen, nurseIsOpenAdd } from '../../redux/Nurse/Nurse'
 import { Instancercv } from '@/api/api'
 import NursingStencil from './nurseprocess/nursingOpen/nursingStencil'
+import img from '../../assets/images/nurseChuangjian.png'
 import './nurse.scss'
+import { PlusCircleOutlined } from "@ant-design/icons";
 
 const ThemeTable = {
     components: {
@@ -87,7 +89,7 @@ const Nurse: React.FC = () => {
                 {
                     openNurse ?
                         !isModifyNurse && (nursePersonTemplate || []).length > 0 ? <div className="w-full h-full flex justify-between bg-[#fff]" > <div className="h-full w-full">
-                            <NursingStencil nursePersonTemplate={nursePersonTemplate} statue={1} />
+                            <NursingStencil sensorName={sensorName} nursePersonTemplate={nursePersonTemplate} statue={1} />
                             {/* <NurseTable type={'project'} sensorName={sensorName} getNurseTemplate={getNurseTemplate} templateId={templateId} data={nurseTemplate || []} /> */}
                             <Button onClick={modifyNurseTemplate}
                                 className="h-[2rem] w-[10rem]" type='primary' style={{ position: 'absolute', bottom: '2rem', right: '2rem', }}>
@@ -97,9 +99,14 @@ const Nurse: React.FC = () => {
                             :
                             !isOpen ?
                                 < div className={`w-full h-full  bg-[${openNurse ? '#fff' : ''}]    flex items-center justify-center`}>
-                                    <div className=" w-[13rem] h-[4rem] " style={{ textAlign: "center" }}>
-                                        <p className="mb-[1rem] text-[1rem] text-[#A4B0BC]">当前无护理项</p>
-                                        <Button onClick={() => onOpen()} type="primary" className="h-[2.7rem] w-[13rem]">创建护理项</Button>
+                                    <div className=" w-[15.5] h-[4rem] " style={{ textAlign: "center" }}>
+                                        <p style={{ width: "15.5", display: ' flex', justifyContent: 'space-evenly' }}>
+                                            <img style={{ width: "4.2rem", height: "5.2rem" }} src={img} alt="" />
+                                        </p>
+                                        <p className="mb-[1rem] text-[1.15rem] text-[#A4B0BC]">
+                                            当前无护理计划
+                                        </p>
+                                        <Button onClick={() => onOpen()} type="primary" className="h-[3rem] w-[15.5rem] text-[1rem]"><PlusCircleOutlined />创建护理项</Button>
                                     </div>
                                 </div> : <NursingOpen saveNurseTemplate={saveNurseTemplate} setIsOpen={setIsOpen} setIsModifyNurse={setIsModifyNurse} nursePersonTemplate={nursePersonTemplate || []} />
                         : <>

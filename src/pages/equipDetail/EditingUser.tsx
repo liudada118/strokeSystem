@@ -330,7 +330,10 @@ const PersonalOtherInfo = (props: otherInfoParam) => {
 
   const { type } = props;
   return (
-    <div className="bg-[#f4f5f6] pt-[4rem] flex" style={{height: '100%', flexDirection: 'column'}}>
+    <div
+      className="bg-[#f4f5f6] pt-[4rem] flex"
+      style={{ height: "100%", flexDirection: "column", paddingTop: `${type !== "nurse" ? '4rem': '0'}` }}
+    >
       {type !== "nurse" && (
         <>
           <CommonNavBar

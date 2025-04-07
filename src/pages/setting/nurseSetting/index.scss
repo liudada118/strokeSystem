@@ -1,122 +1,129 @@
-.setContent.nurseSetContent{
-    flex-direction: row;
+.setContent.nurseSetContent {
+  flex-direction: row;
 }
 
 .setContent {
+  display: flex;
+  flex-direction: column;
+  min-height: 60vh;
+  background-color: #f5f6f7;
+
+  .setBox {
+    flex: 1;
+    margin-bottom: 60px;
+    margin-top: 4rem;
+  }
+
+  .reprotSelect {
+    display: none;
+  }
+
+  .setTitle {
+    background-color: #fefefe;
+    padding: 1rem 2rem;
+    border-bottom: #f5f6f7 1px solid;
     display: flex;
-    flex-direction: column;
-    min-height: 60vh;
-    background-color: #F5F6F7;
+    justify-content: space-between;
+    font-size: 1.28rem;
+    color: #222;
+    align-items: center;
 
-    .setBox {
-        flex: 1;
-        margin-bottom: 60px;
-        margin-top: 4rem;
+    .setTitleImg {
+      width: 1.76rem;
+      height: 1.76rem;
     }
 
-    .reprotSelect {
-        display: none;
+    img {
+      width: 1rem;
+      height: 1rem;
     }
+  }
 
-    .setTitle {
-        background-color: #fefefe;
-        padding: 1rem 2rem;
-        border-bottom: #F5F6F7 1px solid;
-        display: flex;
-        justify-content: space-between;
-        font-size: 1.28rem;
-        color: #222;
-        align-items: center;
+  .loginOut {
+    margin-top: 1rem;
 
-        .setTitleImg {
-            width: 1.76rem;
-            height: 1.76rem;
-        }
-
-        img {
-            width: 1rem;
-            height: 1rem;
-        }
+    // background-color: #fefefe;
+    // padding: 0.72rem 1.2rem;
+    .loginOutButton {
+      font-size: 1.28rem;
+      color: #fff;
+      padding: 0.72rem 0;
+      background: linear-gradient(135deg, #46b9ff 0%, #b4d4ff 100%);
+      border-radius: 0.72rem;
+      text-align: center;
     }
-
-    .loginOut {
-        margin-top: 1rem;
-
-        // background-color: #fefefe;
-        // padding: 0.72rem 1.2rem;
-        .loginOutButton {
-            font-size: 1.28rem;
-            color: #fff;
-            padding: 0.72rem 0;
-            background: linear-gradient(135deg, #46B9FF 0%, #B4D4FF 100%);
-            border-radius: 0.72rem;
-            text-align: center;
-        }
-    }
+  }
 }
 
 .isTemp.care_box {
-    display: flex;
-    align-items: center;
-    &:not(:last-child):before {
-        top: 32px;
-    }
+  display: flex;
+  align-items: center;
+  &:not(:last-child):before {
+    top: 32px;
+  }
 }
 .care_box {
-    // width: 100%;
-    // height: 3rem;
-    // display: flex;
-    // align-items: center;
+  // width: 100%;
+  // height: 3rem;
+  // display: flex;
+  // align-items: center;
+  &:not(:last-child):before {
+    display: inline-block;
+    content: " ";
+    width: 0.2rem;
+    height: calc(100% - 13px);
+    position: absolute;
+    top: 30px;
+    left: 4.3rem;
+  }
+  &.finsh {
+    &::before {
+      background: #0072ef;
+      height: 100%;
+    }
+  }
+  &.todo {
+    &::before {
+      background: #e6ebf0;
+      height: 100%;
+    }
+  }
+}
+.NurseTableImg::before {
+  content: "";
+  position: absolute;
+  left: 7.9rem;
+  top: 1rem;
+  width: 0.9rem;
+  height: 0.9rem;
+  background: url("../../../assets/images/shijian.png") no-repeat center center; /* 设置背景图片 */
+  // background: #D8D8D8;
+  background-size: 100% 100%; /* 确保图片覆盖整个伪元素 */
+}
+.NurseTableImgBox::before {
+  content: "";
+//   position: absolute;
+//   left: 6rem;
+//   top: 1.4rem;
+    margin-right: 5px;
+  width: 0.9rem;
+  height: 0.9rem;
+  background: url("../../../assets/images/shijian.png") no-repeat center center; /* 设置背景图片 */
+  // background: #D8D8D8;
+  background-size: 100% 100%; /* 确保图片覆盖整个伪元素 */
+}
+.NurseTableTitle {
+  line-height: 2.3rem;
+  padding-left: 1.5rem;
+  padding-right: 2.6rem;
+}
+.NurseTableTitle1 {
+}
+
+@media screen and (min-width: $phoneWidth) and (max-width: $PadWidth) {
+  .care_box {
     &:not(:last-child):before {
-        display: inline-block;
-        content: " ";
-        width: 0.2rem;
-        height: calc(100% - 13px);
-        position: absolute;
-        top: 30px;
-        left: 4.3rem;
+      left: 3.8rem;
     }
-    &.finsh {
-        &::before {
-            background: #0072ef;
-            height: 100%;
-        }
-    }
-    &.todo {
-        &::before {
-            background: #E6EBF0;
-            height: 100%;
-        }
-    }
+  }
 }
-.NurseTableImg::before{
-    content:''; 
-    position: absolute;
-    left: 7.9rem;
-    top: 1rem;
-    width: 0.9rem;
-    height: 0.9rem;
-    background: url('../../../assets/images/shijian.png') no-repeat center center; /* 设置背景图片 */
-    // background: #D8D8D8;
-    background-size: 100% 100%; /* 确保图片覆盖整个伪元素 */
-}
-.NurseTableImgBox::before{
-    content:''; 
-    position: absolute;
-    left: 6rem;
-    top: 1.4rem;
-    width: 0.9rem;
-    height: 0.9rem;
-    background: url('../../../assets/images/shijian.png') no-repeat center center; /* 设置背景图片 */
-    // background: #D8D8D8;
-    background-size: 100% 100%; /* 确保图片覆盖整个伪元素 */
-}
-.NurseTableTitle{
-    line-height: 2.3rem;
-    padding-left: 1.5rem;
-    padding-right: 2.6rem;
-}
-.NurseTableTitle1{
-
-}
-

@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import "./index.scss";
-import { Button, message, Modal } from "antd";
+import { Button, message, Modal, Radio } from "antd";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
 import greyNotice from "@/assets/image/greyNotice.png";
@@ -15,6 +15,7 @@ import NurseTitle from "../../equipDetail/nurseprocess/nursingOpen/NurseTitle";
 import lanse from "../../../assets/images/蓝色.png";
 import { useNavigate } from "react-router-dom";
 import { getQueryParams } from "@/utils/getQueryParam";
+import { log } from "node:console";
 const { confirm } = Modal;
 /**
  *
@@ -61,6 +62,8 @@ export default function NurseTable(props: tableProps) {
   const nurseIsOpenAdd = useSelector((state: any) => state.nurse.nurseOpen);
   const isPhone = useGetWindowSize();
   const navigate = useNavigate();
+  console.log(props.data, '................. NurseTableNurseTableNurseTable');
+
   const title = [
     {
       key: "completionTime",
@@ -331,9 +334,38 @@ export default function NurseTable(props: tableProps) {
       state: "addnurse",
     });
   };
-  const id = window.location.href.split("/")[5]
-  console.log(id, '.....................idiiiiiiiii');
+  const id = window.location.href.split("/")[5];
+  console.log(id, ".....................idiiiiiiiii");
+  const [isModalChangePasswordOpen, setIsModalChangePasswordOpen] = useState(false)
+  const [selectValue, setSelectValue] = useState(1)
+  console.log(selectValue, '.......selectValue');
 
+  const handleChangePasswordOk = async () => {
+    Instancercv({
+      method: "get",
+      url: "/nursing/getNursingConfig",
+      headers: {
+        "content-type": "multipart/form-data",
+        token: localStorage.getItem("token"),
+      },
+      params: {
+        deviceId: sensorName,
+        ...(type ? { type } : {}),
+        templateEffectiveFlag: selectValue,
+        templateUpdatetime: new Date().getTime()
+
+      },
+    }).then(async (res: any) => {
+      message.info('模版保存成功')
+      saveTemplate()
+      setIsModalChangePasswordOpen(false)
+    })
+
+
+  }
+  const handleChangePasswordCancel = () => {
+    setIsModalChangePasswordOpen(false)
+  }
   return (
     <>
       {!isPhone ? (
@@ -346,6 +378,7 @@ export default function NurseTable(props: tableProps) {
             style={{
               height: `${nurseOpne === false ? "37.7rem" : "100%"}`,
               // height: `${nurseOpne === false ? "auto" : "100%"}`,
+              position: "relative",
             }}
           >
             {nurseOpne == "" ? (
@@ -393,7 +426,14 @@ export default function NurseTable(props: tableProps) {
                 </div>
               </>
             )}
-            <div className="flex " style={{ overflowY: "auto", height: nurseIsOpenAdd === true ? "31.7rem" : "37.7rem" }}>
+            <div
+              className="flex "
+              style={{
+                overflowY: "auto",
+                height:
+                  nurseIsOpenAdd === true ? "calc(100% - 135px)" : "37.7rem",
+              }}
+            >
               <div
                 className="grow"
                 style={{ overflow: "hidden", textAlign: "center" }}
@@ -406,11 +446,20 @@ export default function NurseTable(props: tableProps) {
                     if (a.type === "按时时间自动排序") {
                       return (
                         <div
-                          style={{ lineHeight: "2.3rem", paddingLeft: "1rem" }}
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            // flexDirection: "column",
+                            width: "8.3rem",
+                            lineHeight: "1.7rem",
+                            paddingLeft: "1rem",
+                            paddingBottom: '5px'
+                          }}
+                          className="flex-shrink-0"
                         >
                           {" "}
                           <span className="text-xs ">{a.titleValue}</span>
-                          <span className="text-[0.5rem] text-[#929EAB]">
+                          <span className="text-[12px] text-[#929EAB]" style={{ lineHeight: '12px' }}>
                             {a.type}
                           </span>
                         </div>
@@ -419,7 +468,12 @@ export default function NurseTable(props: tableProps) {
                     if (a.key === "templateTitle") {
                       return (
                         <div
-                          style={{ lineHeight: "2.3rem", paddingLeft: "1rem" }}
+                          style={{
+                            lineHeight: "1.7rem",
+                            width: "3rem"
+                            // textAlign: "center",
+                            // flex: 1,
+                          }}
                         >
                           护理内容
                         </div>
@@ -428,8 +482,8 @@ export default function NurseTable(props: tableProps) {
                     if (a.key === "status") {
                       return (
                         <div
-                          className="cursor-pointer"
-                          style={{ lineHeight: "2.3rem", paddingLeft: "6rem" }}
+                          className="cursor-pointer flex-shrink-0"
+                          style={{ lineHeight: "30px", width: "7rem", textAlign: "center" }}
                         >
                           状态
                         </div>
@@ -482,7 +536,6 @@ export default function NurseTable(props: tableProps) {
                             : "isTemp"
                             } ${item.status ? "finsh" : "todo"
                             } flex py-[13px] relative items-start care_box`}
-
                         >
                           {title.map((keys) => {
                             const key = keys.key;
@@ -509,21 +562,9 @@ export default function NurseTable(props: tableProps) {
                                   data[index + 1]?.status
                                 );
                                 return (
-                                  //   .isTemp.care_box {
-                                  //     display: flex;
-                                  //     align-items: center;
-                                  //     &:not(:last-child):before {
-                                  //         top: 32px;
-                                  //     }
-                                  // }
                                   <div
-                                    // className={`w-[5rem] shrink-0 text-xs ${titleInfo.width
-                                    //   ? `w-[${titleInfo.width}]`
-                                    //   : "grow text-left"
-                                    //   } flex justify-center items-center text-[${timeTextColor}]`}
                                     className="flex "
-                                    // style={{ overflow: 'auto' }}
-                                    style={{ width: id === '1' ? '36%' : "3.2rem" }}
+                                    style={{ width: "80px" }}
                                   >
                                     <span className={`w-[3.2rem] pl-[1rem]`}>
                                       {dayjs(item[keys.key]).format("HH:mm")}
@@ -558,6 +599,7 @@ export default function NurseTable(props: tableProps) {
                                       color="default"
                                       variant="filled"
                                       className="yyyyyyyds text-[#929EAB] bg-[#E6EBF0]"
+                                      style={{ padding: "0 5px" }}
                                     >
                                       待完成
                                     </Button>
@@ -573,7 +615,11 @@ export default function NurseTable(props: tableProps) {
                                     //   : "grow text-left"
                                     //   } text-[${timeTextColor}]`}
                                     // type="primary"
-                                    style={{ border: "none", background: "none" }}
+                                    style={{
+                                      border: "none",
+                                      background: "none",
+                                      padding: "0 5px",
+                                    }}
                                     className="text-[#929EAB] bg-[#E6EBF0]"
                                   >
                                     已完成
@@ -606,11 +652,17 @@ export default function NurseTable(props: tableProps) {
                                         },
                                       });
                                     }}
-                                    className="w-[7rem]  cursor-pointer yyyyyyyds"
-                                  // style={{ borderBottom: "1px solid #D8D8D8", }}
+                                    className="w-[60px]  cursor-pointer yyyyyyyds"
+                                    // style={{ borderBottom: "1px solid #D8D8D8", }}
+                                    style={{
+                                      display: "flex",
+                                      flexDirection: "column",
+                                      justifyContent: "center",
+                                      alignItems: "center",
+                                    }}
                                   >
                                     <img
-                                      className="w-[1rem] ml-[2.6rem] bg-[#0072EF]"
+                                      className="w-[1rem] first-line:bg-[#0072EF]"
                                       src={sheetDelete}
                                       alt=""
                                     />
@@ -626,28 +678,29 @@ export default function NurseTable(props: tableProps) {
                                   //   ? `w-[${titleInfo.width}] text-center`
                                   //   : "grow "
                                   //   } text-[${nurseTextColor}] text-sm flex flex-col flex-1`}
-                                  className="w-[10.3rem] yyyyyyyds"
+                                  className="flex-1 yyyyyyyds"
                                   style={{
                                     textAlign: "left",
                                     lineHeight: "1.5rem",
                                   }}
                                 >
                                   <span
-                                    className={`font-bold w-[10.3rem] ${nurseOpne === false
+                                    className={`font-bold flex w-[full] ${nurseOpne === false
                                       ? ""
                                       : "NurseTableImgBox"
                                       } `}
+                                    style={{ alignItems: "center" }}
                                   >
                                     {/* <img className='w-[0.8rem] h-[0.8rem] mt-[0.33rem] mr-3' src={shijian1} alt="" /> */}
-                                    <span className="pl-[2.2rem]  w-[10rem]">
+                                    <span className="w-[full]">
                                       {item[key]}
                                     </span>
                                   </span>
-                                  <span className="pl-[2rem]  w-[10rem]">
+                                  <span className="w-[full]">
                                     {item.notes}
                                   </span>
                                   <img
-                                    className="pl-[2rem]  w-[10rem] "
+                                    className="w-[full] "
                                     src={item.uploadImage}
                                     alt=""
                                   />
@@ -666,32 +719,51 @@ export default function NurseTable(props: tableProps) {
                       width: "24rem",
                       height: "2rem",
                       position: "absolute",
-                      right: "1.5rem",
-                      bottom: "3.6rem",
+                      left: "50%",
+                      transform: "translateX(-50%)",
+                      bottom: "1rem",
                     }}
                     onClick={() => {
-                      console.log(11112222);
+                      setIsModalChangePasswordOpen(true)
                       //   setIsModalOpen(true);
                       //   setTitleModal("保存模版");
-                      confirm({
-                        title: "保存模版",
-                        icon: <ExclamationCircleOutlined />,
-                        content: "确认保存模版?",
-                        okText: "确认",
-                        cancelText: "取消",
-                        onOk() {
-                          console.log("确认保存模版ok");
-                          saveTemplate();
-                        },
-                        onCancel() {
-                          console.log("取消保存模版");
-                        },
-                      });
+                      // confirm({
+                      //   title: "应用护理计划",
+                      //   // icon: <ExclamationCircleOutlined />,
+                      //   content: "确认应用护理计划?",
+                      //   okText: "确认",
+                      //   cancelText: "取消",
+                      //   onOk() {
+                      //     console.log("确认保存模版ok");
+                      //     saveTemplate();
+                      //   },
+                      //   onCancel() {
+                      //     console.log("取消保存模版");
+                      //   },
+                      // });
                     }}
                   >
                     保存模版0000
                   </Button>
                 )}
+                {
+                  <Modal title="应用护理计划" open={isModalChangePasswordOpen} onOk={handleChangePasswordOk} onCancel={handleChangePasswordCancel}>
+                    <div style={{ textAlign: "center", height: "4rem" }}>
+                      <p style={{ paddingBottom: "1rem" }} >确认应用护理计划？</p>
+                      <Radio.Group
+                        style={{ marginBottom: "1rem" }}
+                        name="radiogroup"
+                        defaultValue={1}
+                        options={[
+                          { value: 1, label: '立即生效' },
+                          { value: 2, label: '次日生效' },
+
+                        ]}
+                        onChange={(e: any) => setSelectValue(e.target.value)}
+                      />
+                    </div>
+                  </Modal>
+                }
               </div>
               {
                 <Modal
@@ -727,7 +799,10 @@ export default function NurseTable(props: tableProps) {
       ) : (
         <>
           {/* // 修改样式 */}
-          <div className="bg-[#F5F8FA] " style={{ width: id === '1' ? '100%' : '' }}>
+          <div
+            className="bg-[#F5F8FA] "
+            style={{ width: id === "1" ? "100%" : "" }}
+          >
             {
               //  <Title></Title>
               //  <NurseTitle title="设置护理计划"></NurseTitle>
@@ -735,32 +810,38 @@ export default function NurseTable(props: tableProps) {
             <div
               // 修改样式
 
-              className={`w-[96%] mx-[${id === '1' ? "" : "2%"}] bg-[#fff] mt-[1rem] `}
+              className={`w-[96%] mx-[${id === "1" ? "" : "2%"
+                }] bg-[#fff] mt-[1rem] `}
               // 修改样式
-              style={{ borderRadius: "0.9rem", width: id === '1' ? "100%" : "" }}
+              style={{
+                borderRadius: "0.9rem",
+                width: id === "1" ? "100%" : "",
+              }}
             >
-
-              {
-                id === '1' ? <></> : <><div className="flex pt-[1.8rem] pl-[1.3rem] mb-2">
-                  <img
-                    style={{
-                      width: "4px",
-                      height: "1rem",
-                      marginRight: "0.3rem",
-                      marginTop: "0.5rem",
-                    }}
-                    src={lanse}
-                    alt=""
-                  />
-                  <span className="text-[1.3rem]">老陈的护理计划</span>
-                  <span
-                    className="mr-[1rem] cursor-pointer"
-                    style={{ marginLeft: "auto", color: "#1677ff" }}
-                    onClick={() => addNurse()}
-                  >
-                    添加
-                  </span>
-                </div>
+              {id === "1" ? (
+                <></>
+              ) : (
+                <>
+                  <div className="flex pt-[1.8rem] pl-[1.3rem] mb-2">
+                    <img
+                      style={{
+                        width: "4px",
+                        height: "1rem",
+                        marginRight: "0.3rem",
+                        marginTop: "0.5rem",
+                      }}
+                      src={lanse}
+                      alt=""
+                    />
+                    <span className="text-[1.3rem]">老陈的护理计划</span>
+                    <span
+                      className="mr-[1rem] cursor-pointer"
+                      style={{ marginLeft: "auto", color: "#1677ff" }}
+                      onClick={() => addNurse()}
+                    >
+                      添加
+                    </span>
+                  </div>
                   <div className="flex items-center w-[85%] h-[2rem] ml-[1rem] mb-[1rem] bg-[#F5F8FA]">
                     <img
                       className="w-[1rem] h-[1rem] mr-[5px] ml-2"
@@ -773,7 +854,7 @@ export default function NurseTable(props: tableProps) {
                     </span>
                   </div>
                 </>
-              }
+              )}
 
               <div className="">
                 <div
@@ -784,7 +865,10 @@ export default function NurseTable(props: tableProps) {
                     background: "#fff",
                   }}
                 >
-                  <div className={`bg-[] flex px-[${id === '1' ? '' : '1rem'}`} style={{}}>
+                  <div
+                    className={`bg-[] flex px-[${id === "1" ? "" : "1rem"}`}
+                    style={{}}
+                  >
                     {title.map((a) => {
                       if (type == "user" && a.key == "delete") {
                         return <></>;
@@ -793,17 +877,23 @@ export default function NurseTable(props: tableProps) {
                         return (
                           <div
                             style={{
+                              display: "flex",
+                              flexDirection: "column",
                               lineHeight: "3.3rem",
                               background: "#F5F8FA",
                               //修改样式
-                              width: id === '1' ? '36%' : '35%',
+                              width: "",
                             }}
+                            className="w-[6rem] flex-shrink-0"
                           >
                             {" "}
                             <span className="text-[1.2rem] rounded-md">
                               {a.titleValue}
                             </span>
-                            <span className="text-[0.8rem] text-[#929EAB]">
+                            <span
+                              className="text-[0.8rem] text-[#929EAB]"
+                              style={{ lineHeight: "1rem" }}
+                            >
                               {a.type}
                             </span>
                           </div>
@@ -816,8 +906,9 @@ export default function NurseTable(props: tableProps) {
                               lineHeight: "3.3rem",
                               background: "#F5F8FA",
 
-                              width: id === '1' ? '20%' : "20%",
+                              width: id === "1" ? "20%" : "20%",
                             }}
+                            className="flex-1"
                           >
                             护理内容
                           </div>
@@ -826,12 +917,11 @@ export default function NurseTable(props: tableProps) {
                       if (a.key === "status") {
                         return (
                           <div
-                            className="cursor-pointer"
+                            className="cursor-pointer flex-shrink-0"
                             style={{
                               lineHeight: "3.3rem",
                               background: "#F5F8FA",
-                              width: id === '1' ? '44%' : "15%",
-                              paddingLeft: id === '1' ? '10%' : ''
+                              width: "6rem",
                             }}
                           >
                             状态
@@ -839,7 +929,7 @@ export default function NurseTable(props: tableProps) {
                         );
                       }
                       if (a.key === "delete") {
-                        return id === '1' ? null : (
+                        return id === "1" ? null : (
                           <div
                             style={{
                               lineHeight: "3.3rem",
@@ -925,11 +1015,14 @@ export default function NurseTable(props: tableProps) {
                                       //   ? `w-[${titleInfo.width}]`
                                       //   : "grow text-left"
                                       //   } flex justify-center items-center text-[${timeTextColor}]`}
-                                      className="flex"
-                                      style={{ width: id === '1' ? '36%' : "" }}
+                                      className="flex  flex-shrink-0"
+                                      style={{ width: "6rem" }}
                                     >
                                       {/* 修改样式 */}
-                                      <span className={`w-[${id === '1' ? '36%' : '3.2rem'}] pl-[${id === '1' ? '' : '1rem'}]`}>
+                                      <span
+                                        className={`w-[${id === "1" ? "36%" : "3.2rem"
+                                          }] pl-[${id === "1" ? "" : "1rem"}]`}
+                                      >
                                         {dayjs(item[keys.key]).format("HH:mm")}
                                       </span>
                                       <div
@@ -961,8 +1054,10 @@ export default function NurseTable(props: tableProps) {
 
                                         color="default"
                                         variant="filled"
-                                        className=" text-[#929EAB] bg-[#E6EBF0]"
-                                        style={{ width: id === '1' ? '20%' : '', }}
+                                        className="w-[6rem] text-[#929EAB] bg-[#E6EBF0]"
+                                        style={{
+                                          width: id === "1" ? "20%" : "",
+                                        }}
                                       >
                                         待完成
                                       </Button>
@@ -978,7 +1073,7 @@ export default function NurseTable(props: tableProps) {
                                       //   : "grow text-left"
                                       //   } text-[${timeTextColor}]`}
                                       // type="primary"
-                                      className="text-[#929EAB] bg-[#E6EBF0]"
+                                      className="w-[6rem] text-[#929EAB] bg-[#E6EBF0]  flex-shrink-0"
                                     >
                                       已完成
                                     </Button>
@@ -986,16 +1081,15 @@ export default function NurseTable(props: tableProps) {
                                 } else if (key == "delete" && type == "user") {
                                   return <></>;
                                 } else if (key == "delete" && type != "user") {
-                                  return id === '1' ? null : (
+                                  return id === "1" ? null : (
                                     <div
                                       key={item.key}
                                       onClick={() => {
                                         // setIsModalOpen(true);
                                         // setTitleModal("删除模版");
                                         setDeleteItem(item);
-                                        console.log("删除模版222222");
                                       }}
-                                      className="w-[7rem]  cursor-pointer yyyyyyyds"
+                                      className="w-[7rem]  cursor-pointer yyyyyyyds flex-shrink-0"
                                     // style={{ borderBottom: "1px solid #D8D8D8", }}
                                     >
                                       <img
@@ -1015,20 +1109,27 @@ export default function NurseTable(props: tableProps) {
                                     //   ? `w-[${titleInfo.width}] text-center`
                                     //   : "grow "
                                     //   } text-[${nurseTextColor}] text-sm flex flex-col flex-1`}
-                                    className={`w-[${id === '1' ? '40%' : "10.3rem"}]`}
+                                    className={`flex-1`}
                                     style={{
                                       textAlign: "left",
                                       lineHeight: "1.5rem",
+                                      textIndent: "4em",
                                     }}
                                   >
                                     <span
-                                      className={`font-bold w-[10.3rem] ${nurseOpne === false
+                                      className={`font-bold w-[full] ${nurseOpne === false
                                         ? ""
                                         : "NurseTableImgBox"
                                         } `}
+                                      style={{
+                                        wordBreak: "break-all",
+                                      }}
                                     >
                                       {/* <img className='w-[0.8rem] h-[0.8rem] mt-[0.33rem] mr-3' src={shijian1} alt="" /> */}
-                                      <span className={`pl-[${id === '1' ? '' : ''} ]  w-[10rem`}>
+                                      <span
+                                        className={`pl-[${id === "1" ? "" : ""
+                                          } ]  w-[10rem`}
+                                      >
                                         {item[key]}
                                       </span>
                                     </span>
@@ -1067,8 +1168,8 @@ export default function NurseTable(props: tableProps) {
                     </Button>
                   )}
                 </div>
-                {
-                  id === '1' ? null : <Button
+                {id === "1" ? null : (
+                  <Button
                     onClick={() => {
                       confirm({
                         title: "确认",
@@ -1090,7 +1191,7 @@ export default function NurseTable(props: tableProps) {
                   >
                     应用护理计划
                   </Button>
-                }
+                )}
                 {
                   <Modal
                     height={"266px"}
@@ -1123,367 +1224,7 @@ export default function NurseTable(props: tableProps) {
             </div>
           </div>
         </>
-      )
-      }
+      )}
     </>
   );
 }
-
-// export  function NurseSetting(props: any) {
-//   const phone = localStorage.getItem('phone')
-//   const token = localStorage.getItem('token')
-//   const organizeId = useSelector(organizeIdSelect)
-//   const [templateId, setTemplateId] = useState(0)
-//   const [nurseTemplate, setNurseTemplate] = useState<any>([])
-//   const [personTemplate, setPersonTemplate] = useState<any>([])
-//   const param = useParams()
-//   console.log(param, 'previewItem.template..222222.....')
-//   const location = useLocation()
-//   const sensorName = param.id || location.state?.sensorName
-//   const setting = window.location.href.split('/')[4] || ''
-
-//   const format = 'HH:mm';
-//   const { type, onClick } = props
-//   useEffect(() => {
-//     // if (!type) {
-//     getNurseTemplate()
-//     // }
-//   }, [])
-
-//   /**
-//    * 新建护理模板的护理项目
-//    */
-//   const addNurseProject = () => {
-//     if (!templateTime && !templateTitle) {
-//       return message.info('请输入时间和项目名称')
-//     }
-//     // if (!templateTitle) {
-//     //   return message.info('请输入项目名称')
-//     // }
-//     console.log('add')
-//     Instancercv({
-//       method: "post",
-//       url: "/nursing/addNursingTemplItem",
-//       headers: {
-//         "content-type": "multipart/form-data",
-//         "token": token
-//       },
-//       params: {
-//         templateId: templateId,
-//         templateTime: templateTime,
-//         templateContent: templateTitle
-//       }
-//     }).then((res) => {
-//       console.log(res.data.msg)
-//       if (res.data.msg.includes("success")) {
-//         // const template = res.data.data
-//         // const data = templateObjToData(template)
-//         // setNurseTemplate(data)
-//         getNurseTemplate()
-//         message.success('添加成功')
-//       }
-
-//     })
-//   }
-
-//   /**
-//    * 新建个人页护理模板的护理项目
-//    */
-
-//   const addUserNurseProject = () => {
-//     const res = [...personTemplate,
-//     {
-//       key: templateTime,
-//       status: 'todo',
-//       title: templateTitle,
-//       time: dayjs(new Date(new Date().toLocaleDateString()).getTime() + Number(templateTime)).format('HH:mm'),
-//     }
-//     ]
-//     setPersonTemplate(res)
-
-//   }
-
-//   // 添加护理模板里面的内容
-//   const addProject = () => {
-//     if (!templateTitle) {
-//       return message.info('请输入你要添加的项目名称')
-//     }
-//     if (!templateTime) {
-//       return message.info('请输入项目时间')
-//     }
-//     // 个人页面
-//     if (type == 'person') {
-//       addUserNurseProject()
-//     } else {
-//       addNurseProject()
-//     }
-//   }
-
-//   /**
-//    * 获取护理模板
-//    */
-//   const getNurseTemplate = () => {
-//     Instancercv({
-//       method: "get",
-//       url: "/nursing/getNurseTemplateData",
-//       headers: {
-//         "content-type": "multipart/form-data",
-//         "token": token
-//       },
-//       params: {
-//         organizeId: organizeId,
-//         type: 1
-//       }
-//     }).then((res) => {
-
-//       setTempplateArr(res.data.data)
-//       const template = res.data.data[0]
-
-//       if (template && !templateId && template.id) {
-//         getNurseTemplateToId(res.data.data, template.id)
-//       } else {
-//         getNurseTemplateToId(res.data.data, templateId)
-//       }
-//       // if (template) {
-//       //   // setTemplateId(template.id)
-//       //   console.log(template.template)
-//       //   const data = templateToData(template.template)
-//       //   // console.log(data)
-//       //   setNurseTemplate(data)
-//       //   setTempplateArr(res.data.data)
-//       // }
-//     })
-//   }
-
-//   const templateObjToData = (obj: any) => {
-//     const arr: any = []
-//     Object.keys(obj).forEach((key, index) => {
-//       const value = obj[key].replace(new RegExp('"', 'g'), '')
-//       arr.push({
-//         title: value,
-//         time: dayjs(new Date(new Date().toLocaleDateString()).getTime() + Number(key)).format('HH:mm'),
-//         key: key,
-//         status: 'todo'
-//       })
-//     })
-//     return arr
-//   }
-
-//   // 通过id获取护理模板
-//   const getNurseTemplateToId = (arr: any, id: any) => {
-
-//     const template: any = arr.find((item: any) => item.id == id)
-//     setTemplateId(id)
-//     const data = templateToData(template.template)
-//     if (type == 'person') {
-//       setPersonTemplate(data)
-//     } else {
-//       setNurseTemplate(data)
-//     }
-
-//   }
-
-//   const [templateTime, setTemplateTime] = useState(0)
-//   const [templateTitle, setTemplateTitle] = useState('')
-//   const [templateNameTitle, setTemplateNameTitle] = useState('')
-//   const [templateArr, setTempplateArr] = useState([])
-//   const [selectTemplate, setSelectTemplate] = useState()
-
-//   const onChange: TimePickerProps['onChange'] = (time, timeString) => {
-//     if (typeof timeString == 'string') {
-
-//       setTemplateTime(new Date(`1970-01-01 ${timeString}`).getTime())
-//     }
-//   };
-
-//   const userTemplate = () => {
-//     getNurseTemplate()
-//   }
-
-//   const addTemplate = () => {
-//     if (!templateNameTitle) {
-//       return message.info('请输入模板名称')
-//     }
-//     Instancercv({
-//       method: "post",
-//       url: "/nursing/addNursingTempl",
-//       headers: {
-//         "content-type": "multipart/form-data",
-//         "token": token
-//       },
-//       params: {
-//         templateName: templateNameTitle,
-//         template: '{}',
-//         organizeId: organizeId
-//       }
-//     }).then((res) => {
-//       console.log(res.data.msg)
-//       if (res.data.msg.includes("success")) {
-//         message.success('添加成功')
-//         getNurseTemplate()
-//         setTemplateNameTitle('')
-//       }
-
-//     })
-//   }
-
-//   const context = useContext(DataContext)
-//   const { getPersonTemplate } = context
-
-//   const saveTemplate = () => {
-
-//     if (type == 'person') {
-//       Instancercv({
-//         method: "post",
-//         url: "/nursing/updateNursingConfig",
-//         headers: {
-//           "content-type": "application/json",
-//           "token": token
-//         },
-//         data: {
-//           deviceId: sensorName,
-//           config: JSON.stringify(personTemplate),
-//         },
-//       }).then((res) => {
-//         message.success('添加成功')
-//         getPersonTemplate()
-//       })
-//     }
-//   }
-//   const [titleName, setTitleName] = useState(
-//     [
-//       {
-//         id: "0",
-//         title: "自理老人"
-//       },
-//       {
-//         id: "1",
-//         title: "半自理老人"
-//       },
-//       {
-//         id: "2",
-//         title: "完全失能老人"
-//       },
-//       {
-//         id: "3",
-//         title: "自定义模版"
-//       }
-//     ]
-//   )
-//   return (
-//     <div className=' w-full'>
-//       {/* 管理员新建模板 */}
-//       {/* <div>
-//         {
-//           titleName.map((item: any, index: any) => {
-//             return <div key={index} className=''>
-//               {item.title}
-//             </div>
-//           })
-//         }
-//       </div> */}
-
-//       {/* <div className='basis-2/3 mr-[10px] py-[18px] px-[30px] bg-[#fff] relative'>
-//         {
-//           setting === 'setting' ?
-//             <>
-//               <div className='text-lg font-semibold  relative'>
-//                 新建护理模板
-//               </div>
-//               <div className='flex items-center mt-[20px] mb-[20px]'>
-//                 <div className='text-sm font-semibold mr-[2.2rem]'>模板名称:</div>
-//                 <Input className='grow w-[unset]'
-//                   allowClear
-//                   onChange={(e) => {
-//                     console.log(e.target.value)
-//                     setTemplateNameTitle(e.target.value)
-//                   }} />
-//               </div>
-//               <Button className='mb-8' onClick={addTemplate}>新建模板</Button>
-
-//               <div className='text-lg font-semibold  relative'>
-//                 模板列表
-//               </div>
-//               <div className='flex items-center mt-[20px] mb-[20px]'>
-//                 {
-//                   templateArr.map((item: any) => {
-//                     return (<div onClick={() => {
-//                       setTemplateId(item.id)
-//                       getNurseTemplateToId(templateArr, item.id)
-//                     }} style={{ backgroundColor: templateId == item.id ? 'blue' : '' }}>
-//                       {item.templateName}
-//                     </div>)
-//                   })
-//                 }
-//               </div>
-//             </>
-//             : <></>
-//         }
-//         {
-
-//         }
-
-//         <div className='text-lg font-semibold  relative'>创建个人护理模板
-//           {type ? <div className='text-[#0072EF] absolute right-[0px] bottom-[0px] text-sm' onClick={userTemplate}>应用模板</div> : ''}
-//         </div>
-
-//         {
-//           type ?
-//             <div className='flex items-center mt-[20px] mb-[20px]'>
-//               <div className='text-sm font-semibold mr-[2.2rem]'>模板列表:</div>
-//               <div>
-//                 {
-//                   <div className='flex items-center mt-[20px] mb-[20px]'>
-//                     {
-//                       templateArr.map((item: any) => {
-//                         return (<div onClick={() => {
-//                           setTemplateId(item.id)
-//                           getNurseTemplateToId(templateArr, item.id)
-//                         }} style={{ backgroundColor: templateId == item.id ? 'blue' : '' }}>
-//                           {item.templateName}
-//                         </div>)
-//                       })
-//                     }
-//                   </div>
-//                 }</div>
-//             </div> : <></>
-//         }
-
-//         <div className='flex items-center mt-[20px] mb-[20px]'>
-//           <div className='text-sm font-semibold mr-[2.2rem]'>项目名称:</div>
-//           <Input className='grow w-[unset]' onChange={(e) => {
-//             console.log(e.target.value)
-//             setTemplateTitle(e.target.value)
-//           }} />
-//         </div>
-//         <div className='flex items-center '>
-//           <div className='text-sm font-semibold mr-[2.2rem]'>项目时间:</div>
-//           <TimePicker onChange={onChange} placeholder='请输入时间' format={format} />
-//         </div>
-//         <div className='absolute bottom-[30px] right-[30px]'>
-//           {
-//             setting === 'setting' ? <Button className='mr-[20px]' onClick={saveTemplate}>保存为模板</Button> : <Button className='mr-[20px]' onClick={saveTemplate}>保存为当前版本</Button>
-//           }
-
-//           <Button type="primary" onClick={addProject}>添加</Button>
-//         </div>
-//       </div> */}
-
-//       <div className='basis-1/3 bg-[#fff] py-[18px] px-[15px]'>
-//         <div className='text-[1.3rem] font-semibold ml-[1rem] mb-[10px]'>预览老陈护理项目 <span className='text-[#929EAB] text-[0.8rem] ml-[9rem]'>清空模版</span></div>
-//         <div className='flex items-center ml-[1rem] mb-[20px]'><img className='w-[0.8rem] h-[0.8rem] mr-[5px]' src={greyNotice} alt="" /><span className='text-xs text-[#929EAB]'>当前内容仅作为效果预览，不可作为实际页面使用</span></div>
-
-//         {type == 'person' ?
-//           // 个人设置
-//           <NurseTable type={type} sensorName={sensorName} getNurseTemplate={setPersonTemplate} templateId={templateId} data={personTemplate || []} />
-//           :
-//           // 管理员设置
-//           <NurseTable type={'project'} sensorName={sensorName} getNurseTemplate={getNurseTemplate} templateId={templateId} data={nurseTemplate || []} />
-//         }
-
-//         {/* <NurseTable type={type} getNurseTemplate={getNurseTemplate} templateId={templateId} data={nurseTemplate} /> */}
-
-//       </div>
-//     </div >
-//   )
-// }

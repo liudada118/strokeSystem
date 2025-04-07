@@ -9,6 +9,7 @@ import { useGetWindowSize } from '@/hooks/hook'
 import { useNavigate } from 'react-router-dom'
 import './NursingOpen.scss'
 import { calc } from 'antd/es/theme/internal';
+import { log } from 'node:console';
 interface propsType {
     sensorName?: any,
     type?: number,
@@ -20,10 +21,14 @@ interface propsType {
 
 function NursingStencil(props: propsType) {
     const { type, nursePersonTemplate, statue, title, sensorName, stylee } = props
+    console.log();
+
     const windowSize = useGetWindowSize()
     const dispatch = useDispatch()
-    const [name, setName] = useState([]);
+    const [name, setName] = useState<any>('');
     const navigate = useNavigate()
+    console.log(sensorName, '.......1111111.........sensorName');
+
     useEffect(() => {
         Instancercv({
             method: "get",
@@ -33,11 +38,13 @@ function NursingStencil(props: propsType) {
                 "token": localStorage.getItem('token')
             },
             params: {
-                sensorName: 'KgvDXUvdEs9M9AEQDcVc',
+                sensorName: sensorName,
                 phoneNum: localStorage.getItem('phone')
             }
         }).then((res: any) => {
-            setName(res.data.data.patientName)
+            console.log(res.data, sensorName, '..........patientNamepatientName');
+
+            setName(res.data.data.patientName || '[]')
         })
     }, []);
     console.log(statue, '................statuestatuestatuestatue');
@@ -131,4 +138,5 @@ function NursingStencil(props: propsType) {
         </>
     )
 }
+
 export default NursingStencil

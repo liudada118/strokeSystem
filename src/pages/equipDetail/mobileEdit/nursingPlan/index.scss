@@ -1,3 +1,8 @@
+.nurse_header_logo {
+    background: #fff;
+    width: 100%;
+    height: 4rem;
+}
 .nurse_box {
   display: flex;
   flex-direction: column;
@@ -6,12 +11,13 @@
   margin: 0 1rem 1rem;
   border-radius: 0.5rem;
   overflow: hidden;
+  margin-top: 1rem;
   &.nurse_box_empty {
     flex: inherit;
     margin: 0;
     background: transparent;
   }
-  & > .title {
+  .title {
     position: relative;
     z-index: 2;
     padding: 0.8rem 0 0 0.5rem;

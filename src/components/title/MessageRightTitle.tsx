@@ -72,7 +72,7 @@ export const MessageRightTitle = (props: messageParam) => {
                 patientName: selectType === 'patientName' ? value : "",
                 roomNum: selectType === 'roomNum' ? value : ""
             });
-        }, 1000);
+        }, 300);
 
         setTimeoutId(newTimeoutId);
     };

@@ -39,7 +39,6 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (props) =>
             return 0
         }
     }
-
     const valueToAlarmFlag: (value: number) => boolean = (value) => {
         if (value == 1) {
             return true
@@ -47,7 +46,6 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (props) =>
             return false
         }
     }
-
     const param = useParams()
     const location = useLocation()
     const sensorName = param.id

@@ -168,8 +168,8 @@ export default function Equip() {
                                                 >我已知晓</div>
                                             </div> : ''}
                                         <div
-                                            className={`equipItem  ${stateToObj[onBedState(item)].class} `}
-
+                                            className={`equipItem  ${stateToObj[onBedState(item)].class}
+                  `}
                                             onClick={() => {
                                                 if (item.type == 'large') {
                                                     navigate(`/report/0/${item.sensorName}`, {
@@ -267,7 +267,6 @@ export default function Equip() {
                                         });
                                     }}
                                 >
-
                                     {alarmInfo.length ?
                                         <div className="newAlarmContent">
                                             <img style={{ position: 'absolute', width: '100%', bottom: '0', left: 0, opacity: '0.5' }} src={newAlarmBgc} alt="" />
@@ -292,7 +291,6 @@ export default function Equip() {
                                             >我已知晓</div>
                                         </div> : ''}
                                     <div
-
                                         className={`equipItem  ${stateToObj[onBedState(item)].class}`}
                                         onClick={() => {
                                             if (item.type == 'large') {

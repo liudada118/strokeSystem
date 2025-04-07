@@ -4,6 +4,7 @@ import img from '../assets/images/arrow_blue.png'
 interface NavProps {
     title: string;
     onBack: () => void;
+    style?: any
 }
 const CommonNavBar: (props: NavProps) => React.JSX.Element = (props) => {
     const { title, onBack } = props
@@ -11,7 +12,7 @@ const CommonNavBar: (props: NavProps) => React.JSX.Element = (props) => {
 
         <>
             {/* <img src={img} style={{ width: "20px", height: "20px" }} alt="" /> */}
-            <NavBar className='fixed z-[99] w-full h-[3rem] bg-[#fff] text-base font-semibold top-0' onBack={() => onBack()}>{title}</NavBar>
+            <NavBar className='fixed z-[99] w-full h-[3rem] bg-[#fff] text-base font-semibold top-0' onBack={() => onBack()} style={{...props.style}}>{title}</NavBar>
         </>
     )
 }

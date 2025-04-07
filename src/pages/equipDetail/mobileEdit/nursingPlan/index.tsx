@@ -8,11 +8,12 @@ import greyNotice from "@/assets/image/greyNotice.png";
 import NurseList from "./nurseList/index";
 import NurseConfEdit from "./nurseEdit/index";
 import "./index.scss";
-import { Button, message, Modal } from "antd";
+import { Button, message, Modal, Radio } from "antd";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
 import mobileNurse from "@/assets/image/mobileNurseBig.png";
 import dayjs from "dayjs";
 import { PersonalContentInfo } from "@/pages/equipDetail/EditingUser";
+
 const { confirm } = Modal;
 
 export default function NursingPlan() {
@@ -59,46 +60,76 @@ export default function NursingPlan() {
       }
     });
   };
+  const [isModalChangePasswordOpen, setIsModalChangePasswordOpen] = useState(false)
+  const [selectValue, setSelectValue] = useState(1)
+  console.log(selectValue, '.......selectValue');
 
+  const handleChangePasswordOk = async () => {
+    Instancercv({
+      method: "get",
+      url: "/nursing/getNursingConfig",
+      headers: {
+        "content-type": "multipart/form-data",
+        token: localStorage.getItem("token"),
+      },
+      params: {
+        deviceId: sensorName,
+        // ...(type ? { type } : {}),
+        templateEffectiveFlag: selectValue,
+        templateUpdatetime: new Date().getTime()
+
+      },
+    }).then(async (res: any) => {
+      message.info('模版保存成功')
+      saveTemplate()
+      setIsModalChangePasswordOpen(false)
+    })
+
+
+  }
+  const handleChangePasswordCancel = () => {
+    setIsModalChangePasswordOpen(false)
+  }
   const saveTemplate = () => {
-    confirm({
-      title: "",
-      icon: <ExclamationCircleOutlined />,
-      content: "确认应用该护理计划?",
-      okText: "确认",
-      cancelText: "取消",
-      onOk() {
-        const list = nurseList.map((item: any) => {
-          return {
-            key: item.key,
-            title: item.templateTitle || item.title,
-            status: "todo",
-            time: dayjs(+item.key).format("HH:mm"),
-          };
-        });
-
-        Instancercv({
-          method: "post",
-          url: "/nursing/updateNursingConfig",
-          headers: {
-            "content-type": "application/json",
-            token: localStorage.getItem("token"),
-          },
-          data: {
-            deviceId: sensorName,
-            config: JSON.stringify(list),
-          },
-        }).then((res) => {
-          message.success("保存成功");
-          setOperType("init");
-          getPersonTemplate();
-        });
-      },
-      onCancel() {
-        console.log("取消删除模版");
-        // 取消删除不执行任何逻辑
-      },
+    const list = nurseList.map((item: any) => {
+      return {
+        key: item.key,
+        title: item.templateTitle || item.title,
+        status: "todo",
+        time: dayjs(+item.key).format("HH:mm"),
+      };
     });
+
+    Instancercv({
+      method: "post",
+      url: "/nursing/updateNursingConfig",
+      headers: {
+        "content-type": "application/json",
+        token: localStorage.getItem("token"),
+      },
+      data: {
+        deviceId: sensorName,
+        config: JSON.stringify(list),
+      },
+    }).then((res) => {
+      // message.success("保存成功");
+      setOperType("init");
+      getPersonTemplate();
+    });
+    // confirm({
+    //   title: "",
+    //   icon: <ExclamationCircleOutlined />,
+    //   content: "确认应用该护理计划?",
+    //   okText: "确认",
+    //   cancelText: "取消",
+    //   onOk() {
+
+    //   },
+    //   onCancel() {
+    //     console.log("取消删除模版");
+    //     // 取消删除不执行任何逻辑
+    //   },
+    // });
   };
   const delTemp = (params: any) => {
     confirm({
@@ -120,24 +151,28 @@ export default function NursingPlan() {
   }, []);
   return (
     <>
+      <div className="nurse_header_logo">
+        <img src="" alt="" />
+        logologo
+      </div>
       <CommonNavBar
+        style={{ position: "inherit" }}
         title={
           nurseList.length === 0
             ? "护理配置"
             : operType === "init"
-            ? "护理计划"
-            : operType === "add" && !isEdit
-            ? "设置护理计划"
-            : operType === "add" && isEdit
-            ? "创建护理计划"
-            : "护理配置"
+              ? "护理计划"
+              : operType === "add" && !isEdit
+                ? "设置护理计划"
+                : operType === "add" && isEdit
+                  ? "创建护理计划"
+                  : "护理配置"
         }
         onBack={() => navigate(-1)}
       />
       <div
-        className={`${
-          nurseList.length === 0 ? "nurse_box_empty" : ""
-        } nurse_box`}
+        className={`${nurseList.length === 0 ? "nurse_box_empty" : ""
+          } nurse_box`}
       >
         {isEdit ? (
           <NurseConfEdit
@@ -188,7 +223,7 @@ export default function NursingPlan() {
               <div className="bg-[#f4f5f6] w-[full]">
                 <Button
                   type="primary"
-                  onClick={saveTemplate}
+                  onClick={() => setIsModalChangePasswordOpen(true)}
                   className="mt-[1rem] w-[full]"
                   style={{ width: "100%" }}
                 >
@@ -196,24 +231,45 @@ export default function NursingPlan() {
                 </Button>
               </div>
             )}
+            {/* saveTemplate */}
+            {
+              <Modal style={{ height: "4rem" }} okText='应用' cancelText='取消' visible open={isModalChangePasswordOpen} onOk={handleChangePasswordOk} onCancel={handleChangePasswordCancel}>
+
+                <div style={{ textAlign: "center", height: "4rem" }}>
+                  <p style={{ paddingBottom: "1rem" }} >确认应用护理计划？</p>
+                  <Radio.Group
+                    style={{ marginBottom: "1rem" }}
+                    name="radiogroup"
+                    defaultValue={1}
+                    options={[
+                      { value: 1, label: '立即生效' },
+                      { value: 2, label: '次日生效' },
+                    ]}
+                    onChange={(e: any) => setSelectValue(e.target.value)}
+                  />
+                </div>
+              </Modal>
+            }
           </>
-        ) : (
-          <>
-            <PersonalContentInfo title={"护理配置"} img={mobileNurse} />
-            <Button
-              type="primary"
-              onClick={() => {
-                setOperType("add");
-                setIsEdit(true);
-              }}
-              style={{}}
-              className="mx-[1rem] h-[4rem]"
-            >
-              创建护理计划
-            </Button>
-          </>
-        )}
-      </div>
+        )
+
+          : (
+            <>
+              <PersonalContentInfo title={"护理配置"} img={mobileNurse} />
+              <Button
+                type="primary"
+                onClick={() => {
+                  setOperType("add");
+                  setIsEdit(true);
+                }}
+                style={{}}
+                className="mx-[1rem] h-[4rem]"
+              >
+                创建护理计划
+              </Button>
+            </>
+          )}
+      </div >
     </>
   );
 }

@@ -77,6 +77,8 @@ function NursingOpen(props: propsType) {
   const [rightNurseList, setRightNurseList] = useState([]) as any;
   const dispatch = useDispatch();
   const yyyyyyy = useSelector((state: any) => state.nurse.sensorName);
+  console.log(yyyyyyy, '.......13..........yyyyyyyyyyyyyyyyyyyyyyyyyyyy11111');
+
   //是否隐藏单选按钮
   const { state } = useLocation();
 
@@ -118,13 +120,15 @@ function NursingOpen(props: propsType) {
       },
       params: {
         deviceId: sensorName,
-        ...(type ? { type } : {}),
+        // ...(type ? { type } : {}),
+        // 这个type展示献先写死 到时候要换成 这个里面的 iditems
+        type: 'common'
       },
     });
 
     if (res.data.code === 0) {
       //注意这个东西要揭开
-      const nursingConfig = JSON.parse(res.data.nursingConfig || '{}');
+      const nursingConfig = JSON.parse(res.data.nursingConfig || '[]');
       // setPreviewList(nursingConfig)
       return nursingConfig || [];
     } else {
@@ -147,7 +151,7 @@ function NursingOpen(props: propsType) {
       console.log();
       return +item.key === +templateTime;
     });
-    if (isHasTemp) return message.warning("该护理时间已存在重重新选择！");
+    if (isHasTemp) return message.warning("该护理时间已存在请重新选择！");
     setRightNurseList([
       ...rightNurseList,
       {
@@ -242,6 +246,9 @@ function NursingOpen(props: propsType) {
     return arr;
   };
   const [name, setName] = useState([]);
+  const nurseName = window.location.href.split('/')[6]
+
+
   useEffect(() => {
     async function getCurrentTemplate() {
       const nurseList = await getPersonTemplate();
@@ -258,11 +265,13 @@ function NursingOpen(props: propsType) {
         token: token,
       },
       params: {
-        sensorName: "KgvDXUvdEs9M9AEQDcVc",
+        sensorName: nurseName,
         phoneNum: localStorage.getItem("phone"),
       },
     }).then((res: any) => {
-      setName(res.data.data.patientName);
+      console.log(res.data.data.patientName, '..........patientNamepatientName');
+
+      setName(res.data.data.patientName || '');
     });
   }, []);
 

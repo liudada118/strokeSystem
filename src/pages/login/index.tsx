@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { reduxSetPhone, reduxSetToken } from "@/redux/token/tokenSlice";
 const { Option } = Select;
 
-const loginType = ["手机号验证码登录", "账号登录"];
+const loginType = ["账号登录"];
 
 export default function Login() {
 
@@ -34,7 +34,7 @@ export default function Login() {
     });
   });
 
-  const [nowType, setNowType] = useState<number>(0);
+  const [nowType, setNowType] = useState<number>(1);
   const [phone, setPhone] = useState<string>('');
   const [verCode, setVerCode] = useState<string>('')
   console.log(nowType, '................................................................nowType')
@@ -127,7 +127,7 @@ export default function Login() {
           navigate('/')
           message.success('登录成功')
         } else {
-          message.error('登录失败')
+          message.error(res.data.msg)
         }
       });
     }
@@ -179,12 +179,12 @@ export default function Login() {
           <div className="loginTypes">
             {loginType.map((item, index) => {
               return (
-                <div>
+                <div className="w-full">
                   <div
                     onClick={() => {
                       setNowType(index);
                     }}
-                    style={{ color: index == nowType ? "#0033A1" : "#000", fontWeight: 'bold' }}
+                    style={{ color: index == nowType ? "#0033A1" : "#000", fontWeight: 'bold', width: "100%", textAlign: "center", marginBottom: "2rem" }}
                   >
                     {item}
                   </div>

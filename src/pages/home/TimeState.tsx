@@ -11,7 +11,7 @@ import { numToMin, secToHourstamp } from '@/utils/timeConvert'
 import { equip } from '.'
 
 interface onbedStateProps {
-  item: any
+  item: equip
 }
 
 /**
@@ -144,8 +144,7 @@ export function OnBedState(props: onbedStateProps) {
   const { item } = props
   return <>{
     <div className="onbedStateItem">
-      {/* <div className="onbedStateText">{stateToObj[onBedState(item)].text} </div> */}
-      <div className="onbedStateText">在线 </div>
+      <div className="onbedStateText">{stateToObj[onBedState(item)].text} </div>
       <img src={stateToObj[onBedState(item)].img} alt="" />
     </div>
   } </>
@@ -165,7 +164,7 @@ export function onBedState(item: equip) {
     return OFFBED_STATE
   } else if (item.onBed && item.onBed != 4 && item.strokeValue == '1') {
     return WIDE_STATE
-  } else if (item.onBed = 4) {
+  } else if (item.onBed == 4) {
     return SIT_STATE
   } else if (item.onBed && item.onBed != 4 && item.strokeValue == '0') {
     return SLEEP_STATE

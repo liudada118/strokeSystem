@@ -22,25 +22,25 @@ interface onbedStateProps {
 export function onBedStateText(item: equip) {
 
   // 小床垫 只有 在床时间和离床时间两种状态
-  if (item.type != 'large') {
+  // if (item.type != 'large') {
     if (item.onBed) {
       return '在床时间'
     } else if (!item.onBed) {
       return '离床时间'
     }
-  }
+  // }
   // 大床垫 只有护理相关跟 离床时间 四种状态
-  else {
-    if (!item.onBed) {
-      return '离床时间'
-    } else if (Number(item.pressureInjury) < item.nursePeriod || item.sensorName == 'KgvDXUvdEs9M9AEQDcVc' || item.pressureInjury == 'unknow') {
-      return '下次护理'
-    } else if (item.nursePeriod - Number(item.pressureInjury) < 10 && item.nursePeriod - Number(item.pressureInjury) > 0) {
-      return '待护理'
-    } else {
-      return '已超时'
-    }
-  }
+  // else {
+  //   if (!item.onBed) {
+  //     return '离床时间'
+  //   } else if (Number(item.pressureInjury) < item.nursePeriod || item.sensorName == 'KgvDXUvdEs9M9AEQDcVc' || item.pressureInjury == 'unknow') {
+  //     return '下次护理'
+  //   } else if (item.nursePeriod - Number(item.pressureInjury) < 10 && item.nursePeriod - Number(item.pressureInjury) > 0) {
+  //     return '待护理'
+  //   } else {
+  //     return '已超时'
+  //   }
+  // }
 }
 
 /**
@@ -50,7 +50,7 @@ export function onBedStateText(item: equip) {
  */
 export function onBedStateTime(item: equip) {
   // 小床
-  if (item.type != 'large') {
+  // if (item.type != 'large') {
     // 离床的显示
     if (item.onBed == 0) {
       if (item.outbedTime) {
@@ -67,24 +67,26 @@ export function onBedStateTime(item: equip) {
         return '-'
       }
     }
-  } else {
-    // 离床的显示
-    if (!item.onBed) {
-      if (item.outbedTime) {
-        return secToHourstamp(item.outbedTime)
-      } else {
-        return '-'
-      }
-    }
-    // 在床的显示
-    else {
-      if (item.nursePeriod - Number(item.pressureInjury) < 0) {
-        return numToMin(Number(item.pressureInjury) - item.nursePeriod)
-      } else {
-        return numToMin(item.nursePeriod - Number(item.pressureInjury))
-      }
-    }
-  }
+  // }
+  
+  // else {
+  //   // 离床的显示
+  //   if (!item.onBed) {
+  //     if (item.outbedTime) {
+  //       return secToHourstamp(item.outbedTime)
+  //     } else {
+  //       return '-'
+  //     }
+  //   }
+  //   // 在床的显示
+  //   else {
+  //     if (item.nursePeriod - Number(item.pressureInjury) < 0) {
+  //       return numToMin(Number(item.pressureInjury) - item.nursePeriod)
+  //     } else {
+  //       return numToMin(item.nursePeriod - Number(item.pressureInjury))
+  //     }
+  //   }
+  // }
 }
 
 

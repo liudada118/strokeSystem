@@ -52,7 +52,13 @@ function HeatmapReport(props: heatmapProps) {
                 "token": token
             },
         }).then((res) => {
-
+            console.log(res.data.data, '.......11........setHeatmapDatasetHeatmapDatasetHeatmapDatasetHeatmapDatasetHeatmapData');
+            const ewe = res.data.data.map((item: any) => {
+                return {
+                    sjian: dayjs(item.timeMills).format('HH:mm')
+                }
+            })
+            console.log(ewe, '.......................222............setHeatmapDatasetHeatmapDatasetHeatmapDatasetHeatmapDatasetHeatmapData');
 
             if (heatMapRef.current && res.data.data.length) {
                 setHeatmapData((res.data.data))
@@ -64,10 +70,9 @@ function HeatmapReport(props: heatmapProps) {
             }
         })
     }
-
     const changeLeftProgress = (e: any) => {
         // 当帧条被按住调节帧时
-        if (lineFlag &&  document.querySelector(".pressProgressIndex")) {
+        if (lineFlag && document.querySelector(".pressProgressIndex")) {
             // const leftX = document.querySelector(".progress").getBoundingClientRect().x;
             // var moveX = e.clientX;
             // const left = parseInt(document.querySelector(".leftProgress").style.left);

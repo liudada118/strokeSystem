@@ -29,6 +29,23 @@
   background: #F2F5F8;
 }
 
+.messagePage .messageMain .messagetitle .messageTitleBtn .MessageYiDOngTitlesearchSelect {
+  cursor: pointer;
+  border-radius: 0.6rem !important;
+  width: 6.2rem !important;
+}
+
+.messagePage .messageMain .messagetitle .messageTitleBtn .MessageYiDOngTitlesearchSelect .ant-select-selector {
+  border-radius: 0.6rem !important;
+}
+
+.messagePage .messageMain .messagetitle .messageTitleBtn .MessageYiDOngTitlesearchSelect .ant-select-selector .ant-select-selection-item {
+  color: #929EAB;
+  border-radius: 0.6rem !important;
+  font-weight: 900 !important;
+  color: #000;
+}
+
 .messagePage .messageMain .messageMainData {
   width: 100%;
   padding-top: 3.3rem;
@@ -228,19 +245,15 @@
     width: 76%;
   }
   .MessageYiDongDivInput .MessageYiDOngTitlesearchSelect {
+    cursor: pointer;
+    background: #F5F8FA;
     width: 6.2rem !important;
   }
   .MessageYiDongDivInput .MessageYiDOngTitlesearchSelect .ant-select-selector {
-    border: 0 !important;
+    background: #F5F8FA !important;
   }
   .MessageYiDongDivInput .MessageYiDOngTitlesearchSelect .ant-select-selection-item {
     color: #929EAB;
-    font-size: 14px;
-  }
-  .MessageYiDongDivInput .MessageYiDOngTitlesearchSelect .ant-select-selector {
-    padding: 0 0.6rem !important;
-    background-color: unset !important;
-    box-shadow: unset !important;
   }
   .MessageYiDongDivInput .messageTitlediv2_you_inp {
     width: 70%;
@@ -280,12 +293,12 @@
     font-size: 14px;
     z-index: 1;
     align-items: center;
-    line-height: 4.5rem;
     overflow-x: auto;
     scrollbar-width: none;
     -ms-overflow-style: none;
   }
   .MessageYiDOngTitle .btn {
+    cursor: pointer;
     border-radius: 2.2rem;
     color: #929EAB;
     line-height: 4.5rem;
@@ -294,6 +307,29 @@
     height: 2rem;
     background: #F5F8FA;
     border: none;
+  }
+  .MessageYiDOngTitle .MessageYiDOngTitlesearchSelectyidong {
+    line-height: normal !important;
+    border: none !important;
+    padding: 0 1.3rem;
+  }
+  .MessageYiDOngTitle .MessageYiDOngTitlesearchSelectyidong .ant-select-selector {
+    border: none !important;
+    border-radius: 2.2rem;
+    padding: 0 0.3rem;
+    background: #F5F8FA !important;
+  }
+  .MessageYiDOngTitle .MessageYiDOngTitlesearchSelectyidong .ant-select-selection-item {
+    border: none;
+    background: #F5F8FA !important;
+    color: #929EAB;
+  }
+  .MessageYiDOngTitle .MessageYiDOngTitlesearchSelect {
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+    line-height: 4.5rem;
+    border-radius: 2.2rem;
+    background: #F5F8FA;
   }
   .MessageYiDOngTitle .onn {
     font-weight: 900;

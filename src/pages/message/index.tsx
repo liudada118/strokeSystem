@@ -6,15 +6,15 @@ import { instance } from "@/api/api";
 import Title from "@/components/title/Title";
 import Bottom from "@/components/bottom/Bottom";
 import type { TableProps, GetProps } from 'antd';
-import { DatePicker, Pagination, Button, Table, Input, Dropdown, Space, Select } from 'antd';
-import { CaretDownOutlined, DownOutlined, LeftOutlined, ZoomInOutlined } from '@ant-design/icons';
+import { DatePicker, Pagination, Button, Table, Input, Space, Select } from 'antd';
+import { CaretDownOutlined, LeftOutlined, ZoomInOutlined } from '@ant-design/icons';
 import { useGetWindowSize } from '../../hooks/hook'
-import { calc } from "antd/es/theme/internal";
 // import Kdsd from './messageDatePicker'
 import { CalendarPicker } from "antd-mobile";
 import fang from '../.././assets/images/容器@2x.png'
-import { log } from "node:console";
+const { Option } = Select;
 const { RangePicker } = DatePicker;
+// const { Option } = Select;
 type RangePickerProps = GetProps<typeof DatePicker.RangePicker>;
 export interface message {
   roomNum?: string;
@@ -159,51 +159,34 @@ export default function Message() {
   const titleList = [
     {
       id: 1,
-      key: 'nursing,fallbed,outOffBed,situp,offline,sos',
-      title: "全部提醒"
+      key: 'sos',
+      title: "SOS提醒"
     },
     {
       id: 2,
       key: '',
       title: ""
     },
-
     {
       id: 3,
-      key: 'sos',
-      title: "SOS提醒 "
-    },
-    {
-      id: 4,
       key: 'fallbed',
       title: "坠床提醒"
     }, {
-      id: 5,
+      id: 4,
       key: 'outOffBed',
       title: "离床提醒"
     }, {
-      id: 6,
+      id: 5,
       key: 'situp',
       title: "坐起提醒"
     },
-    {
-      id: 7,
-      key: 'offline',
-      title: "离线提醒"
-    },
+    // {
+    //   id: 7,
+    //   key: 'offline',
+    //   title: "离线提醒"
+    // },
 
-    {
-      id: 8,
-      key: 'otherReminders',
-      title: "其他提醒",
-      children: [
-        {
-          id: 8_1,
-          key: 'nursing',
-          title: "护理提醒"
-        },
-      ]
-    },
+
   ]
   // 表格数据
   const data: any[] = dataList.map((item: any, index: number) => {
@@ -222,7 +205,7 @@ export default function Message() {
     }
   })
   // 标题切换
-  const [titleId, setTitleId] = useState(5)
+  const [titleId, setTitleId] = useState(1)
   const [title, setTitle] = useState('护理提醒')
   console.log(titleId, 'titleId');
   const [nursing, setNursing] = useState(false)
@@ -398,7 +381,13 @@ export default function Message() {
       })
     }
   }, [val])
-
+  const [nurseType, setNurseType] = useState('其他提醒');
+  const homeSelectNurse: any = [
+    { value: 'nursing,fallbed,outOffBed,situp,offline,sos', label: '全部提醒' },
+    { value: 'otherReminders', label: '其他提醒' },
+    { value: 'nursing', label: '护理提醒' },
+    { value: 'offline', label: '离线提醒' },
+  ]
   return (
     <>
       {
@@ -409,9 +398,10 @@ export default function Message() {
               <div className="messageTitleBtn">
 
                 {titleList && titleList.map((item: any, index) => {
-                
+
                   return (
                     <Button
+                      style={{ border: "none" }}
                       key={item.id}
                       className={`btn  ${(index + 1) === titleId ? 'on' : ''} `}
                       onClick={() => onTitle(item)}
@@ -420,36 +410,49 @@ export default function Message() {
                     </Button>
                   );
                 })}
-                {
-                  nursing ? <div>
-                    {
-                      otherReminders && otherReminders.map((item, index) => {
-                        return <Button key={index} className={`btn  ${(index + 1) === titleId ? 'on' : ''} `} onClick={() => {
-                          setTitle(item.label)
-                          setParams({
-                            ...params,
-                            types: item.value,
 
-                            startMills: timeArr[0],
-                            endMills: timeArr[1],
-                          })
-                          getMessage({
-                            ...params,
-                            types: item.value,
+                <div className="h-[2.8rem] w-[7rem]" style={{ borderRadius: "0.6rem" }}>
 
-                            startMills: timeArr[0],
-                            endMills: timeArr[1],
-                          })
-                          setNursing(false)
-                        }}>
-                          {item.label}
-                        </Button>
+                  <Select
+                    className="MessageYiDOngTitlesearchSelect"
+                    defaultValue={nurseType}
+
+                    suffixIcon={null}
+                    style={{
+                      width: '7rem',
+                      height: "2.7rem",
+                      border: 'none',
+                      // borderRadius: "0.6rem",
+                      textAlign: "center",
+                      fontSize: "0.8rem",
+                      fontWeight: 900
+                    }}
+                    onChange={(e: any) => {
+                      // const val = e.target.value
+                      console.log(e, '....11111...valnurse');
+                      setNurseType(e)
+                      setParams({
+                        ...params,
+                        types: e,
+
+                        startMills: timeArr[0],
+                        endMills: timeArr[1],
                       })
-                    }
+                      getMessage({
+                        ...params,
+                        types: e,
 
-                  </div>
-                    : ''
-                }
+                        startMills: timeArr[0],
+                        endMills: timeArr[1],
+                      })
+                    }}
+                    options={homeSelectNurse}
+                  />
+
+
+                </div>
+
+
               </div>
             </div>
             <div className="messageMainData">
@@ -520,9 +523,7 @@ export default function Message() {
             </Space> : ""
           }
           <div className="MessageYiDOngTitle">
-
             {
-
               titleList && titleList.map((item, index) => {
                 return (
 
@@ -536,43 +537,44 @@ export default function Message() {
                   >
                     {item.title}
                   </Button>
-
                 )
               })
             }
-            {
-              nursing ? <div>
+            <div className="h-[2rem]" style={{ borderRadius: "0.6rem" }}>
 
-                {
-                  otherReminders && otherReminders.map((item, index) => {
-                    return <div key={index}>
-                      <Button className="btn" onClick={() => {
-                        setTitle(item.label)
-                        setParams({
-                          ...params,
-                          types: item.value,
+              <Select
+                className="MessageYiDOngTitlesearchSelectyidong"
+                defaultValue={nurseType}
 
-                          startMills: timeArr[0],
-                          endMills: timeArr[1],
-                        })
-                        getMessage({
-                          ...params,
-                          types: item.value,
+                suffixIcon={null}
+                style={{
+                  // width: '7rem',
+                  height: "2rem",
+                  textAlign: "center",
+                  fontSize: "0.8rem",
+                  fontWeight: 900
+                }}
+                onChange={(e: any) => {
+                  // const val = e.target.value
+                  console.log(e, '....11111...valnurse');
 
-                          startMills: timeArr[0],
-                          endMills: timeArr[1],
-                        })
-                        setNursing(false)
-                      }}>
-                        {item.label}
-                      </Button>
-                    </div>
+                  setParams({
+                    ...params,
+                    types: e,
+
+                    startMills: timeArr[0],
+                    endMills: timeArr[1],
                   })
-                }
+                  getMessage({
+                    ...params,
+                    types: e,
 
-              </div>
-                : ''
-            }
+                    startMills: timeArr[0],
+                    endMills: timeArr[1],
+                  })
+                }}
+                options={homeSelectNurse}
+              /></div>
             <div className="MessageYiDOngTitledivMessageYiDOngTitlediv" style={{ position: 'fixed', right: "0", background: '#FFFFF', width: "2rem", height: "3rem", zIndex: 99 }}></div>
           </div>
 

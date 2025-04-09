@@ -432,25 +432,25 @@ function NursingOpen(props: propsType) {
                       border: "none",
                       fontFamily: " PingFang SC",
                       fontWeight: "600",
-                      fontSize: "1.2rem",
+                      fontSize: "1.05rem",
                     }}
                   >
                     {defaultTempInfo.label}
                     <img
-                      style={{ width: "0.5rem", height: "0.5rem" }}
+                      style={{ width: "0.75rem", height: "0.75rem", }}
                       src={shan}
                       alt=""
                     />
                   </Button>
                 </Dropdown>
               </Space>
-              <p className="flex items-center pl-[0.9rem] mt-[0.4rem] bbg-[#F5F8FA]">
+              <p className="flex w-[16rem] items-center ml-[0.9rem] mt-[0.4rem] bg-[#F5F8FA]">
                 <img
-                  className="w-[1.3rem] h-[1.3rem] mr-[0.5rem]"
+                  className="w-[1rem] h-[1rem] mr-[0.5rem]"
                   src={yuanquan}
                   alt=""
                 />
-                特点：{defaultTempInfo.value}
+                <span> 特点：{defaultTempInfo.value}</span>
               </p>
               <NursingStencil
                 stylee="2"
@@ -576,14 +576,14 @@ function NursingOpen(props: propsType) {
                   marginRight: "0.7rem",
                   paddingLeft: "0.6rem",
                 }}
-                placeholder="点"
+                placeholder="请选择"
                 optionFilterProp="children"
                 value={hours}
                 onChange={(value) => setHours(value as string)}
               >
-                {[...Array(23)].map((item, index) => (
-                  <Select.Option key={index} value={index.toString()}>
-                    {index + 1}点
+                {[...Array(24)].map((item, index) => (
+                  <Select.Option key={index} value={index.toString().padStart(2, '0')}>
+                    {index.toString().padStart(2, '0')}点
                   </Select.Option>
                 ))}
               </Select>{" "}

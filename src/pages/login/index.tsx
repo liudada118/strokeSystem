@@ -10,6 +10,7 @@ import axios from "axios";
 import VerCode from "./verCode/VerCode";
 import { useDispatch, useSelector } from "react-redux";
 import { reduxSetPhone, reduxSetToken } from "@/redux/token/tokenSlice";
+import { loginOut } from '../../redux/premission/premission'
 const { Option } = Select;
 
 const loginType = ["账号登录"];
@@ -85,6 +86,7 @@ export default function Login() {
       },
     }).then((res) => {
 
+
       if (res.status == 200) {
         message.success('验证码发送成功')
       } else {
@@ -93,6 +95,7 @@ export default function Login() {
 
     });
   }
+  const dispale = useDispatch()
   const login = () => {
     if (!phone) {
       return message.info('手机号不能为空')
@@ -118,10 +121,18 @@ export default function Login() {
           "content-type": "application/x-www-form-urlencoded",
         },
       }).then((res) => {
+
+        const obj = res.data.authority.reduce((acc: any, curr: any, index: number) => {
+          acc[index] = curr;
+          return acc;
+        },);
+        localStorage.setItem('organizeId', obj.organizeId)
+        dispale(loginOut(obj.organizeId))
+
         if (res.data.code === 0) {
           const token = res.data.token
-          // localStorage.setItem('token', res.data.token)
-          // localStorage.setItem('phone', phone)
+          localStorage.setItem('token', res.data.token)
+          localStorage.setItem('phone', phone)
           dispatch(reduxSetPhone(phone))
           dispatch(reduxSetToken(token))
           navigate('/')
@@ -144,6 +155,12 @@ export default function Login() {
           "content-type": "application/x-www-form-urlencoded",
         },
       }).then((res) => {
+        const obj = res.data.authority.reduce((acc: any, curr: any, index: number) => {
+          acc[index] = curr;
+          return acc;
+        },);
+        localStorage.setItem('organizeId', obj.organizeId)
+        dispale(loginOut(obj.organizeId))
         if (res.data.code === 0) {
           const token = res.data.token
           // localStorage.setItem('token', res.data.token)

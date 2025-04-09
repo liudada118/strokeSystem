@@ -3,16 +3,12 @@ import React, { useEffect, useImperativeHandle, useRef, useState } from 'react'
 import { addSide } from './HeatmapModal copy';
 // import { press, rotate90, rotateMatrix, zeroLine } from '../../assets/util';
 // import ProgressCom from '../progress/Progress';
-
-
 // interface Options = {
 //     min 
 // }
-
 var data: any = []
 const sitMax = 23000
 const sitWidth = 8
-
 // const bedOption: any = {
 //     min: 0,
 //     // max: localStorage.getItem('carValuej') ? JSON.parse(localStorage.getItem('carValuej')) : 900,
@@ -46,6 +42,7 @@ interface circleInterface {
 }
 
 const Heatmap = React.forwardRef((props: any, refs) => {
+    console.log(props, refs, '.......1111...propsssssss');
 
     const bedMax = (props.sensorName == 'KgvDXUvdEs9M9AEQDcVc') ? 9000 : 14000
     // const bedMax = 14000

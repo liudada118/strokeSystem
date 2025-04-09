@@ -43,6 +43,7 @@
   border-radius: 1rem;
   width: 100%;
   max-width: 100% !important;
+  padding-top: 2rem;
 }
 
 .use_nurse_form.ant-form.ant-form-vertical .use_nurse_template {
@@ -113,8 +114,7 @@
 .use_nurse_form.ant-form.ant-form-vertical .time_box .split {
   width: 1rem;
   text-align: center;
-  height: 2.48rem;
-  line-height: 2.48rem;
+  line-height: 2rem;
   flex-shrink: 0;
 }
 

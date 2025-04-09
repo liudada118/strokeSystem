@@ -69,7 +69,7 @@ export default function NurseTable(props: tableProps) {
       key: "completionTime",
       titleValue: "时间",
       width: "6rem",
-      type: "按时时间自动排序",
+      type: "按时间自动排序",
     },
     {
       key: "templateTitle",
@@ -376,7 +376,7 @@ export default function NurseTable(props: tableProps) {
               : "bg-[#fff] py-[18px] mx-[15px] h-[full]"
               }`}
             style={{
-              height: `${nurseOpne === false ? "37.7rem" : "100%"}`,
+              height: `${nurseOpne === false ? "38.2rem" : "100%"}`,
               // height: `${nurseOpne === false ? "auto" : "100%"}`,
               position: "relative",
             }}
@@ -401,7 +401,7 @@ export default function NurseTable(props: tableProps) {
                       setTitleModal("清除模版");
                     }}
                     className={`${nurseOpne === false ? "" : "w-[3.5rem]"
-                      } text-center text-[0.8rem] text-[#0072EF]`}
+                      } text-center text-[1rem] text-[#0072EF] pt-[0.4rem]`}
                   >
                     {nurseOpne === false ? "" : "清空"}
                   </span>
@@ -409,7 +409,7 @@ export default function NurseTable(props: tableProps) {
                 <div
                   className="flex items-center mb-[20px] bg-[#F5F8FA] pl-[0.5rem]"
                   style={{
-                    width: `${nurseOpne === false ? "auto" : "calc(100% - 2.5rem)"
+                    width: `${nurseOpne === false ? "auto" : "calc(100% - 7rem)"
                       }`,
                   }}
                 >
@@ -438,19 +438,20 @@ export default function NurseTable(props: tableProps) {
                 className="grow"
                 style={{ overflow: "hidden", textAlign: "center" }}
               >
-                <div className="bg-[#F5F8FA] flex ">
+                <div className="bg-[#F5F8FA] flex  " style={{ borderRadius: "0.3rem" }}>
                   {title.map((a) => {
                     if (type == "user" && a.key == "delete") {
                       return <></>;
                     }
-                    if (a.type === "按时时间自动排序") {
+                    if (a.type === "按时间自动排序") {
                       return (
                         <div
                           style={{
                             display: "flex",
                             alignItems: "center",
                             // flexDirection: "column",
-                            width: "6.2rem",
+                            // width: "6.2rem",
+                            width: nurseIsOpenAdd === true ? "7.5rem" : "6.4rem",
                             lineHeight: "1.7rem",
                             paddingLeft: "1rem",
                             paddingBottom: '5px'
@@ -458,9 +459,15 @@ export default function NurseTable(props: tableProps) {
                           className="flex-shrink-0"
                         >
                           {" "}
-                          <span className="text-xs ">{a.titleValue}</span>
+                          <span className="text-xs ">
+                            {a.titleValue}
+
+                          </span>
                           <span className="text-[12px] text-[#929EAB]" style={{ lineHeight: '12px' }}>
-                            {a.type}
+                            {/* {a.type} */}
+                            {/* {
+                              nurseIsOpenAdd === true ? a.type : ''
+                            } */}
                           </span>
                         </div>
                       );
@@ -473,6 +480,8 @@ export default function NurseTable(props: tableProps) {
                             // width: "3rem"
                             textAlign: "left",
                             flex: 1,
+                            display: "flex",
+                            alignItems: "center"
                           }}
                         >
                           护理内容
@@ -483,7 +492,13 @@ export default function NurseTable(props: tableProps) {
                       return (
                         <div
                           className="cursor-pointer flex-shrink-0"
-                          style={{ lineHeight: "30px", width: "4rem", textAlign: "center" }}
+                          style={{
+                            lineHeight: "30px",
+                            //  width: "4rem", 
+                            textAlign: "center", display: "flex",
+                            alignItems: "center",
+                            width: nurseIsOpenAdd === true ? "2.8rem" : "2.8rem",
+                          }}
                         >
                           状态
                         </div>
@@ -516,7 +531,7 @@ export default function NurseTable(props: tableProps) {
                 <div
                   style={{
                     overflowY: "auto",
-                    height: "calc(100% - 5rem)",
+                    height: "95%",
                   }}
                 // style={{
                 //   overflowY: "auto",
@@ -599,7 +614,7 @@ export default function NurseTable(props: tableProps) {
 
                                       color="default"
                                       variant="filled"
-                                      className="yyyyyyyds text-[#929EAB] bg-[#E6EBF0] w-[4rem]"
+                                      className="yyyyyyyds text-[#929EAB] bg-[#E6EBF0] w-[4rem] text-[0.76rem]"
                                       style={{ padding: "0 5px", width: "4rem" }}
                                     >
                                       待完成
@@ -665,7 +680,7 @@ export default function NurseTable(props: tableProps) {
                                     }}
                                   >
                                     <img
-                                      className="w-[1rem] first-line:bg-[#0072EF]"
+                                      className="w-[0.75rem] first-line:bg-[#0072EF] "
                                       src={sheetDelete}
                                       alt=""
                                     />
@@ -686,7 +701,7 @@ export default function NurseTable(props: tableProps) {
                                     textAlign: "left",
                                     lineHeight: "1.5rem",
                                     flex: 1,
-                                    paddingLeft: '0.2rem'
+                                    paddingLeft: nurseOpne === true ? '0.8rem' : "0.2rem"
                                   }}
                                 >
                                   <span

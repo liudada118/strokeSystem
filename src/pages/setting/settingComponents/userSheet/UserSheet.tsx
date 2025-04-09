@@ -70,6 +70,7 @@ export default function UserSheet(props: userSheetProps) {
                 },
             }).then((res) => {
                 getItemManage(deleteObj.id)
+                message.info('添加成功')
                 if (res.data.code == 500) {
                     message.error('该用户已绑定过其他的项目')
                 }

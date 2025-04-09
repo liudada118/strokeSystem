@@ -5,6 +5,7 @@ import { useLocation, useParams, useNavigate } from "react-router-dom";
 import "./index.scss";
 
 export default function NurseList(props: any) {
+  console.log(props, '.....................propspropspropsprops');
   const columsList = [
     {
       title: "时间",
@@ -46,7 +47,7 @@ export default function NurseList(props: any) {
                 </p>
                 <p>{item.title}</p>
                 <p>
-                  <span>
+                  <span style={{ color: props.operType === "init" ? "#ffff" : "#929EAB" }}>
                     {item.status || item.status === "todo"
                       ? "待完成"
                       : "已完成"}

@@ -161,21 +161,22 @@ export default function NurseConfEdit(props: any) {
 
         <div className="time_box">
           <span className="form_title">护理时间：</span>
-          <div className="time_item">
+          <div className="time_item h-10">
             <Form.Item
               label=""
               name="hours"
+              className="h-10"
               rules={[{ required: true, message: "请选择!" }]}
             >
               <Select
                 showSearch
-                placeholder="小时"
+                placeholder="请选择时间"
                 optionFilterProp="children"
                 className="h-10"
               >
-                {[...Array(23)].map((_, index) => (
-                  <Select.Option key={index} value={(index + 1).toString()}>
-                    {index + 1}小时
+                {[...Array(24)].map((_, index) => (
+                  <Select.Option key={index} value={(index + 1).toString().padStart(2, '0')}>
+                    {index.toString().padStart(2, '0')}点
                   </Select.Option>
                 ))}
               </Select>

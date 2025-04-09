@@ -41,7 +41,7 @@ const premissionSlice = createSlice({
             state.error = null
             state.headImg = ''
             state.roleId = ''
-            state.organizeId = ''
+            state.organizeId = action.payload
             state.turnbodyFlag = 0
             state.status = 'idle'
         },
@@ -49,6 +49,7 @@ const premissionSlice = createSlice({
             state.turnbodyFlag = action.payload
         }
     },
+
     extraReducers(builder) {
         builder.addCase(fetchPermission.pending, (state, action) => {
             state.status = 'loading'

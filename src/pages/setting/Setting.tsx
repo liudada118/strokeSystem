@@ -871,6 +871,9 @@ export default function Setting() {
         if (res.data.msg == "success") {
           getProjectList()
         }
+        if (res.data.msg == "add Manager Success") {
+          message.info('添加成功')
+        }
         if (res.data.code == 500) {
           message.error('该用户已绑定过其他的项目')
         }
@@ -900,6 +903,9 @@ export default function Setting() {
         },
       }).then((res) => {
         getProjectManage({ id: manId, user: manUseruser })
+        if (res.data.msg == "add Manager Success") {
+          message.info('添加成功')
+        }
         if (res.data.code == 500) {
           message.error('该用户已绑定过其他的项目')
         }
@@ -1034,7 +1040,16 @@ export default function Setting() {
       // setManageSource(res.data.data)
     })
   }
+  const organizeIdq = useSelector((state: any) => state.premission.organizeId)
+
+
+  useEffect(() => {
+    getItemDevice(organizeIdq)
+  }, [])
+
   const getItemDevice = (id: any) => {
+
+
     Instancercv({
       method: "get",
       url: "/organize/getDeviceListByOrganizeId",
@@ -1052,6 +1067,10 @@ export default function Setting() {
         a.id = index + 1
         return a
       })
+
+      // message.info('添加成功')
+
+
       setDeviceSource(res.data.data)
     })
   }
@@ -1111,28 +1130,37 @@ export default function Setting() {
 
   const handleNurseOk = () => {
     if (nurseUser.user.length > 5) {
-      Instancercv({
-        method: "post",
-        url: "/organize/addOrganizeManager",
-        headers: {
-          "content-type": "application/x-www-form-urlencoded",
-          "token": token
-        },
-        params: {
-          userName: nurseUser.user,
-          password: nurseUser.password,
-          nickName: nurseUser.name,
-          organizeId: localStorage.getItem('organizeId'),
-          roleId: 3
-        },
-      }).then((res) => {
-        getItemManage(deleteObj.id)
-        if (res.data.code == 'add Manager Success') {
+      try {
+        Instancercv({
+          method: "post",
+          url: "/organize/addOrganizeManager",
+          headers: {
+            "content-type": "application/x-www-form-urlencoded",
+            "token": token
+          },
+          params: {
+            userName: nurseUser.user,
+            password: nurseUser.password,
+            nickName: nurseUser.name,
+            organizeId: localStorage.getItem('organizeId'),
+            roleId: 3
+          },
+        }).then((res) => {
+          getItemManage(deleteObj.id)
+          console.log(res.data.msg, '.......22222...添加成功....111111111111111');
+
           message.info('添加成功')
-        }
-      }).catch((e) => {
-        message.error('服务器异常')
-      })
+          console.log('...............添加成功.....111111111111111.');
+
+
+        }).catch((e) => {
+          message.error('服务器异常')
+        })
+        console.log('...............添加成功.....111111111111111.');
+
+      } catch (error) {
+
+      }
 
 
       setIsModalNurseOpen(false)
@@ -1183,6 +1211,12 @@ export default function Setting() {
         },
       }).then((res) => {
         getItemPerson(deleteObj.id)
+        console.log(res.data.msg, '................add Manager Success');
+
+        if (res.data.msg == 'add Manager Success') {
+          message.info('添加成功')
+        }
+
         if (res.data.code == 500) {
           message.error('该家属已绑定过其他的项目')
         }
@@ -1940,30 +1974,30 @@ export default function Setting() {
                                   }}>入库</Button>
                                   <Button onClick={() => { window.history.back() }}>返回</Button>
 
-                                </div> 
+                                </div>
                                 // : current == 'nurse' ? <NurseSetting type="project" organizeId={userOrganizeId} organizeName={userOrganizeName} />
-                                  : current == 'loadImg' ? <UploadImg changeHeadImg={changeHeadImg} userId={userOrganizeId} username={userOrganizeName} img={headImg} />
-                                    : current == 'sysIntro' ?
+                                : current == 'loadImg' ? <UploadImg changeHeadImg={changeHeadImg} userId={userOrganizeId} username={userOrganizeName} img={headImg} />
+                                  : current == 'sysIntro' ?
+
+                                    <div className="projectContent">
+                                      <UserInfo sysIntroObj={sysIntroObj} />
+                                    </div>
+                                    : current == 'product' ?
 
                                       <div className="projectContent">
-                                        <UserInfo sysIntroObj={sysIntroObj} />
+                                        <UserInfo sysIntroObj={product} />
                                       </div>
-                                      : current == 'product' ?
+                                      : current == 'userInfo' ?
 
                                         <div className="projectContent">
-                                          <UserInfo sysIntroObj={product} />
+                                          <UserInfo sysIntroObj={sysIntroObj} />
                                         </div>
-                                        : current == 'userInfo' ?
+                                        : current == 'platform' ?
 
                                           <div className="projectContent">
                                             <UserInfo sysIntroObj={sysIntroObj} />
                                           </div>
-                                          : current == 'platform' ?
-
-                                            <div className="projectContent">
-                                              <UserInfo sysIntroObj={sysIntroObj} />
-                                            </div>
-                                            : ''
+                                          : ''
               }
             </div>
           </div>}

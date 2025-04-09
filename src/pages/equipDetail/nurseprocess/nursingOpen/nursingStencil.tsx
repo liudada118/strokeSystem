@@ -56,6 +56,8 @@ function NursingStencil(props: propsType) {
     const yyyyds = () => {
         navigate(`/userInfo_NurseTable?sensorName=${sensorName}&type=project`)
     }
+    console.log(statue, '................statuestatuestatuestatuestatuestatue');
+
     return (
         <>
 
@@ -65,10 +67,10 @@ function NursingStencil(props: propsType) {
                         {name}护理项
                     </div> : ''
                 }
-                    <div className={`NursingStencil w-full h-full mt-[1rem]`} style={{ height: 'calc(100% - 6rem)' }}>
+                    <div className={`NursingStencil w-full h-full mt-[1rem]`} style={{ height: statue === 2 ? 'calc(100% - 3rem)' : 'calc(100% - 5rem)' }}>
                         <div className={`w-[full] h-[2.1rem] bg-[#F5F8FA] rounded flex items-center mt-[1rem] ml-[1rem] mr-[1rem]`}>
-                            <div className='mr-[1.5rem] text-center' style={{ width: statue == 1 ? '12.4rem' : "7rem", fontSize: "0.75rem" }}>时间</div>
-                            <div className='flex-1 text-left' style={{ fontSize: "0.75rem" }} >护理内容</div>
+                            <div className='mr-[3.2rem] text-center' style={{ width: statue == 1 ? '12.4rem' : "7rem", fontSize: "0.75rem", marginRight: statue ? '3.2rem' : "1.2rem" }}>时间</div>
+                            <div className='flex-1 text-left' style={{ fontSize: "0.75rem" }} >护理任务</div>
                             <div className={'w-[4.3rem] mr-[0.3rem] text-center'} style={{ fontSize: "0.75rem" }}> 状态</div>
                         </div>
                         <div className={` h-full w-[full] scrollbar ml-[1rem] mr-[1rem]`} style={{ height: statue === 2 ? 'calc(100% - 3.3rem)' : 'calc(100% - 8.3rem)' }}>
@@ -80,12 +82,12 @@ function NursingStencil(props: propsType) {
                                                 <div className='w-[2.7rem] h-[0.7rem] text-[0.9rem] text-[#32373E] mt-[0.2rem] ml-[2.1rem] mr-[0.9rem]' style={{ marginLeft: statue == 1 ? '3rem' : '2.1rem', width: statue === 2 ? '2.7rem' : '2.7rem' }}>{item.time}</div>
                                                 <div className='w-[1.3rem] h-[1.3rem] rounded-md text-[#fff] bg-[#D1D9E1] flex items-center justify-center' style={{ borderRadius: "1.37rem", position: 'relative', top: '1.6rem', }}>{index + 1}</div>
                                             </div>
-                                            <div className='qx flex-1 flex  py-6' style={{ borderBottom: index === nursePersonTemplate.length ? 'none' : "solid 1px #D8D8D8" }}>
+                                            <div className='qx flex-1 flex  pt-[1.4rem] pm-[1.5rem]' style={{ borderBottom: index === nursePersonTemplate.length ? 'none' : "solid 1px #D8D8D8", }}>
                                                 <div className='flex flex-1 mr-[0.8rem]' style={{ width: statue == 1 ? '10rem' : "" }}>
                                                     <img className='w-[1rem] h-[1rem] mt-[0.33rem] mr-3' src={shijian1} alt="" />
                                                     <div className='text-[#32373E] text-[1rem] font-medium mt-[0.1rem]' style={{ width: stylee == '1' ? '15rem' : '5rem' }}>{item.title}</div>
                                                 </div>
-                                                <div className='w-[3.5rem] h-[2rem]  flex items-center  text-[#929EAB] bg-[#E6EBF0] text-[0.8rem] rounded-md  font-medium justify-center mr-[0.5rem]'>待完成</div>
+                                                <div className='w-[3.5rem] h-[2rem] pm-[1rem]  flex items-center  text-[#929EAB] bg-[#E6EBF0] text-[0.8rem] rounded-md  font-medium justify-center mr-[0.5rem]'>待完成</div>
                                             </div>
                                         </div>
                                     )

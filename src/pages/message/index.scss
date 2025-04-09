@@ -23,7 +23,23 @@
               
                 display: flex;
                 align-items: center;
-                background: #F2F5F8;           
+                background: #F2F5F8;
+                .MessageYiDOngTitlesearchSelect{
+                    cursor: pointer;
+                    border-radius: 0.6rem!important;
+                       .ant-select-selector{
+                           border-radius: 0.6rem!important;
+                           .ant-select-selection-item{
+                               color: #929EAB;
+                               border-radius: 0.6rem!important;
+                               font-weight: 900!important;
+                               color: #000;
+                           }
+                       }
+                           
+                       width: 6.2rem!important;
+                
+                   }          
             }
         }
         .messageMainData{
@@ -230,23 +246,21 @@ padding-top: 2.3rem!important;
     background: #F5F8FA;
     width: 76%;
     .MessageYiDOngTitlesearchSelect{
-   
-        .ant-select-selector{
-            border: 0!important;
-        }
-        .ant-select-selection-item{
-            color: #929EAB;
-            font-size: 14px;
-        }
+     cursor: pointer;
+         .ant-select-selector{
+            background: #F5F8FA!important;
+         }
+            .ant-select-selection-item{
+                color: #929EAB;
+      
+            }
+    background: #F5F8FA;
+            
         width: 6.2rem!important;
-        .ant-select-selector{
-            padding: 0 0.6rem!important;
-            background-color: unset!important;
-            box-shadow: unset!important;
-        }
+ 
     }
     .messageTitlediv2_you_inp{
-      width: 70%;
+        width: 70%;
         height: 1.5rem;
         border: none;
         outline: none;
@@ -288,11 +302,12 @@ font-family: 'PingFang SC';
     // background:linear-gradient(.25turn, #FFFFFF, 98%, red)!important;
     z-index: 1;
    align-items: center;
-    line-height: 4.5rem;
+    // line-height: 4.5rem;
     overflow-x: auto; 
     scrollbar-width: none; 
     -ms-overflow-style: none; 
     .btn{
+        cursor: pointer;
     border-radius: 2.2rem;
     color: #929EAB;
     line-height: 4.5rem;
@@ -302,6 +317,30 @@ font-family: 'PingFang SC';
         background: #F5F8FA;
         border: none;
     // border-bottom: solid 2px #0072EF;
+    }
+    .MessageYiDOngTitlesearchSelectyidong{
+        line-height: normal!important;
+        border: none!important;
+        padding: 0 1.3rem;
+       
+        .ant-select-selector{
+            border: none!important;
+            border-radius: 2.2rem;
+            padding: 0 0.3rem;
+            background: #F5F8FA!important;
+        }
+        .ant-select-selection-item{
+            border: none;
+            background: #F5F8FA!important;
+            color: #929EAB;
+        }
+    }
+    .MessageYiDOngTitlesearchSelect{
+        margin-left: 0.5rem;
+        margin-right: 0.5rem;
+        line-height: 4.5rem;
+        border-radius: 2.2rem;
+        background: #F5F8FA;
     }
     .onn{
         font-weight: 900;
@@ -399,6 +438,7 @@ font-family: 'PingFang SC';
     padding-right: 1.2rem;
     width: 13rem;
 }
+
 
 }
 .MessageYiDOngTitledivMessageYiDOngTitlediv{

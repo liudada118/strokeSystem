@@ -258,8 +258,13 @@
 
 
 .MessageYiDOngTitlesearchSelect{
-  
+  .ant-select-selection-wrap{
+    border: none !important;
+  }
     .ant-select-selector{
+        border: none !important;
+    }
+    .aant-select ant-select-outlined  css-dev-only-do-not-override-tjsggz ant-select-single ant-select-show-arrow{
         border: none !important;
     }
 }

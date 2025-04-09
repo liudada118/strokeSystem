@@ -14,6 +14,7 @@ import mobileNurse from "@/assets/image/mobileNurseBig.png";
 import dayjs from "dayjs";
 import { PersonalContentInfo } from "@/pages/equipDetail/EditingUser";
 import loog from '../../../../assets/images/logo.png'
+import jiaHao from '../../../../assets/images/image copy 2.png'
 const { confirm } = Modal;
 
 export default function NursingPlan() {
@@ -189,18 +190,19 @@ export default function NursingPlan() {
                 {operType === "init" && (
                   <span
                     className="mr-[1rem] cursor-pointer"
-                    style={{ marginLeft: "auto", color: "#1677ff" }}
+                    style={{ marginLeft: "auto", color: "#1677ff", display: "flex", alignItems: "center", fontSize: "1rem" }}
                     onClick={() => editNurseConf()}
                   >
-                    修改
+                    <img style={{ width: "30%", height: "30%" }} src={jiaHao} alt="" /> 修改
                   </span>
                 )}
                 {operType === "add" && (
                   <span
                     className="mr-[1rem] cursor-pointer"
-                    style={{ marginLeft: "auto", color: "#1677ff" }}
+                    style={{ marginLeft: "auto", color: "#1677ff", display: "flex", alignItems: "center", fontSize: "1rem" }}
                     onClick={() => addNurseConf()}
                   >
+                    <img style={{ width: "40%", height: "40%" }} src={jiaHao} alt="" />
                     添加
                   </span>
                 )}

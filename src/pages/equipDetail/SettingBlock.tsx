@@ -767,7 +767,7 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (props) =>
                 <div>护理配置</div>
                 <div><img className="w-[6.5px]" src={rigthLogo} alt="" /></div>
             </div> */}
-            <SettingMoDal />
+            <SettingMoDal sensorName={sensorName} />
 
 
             <div className='bg-[#fff] mb-[10px] p-[10px] px-[0.8rem] flex justify-between items-center'>
@@ -821,7 +821,7 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (props) =>
     )
 }
 
-const SettingMoDal = () => {
+const SettingMoDal = (props: any) => {
     const [nurseConfig, setNurseConfig] = useState([])
     const dispatch = useDispatch()
     const [open, setOpen] = useState(false)
@@ -829,7 +829,6 @@ const SettingMoDal = () => {
         setNurseConfig(config)
     }
     const handleFinish = () => {
-
     }
     const close = () => {
         setOpen(false)
@@ -847,18 +846,16 @@ const SettingMoDal = () => {
                 username: localStorage.getItem('phone'),
             }
         }).then((res) => {
-
             const roleId = res.data.data.roleId
             setRoleId(roleId)
-
         })
-
     }, [])
+    const navigate = useNavigate()
     const openOnCkick = () => {
-
         if (!(roleId == 1 || roleId == 2)) return message.info('权限不足');
         setOpen(true)
         dispatch(nurseOpen({ nurseOpen: open }))
+        navigate(`/report/1/${props.sensorName}`,);
     }
     return (
         <>

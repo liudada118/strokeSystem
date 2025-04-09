@@ -84,7 +84,7 @@ export const TitleRightInfo = (props: any) => {
     const { setMessages, titleChangeGetMessage, } = props
     const phone = localStorage.getItem('phone')
     const windo: any = window.location.href.split('/')[4]
-    console.log(windo, '................................................................windo');
+   
 
     if (props.path == 'home') {
         return <HomeRightTitle />

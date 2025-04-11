@@ -7,7 +7,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { numToTime, stampToTime } from '@/utils/timeConvert';
 import { CardWithoutTitle } from '../../Monitor/realReport/Card';
 // import { netRepUrl, numToTime, reportInstance, secToHourstamp, stampToTime } from '../../assets/util';
-const columns = [
+const columns: any = [
 
   {
     title: '开始时间',
@@ -30,10 +30,11 @@ const columns = [
     title: '左侧卧',
     dataIndex: 'left',
     key: 'left',
+    align: 'center',
     render: (record: any) => {
 
       return (
-        <div>
+        <div className='flex justify-center'>
           {record ? <img className="careImg" src={yes} style={{ height: '1rem', width: '1rem' }} /> : <img className="careImg" src={noReport} style={{ height: '1rem', width: '1rem' }} />}
         </div>
       )
@@ -43,10 +44,11 @@ const columns = [
     title: '仰卧位',
     dataIndex: 'center',
     key: 'center',
+    align: 'center',
     render: (record: any) => {
 
       return (
-        <div>
+        <div className='flex justify-center'>
           {record ? <img className="careImg" src={yes} style={{ height: '1rem', width: '1rem' }} /> : <img className="careImg" src={noReport} style={{ height: '1rem', width: '1rem' }} />}
         </div>
       )
@@ -56,10 +58,10 @@ const columns = [
     title: '右侧卧',
     dataIndex: 'right',
     key: 'right',
+    align: 'center',
     render: (record: any) => {
-
       return (
-        <div>
+        <div className='flex justify-center'>
           {record ? <img className="careImg" src={yes} style={{ height: '1rem', width: '1rem' }} /> : <img className="careImg" src={noReport} style={{ height: '1rem', width: '1rem' }} />}
         </div>
       )
@@ -74,7 +76,8 @@ const columns = [
     title: '护理员',
     dataIndex: 'nurseNum',
     key: 'nurseNum',
-    width: '3rem'
+    width: '3rem',
+    align: 'center',
   },
 
 ];
@@ -248,7 +251,8 @@ function TurnReportProps(props: turnReport) {
             <div className="nurseValueContent sleepDataNumZh" style={{}}>{posArrCn[posMax] ? posArrCn[posMax] : '无'}</div>
           </div>
         </div>
-        <Table onRow={(record: any) => {
+        <Table className='TurnReportPropsStyle' onRow={(record: any) => {
+
           return {
           };
         }} dataSource={dataSource} columns={columns} />

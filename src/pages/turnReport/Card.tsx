@@ -10,7 +10,6 @@ export default function Card(props: any) {
         </div>
     )
 }
-
 export function CardText(props: any) {
 
     const { onMargin } = props
@@ -20,7 +19,6 @@ export function CardText(props: any) {
         </div>
     )
 }
-
 export function CardContainTitle(props: any) {
     const { onMargin, title } = props
     const useGetWind = useGetWindowSize()

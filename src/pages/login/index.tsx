@@ -98,7 +98,7 @@ export default function Login() {
   const dispale = useDispatch()
   const login = () => {
     if (!phone) {
-      return message.info('手机号不能为空')
+      return message.info('账号不能为空')
     }
     if (!verCode && nowType === 0) {
       return message.info('验证码不能为空')
@@ -122,14 +122,15 @@ export default function Login() {
         },
       }).then((res) => {
 
-        const obj = res.data.authority.reduce((acc: any, curr: any, index: number) => {
-          acc[index] = curr;
-          return acc;
-        },);
-        localStorage.setItem('organizeId', obj.organizeId)
-        dispale(loginOut(obj.organizeId))
+
 
         if (res.data.code === 0) {
+          const obj = res.data.authority.reduce((acc: any, curr: any, index: number) => {
+            acc[index] = curr;
+            return acc;
+          },);
+          localStorage.setItem('organizeId', obj.organizeId)
+          dispale(loginOut(obj.organizeId))
           const token = res.data.token
           localStorage.setItem('token', res.data.token)
           localStorage.setItem('phone', phone)

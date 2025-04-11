@@ -43,7 +43,7 @@ export default function UserSheet(props: userSheetProps) {
         })
     }
 
-    const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]{6,16}$/;
+    const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]{8,16}$/;
     const handleNurseOk = () => {
         if (!nurseUser.user || !nurseUser.password || !nurseUser.name) {
             message.info('请填写完整信息');
@@ -52,7 +52,7 @@ export default function UserSheet(props: userSheetProps) {
 
 
         // 正则表达式匹配密码规则
-        if (!passwordRegex.test(nurseUser.password)) return message.info("密码必须包含字母和数字，长度在6到16个字符之间");
+        if (!passwordRegex.test(nurseUser.password)) return message.info("密码应为8-16位字符，仅支持数字与英文大小写字母。");
         if (nurseUser.user.length > 5) {
             Instancercv({
                 method: "post",
@@ -70,9 +70,11 @@ export default function UserSheet(props: userSheetProps) {
                 },
             }).then((res) => {
                 getItemManage(deleteObj.id)
-                message.info('添加成功')
+
                 if (res.data.code == 500) {
                     message.error('该用户已绑定过其他的项目')
+                } else {
+                    message.info('添加成功')
                 }
             }).catch((e) => {
                 message.error('服务器异常')

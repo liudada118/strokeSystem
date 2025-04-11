@@ -25,7 +25,7 @@ export default function FamilySheet(props: familySheetProps) {
             key: 'id',
         },
         {
-            title: '家属名',
+            title: '姓名',
             dataIndex: 'nickname',
             key: 'nickname',
             render: (record: any) => {
@@ -40,7 +40,7 @@ export default function FamilySheet(props: familySheetProps) {
             }
         },
         {
-            title: '家属',
+            title: '手机号',
             dataIndex: 'username',
             key: 'username',
             render: (record: any) => {

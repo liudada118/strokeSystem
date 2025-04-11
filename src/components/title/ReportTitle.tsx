@@ -81,7 +81,7 @@ export const PcLeftTitle = (props: any) => {
     )
 }
 export const TitleRightInfo = (props: any) => {
-    const { setMessages, titleChangeGetMessage, } = props
+    const { setMessages, titleChangeGetMessage,titleKey } = props
     const phone = localStorage.getItem('phone')
     const windo: any = window.location.href.split('/')[4]
    
@@ -90,7 +90,7 @@ export const TitleRightInfo = (props: any) => {
         return <HomeRightTitle />
     }
     else if (props.path == 'message') {
-        return <MessageRightTitle titleChangeGetMessage={titleChangeGetMessage} />
+        return <MessageRightTitle titleKey={titleKey} titleChangeGetMessage={titleChangeGetMessage} />
     } else if (props.path == 'setting') {
         return <div className="titleRight">{phone}</div>
     } else if (windo == 'userInfo_NursingOpen') {

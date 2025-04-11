@@ -12,6 +12,7 @@ import { useGetWindowSize } from '../../hooks/hook'
 // import Kdsd from './messageDatePicker'
 import { CalendarPicker } from "antd-mobile";
 import fang from '../.././assets/images/容器@2x.png'
+import { useNavigate } from "react-router-dom";
 const { Option } = Select;
 const { RangePicker } = DatePicker;
 // const { Option } = Select;
@@ -57,7 +58,7 @@ export function msgToinfoStr(msg: string): string {
 
 const timeArr = [new Date(new Date().toLocaleDateString()).getTime(), new Date(new Date().toLocaleDateString()).getTime() + 86400000]
 export default function Message() {
-
+  const navigator = useNavigate()
   const phone = localStorage.getItem('phone') || ''
   const token = localStorage.getItem('token') || ''
   const [total, setTotal] = useState(0)
@@ -159,8 +160,8 @@ export default function Message() {
   const titleList = [
     {
       id: 1,
-      key: 'sos',
-      title: "SOS提醒"
+      key: 'nursing,fallbed,outOffBed,situp,offline,sos',
+      title: "全部提醒"
     },
     {
       id: 2,
@@ -169,14 +170,19 @@ export default function Message() {
     },
     {
       id: 3,
+      key: 'sos',
+      title: "SOS提醒"
+    },
+    {
+      id: 4,
       key: 'fallbed',
       title: "坠床提醒"
     }, {
-      id: 4,
+      id: 5,
       key: 'outOffBed',
       title: "离床提醒"
     }, {
-      id: 5,
+      id: 6,
       key: 'situp',
       title: "坐起提醒"
     },
@@ -206,14 +212,24 @@ export default function Message() {
   })
   // 标题切换
   const [titleId, setTitleId] = useState(1)
-  const [title, setTitle] = useState('护理提醒')
+  const [titleKey, setTitleIdKey] = useState('')
+  const [title, setTitle] = useState('全部提醒')
   console.log(titleId, 'titleId');
   const [nursing, setNursing] = useState(false)
+  const [isName, setIsName] = useState(false)
+  const [pageTotal, setPageTotal] = useState(0)
+  const [nurseType, setNurseType] = useState('其他提醒');
+  const homeSelectNurse: any = [
+    { value: 'nursing', label: '护理提醒' },
+    { value: 'offline', label: '离线提醒' },
+  ]
   // 标题切换
   const onTitle = (item: any) => {
-    console.log(item, '.title');
+    // setIsName(true)
+    // setNurseType('其他提醒')
     setTitle(item.title)
     setTitleId(item.id)
+    setTitleIdKey(item.key)
     if (item.key === 'otherReminders') return setNursing(true)
     setParams({
       ...params,
@@ -241,14 +257,13 @@ export default function Message() {
       const message = initMessage(data)
       setMessages(message)
       setTotal(total)
+      setPageTotal(res.data.data.total)
       setData({
         yestodayAlarmCount: res.data.yestodayAlarmCount,
         beforeYestodayAlarmCount: res.data.beforeYestodayAlarmCount,
         todayAlarmCoun: res.beforeYestodayAlarmCount,
-
       })
     } catch (err) {
-
     }
   }
   const columns: TableProps<DataType>['columns'] = [
@@ -307,13 +322,8 @@ export default function Message() {
     { value: 'patientName', label: '姓名' },
     { value: 'roomNum', label: '床号' },
   ]
-  const otherReminders = [
-    { value: 'nursing', label: '护理提醒' },
-  ]
   const [otherRemindersType, setOtherRemindersType] = useState('');
   const [selectType, setSelectType] = useState('patientName');
-  const [otherReminders1, setOtherReminders] = useState<any>('nursing')
-
   const [fale, seFalse] = useState(false)
   const onShijian = () => {
     setPopupVisible(true)
@@ -381,24 +391,15 @@ export default function Message() {
       })
     }
   }, [val])
-  const [nurseType, setNurseType] = useState('其他提醒');
-  const homeSelectNurse: any = [
-    { value: 'nursing,fallbed,outOffBed,situp,offline,sos', label: '全部提醒' },
-    { value: 'otherReminders', label: '其他提醒' },
-    { value: 'nursing', label: '护理提醒' },
-    { value: 'offline', label: '离线提醒' },
-  ]
+
   return (
     <>
       {
-        !WindowSize ? <><Title titleChangeGetMessage={(item: any) => getSearchValue(item)}></Title><div className="messagePage">
-
+        !WindowSize ? <><Title titleKey={titleKey} titleChangeGetMessage={(item: any) => getSearchValue(item)}></Title><div className="messagePage">
           <div className="messageMain">
             <div className="messagetitle">
               <div className="messageTitleBtn">
-
                 {titleList && titleList.map((item: any, index) => {
-
                   return (
                     <Button
                       style={{ border: "none" }}
@@ -410,13 +411,10 @@ export default function Message() {
                     </Button>
                   );
                 })}
-
                 <div className="h-[2.8rem] w-[7rem]" style={{ borderRadius: "0.6rem" }}>
-
                   <Select
                     className="MessageYiDOngTitlesearchSelect"
-                    defaultValue={nurseType}
-
+                    defaultValue={isName === true ? '其他提醒' : nurseType}
                     suffixIcon={null}
                     style={{
                       width: '7rem',
@@ -428,31 +426,25 @@ export default function Message() {
                       fontWeight: 900
                     }}
                     onChange={(e: any) => {
-                      // const val = e.target.value
-                      console.log(e, '....11111...valnurse');
+                      const val = e === 'nursing' ? '护理提醒' : e === 'offline' ? '离线提醒' : ''
+                      setTitle(val)
                       setNurseType(e)
                       setParams({
                         ...params,
                         types: e,
-
                         startMills: timeArr[0],
                         endMills: timeArr[1],
                       })
                       getMessage({
                         ...params,
                         types: e,
-
                         startMills: timeArr[0],
                         endMills: timeArr[1],
                       })
                     }}
                     options={homeSelectNurse}
                   />
-
-
                 </div>
-
-
               </div>
             </div>
             <div className="messageMainData">
@@ -479,7 +471,7 @@ export default function Message() {
                 </div>
                 <div className='msgToinfoStrPage '>
                   <div className="msgToinfoStrPageDiv">单页显示数 <span style={{ color: "#0072EF", fontVariationSettings: "opsz auto", fontSize: "1rem" }}>{data.length}</span> 条</div>
-                  <Pagination style={{ marginRight: "40px" }} pageSize={10} current={params.pageNum} className="pagination" defaultCurrent={1} onChange={onChange} showSizeChanger={false} total={Math.floor(total)} />
+                  <Pagination style={{ marginRight: "40px" }} pageSize={10} current={params.pageNum} className="pagination" defaultCurrent={1} onChange={onChange} showSizeChanger={false} total={pageTotal} />
                 </div>
               </div>
             </div>
@@ -488,9 +480,8 @@ export default function Message() {
         </div></> : <div className="message_phone_box">
           <Title titleChangeGetMessage={(item: any) => getSearchValue(item)}></Title>
           <div className="MessageYiDong">
-            <LeftOutlined className="MessageYiDongFanHui" />
+            <LeftOutlined onClick={() => navigator('/')} className="MessageYiDongFanHui" />
             <div className="MessageYiDongDivInput">
-
               <Select
                 className="MessageYiDOngTitlesearchSelect"
                 defaultValue={selectType}
@@ -526,10 +517,7 @@ export default function Message() {
             {
               titleList && titleList.map((item, index) => {
                 return (
-
-
                   <Button
-
                     key={item.id}
                     className={`btn  ${(index + 1) === titleId ? 'on' : ''} `}
                     ref={(el: any) => (titleRefs.current[index] = el)}
@@ -541,11 +529,9 @@ export default function Message() {
               })
             }
             <div className="h-[2rem]" style={{ borderRadius: "0.6rem" }}>
-
               <Select
                 className="MessageYiDOngTitlesearchSelectyidong"
                 defaultValue={nurseType}
-
                 suffixIcon={null}
                 style={{
                   // width: '7rem',
@@ -555,20 +541,17 @@ export default function Message() {
                   fontWeight: 900
                 }}
                 onChange={(e: any) => {
-                  // const val = e.target.value
-                  console.log(e, '....11111...valnurse');
-
+                  const val = e === 'nursing' ? '护理提醒' : e === 'offline' ? '离线提醒' : ''
+                  setTitle(val)
                   setParams({
                     ...params,
                     types: e,
-
                     startMills: timeArr[0],
                     endMills: timeArr[1],
                   })
                   getMessage({
                     ...params,
                     types: e,
-
                     startMills: timeArr[0],
                     endMills: timeArr[1],
                   })
@@ -577,11 +560,8 @@ export default function Message() {
               /></div>
             <div className="MessageYiDOngTitledivMessageYiDOngTitlediv" style={{ position: 'fixed', right: "0", background: '#FFFFF', width: "2rem", height: "3rem", zIndex: 99 }}></div>
           </div>
-
           <div style={{ background: '#F5F8FA', overflow: "hidden", height: '100%', }}>
-
             <div className="f-[96%] ml-[2%] mr-[2%] bg-[#ffff] rounded-lg h-full">
-
               <div className="messageMainDataTitledivcontainercarddiv" style={{ fontWeight: 600 }}>
                 <div className="messageMainDataTitledivcontainercardqiantian">
                   <h2 className="messageMainDataTitledivcontainercardqiantiandiv" style={{ color: "#000", fontWeight: 600 }}>{title}</h2>
@@ -600,16 +580,13 @@ export default function Message() {
               </div>
               <div className="biaogetable">
                 <div className="table-container" style={{ overflowY: "auto" }}>
-
                   <div className="flex w-[98%] h-[3.3rem] ml-[1%] mr-[1%] bg-[#F5F8FA] rounded-xl">
-
                     <p className="notificationTable w-[20%] ml-[1rem]">序号</p>
                     <p className="notificationTable w-[30%]" >床号/姓名</p>
                     <p className="notificationTable w-[30%] pl-[1rem]">提醒时间</p>
                     <p className="notificationTable w-[20%] ml-[4rem]">类型</p>
                   </div>
                   <div className="w-[98%] h-[3.3rem] mt-4">
-
                     {
                       data && data.map((item: any, index: number) => {
                         return <div key='index' className="flex" style={{ borderBottom: "solid 1px #F5F8FA" }}>
@@ -636,12 +613,10 @@ export default function Message() {
                         </div>
                       })
                     }
-
                     <div className='msgToinfoStrPage '>
-                      <Pagination style={{ marginRight: "40px" }} pageSize={10} current={params.pageNum} className="pagination" defaultCurrent={1} onChange={onChange} showSizeChanger={false} total={Math.floor(total)} />
+                      <Pagination style={{ marginRight: "40px" }} pageSize={10} current={params.pageNum} className="pagination" defaultCurrent={1} onChange={onChange} showSizeChanger={false} total={pageTotal} />
                     </div>
                   </div>
-
                 </div>
               </div>
             </div>

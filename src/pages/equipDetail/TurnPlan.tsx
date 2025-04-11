@@ -162,6 +162,7 @@ const TurnPlan: (props: TurnPlanProps) => React.JSX.Element = (props) => {
     }
 
     const handleRecord = () => {
+        setRecordModal(true)
         if (isMobile) {
             setRecordModal(true)
 
@@ -197,14 +198,8 @@ const TurnPlan: (props: TurnPlanProps) => React.JSX.Element = (props) => {
                 setIsModalOpen(true)
             }} className="relative" >
                 <Button variant="filled"
-                    // isMobile && navigate('/turnReport', { state: { logid: data.logid, id: id } })
                     onClick={() => {
-                        // setDataList(data.logid)
-                        console.log(data.logid, '............................1111....location');
-
                         isMobile && navigate('/turnReport', { state: { logid: data.logid, id: id } })
-
-                        // setIsModalOpen(true)
                     }
                     }
                     className='w-[6rem] h-[2.4rem] text-sm bg-[#ECF0F4] border-none text-[#3E444C] font-medium'>查看报告</Button>

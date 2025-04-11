@@ -10,12 +10,12 @@ import useDebounce from '../../utils/publicInput'
 const { RangePicker } = DatePicker;
 interface messageParam {
     titleChangeGetMessage: Function,
-
+    titleKey?: string
 }
 const timeArr = [new Date(new Date().toLocaleDateString()).getTime(), new Date(new Date().toLocaleDateString()).getTime() + 86400000]
 
 export const MessageRightTitle = (props: messageParam) => {
-    const { titleChangeGetMessage } = props
+    const { titleChangeGetMessage, titleKey } = props
     const [timeArr, setTimeArr] = useState<any>([new Date(new Date().toLocaleDateString()).getTime(), new Date(new Date().toLocaleDateString()).getTime() + 86400000])
     // 搜索框
     const [patientNameRoomNum, setpatientName] = useState<any>('')
@@ -42,10 +42,14 @@ export const MessageRightTitle = (props: messageParam) => {
         patientName.push(item.patientName)
         roomNum.push(item.roomNum)
     })
+    const [startMills, setStartMills] = useState<any>(null)
+    const [endMills, setEndMills] = useState<any>(null)
     // 时间选择器
     const handleDateChange = (dates: any, dateStrings: [string, string]) => {
         const startMills = dayjs(dateStrings[0]).format('YYYY-MM-DD HH:mm:ss');
         const endMills = dayjs(dateStrings[1]).format('YYYY-MM-DD HH:mm:ss');
+        setStartMills(new Date(startMills).valueOf())
+        setEndMills(new Date(endMills).valueOf())
         titleChangeGetMessage({
             startMills: dateStrings[0] ? new Date(startMills).valueOf() : timeArr[0],
             endMills: dateStrings[1] ? new Date(endMills).valueOf() : timeArr[1]
@@ -58,23 +62,39 @@ export const MessageRightTitle = (props: messageParam) => {
     const [selectType, setSelectType] = useState('patientName');
     const [timeoutId, setTimeoutId] = useState<any>(null);
     const debouncedPatientNameRoomNum = useDebounce(patientNameRoomNum, 1000);
-
     const handleInputChange = (value: any) => {
-
         setpatientName(value);
-
         if (timeoutId) {
             clearTimeout(timeoutId);
         }
 
-        const newTimeoutId = setTimeout(() => {
-            titleChangeGetMessage({
-                patientName: selectType === 'patientName' ? value : "",
-                roomNum: selectType === 'roomNum' ? value : ""
-            });
-        }, 300);
+        if (selectType === 'patientName') {
+            const newTimeoutId = setTimeout(() => {
+                titleChangeGetMessage({
+                    startMills: startMills,
+                    endMills: endMills,
+                    patientName: value,
+                });
+            }, 300);
+            setTimeoutId(newTimeoutId);
+        } else if (selectType === 'roomNum') {
+            const newTimeoutId = setTimeout(() => {
+                titleChangeGetMessage({
+                    startMills: startMills,
+                    endMills: endMills,
+                    // pageSize: 10,
+                    roomNum: value,
+                });
+            }, 300);
+            setTimeoutId(newTimeoutId);
+        }
 
-        setTimeoutId(newTimeoutId);
+
+
+
+
+
+
     };
     useEffect(() => {
         return () => {
@@ -83,7 +103,6 @@ export const MessageRightTitle = (props: messageParam) => {
             }
         };
     }, [timeoutId]);
-
     return (
         <>
             {

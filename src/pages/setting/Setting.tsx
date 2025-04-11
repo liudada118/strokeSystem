@@ -1147,16 +1147,12 @@ export default function Setting() {
           },
         }).then((res) => {
           getItemManage(deleteObj.id)
-          console.log(res.data.msg, '.......22222...添加成功....111111111111111');
-
-          message.info('添加成功')
-          console.log('...............添加成功.....111111111111111.');
-
+         
 
         }).catch((e) => {
           message.error('服务器异常')
         })
-        console.log('...............添加成功.....111111111111111.');
+
 
       } catch (error) {
 
@@ -1211,7 +1207,7 @@ export default function Setting() {
         },
       }).then((res) => {
         getItemPerson(deleteObj.id)
-        console.log(res.data.msg, '................add Manager Success');
+       
 
         if (res.data.msg == 'add Manager Success') {
           message.info('添加成功')

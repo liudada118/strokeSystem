@@ -14,7 +14,9 @@ import { equipInfoFormatUtil } from "@/utils/dataToFormat";
 import nullImg from '@/assets/image/null.png'
 import { phoneSelect } from "@/redux/token/tokenSlice";
 import SettingMobile from "./SettingMobile";
+import useWindowSize from '../../hooks/useWindowSize'
 import { LeftOutlined } from '@ant-design/icons';
+import { instance, Instancercv } from '@/api/api';
 export const userModal = [
     {
         label: '上传头像',
@@ -64,8 +66,6 @@ export const userModal = [
             label: '女'
         }]
     }]
-
-
 
 const machineType = [{
     label: '床垫类型',
@@ -125,7 +125,35 @@ const UserInfoCard: (props: UserInfoCardProps) => React.JSX.Element = (props) =>
 
     const equipInfo = useSelector(state => selectEquipBySensorname(state, sensorName)) || {}
 
+    const getuserInfo = () => {
+        if (sensorName) {
+            Instancercv({
+                method: "get",
+                url: "/device/selectSinglePatient",
+                headers: {
+                    "content-type": "multipart/form-data",
+                    "token": localStorage.getItem('token')
+                },
+                params: {
+                    sensorName,
+                    phoneNum: localStorage.getItem('phone')
+                }
+            }).then((res: any) => {
 
+                if (res && res.data.code == 0) {
+
+                    console.log(res.data.data, '33333333333')
+                    setUserInfo(res.data.data)
+                }
+            })
+        }
+    }
+
+    useEffect(() => {
+        if (sensorName) {
+            getuserInfo()
+        }
+    }, [sensorName])
 
     const { roomNum, sex, age, patientName, headImg, nurseStart, nurseEnd, nursePeriod, injuryAlarm,
         fallbedStart, fallbedEnd, fallbedAlarm,
@@ -137,40 +165,18 @@ const UserInfoCard: (props: UserInfoCardProps) => React.JSX.Element = (props) =>
     const [img, setImg] = useState(headImg)
 
     const [userInfoChange, setUserInfoChange] = useState<boolean>(false)
+    const indowSize = useWindowSize()
     const userModal = [
         {
-            label: '上传头像',
+            label: '头像',
             mobileLabel: '头像',
             key: 'headImg',
-            value: img,
+            value: userInfo.headImg,
             type: FormType.UPLOAD,
-            mobileType: FormType.UPLOAD,
-        }, {
-            label: '输入姓名',
-            mobileLabel: '姓名',
-            key: 'patientName',
-            value: userInfo.patientName,
-            type: FormType.INPUT,
-            mobileType: FormType.INPUT,
-            placeholder: '请输入姓名'
-        }, {
-            label: '输入年龄',
-            mobileLabel: '年龄',
-            key: 'age',
-            value: userInfo.age,
-            type: FormType.INPUT,
-            mobileType: FormType.DATE_SELECT,
-            placeholder: '请输入年龄'
-        }, {
-            label: '输入床号',
-            mobileLabel: '床号',
-            key: 'roomNum',
-            value: userInfo.roomNum,
-            type: FormType.INPUT,
-            mobileType: FormType.INPUT,
-            placeholder: '请输入床号'
-        }, {
-            label: '选择性别',
+            mobileType: FormType.UPLOAD
+        },
+        {
+            label: '性别',
             mobileLabel: '性别',
             key: 'sex',
             value: userInfo.sex,
@@ -185,7 +191,61 @@ const UserInfoCard: (props: UserInfoCardProps) => React.JSX.Element = (props) =>
                 value: 0,
                 label: '女'
             }]
-        }]
+        },
+        {
+            label: '姓名',
+            mobileLabel: '姓名',
+            key: 'patientName',
+            value: userInfo.patientName,
+            type: FormType.INPUT,
+            mobileType: FormType.INPUT,
+            placeholder: '请输入姓名',
+        }, {
+            label: '年龄',
+            mobileLabel: '年龄',
+            key: 'age',
+            // TODO
+            value: isMobile ? userInfo.age : userInfo.xxxxxx,
+            type: isMobile ? FormType.INPUT : FormType.INPUT_NUMBER,
+            mobileType: isMobile ? FormType.INPUT : FormType.INPUT_NUMBER,
+            placeholder: '请输入年龄',
+        }, {
+            label: '床号',
+            mobileLabel: '床号',
+            key: 'roomNum',
+            value: userInfo.roomNum,
+            type: FormType.INPUT,
+            mobileType: FormType.INPUT,
+            placeholder: '请输入床号',
+        },
+        {
+            label: '联系电话',
+            mobileLabel: '电话',
+            key: 'telephone',
+            value: userInfo.telephone,
+            type: FormType.INPUT,
+            mobileType: FormType.INPUT,
+            placeholder: '请输入电话'
+        },
+        {
+            label: '联系地址',
+            mobileLabel: '地址',
+            key: 'address',
+            value: userInfo.address,
+            type: FormType.INPUT,
+            mobileType: FormType.INPUT,
+            placeholder: '请输居住地址',
+        },
+        {
+            label: '既往病例',
+            mobileLabel: '既往病例',
+            key: 'medicalHistory',
+            value: userInfo.medicalHistory,
+            type: FormType.INPUT,
+            mobileType: FormType.INPUT,
+            placeholder: '请输入既往病例',
+        }
+    ]
 
     const personalInfo = [{
         label: '床号',
@@ -201,23 +261,18 @@ const UserInfoCard: (props: UserInfoCardProps) => React.JSX.Element = (props) =>
         value: userInfo.age
     }
     ]
-
     const changeUserInfo = (obj: any) => {
         // setUserInfo({ ...userInfo, ...obj })
         setImg(obj)
     }
-
-
     const [isModifying, setIsModifying] = useState<boolean>(isMobile)
     const [userInfoOpen, setUserInfoOpen] = useState<boolean>(false)
-
     const [userExtraInfo, setUserExtraInfo] = useState<any>({
         name: '老陈',
         number: '01F',
         sex: '男',
         age: '65'
     })
-
     const [pickerInfo, setPickerInfo] = useState<any>({
         visible: false,
         title: '',
@@ -238,8 +293,7 @@ const UserInfoCard: (props: UserInfoCardProps) => React.JSX.Element = (props) =>
     })
 
     const handleUserInfoForm = (values: any) => {
-
-
+        getuserInfo()
         setUserInfoChange(true)
         console.log(values, 'values')
         const newObj = { ...values }
@@ -250,11 +304,11 @@ const UserInfoCard: (props: UserInfoCardProps) => React.JSX.Element = (props) =>
         let cloudObj = {
             ...userInfo, ...newObj
         }
-        setUserInfo(cloudObj)
+        console.log(cloudObj, 'cloudObj......1111111')
+        // setUserInfo(cloudObj)
+        getuserInfo()
     }
-
     const handleClickListItem = (type: FormType, title: string, key: string) => {
-
         if (type === FormType.TIME_RANGE) {
             setPickerInfo({
                 title,
@@ -271,8 +325,6 @@ const UserInfoCard: (props: UserInfoCardProps) => React.JSX.Element = (props) =>
             })
         }
     }
-
-
     const renderListItem = (type: FormType, key: string, label: string, title: string = '') => {
         switch (type) {
             case FormType.SWITCH:
@@ -421,7 +473,7 @@ const UserInfoCard: (props: UserInfoCardProps) => React.JSX.Element = (props) =>
                     className='bg-[#fff] rounded-[2px] pt-[1.2rem] pl-[1rem] pb-[1rem] md:w-[96%] md:mx-auto md:rounded-[10px]'>
                     <div className='flex items-center justify-between mb-[0.8rem]'>
                         <span className='text-base font-semibold'>个人信息</span>
-                        {isModifying && <span className='text-[#0072EF] text-sm cursor-pointer mr-[10px]'
+                        {<span className='text-[#0072EF] text-sm cursor-pointer mr-[10px]'
                             onClick={() => {
                                 handleClickUserEdit()
                             }}>修改</span>}
@@ -453,6 +505,7 @@ const UserInfoCard: (props: UserInfoCardProps) => React.JSX.Element = (props) =>
                 {/* {isMobile && renderMobileSetting()} */}
                 {isMobile && <SettingMobile />}
                 <CommonFormModal
+                    sensorName={sensorName}
                     open={userInfoOpen}
                     close={() => setUserInfoOpen(false)}
                     formList={userModal}

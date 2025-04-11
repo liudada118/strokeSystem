@@ -1163,7 +1163,9 @@ export function SleepSegAndProp(props: SleepSegAndPropType) {
                     <div className="showSleepItem"
                     >
                       <span> {stampToTime(item[2])}</span>
-                      <span style={{ width: '2.5rem', textAlign: 'center' }}>
+                      <span onClick={() => {
+                        setSleepNowNum({ index: index, transform: 0, left: 0, right: 0 });
+                      }} style={{ width: '2.5rem', textAlign: 'center' }}>
                         {" "}
                         {item[0] === 0
                           ? "离床"

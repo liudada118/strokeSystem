@@ -11,20 +11,23 @@ interface projectDeviceSheetProps {
 }
 
 export default function ProjectDeviceSheet(props: projectDeviceSheetProps) {
-    const device = [{
+    const device: any = [{
         title: '序号',
         dataIndex: 'id',
         key: 'id',
+        align: 'center',
     },
     {
         title: 'mac地址',
         dataIndex: 'mac',
         key: 'mac',
+        align: 'center',
     },
     {
         title: '设备类型',
         dataIndex: 'type',
         key: 'type',
+        align: 'center',
         render: (text: any, record: any, index: any) => {
             return <div>{text == 'small' ? '安护' : '智护'}</div>
         }
@@ -32,16 +35,17 @@ export default function ProjectDeviceSheet(props: projectDeviceSheetProps) {
     {
         title: '床号',
         dataIndex: 'roomNum',
-        key: 'roomNum'
+        key: 'roomNum',
+        align: 'center',
     },
     {
         title: '关联用户',
         dataIndex: 'operate',
         key: 'operate',
+        align: 'center',
         render: (text: any, record: any, index: any) => {
-
             return (
-                <div style={{ display: 'flex', color: '#0256FF' }}>
+                <div style={{ display: 'flex', color: '#0256FF', justifyContent: 'center' }}>
                     <div className='see' style={{ marginRight: '1rem', position: 'relative', }} onClick={() => {
 
                         setUserShow(true)

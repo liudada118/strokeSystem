@@ -379,7 +379,7 @@ export default function DayReport() {
         "token": token
       },
     }).then((res) => {
- 
+
       let data = res.data
       if (data.errCode == 666) {
 

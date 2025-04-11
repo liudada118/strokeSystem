@@ -1,7 +1,7 @@
 import { useGetWindowSize } from '@/hooks/hook'
 import React, { useEffect, useRef, useState } from 'react'
 import NurseModal, { noticeObj } from './nurseModal/NurseModal'
-import { Button, Drawer, message, Tooltip } from 'antd'
+import { Button, Drawer, message, Tooltip, Modal } from 'antd'
 import { useSelector } from 'react-redux'
 import { mqttSelect } from '@/redux/mqtt/mqttSlice'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -41,7 +41,7 @@ import NurseTitle from './NurseStepTitle'
 import NurseBottom from './NurseStepBottom'
 import { Popup } from 'antd-mobile'
 import { turnbodyFlagSelect } from '@/redux/premission/premission'
-
+import useWindowSize from '../../../hooks/useWindowSize'
 interface nurseProcessProps {
   isModalOpenSend: boolean
   setIsModalOpenSend: Function
@@ -100,7 +100,7 @@ export default function NurseProcesst(props: nurseProcessProps) {
   const [sleepTypenur, setSleepType] = useState<any>(0)
   const [onBedTime, setOnBedTime] = useState(0)
   const [remark, setRemark] = useState<any>()
-
+  const windowSize = useWindowSize()
   const turnOverRef = useRef<any>(null)
 
   const nurseStepArr = [
@@ -116,7 +116,7 @@ export default function NurseProcesst(props: nurseProcessProps) {
 
   const [obj, setObj] = useState<any>({}) || []
   function changeData(param: any) {
- 
+
 
     setObj({ ...obj, ...param })
   }
@@ -479,12 +479,27 @@ const OneClickCare = (props: oneClickCareParam) => {
 
 
   // const [choosedSleep, setChoosedSleep] = useState<number>(sleepTypenur)
-
+  const windowSize = useWindowSize()
   const handleChooseSleep = (item: any, value: number) => {
     // setChoosedSleep(value)
     setSleepType(value)
   }
-  return (<Popup
+  // const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // const showModal = () => {
+  //   setIsModalOpen(true);
+  // };
+
+  // const handleOk = () => {
+  //   setIsModalOpen(false);
+  // };
+
+  const handleCancel = () => {
+    // setIsModalOpen(false);
+    setIsModalOpenSend(false)
+  };
+
+  return (windowSize ? <Popup
     visible={isModalOpenSend}
     onMaskClick={() => {
       setIsModalOpenSend(false)
@@ -522,5 +537,37 @@ const OneClickCare = (props: oneClickCareParam) => {
         </div>
       ))}
     </div>
-  </Popup>)
+  </Popup> : <Modal title="Basic Modal" open={true} onOk={setIsModalOpenSend(false)} onCancel={handleCancel}>
+    <div className='flex justify-between items-center pt-[10px] px-[20px]'>
+      <span className='text-base text-[#3D3D3D]' onClick={() => {
+        setIsModalOpenSend(false)
+        // setChoosedSleep('')
+        setSleepType(-1)
+      }}>取消</span>
+      <span className='text-lg font-medium'>选择睡姿</span>
+      <span className='text-base text-[#0072EF]' onClick={() => {
+        console.log('submitReport')
+        setIsModalOpenSend(false)
+        submitReport()
+        setSleepType(-1)
+        // setChoosedSleep('')
+      }}>提交</span>
+    </div>
+    <div className='flex justify-center items-center mt-[40px] pt-[10px] w-full'>
+      {sleepPose.map((item, index) => (
+        <div key={item.value} className='basis-1/3 flex flex-col items-center'>
+          <div
+            className={`w-[70%] ${sleepTypenur === index ? 'bg-gradient-to-b from-[#009FFF] to-[#006CFD] shadow-md shadow-[#1D79EA]' : 'bg-[#F6F7FD]'} mb-[10px] rounded-[6px]`}
+            onClick={() => handleChooseSleep(item, index)}>
+            {sleepTypenur === index ? item.unimg : item.img}
+          </div>
+          <span>{item.value}</span>
+        </div>
+      ))}
+    </div>
+  </Modal>
+
+
+
+  )
 }

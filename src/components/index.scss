@@ -1,0 +1,39 @@
+.input_number_reset {
+    .ant-form-item-control-input-content {
+        display: flex;
+        align-items: center;
+    }
+    .date-input-item {
+        position: relative;
+        &:first-child {
+            margin-right: 13px;
+        }
+        &:not(:first-child) {
+            margin: 0 13px;
+        }
+        // width: 33.3%;
+        .ant-input-number-input-wrap {
+            width: 100px;
+        }
+        .btn-box {
+            display: flex;
+            flex-direction: column;
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 1.5rem;
+            cursor: pointer;
+            span {
+                font-size: 11px;
+                height: 11px;
+                line-height: 11px;
+                margin-right: 5px;
+            
+            }
+        }
+    }
+}

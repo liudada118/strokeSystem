@@ -32,6 +32,7 @@ interface titleProps {
   getSelectEquipList?: Function
   titleChangeGetMessage?: Function
   title?: string
+  titleKey?: string
 }
 
 const format = 'HH:mm';
@@ -40,7 +41,7 @@ const format = 'HH:mm';
 
 const Title = React.forwardRef((props: titleProps, refs) => {
 
-  const { setMessages, titleChangeGetMessage } = props
+  const { setMessages, titleChangeGetMessage, titleKey } = props
 
   const dispatch: any = useDispatch()
   const status = useSelector((state: any) => state.equip.status)
@@ -113,7 +114,7 @@ const Title = React.forwardRef((props: titleProps, refs) => {
       <VoicePremission />
       <div className="homeTitle">
         <TitleLeftInfo text={text} path={path} isMobile={isMobile} />
-        <TitleRightInfo titleChangeGetMessage={titleChangeGetMessage} setMessages={setMessages} path={path} isMobile={isMobile} />
+        <TitleRightInfo titleKey={titleKey} titleChangeGetMessage={titleChangeGetMessage} setMessages={setMessages} path={path} isMobile={isMobile} />
       </div>
     </div>
   )

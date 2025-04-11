@@ -30,6 +30,8 @@ import DayReportEdit from "./mobileEdit/DayReportEdit";
 import EquipTypeEdit from "./mobileEdit/EquipTypeEdit";
 import { useDispatch } from "react-redux";
 import { nurseSensorName } from "../../redux/Nurse/Nurse";
+import axios from 'axios';
+import { Instancercv, netUrl } from '@/api/api';
 const EditingUser: React.FC = () => {
   const param = useParams();
   console.log(param);
@@ -64,7 +66,6 @@ const PersonalInfo = (props: any) => {
       listData[item.key] = item.value;
     });
     setFileList([{ url: listData.headImg || "" }]);
-    setUserInfo(listData);
   }, []);
   const navigate = useNavigate();
   const [editingInputInfo, setEditingInputInfo] = useState<any>({
@@ -182,8 +183,79 @@ const PersonalInfo = (props: any) => {
               {item.mobileLabel}
             </List.Item>
           );
+        case FormType.PHONE:
+          return (
+            <List.Item
+              className="text-base"
+              key={item.label}
+              extra={userInfo[item.key]}
+              onClick={() => setDateVisible(true)}
+            >
+              {item.mobileLabel}
+            </List.Item>
+          );
         default:
           return null;
+      }
+    });
+  };
+
+  const getuserInfo = () => {
+    if (sensorName) {
+      Instancercv({
+        method: "get",
+        url: "/device/selectSinglePatient",
+        headers: {
+          "content-type": "multipart/form-data",
+          "token": localStorage.getItem('token')
+        },
+        params: {
+          sensorName,
+          phoneNum: localStorage.getItem('phone')
+        }
+      }).then((res: any) => {
+        if (res && res.data.code == 0) {
+          const info = res.data?.data || {}
+          setUserInfo({
+            "headImg": info.headImg,
+            "patientName": info.patientName,
+            "age": info.age,
+            "roomNum": info.roomNum,
+            "sex": info.sex,
+            "telephone": info.telephone,
+            "address": info.address,
+            "medicalHistory": info.medicalHistory,
+          })
+        }
+
+      })
+    }
+  }
+  useEffect(() => {
+    if (sensorName) {
+      getuserInfo()
+    }
+  }, [sensorName])
+
+  const modifyUserInfo = (params: any) => {
+
+    axios({
+      method: "post",
+      url: netUrl + "/device/update",
+
+      headers: {
+        "content-type": "application/x-www-form-urlencoded",
+        "token": localStorage.getItem('token')
+      },
+      params: {
+        deviceId: sensorName,
+        ...userInfo,
+        ...params
+      }
+
+    }).then((res) => {
+      if (res.data.msg == 'update success') {
+        getuserInfo()
       }
     });
   };
@@ -202,6 +274,9 @@ const PersonalInfo = (props: any) => {
         ...userInfo,
         [editingInputInfo.key]: editingInputInfo.value,
       });
+      modifyUserInfo({
+        [editingInputInfo.key]: editingInputInfo.value,
+      })
       setEditingInputInfo({
         show: false,
         key: "",
@@ -209,6 +284,8 @@ const PersonalInfo = (props: any) => {
         value: "",
       });
     };
+
+
     return (
       <Fragment>
         <div className="flex justify-between items-center mb-[12px] py-[8px] px-[15px] bg-[#fff] ">
@@ -268,6 +345,7 @@ const PersonalInfo = (props: any) => {
             ...userInfo,
             age: currentDay.diff(birthDay, "year"),
           });
+          modifyUserInfo({ age: currentDay.diff(birthDay, "year") })
         }}
       />
       <Picker
@@ -287,16 +365,15 @@ const PersonalInfo = (props: any) => {
             ...userInfo,
             sex: v[0],
           });
+          modifyUserInfo({ sex: v[0] })
         }}
       />
     </div>
   );
 };
-
 interface otherInfoParam {
   type: string;
 }
-
 export const personalOtherInfoObj: any = {
   remind: {
     img: mobileRemind,
@@ -324,15 +401,13 @@ export const personalOtherInfoObj: any = {
     component: <EquipTypeEdit />,
   },
 };
-
 const PersonalOtherInfo = (props: otherInfoParam) => {
   const navigate = useNavigate();
-
   const { type } = props;
   return (
     <div
       className="bg-[#f4f5f6] pt-[4rem] flex"
-      style={{ height: "100%", flexDirection: "column", paddingTop: `${type !== "nurse" ? '4rem': '0'}` }}
+      style={{ height: "100%", flexDirection: "column", paddingTop: `${type !== "nurse" ? '4rem' : '0'}` }}
     >
       {type !== "nurse" && (
         <>

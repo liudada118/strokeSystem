@@ -364,7 +364,7 @@ export default forwardRef((props: any, refs: any) => {
 
           <div className="rightContent">
 
-            <NurseTextInfo equipInfo={equipInfo} timer={timer} sensorName={sensorName} />
+            {/* <NurseTextInfo equipInfo={equipInfo} timer={timer} sensorName={sensorName} /> */}
             <Card unheight title={'在床体征'}>
               <div className="flex mx-[0.5rem] items-center">
                 <div className="flex-1">

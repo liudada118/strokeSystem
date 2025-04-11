@@ -83,7 +83,7 @@ const MqttMiddleware = (storeApi: any) => (next: any) => (action: any) => {
             const device = message({ payload, storeApi });
             // console.log(device);
             // console.log('messagemessagemessage')
-            
+
         }));
 
         client.on("error", (error: any) => {
@@ -188,7 +188,7 @@ function message({ payload, storeApi, data }: any) {
                 if (item.sensorName == jsonObj.deviceName) {
                     item.onBedState = 100
 
-                    
+
                 }
             })
             // setEquips(resData)
@@ -208,6 +208,7 @@ function message({ payload, storeApi, data }: any) {
         } else if (jsonObj.type === 'realtime') {
 
             // console.log(window.navigator.userAgent)
+            // console.log(first)
 
             resData.forEach((item, index) => {
                 if (item.sensorName == jsonObj.deviceName) {
@@ -217,7 +218,7 @@ function message({ payload, storeApi, data }: any) {
                     item.onBedState = jsonObj.realtimeOnbedState
                     item.breath = jsonObj.realtimeBreathRate
                     item.heartRate = jsonObj.heartRateRandom
-                    item.sos = jsonObj.realtimeStrokeRisk
+                    item.sos = jsonObj.realtimeSosState
                     // console.log(jsonObj, 'jsonObj.......')
                     // item.nurse = jsonObj.realtimeOnbedState
                     if (item.sensorName == 'KgvDXUvdEs9M9AEQDcVc' || item.sensorName == 'iJ3X0JSttyoiRPafpIka') {
@@ -251,11 +252,9 @@ function message({ payload, storeApi, data }: any) {
                     const dropbed = alarmJudge.dropBedJudge({ item, getFlag: true, alarm })
                     const sitBed = alarmJudge.situpJudge({ item, getFlag: true, alarm })
                     const sos = alarmJudge.sosJudge({ item, getFlag: true, alarm })
-                    const nurse =  alarmJudge.nurseJudge({ item, getFlag: true, alarm })
-                    if(item.sensorName == 'B2QB26FXWWwQPjRXozP2'){
-                        console.log(sos)
-                    }
-                    
+                    const nurse = alarmJudge.nurseJudge({ item, getFlag: true, alarm })
+
+
                     const alarmRules = [
                         // {
                         //   flag: sos,
@@ -267,6 +266,11 @@ function message({ payload, storeApi, data }: any) {
                         //   type: 'injury',
                         //   voiceText: '护理超时'
                         // },
+                        {
+                            flag: sos,
+                            type: ALARMTYPE.sos.type,// 'sos',
+                            voiceText: ALARMTYPE.sos.text,// '坐起提醒'
+                        },
                         {
                             flag: onbed,
                             type: ALARMTYPE.onBed.type,// 'onbed',
@@ -282,11 +286,7 @@ function message({ payload, storeApi, data }: any) {
                             type: ALARMTYPE.sitBed.type,// 'sitBed',
                             voiceText: ALARMTYPE.sitBed.text,// '坐起提醒'
                         },
-                        {
-                            flag: sos,
-                            type: ALARMTYPE.sos.type,// 'sitBed',
-                            voiceText: ALARMTYPE.sos.text,// '坐起提醒'
-                        },
+                        
                         {
                             flag: nurse,
                             type: ALARMTYPE.nurse.type,// 'sitBed',
@@ -306,21 +306,8 @@ function message({ payload, storeApi, data }: any) {
                          * */
 
                         // let arr = [...sosArrOver]
-
-                        if (alarmRule.flag && !riskArr[alarmRule.type].includes(item.sensorName)) {
-                            // 如果显示风险数组里面没有这个设备这个类型的报警,那么将之前这个设备的所有报警都删除，添加这个报警
-                            if (!arr.length || (arr.length && !arr.filter((alarmRule: any, index: any) => {
-                                return alarmRule.sensorName == item.sensorName && alarmRule.type == item.type
-                            }).length)) {
-                                // 如果这个设备有新的报警，那么把除了这个报警之前的所有报警删除
-                                alarmRules.forEach(a => {
-                                    if (a.type != item.type) {
-                                        if (riskArr[a.type as string].includes(item.sensorName)) {
-                                            riskArr[a.type].splice(riskArr[a.type].indexOf(item.sensorName), 1)
-                                        }
-                                    }
-                                })
-
+                        if (alarmRule.type == 'sos') {
+                            if (alarmRule.flag) {
                                 arr = arr.filter((a: any) => {
                                     return a.sensorName != item.sensorName
                                 })
@@ -336,21 +323,57 @@ function message({ payload, storeApi, data }: any) {
                                 // console.log(first)
 
                                 newVoiceExample.voicePush(`${item.roomNum}号床${alarmRule.voiceText}`, `${item.roomNum}号床${alarmRule.voiceText}`)
-                                // sosArrOver = arr
-                                // setSosArr(arr)
-                                riskArr[alarmRule.type].push(item.sensorName)
                             }
                         }
 
-                        /**
-                         * 如果报警条件不满足了，那么在风险数组里面删除这个报警
-                         */
-                        // console.log(alarmRule.type , riskArr[alarmRule.type] ,item.sensorName)
-                        if (!alarmRule.flag && riskArr[alarmRule.type] && riskArr[alarmRule.type].length && riskArr[alarmRule.type].includes(item.sensorName)) {
-                            riskArr[alarmRule.type].splice(riskArr[alarmRule.type].indexOf(item.sensorName), 1)
+                        else {
+
+
+                            if (alarmRule.flag && !riskArr[alarmRule.type].includes(item.sensorName)) {
+                                // 如果显示风险数组里面没有这个设备这个类型的报警,那么将之前这个设备的所有报警都删除，添加这个报警
+                                if (!arr.length || (arr.length && !arr.filter((alarmRule: any, index: any) => {
+                                    return alarmRule.sensorName == item.sensorName && alarmRule.type == item.type
+                                }).length)) {
+                                    // 如果这个设备有新的报警，那么把除了这个报警之前的所有报警删除
+                                    alarmRules.forEach(a => {
+                                        if (a.type != item.type) {
+                                            if (riskArr[a.type as string].includes(item.sensorName)) {
+                                                riskArr[a.type].splice(riskArr[a.type].indexOf(item.sensorName), 1)
+                                            }
+                                        }
+                                    })
+
+                                    arr = arr.filter((a: any) => {
+                                        return a.sensorName != item.sensorName
+                                    })
+
+                                    arr.push({
+                                        sensorName: item.sensorName,
+                                        name: item.patientName,
+                                        roomNum: item.roomNum,
+                                        type: alarmRule.type,
+                                        time: new Date().getTime()
+                                    })
+
+                                    // console.log(first)
+
+                                    newVoiceExample.voicePush(`${item.roomNum}号床${alarmRule.voiceText}`, `${item.roomNum}号床${alarmRule.voiceText}`)
+                                    // sosArrOver = arr
+                                    // setSosArr(arr)
+                                    riskArr[alarmRule.type].push(item.sensorName)
+                                }
+                            }
+
+                            /**
+                             * 如果报警条件不满足了，那么在风险数组里面删除这个报警
+                             */
+                            // console.log(alarmRule.type , riskArr[alarmRule.type] ,item.sensorName)
+                            if (!alarmRule.flag && riskArr[alarmRule.type] && riskArr[alarmRule.type].length && riskArr[alarmRule.type].includes(item.sensorName)) {
+                                riskArr[alarmRule.type].splice(riskArr[alarmRule.type].indexOf(item.sensorName), 1)
+                            }
                         }
 
-
+                        console.log(arr)
                         /**
                         * 如果报警条件不满足了，那么在点击数组里面删除这个报警
                         */

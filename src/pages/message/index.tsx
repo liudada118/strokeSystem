@@ -62,6 +62,7 @@ export default function Message() {
   const phone = localStorage.getItem('phone') || ''
   const token = localStorage.getItem('token') || ''
   const [total, setTotal] = useState(0)
+  const [todayAlarmCount, setTodayAlarmCount] = useState(0)
   const WindowSize = useGetWindowSize()
   // 昨天提醒 62 次 前天提醒 26 次
   console.log(total, '......total');
@@ -257,6 +258,7 @@ export default function Message() {
       const message = initMessage(data)
       setMessages(message)
       setTotal(total)
+      setTodayAlarmCount(res.data.todayAlarmCount)
       setPageTotal(res.data.data.total)
       setData({
         yestodayAlarmCount: res.data.yestodayAlarmCount,
@@ -452,7 +454,7 @@ export default function Message() {
                 <div className="messageMainDataTitle">
                   <div className="messageMainDataTitlediv">
                     <p className="messageMainDataTitledivbac w-[20px] h-[20px] rounded-[2px] mt-[22px] mr-[16px] opacity-100 bg-[#0072EF]"></p>
-                    <p className="font-pingfang-sc font-bold text-[1.2rem] leading-normal tracking-normal">{title} <span className="font-pingfang-sc font-bold text-[35px] leading-normal tracking-normal " style={{ color: "#0072EF" }}> {total} </span> 次</p>
+                    <p className="font-pingfang-sc font-bold text-[1.2rem] leading-normal tracking-normal">{title} <span className="font-pingfang-sc font-bold text-[35px] leading-normal tracking-normal " style={{ color: "#0072EF" }}> {todayAlarmCount} </span> 次</p>
                   </div>
                   <div className="messageMainDataTitlediv ">
                     <p className="font-pingfang-sc font-bold text-[1.2rem] leading-normal tracking-normal mr-[1.4rem]">
@@ -565,7 +567,7 @@ export default function Message() {
               <div className="messageMainDataTitledivcontainercarddiv" style={{ fontWeight: 600 }}>
                 <div className="messageMainDataTitledivcontainercardqiantian">
                   <h2 className="messageMainDataTitledivcontainercardqiantiandiv" style={{ color: "#000", fontWeight: 600 }}>{title}</h2>
-                  <p className="messageMainDataTitledivcontainercardqiantianyesterday" style={{ color: "#000", fontSize: "1.7rem", marginLeft: "0" }}><span style={{ fontSize: "20px", fontFamily: 'PingFang SC', color: "#0072EF" }}>{total}</span> <span style={{ fontSize: "14px" }}>次</span></p>
+                  <p className="messageMainDataTitledivcontainercardqiantianyesterday" style={{ color: "#000", fontSize: "1.7rem", marginLeft: "0" }}><span style={{ fontSize: "20px", fontFamily: 'PingFang SC', color: "#0072EF" }}>{todayAlarmCount}</span> <span style={{ fontSize: "14px" }}>次</span></p>
                 </div>
                 <div style={{ width: "1px", borderLeft: "1px #F5F8FA solid", height: "3rem", marginTop: "10px" }}></div>
                 <div className="messageMainDataTitledivcontainercardqiantian1" style={{ color: "#000", fontWeight: 600 }}>

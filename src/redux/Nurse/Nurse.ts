@@ -6,6 +6,8 @@ const initialState: any = {
   nurseOpen: false,
   sensorName: "",
   nurseListData: [],
+  isGotoNursePage: new Date().getTime(),
+  isRestNuserpage: new Date().getTime(),
 };
 
 const mqttSlice = createSlice({
@@ -27,9 +29,15 @@ const mqttSlice = createSlice({
     setNurseListData(state, action) {
       state.nurseListData = action.payload;
     },
+    setIsGotoNursePage(state) {
+      state.isGotoNursePage = new Date().getTime();
+    },
+    resetNuserpage(state) {
+      state.isRestNuserpage = new Date().getTime();
+    },
   },
 });
-export const { nurseOpen, nurseDataList, nurseIsOpenAdd, nurseSensorName, setNurseListData } =
+export const { nurseOpen, nurseDataList, nurseIsOpenAdd, resetNuserpage, nurseSensorName, setNurseListData,setIsGotoNursePage } =
   mqttSlice.actions;
 export const mqttSelect = (state: any) => state.mqtt.client;
 

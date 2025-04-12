@@ -6,13 +6,15 @@ import { instance } from "@/api/api";
 import Title from "@/components/title/Title";
 import Bottom from "@/components/bottom/Bottom";
 import type { TableProps, GetProps } from 'antd';
-import { DatePicker, Pagination, Button, Table, Input, Space, Select } from 'antd';
+import { DatePicker, Pagination, Button, Table, Input, Space, Select, ConfigProvider, Result } from 'antd';
 import { CaretDownOutlined, LeftOutlined, ZoomInOutlined } from '@ant-design/icons';
 import { useGetWindowSize } from '../../hooks/hook'
+import zhCN from 'antd/locale/zh_CN';
 // import Kdsd from './messageDatePicker'
 import { CalendarPicker } from "antd-mobile";
 import fang from '../.././assets/images/容器@2x.png'
 import { useNavigate } from "react-router-dom";
+import { spawn } from "child_process";
 const { Option } = Select;
 const { RangePicker } = DatePicker;
 // const { Option } = Select;
@@ -353,16 +355,26 @@ export default function Message() {
   }, [patientNameRoomNum])
 
   const onBlur = () => {
-    if (patientNameRoomNum) {
+    if (patientNameRoomNum && selectType === 'patientName') {
       setParams({
         ...params,
       });
       getMessage({
         ...params,
-        patientName: selectType === 'patientName' ? patientNameRoomNum : "",
-        roomNum: selectType === 'roomNum' ? patientNameRoomNum : ""
+        patientName: patientNameRoomNum
+
+      });
+    } else if (patientNameRoomNum && selectType === 'roomNum') {
+      setParams({
+        ...params,
+      });
+      getMessage({
+        ...params,
+
+        roomNum: patientNameRoomNum
       });
     }
+
   }
   // 标题切换
   const titleRefs = useRef<(HTMLButtonElement | null)[]>([]);
@@ -466,10 +478,15 @@ export default function Message() {
                   </div>
                 </div>
                 <div className="projectContent">
-                  <Table
-                    pagination={false}
-                    dataSource={data}
-                    columns={columns} />
+                  <ConfigProvider locale={zhCN}>
+                    <Table
+                      locale={{
+                        emptyText: <span>暂无数据</span>
+                      }}
+                      pagination={false}
+                      dataSource={data}
+                      columns={columns} />
+                  </ConfigProvider>
                 </div>
                 <div className='msgToinfoStrPage '>
                   <div className="msgToinfoStrPageDiv">单页显示数 <span style={{ color: "#0072EF", fontVariationSettings: "opsz auto", fontSize: "1rem" }}>{data.length}</span> 条</div>
@@ -499,7 +516,7 @@ export default function Message() {
                 placeholder="请输入姓名/床号"
                 onBlur={onBlur}
               />
-              <img src={fang} style={{ width: "1.5rem", height: "1.5rem" }} alt="" />
+              {/* <img src={fang} style={{ width: "1.5rem", height: "1.5rem" }} alt="" /> */}
               {/* <ZoomInOutlined className="MessageYiDongFangDAJing" /> */}
             </div>
             <span onClick={onShijian} className="MessageYiDongShiJian">时间<CaretDownOutlined />
@@ -590,30 +607,35 @@ export default function Message() {
                   </div>
                   <div className="w-[98%] h-[3.3rem] mt-4">
                     {
-                      data && data.map((item: any, index: number) => {
-                        return <div key='index' className="flex" style={{ borderBottom: "solid 1px #F5F8FA" }}>
-                          <div className="notificationTable  w-[20%] ml-[1.3rem] " style={{ fontSize: "1.25rem", color: "#000" }}>
-                            {(params.pageNum - 1) * params.pageSize + index + 1}
+                      data.length > 0 ?
+                        data && data.map((item: any, index: number) => {
+                          return <div key='index' className="flex" style={{ borderBottom: "solid 1px #F5F8FA" }}>
+                            <div className="notificationTable  w-[20%] ml-[1.3rem] " style={{ fontSize: "1.25rem", color: "#000" }}>
+                              {(params.pageNum - 1) * params.pageSize + index + 1}
+                            </div>
+                            <div className="notificationTableDiv w-[30%] " style={{}}>
+                              <p style={{ fontSize: "1.25rem", color: "#32373E" }}>   {
+                                item.roomNumber
+                              }</p>
+                              <p style={{ fontSize: "1rem", color: "#929EAB" }}>
+                                {
+                                  item.name
+                                }
+                              </p>
+                            </div>
+                            <div className="notificationTableDiv w-[30%] pl-[1rem]">
+                              <p style={{ fontSize: "1.25rem", color: "#32373E", paddingLeft: "1.2rem" }}> {item.timeDate}</p>
+                              <p style={{ fontSize: "1rem", color: "#929EAB", paddingLeft: "1.2rem" }}> {item.dateTime}</p>
+                            </div>
+                            <div className="notificationTableDiv w-[20%] ml-[4rem]" style={{ textAlign: "center", fontSize: "1.25rem" }}>
+                              {item.type}
+                            </div>
                           </div>
-                          <div className="notificationTableDiv w-[30%] " style={{}}>
-                            <p style={{ fontSize: "1.25rem", color: "#32373E" }}>   {
-                              item.roomNumber
-                            }</p>
-                            <p style={{ fontSize: "1rem", color: "#929EAB" }}>
-                              {
-                                item.name
-                              }
-                            </p>
-                          </div>
-                          <div className="notificationTableDiv w-[30%] pl-[1rem]">
-                            <p style={{ fontSize: "1.25rem", color: "#32373E", paddingLeft: "1.2rem" }}> {item.timeDate}</p>
-                            <p style={{ fontSize: "1rem", color: "#929EAB", paddingLeft: "1.2rem" }}> {item.dateTime}</p>
-                          </div>
-                          <div className="notificationTableDiv w-[20%] ml-[4rem]" style={{ textAlign: "center", fontSize: "1.25rem" }}>
-                            {item.type}
-                          </div>
-                        </div>
-                      })
+                        })
+                        : <Result
+                          status="warning"
+                          title="暂无数据"
+                        />
                     }
                     <div className='msgToinfoStrPage '>
                       <Pagination style={{ marginRight: "40px" }} pageSize={10} current={params.pageNum} className="pagination" defaultCurrent={1} onChange={onChange} showSizeChanger={false} total={pageTotal} />

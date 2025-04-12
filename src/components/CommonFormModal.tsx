@@ -58,9 +58,9 @@ const CommonFormModal: (props: CommonFormModalProps) => React.JSX.Element = (pro
     const [day, setDay] = useState(1);
     const isPhone = useWindowSize().isMobile
     const handleFinish = (values: any) => {
-        // if (!(values.patientName && values.age && values.roomNum && values.sex && values.telephone && values.address)) {
-        //     return message.info('请完善信息')
-        // }
+        if (!(values.patientName && values.roomNum && values.sex && values.telephone && values.address)) {
+            return message.info('请完善信息')
+        }
         let age = values.age
         if (!isPhone) {
             age = new Date().getTime() - new Date(`${year} ${month} ${day}`).getTime()
@@ -105,7 +105,6 @@ const CommonFormModal: (props: CommonFormModalProps) => React.JSX.Element = (pro
         onFinish && onFinish(_values)
     }
     const onChangeTimeEnd = (date: Dayjs, dateString: string | string[]) => {
-        console.log(date, dateString, new Date(51300000), '.........33333333333333....')
         const stamp = date.hour() * 60 * 60 * 1000 + date.minute() * 60 * 1000
         setTimeEnd(stamp)
     }
@@ -211,8 +210,10 @@ const CommonFormModal: (props: CommonFormModalProps) => React.JSX.Element = (pro
                                             controls={false}
                                         />
                                         <div className="btn-box">
-                                            <span onClick={() => setYear(year + 1)}>▲</span>
-                                            <span onClick={() => setYear(year - 1)}>▼</span>
+                                            <span onClick={() => setYear((prevMonth) => Math.min(2025, prevMonth + 1))}>▲</span>
+                                            <span onClick={() => setYear((prevMonth) => Math.max(1900, prevMonth - 1))}>▼</span>
+                                            {/* <span onClick={() => setYear(year + 1)}>▲</span>
+                                            <span onClick={() => setYear(year - 1)}>▼</span> */}
                                         </div>
                                     </div>
                                     年
@@ -222,10 +223,11 @@ const CommonFormModal: (props: CommonFormModalProps) => React.JSX.Element = (pro
                                             onChange={(e) => setMonth(e as number)}
                                             min={1}
                                             max={12}
+                                            controls={false}
                                         />
                                         <div className="btn-box">
-                                            <span onClick={() => setMonth(month + 1)}>▲</span>
-                                            <span onClick={() => setMonth(month - 1)}>▼</span>
+                                            <span onClick={() => setMonth((prevMonth) => Math.min(12, prevMonth + 1))}>▲</span>
+                                            <span onClick={() => setMonth((prevMonth) => Math.max(1, prevMonth - 1))}>▼</span>
                                         </div>
                                     </div>
                                     月
@@ -235,10 +237,12 @@ const CommonFormModal: (props: CommonFormModalProps) => React.JSX.Element = (pro
                                             onChange={(e) => setDay(e as number)}
                                             min={1}
                                             max={31} // 可以根据月份变化调整  
+                                            controls={false}
                                         />
                                         <div className="btn-box">
-                                            <span onClick={() => setDay(day + 1)}>▲</span>
-                                            <span onClick={() => setDay(day - 1)}>▼</span>
+                                            <span onClick={() => setDay((prevMonth) => Math.min(31, prevMonth + 1))}>▲</span>
+                                            <span onClick={() => setDay((prevMonth) => Math.max(1, prevMonth - 1))}>▼</span>
+
                                         </div>
                                     </div>
                                     日

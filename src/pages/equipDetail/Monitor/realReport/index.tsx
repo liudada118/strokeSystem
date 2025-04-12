@@ -111,7 +111,7 @@ export class NoRender extends React.Component<noRenderProp> {
   }
 }
 
-const sleepType = [{ key: "1", name: '左侧', img: right, unImg: unRight }, { key: "2", name: '仰卧', img: back, unImg: unBack }, { key: "3", name: '右侧', img: left, unImg: unLeft }]
+const sleepType = [{ key: "1", name: '左侧卧', img: right, unImg: unRight }, { key: "2", name: '仰卧', img: back, unImg: unBack }, { key: "3", name: '右侧卧', img: left, unImg: unLeft }]
 let rateArr: Array<number> = [], heartArr: Array<number> = []
 let realDataInit = [[0]]
 for (let i = 0; i < 68; i++) {
@@ -258,19 +258,19 @@ export default forwardRef((props: any, refs: any) => {
     },
     realtime({ jsonObj, sensorName }: minDataParam) {
       const { heart, rate, stroke, bodyMove, onBedTime, onbedState } = returnRealtimeData({ jsonObj, sensorName, leavebedParam: equipInfo.leavebedParam })
-    
+
       initRealtimePage({ heart, rate, stroke, bodyMove, onBedTime, onbedState, })
       // console.log(onbedState)
-      if(!valueArrRef.current.onbedState){
+      if (!valueArrRef.current.onbedState) {
         initOnbedOrLeaveBedPage({ circleArr: [], wsPointData: new Array(1024).fill(0), resSleep: 4, type: 'realtime' })
       }
-     
+
       // }
     },
     matrix({ jsonObj, sensorName }: minDataParam) {
       const wsPointData = jsonObj.matrixList
       console.log('matrix')
-  
+
       if (heatMapRef.current) heatMapRef.current.bthClickHandle(wsPointData)
     }
   }

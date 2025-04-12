@@ -68,6 +68,12 @@ const Nurse: React.FC = () => {
     useEffect(() => {
         getPersonTemplate()
     }, [sensorName])
+    const isRestNuserpage = useSelector((state: any) => state.nurse.isRestNuserpage)
+    useEffect(() => {
+        setIsModifyNurse(false);
+        setIsOpen(false)
+        dispatch(nurseOpen(false))
+    }, [isRestNuserpage])
     const saveNurseTemplate = () => {
         setIsModifyNurse(false);
         setIsOpen(false)

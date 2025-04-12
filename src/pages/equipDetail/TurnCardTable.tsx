@@ -124,7 +124,7 @@ const TurnCardTable: (props: TurnCardTableProps) => React.JSX.Element = (props) 
         key: 'plan',
         width: 10,
     }, {
-        title: '右侧',
+        title: '右侧卧',
         dataIndex: 'left',
         key: 'left',
         width: 70,

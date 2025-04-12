@@ -493,14 +493,15 @@ const UserInfoCard: (props: UserInfoCardProps) => React.JSX.Element = (props) =>
                         </div>
                     </div>
                 </div>
-                <div
+                {/* 不要删除重新评估,后面开发 */}
+                {/* <div
                     className='flex justify-between bg-[#fff] rounded-[2px] md:rounded-[10px] h-[2.8rem] items-center my-[10px] mx-0 md:mx-auto p-[15px] text-sm md:w-[96%]'>
                     <span className='text-sm font-semibold'>
                         <span>Braden压疮风险评估</span>
                         <span className='text-[#EC6E38] ml-[10px]'>中度风险</span>
                     </span>
                     <span className='text-[#0072EF] cursor-pointer' onClick={() => { navigate('/que', { state: { sensorName, rank } }) }}>重新评估</span>
-                </div>
+                </div> */}
                 {!isMobile && <SettingBlock userInfoChange={userInfoChange} setUserChange={setUserInfoChange} userInfo={userInfo} onModify={setting} nurseformValue={nurseformValue} setNurseFormValue={setNurseFormValue} submitCloud={submitCloud} />}
                 {/* {isMobile && renderMobileSetting()} */}
                 {isMobile && <SettingMobile />}

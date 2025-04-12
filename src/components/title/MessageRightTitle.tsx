@@ -1,4 +1,4 @@
-import { DatePicker, Dropdown, Input, Menu, Select, Space } from "antd";
+import { DatePicker, Dropdown, Input, Menu, Select, Space, ConfigProvider } from "antd";
 import { useEffect, useState } from "react";
 import zhCN from 'antd/locale/zh_CN';
 import dayjs from 'dayjs'
@@ -108,11 +108,14 @@ export const MessageRightTitle = (props: messageParam) => {
             {
                 !windowSize ? <div className="messageTitlediv2">
                     <><Space style={{ width: "50rem", height: "39px", marginLeft: "10px" }} direction="vertical" size={12}>
-                        <RangePicker
-                            placeholder={['开始时间', '结束时间']}
-                            onChange={(dates, dateStrings) => handleDateChange(dates, dateStrings)}
-                            style={{ width: "18rem", height: "39px", marginLeft: "10px" }}
-                            showTime />
+                        <ConfigProvider locale={zhCN}>
+                            <RangePicker
+                                placeholder={['开始时间', '结束时间']}
+                                showNow={true}
+                                onChange={(dates, dateStrings) => handleDateChange(dates, dateStrings)}
+                                style={{ width: "18rem", height: "39px", marginLeft: "10px" }}
+                                showTime />
+                        </ConfigProvider>
                     </Space><div className="messageTitlediv2_you">
                             <Select
                                 className="MessageYiDOngTitlesearchSelect"
@@ -133,7 +136,7 @@ export const MessageRightTitle = (props: messageParam) => {
                                 // })}
                                 onChange={(e: any) => handleInputChange(e.target.value)}
                                 placeholder="请输入姓名/床号" />
-                            <img style={{ width: "1rem", height: "1rem", marginRight: "20px" }} src={fang} alt="" />
+                            {/* <img style={{ width: "1rem", height: "1rem", marginRight: "20px" }} src={fang} alt="" /> */}
                         </div></>
                 </div> : <div className="homeTitle  messageTitledivTitle" style={{ display: "flex", justifyContent: 'normal', fontWeight: "900", fontSize: "1rem" }}>JQHEALTHCARE</div>
             }

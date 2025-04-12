@@ -15,7 +15,7 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { instance, Instancercv, netUrl } from "@/api/api";
 import { useDispatch, useSelector } from "react-redux";
 import { tokenSelect } from "@/redux/token/tokenSlice";
-import { nurseOpen } from '../../redux/Nurse/Nurse'
+import { nurseOpen, resetNuserpage } from '../../redux/Nurse/Nurse'
 import axios from "axios";
 import { selectEquipBySensorname } from "@/redux/equip/equipSlice";
 
@@ -51,10 +51,13 @@ const EquipDetail = () => {
 
     const param = useParams()
     const { type, id } = param
+    console.log(type, '.................monitormonitormonitor');
 
     const navigate = useNavigate()
     const token = useSelector(tokenSelect)
     const [activeKey, setActiveKey] = useState(activeKeyArr[(type || 0)])
+    const [turnAroundPlan, setTurnAroundPlan] = useState([])
+    const yyyds = useSelector((state: any) => state.nurse.open)
     // const [nurseformValue, setNurseFormValue] = useState({
     //     timeRangeA: '6次',
     //     timeIntervalA: '1小时',
@@ -142,13 +145,32 @@ const EquipDetail = () => {
         children: <Reporter />
     }]
 
-    
+    const handleTabChange = (key: string) => {
+        setActiveKey(key);
+        navigate(`/report/${activeKeyArr.indexOf(key)}/${id}`);
+        if (key !== 'nurse') {
+            dispale(resetNuserpage())
+        }
+    };
+    const handleTabChange1 = (key: string) => {
+        setActiveKey(key);
+        navigate(`/report/${activeKeyArr.indexOf(key)}/${id}`);
+        if (key !== 'nurse') {
+            dispale(resetNuserpage())
+        }
+    };
+    const isGotoNursePage = useSelector((state: any) => state.nurse.isGotoNursePage)
+    useEffect(() => {
+        handleTabChange1('nurse')
+        handleTabChange('nurse')
+    }, [isGotoNursePage])
     if (isMobile) {
         return (
             <MenuLayouts isMobile={isMobile}>
                 <ConfigProvider
                     locale={zh_CN}
                     theme={TabTheme}
+                    key={activeKey}
                 >
                     {/* <CommonNavBar title='801' onBack={() => { }} /> */}
                     <Title />
@@ -156,13 +178,11 @@ const EquipDetail = () => {
                         <div className="relative">
                             <Tabs
                                 className={[styles.mobileTabContent, styles.tabContent].join(' ')}
-                                defaultActiveKey={activeKey}
+                                // defaultActiveKey={activeKey}
+                                activeKey={activeKey}
                                 centered
                                 items={tabList}
-                                onChange={(e) => {
-                                    dispale(nurseOpen(false))
-                                    navigate(`/report/${activeKeyArr.indexOf(e)}/${id}`)
-                                }}
+                                onChange={(e: any) => handleTabChange1(e)}
                             />
                             {/* <img src={back} alt="" /> */}
                         </div>
@@ -202,12 +222,10 @@ const EquipDetail = () => {
                         <Tabs
                             className={styles.tabContent}
                             defaultActiveKey={activeKey}
+                            activeKey={activeKey}
                             centered
                             items={tabList}
-                            onChange={(e) => {
-                                dispale(nurseOpen(false))
-                                navigate(`/report/${activeKeyArr.indexOf(e)}/${id}`)
-                            }}
+                            onChange={(e: any) => handleTabChange1(e)}
                         />
                     </div>
                 </div>

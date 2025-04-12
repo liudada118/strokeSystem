@@ -19,7 +19,7 @@ import axios from "axios";
 import { DataContext } from ".";
 import { unbindHheDevice } from '../../api/index'
 import { nurseOpen } from '../../redux/Nurse/Nurse'
-
+import { setIsGotoNursePage } from '../../redux/Nurse/Nurse'
 interface SettingBlockProps {
     onModify: (value: boolean) => void
     userInfo: any
@@ -722,20 +722,18 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (props) =>
                 }).then((res: any) => {
 
                     message.success('修改成功')
-
                 })
             } catch (error) {
                 message.success('修改成功')
             }
         }
-
         setSwitchOpen(false)
     }
     return (
-        <div className='overflow-scroll h-[calc(100%-13rem)]'>
-            <div className="flex justify-between">
+        <div className='overflow-scroll h-[calc(100%-11.2rem)] mt-6'>
+            <div className="flex justify-between ">
                 <CommonTitle name={'提醒设置'} type="square" />
-                <div className="text-base text-sm leading-7 text-[#0072EF]" onClick={handleAlarmSettingClick}>{isSettingClick ? '保存' : '设置'}</div>
+                <div className="text-base text-sm leading-7 mr-[10px] text-[#0072EF]" onClick={handleAlarmSettingClick}>{isSettingClick ? '保存' : '设置'}</div>
             </div>
             {settings.map((item) => (
                 <div className='bg-[#fff] mb-[10px] py-[0.5rem] px-[0.8rem]'
@@ -796,8 +794,6 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (props) =>
                                     >
                                         <span className="text-[#0072EF] ml-[1rem] " style={{ cursor: "pointer" }} >解绑设备</span>
                                     </Popconfirm>
-
-
                                     : ""
                                 }
                             </div>
@@ -822,6 +818,8 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (props) =>
 }
 
 const SettingMoDal = (props: any) => {
+
+    let location = useLocation()
     const [nurseConfig, setNurseConfig] = useState([])
     const dispatch = useDispatch()
     const [open, setOpen] = useState(false)
@@ -853,9 +851,15 @@ const SettingMoDal = (props: any) => {
     const navigate = useNavigate()
     const openOnCkick = () => {
         if (!(roleId == 1 || roleId == 2)) return message.info('权限不足');
-        setOpen(true)
-        dispatch(nurseOpen({ nurseOpen: open }))
-        navigate(`/report/1/${props.sensorName}`,);
+
+        let regex: any = /\/1\//;
+        const match = location.pathname.match(regex);
+        if (!match) {
+            dispatch(setIsGotoNursePage())
+        } else {
+            setOpen(true)
+            dispatch(nurseOpen({ nurseOpen: open }))
+        }
     }
     return (
         <>
@@ -878,5 +882,4 @@ const SettingMoDal = (props: any) => {
 
     )
 }
-
 export default SettingBlock;

@@ -44,10 +44,11 @@ interface CommonFormModalProps {
     title: string;
     onFinish: (values: any) => void;
     imgChange?: Function;
-    sensorName?: string
+    sensorName?: string;
+    updateName?: Boolean
 }
 const CommonFormModal: (props: CommonFormModalProps) => React.JSX.Element = (props) => {
-    const { open, close, formList, title, onFinish, imgChange, sensorName } = props
+    const { open, close, formList, title, onFinish, imgChange, sensorName, updateName } = props
     const [timeStart, setTimeStart] = useState<number>(0)
     const [timeEnd, setTimeEnd] = useState<number>(0)
     const [spinning, setSpinning] = React.useState<boolean>(false);
@@ -58,40 +59,44 @@ const CommonFormModal: (props: CommonFormModalProps) => React.JSX.Element = (pro
     const [day, setDay] = useState(1);
     const isPhone = useWindowSize().isMobile
     const handleFinish = (values: any) => {
-        if (!(values.patientName && values.roomNum && values.sex && values.telephone && values.address)) {
-            return message.info('请完善信息')
-        }
-        let age = values.age
-        if (!isPhone) {
-            age = new Date().getTime() - new Date(`${year} ${month} ${day}`).getTime()
-            age = new Date(age);
-            age = age.getFullYear() - 1970
-        }
-        axios({
-            method: "post",
-            url: netUrl + "/device/update",
-
-            headers: {
-                "content-type": "application/x-www-form-urlencoded",
-                "token": localStorage.getItem('token')
-            },
-            params: {
-                deviceId: sensorName,
-                "headImg": values.headImg,
-                "patientName": values.patientName,
-                "age": age, // '2025-3-1'
-                "roomNum": values.roomNum,
-                "sex": values.sex,
-                "telephone": values.telephone,
-                "address": values.address,
-                "medicalHistory": values.medicalHistory,
-            },
-        }).then((res) => {
-            if (res.data.msg == 'update success') {
-                // getuserInfo()
-                message.success('修改成功')
+        if (updateName) {
+            if (!(values.patientName && values.roomNum && values.sex && values.telephone && values.address)) {
+                return message.info('请完善信息')
             }
-        });
+            let age = values.age
+            if (!isPhone) {
+                age = new Date().getTime() - new Date(`${year} ${month} ${day}`).getTime()
+                age = new Date(age);
+                age = age.getFullYear() - 1970
+            }
+            axios({
+                method: "post",
+                url: netUrl + "/device/update",
+
+                headers: {
+                    "content-type": "application/x-www-form-urlencoded",
+                    "token": localStorage.getItem('token')
+                },
+                params: {
+                    deviceId: sensorName,
+                    "headImg": values.headImg,
+                    "patientName": values.patientName,
+                    "age": age, // '2025-3-1'
+                    "roomNum": values.roomNum,
+                    "sex": values.sex,
+                    "telephone": values.telephone,
+                    "address": values.address,
+                    "medicalHistory": values.medicalHistory,
+                },
+            }).then((res) => {
+                if (res.data.msg == 'update success') {
+                    // getuserInfo()
+                    message.success('修改成功')
+                }
+            });
+        }
+
+
         const _values = { ...values }
         formList.forEach((item) => {
             if (item.type === 'TIME_RANGE') {

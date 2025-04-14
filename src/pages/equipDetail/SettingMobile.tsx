@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import right from '@/assets/image/rigthLogo.png'
 import mobileRemind from '@/assets/image/mobileRemind.png'
 import mobileEquiptype from '@/assets/image/mobileEquiptype.png'
@@ -6,6 +6,8 @@ import mobileNurse from '@/assets/image/mobileNurse.png'
 import mobilePush from '@/assets/image/mobilePush.png'
 import mobileTurn from '@/assets/image/mobileTurn.png'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
+import { Instancercv as ApiInstancercv } from '@/api/api'; // 重命名导
+import { message } from 'antd'
 interface cardParam {
     title: string
     img: any
@@ -14,21 +16,20 @@ interface cardParam {
     borderBottom?: boolean
     type: string
     // onClick: Function
+
 }
 function Card(props: cardParam) {
-
+    const { img, title, margin, border, borderBottom, type } = props
+    const roleId: any = localStorage.getItem('roleId')
     const param = useParams()
     // console.log(param)
     const location = useLocation()
-
     const sensorName = param.id || location.state.sensorName
-
-    const { img, title, margin, border, borderBottom, type } = props
     const navigate = useNavigate()
     const setClick = (type: string) => {
+        if (!(roleId == 1 || roleId == 2)) return message.info('权限不足');
         navigate('/userInfo_editing', { state: { sensorName, type } })
     }
-
     return (
         <div onClick={() => {
             setClick(type)
@@ -50,6 +51,7 @@ function Card(props: cardParam) {
 
 
 export default function SettingMobile() {
+
     return (
         <div className='pb-[15px] mt-4' >
             <Card title='提醒设置' img={mobileRemind} type='remind' />
@@ -60,3 +62,4 @@ export default function SettingMobile() {
         </div>
     )
 }
+

@@ -348,7 +348,7 @@ const UserInfoCard: (props: UserInfoCardProps) => React.JSX.Element = (props) =>
                 return null
         }
     }
-
+    const [update, setUpdate] = useState(false)
     const renderMobileSetting = () => {
         return (
             <div className={['w-[96%] mx-auto', styles.mobileSettingContent].join(' ')}>
@@ -422,6 +422,7 @@ const UserInfoCard: (props: UserInfoCardProps) => React.JSX.Element = (props) =>
             navigate('/userInfo_editing', { state: { sensorName, type: 'personal', userModal } })
         } else {
             setUserInfoOpen(true)
+
         }
     }
     if (outer) {
@@ -476,6 +477,7 @@ const UserInfoCard: (props: UserInfoCardProps) => React.JSX.Element = (props) =>
                         {<span className='text-[#0072EF] text-sm cursor-pointer mr-[10px]'
                             onClick={() => {
                                 handleClickUserEdit()
+                                setUpdate(true)
                             }}>修改</span>}
                     </div>
                     <div className='flex'>
@@ -513,6 +515,7 @@ const UserInfoCard: (props: UserInfoCardProps) => React.JSX.Element = (props) =>
                     onFinish={handleUserInfoForm}
                     title='个人信息设置'
                     imgChange={changeUserInfo}
+                    updateName={update}
                 />
             </div>
         </Fragment>

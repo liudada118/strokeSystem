@@ -228,6 +228,8 @@ export default function Setting() {
     navigate('/login')
     localStorage.removeItem('phone')
     localStorage.removeItem('token')
+    localStorage.removeItem('roleId')
+    localStorage.removeItem('organizeId')
     dispatch(loginOut({}))
     dispatch(equipLoginOut({}))
     dispatch(tokenLoginout({}))
@@ -1147,7 +1149,7 @@ export default function Setting() {
           },
         }).then((res) => {
           getItemManage(deleteObj.id)
-         
+
 
         }).catch((e) => {
           message.error('服务器异常')
@@ -1207,7 +1209,7 @@ export default function Setting() {
         },
       }).then((res) => {
         getItemPerson(deleteObj.id)
-       
+
 
         if (res.data.msg == 'add Manager Success') {
           message.info('添加成功')

@@ -22,7 +22,7 @@ import mobileEquiptype from "@/assets/image/mobileEquiptypeBig.png";
 import mobileNurse from "@/assets/image/mobileNurseBig.png";
 import mobilePush from "@/assets/image/mobilePushBig.png";
 import mobileTurn from "@/assets/image/mobileTurnBig.png";
-import { Switch } from "antd";
+import { message, Switch } from "antd";
 import { TurnEdit } from "./mobileEdit/TurnEdit";
 import NursingPlan from "./mobileEdit/nursingPlan/index";
 import { RemindEdit } from "./mobileEdit/RemindEdit";
@@ -404,6 +404,7 @@ export const personalOtherInfoObj: any = {
 const PersonalOtherInfo = (props: otherInfoParam) => {
   const navigate = useNavigate();
   const { type } = props;
+
   return (
     <div
       className="bg-[#f4f5f6] pt-[4rem] flex"
@@ -413,7 +414,10 @@ const PersonalOtherInfo = (props: otherInfoParam) => {
         <>
           <CommonNavBar
             title={personalOtherInfoObj[type].title}
-            onBack={() => navigate(-1)}
+            onBack={() => {
+           
+              navigate(-1)
+            }}
           />
           <PersonalContentInfo
             title={personalOtherInfoObj[type].title}

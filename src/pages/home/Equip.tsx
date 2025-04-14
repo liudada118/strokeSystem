@@ -173,54 +173,11 @@ export default function Equip() {
                                                     >我已知晓</div>
                                                 </div> : ''
 
-                                                //     <img style={{ position: 'absolute', width: '100%', bottom: '0', left: 0, opacity: '0.5' }} src={newAlarmBgc} alt="" />
-                                                //     <div className='flex'>
-                                                //         <div style={{ position: 'absolute', width: '2rem', height: '2rem', textAlign: 'center', right: '0.5rem', top: '0.5rem', borderRadius: '50%', backgroundColor: 'rgba(255,255,255,0.4)', color: '#EC6E38', lineHeight: '2rem', fontWeight: '600', fontSize: '1rem' }}>{alarmStampToTime(Number(alarmInfo[0].time))}</div>
-                                                //         <div className='text-[1.25rem] pl-[1.4rem] mt-[0.3rem] text-[#fff]'>
-                                                //             {alarmInfo[0].name}<span className='text-[1rem] ml-[0.75rem]'>老人</span>
-                                                //         </div>
-                                                //     </div>
-                                                //     <div className="newAlarmTypeAndInfo " style={{ paddingBottom: "0.5rem" }}>
-                                                //         <div className="newAlarmType" style={{ width: '8.5rem' }}><div >{ALARMTYPE[alarmInfo[0].type as alarmtype].text}</div> </div>
-                                                //         <div className="newAlarmInfo" style={{ width: '8rem' }}>
-                                                //             <div className="newAlarmRoomnum newAlarmText" >
-                                                //                 {alarmInfo[0].roomNum}
-                                                //             </div>
-                                                //             <div className="newAlarmNum newAlarmText">
-                                                //             </div>
-                                                //         </div>
-                                                //     </div>
-                                                //     <div className="newAlarmButton"
-                                                //         onClick={() => {
-                                                //             alarmConfirmFunSensorName({ a: alarmInfo[0], sensorName: item.sensorName })
-                                                //         }}
-                                                //     >我已知晓</div>
-                                                // </div> : <div className="newAlarmContent">
-                                                //     <img style={{ position: 'absolute', width: '100%', bottom: '0', left: 0, opacity: '0.5' }} src={newAlarmBgc} alt="" />
-                                                //     <div className='flex'>
-                                                //         <div style={{ position: 'absolute', width: '2rem', height: '2rem', textAlign: 'center', right: '0.5rem', top: '0.5rem', borderRadius: '50%', backgroundColor: 'rgba(255,255,255,0.4)', color: '#EC6E38', lineHeight: '2rem', fontWeight: '600', fontSize: '1rem' }}>{alarmStampToTime(Number(alarmInfo[0].time))}</div>
-                                                //     </div>
 
-                                                //     <div className="newAlarmTypeAndInfo">
-                                                //         <div className="newAlarmType" style={{ width: '8.5rem' }}><div >{ALARMTYPE[alarmInfo[0].type as alarmtype].text}</div> </div>
-                                                //         <div className="newAlarmInfo" style={{ width: '8rem' }}>
-                                                //             <div className="newAlarmRoomnum newAlarmText" >
-                                                //                 {alarmInfo[0].roomNum}
-                                                //             </div>
-                                                //             <div className="newAlarmNum newAlarmText">{alarmInfo[0].name}
-                                                //             </div>
-                                                //         </div>
-                                                //     </div>
-                                                //     <div className="newAlarmButton"
-                                                //         onClick={() => {
-                                                //             alarmConfirmFunSensorName({ a: alarmInfo[0], sensorName: item.sensorName })
-                                                //         }}
-                                                //     >我已知晓</div>
-                                                // </div>
                                             }
                                         </>
                                         }
-                                        {/* {
+                                        {
                                             item.onBed === 4 ? <div className="newAlarmContent" style={{ padding: ' 1.8rem 1.2rem 0.9rem' }}>
                                                 <img style={{ position: 'absolute', width: '100%', bottom: '0', left: 0, opacity: '0.5' }} src={newAlarmBgc} alt="" />
                                                 <div className='flex'>
@@ -230,7 +187,10 @@ export default function Equip() {
                                                     </div>
                                                 </div>
                                                 <div className="newAlarmTypeAndInfo " style={{ paddingBottom: "0.5rem" }}>
-                                                    <div className="newAlarmType" style={{ width: '8.5rem' }}><div >{ALARMTYPE[alarmInfo[0].type as alarmtype].text}</div> </div>
+                                                    <div className="newAlarmType" style={{ width: '8.5rem' }}><div >
+                                                        已坐床边
+
+                                                    </div> </div>
                                                     <div className="newAlarmInfo" style={{ width: '8rem' }}>
                                                         <div className="newAlarmRoomnum newAlarmText" >
                                                             {alarmInfo[0].roomNum}
@@ -245,7 +205,7 @@ export default function Equip() {
                                                     }}
                                                 >我已知晓</div>
                                             </div> : ''
-                                        } */}
+                                        }
 
                                         <div
                                             className={`equipItem  ${stateToObj[onBedState(item)].class}

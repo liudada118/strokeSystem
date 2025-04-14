@@ -61,6 +61,8 @@ export default function Login() {
         const image = res.data.commonConfig.image
         const roleId = res.data.data.roleId
         localStorage.setItem('roleId', roleId)
+        console.log("roleId...........................................", roleId);
+
         if (image) {
           setHeadImg(image)
           localStorage.setItem('headImg', image)
@@ -122,6 +124,7 @@ export default function Login() {
         },
       }).then((res) => {
 
+      
 
 
         if (res.data.code === 0) {
@@ -129,6 +132,7 @@ export default function Login() {
             acc[index] = curr;
             return acc;
           },);
+          localStorage.setItem('roleId', res.data.authority[0].roleId);
           localStorage.setItem('organizeId', obj.organizeId)
           dispale(loginOut(obj.organizeId))
           const token = res.data.token

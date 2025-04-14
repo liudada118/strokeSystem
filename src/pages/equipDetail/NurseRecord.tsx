@@ -320,7 +320,7 @@ const NurseRecord: (props: NurseRecordProps) => React.JSX.Element = (props) => {
                     <Button className='w-full h-[5vh] mb-[0.5rem] text-base' type='primary' onClick={() => navigate('/record', { state: { sensorName } })}>记录护理项目</Button>
                 )}
                 <Table rowClassName='nurseTableRow' id='nurseTable' rowKey="number" columns={nurseTableColumns} dataSource={dataSource} pagination={false} /> */}
-                <NurseTable type='user'  currentTime={currentTime} childData={childData} sensorName={sensorName} getNurseTemplate={getPersonTemplate} templateId={templateId} data={nursePersonTemplate} />
+                <NurseTable type='user' currentTime={currentTime} childData={childData} sensorName={sensorName} getNurseTemplate={getPersonTemplate} templateId={templateId} data={nursePersonTemplate || []} />
             </div>
         </div>
     )

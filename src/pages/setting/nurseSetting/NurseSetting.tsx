@@ -193,7 +193,8 @@ export default function NurseTable(props: tableProps) {
     // 获取开始和结束时间戳
     const startTimeMillis: any = startTime.valueOf();
     const endTimeMillis: any = endTime.valueOf();
-    const templateData = (props.data || []).map((item: any) => {
+    console.log(props?.data, '..........props?.data');
+    const templateData = (Array.isArray(props?.data) ? props?.data : []).map((item: any) => {
       const timestamp = dayjs().format("YYYY-MM-DD") + " " + item.time; // 拼接当天日期
       const unixTimestamp = dayjs(timestamp, "YYYY-MM-DD HH:mm").valueOf(); // 转换成时间戳
       return {

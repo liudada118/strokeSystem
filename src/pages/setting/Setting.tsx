@@ -1976,17 +1976,14 @@ export default function Setting() {
                                 // : current == 'nurse' ? <NurseSetting type="project" organizeId={userOrganizeId} organizeName={userOrganizeName} />
                                 : current == 'loadImg' ? <UploadImg changeHeadImg={changeHeadImg} userId={userOrganizeId} username={userOrganizeName} img={headImg} />
                                   : current == 'sysIntro' ?
-
                                     <div className="projectContent">
                                       <UserInfo sysIntroObj={sysIntroObj} />
                                     </div>
                                     : current == 'product' ?
-
                                       <div className="projectContent">
                                         <UserInfo sysIntroObj={product} />
                                       </div>
                                       : current == 'userInfo' ?
-
                                         <div className="projectContent">
                                           <UserInfo sysIntroObj={sysIntroObj} />
                                         </div>

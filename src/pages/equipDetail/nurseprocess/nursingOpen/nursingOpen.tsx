@@ -389,7 +389,7 @@ function NursingOpen(props: propsType) {
             <NurseTable
               name={name}
               templateId={templateId}
-              data={rightNurseList}
+              data={rightNurseList || []}
               sensorName={sensorName}
               type="project"
               getNurseTemplate={async () => {

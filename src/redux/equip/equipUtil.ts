@@ -12,7 +12,7 @@ const SOS_ALARM = "sos";
 const NURSE_ALARM = "nurse";
 
 // 所有告警提醒文字
-const SITUP_ALARM_TEXT = "坐起提醒";
+const SITUP_ALARM_TEXT = "已坐床边";
 const DROPBED_ALARM_TEXT = "坠床风险";
 const ONBED_ALARM_TEXT = "离床提醒";
 const SOS_ALARM_TEXT = "SOS呼救";
@@ -157,11 +157,14 @@ export function alarmJudgeBase({ item, type }: alarmBase) {
     if (!stampInScope({ start: item.fallbedStart, end: item.fallbedEnd })) {
       return false;
     }
-  } else if (type == "sos") {
+  }
+
+  else if (type == "sos") {
     return true;
-  } else if (type == "nurse") {
-    if (typeof(+item.pressureInjury) === 'number' && item.pressureInjury > (new Date as any).getTime()) {
-        return false;
+  }
+  else if (type == "nurse") {
+    if (typeof (+item.pressureInjury) === 'number' && item.pressureInjury > (new Date as any).getTime()) {
+      return false;
     }
   }
   return true;
@@ -191,21 +194,29 @@ function alarmJudgeFn({
     return false;
   }
 
-  // ! 如果设备状态值为该状态的onbedValue值
-  if (!(item.onBed == onBedValue)) {
-    return false;
-  }
-  // ! 报警开关数组包含该设备名
-  if (
-    !(
-      alarm &&
-      alarm[alarmArrName] &&
-      alarm[alarmArrName].includes(item.sensorName)
-    )
-  ) {
-    return false;
+  if (type == 'sos') {
+    if (!(item.sos == 1)) {
+      return false;
+    }
+  } else {
+
+    // ! 如果设备状态值为该状态的onbedValue值
+    if (!(item.onBed == onBedValue)) {
+      return false;
+    }
+    // ! 报警开关数组包含该设备名
+    if (
+      !(
+        alarm &&
+        alarm[alarmArrName] &&
+        alarm[alarmArrName].includes(item.sensorName)
+      )
+    ) {
+      return false;
+    }
   }
 
+  // if()
   const flag = alarmJudgeBase({ item, type });
 
   if (flag) {
@@ -612,7 +623,7 @@ export const findAlarmSwitch = ({
       }
     });
   });
-  res.sosArr.push("B2QB26FXWWwQPjRXozP2");
+  // res.sosArr.push("B2QB26FXWWwQPjRXozP2");
   return res;
 };
 

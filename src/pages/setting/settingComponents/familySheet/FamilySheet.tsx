@@ -60,7 +60,7 @@ export default function FamilySheet(props: familySheetProps) {
             render: (text: any, record: any, index: any) => {
                 console.log(record)
                 return (
-                    <div style={{ display: 'flex', color: '#0256FF', justifyItems: 'center' }}>
+                    <div style={{ display: 'flex', color: '#0256FF', justifyItems: 'center', cursor: "pointer" }}>
                         <div className='delete' style={{ marginRight: '1rem' }}
                             onClick={() => {
 
@@ -196,7 +196,7 @@ export default function FamilySheet(props: familySheetProps) {
                 确定要删除家属“{deleteObj.username}”不再推送吗?
             </Modal>
             <div className="projectContent"><div className="projectTitle">家属管理
-                <div style={{ color: '#0256ff', display: 'flex', alignItems: 'center' }} onClick={() => {
+                <div style={{ color: '#0256ff', display: 'flex', alignItems: 'center', cursor: "pointer" }} onClick={() => {
                     setIsModalPersonOpen(true)
                     setDelete({ id: localStorage.getItem('organizeId') })
                 }}> <img src={add} style={{ width: '1rem' }} alt="" /> 新建家属</div></div>

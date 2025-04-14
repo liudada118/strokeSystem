@@ -646,14 +646,17 @@ export default function Message() {
             </div>
           </div>
           <CalendarPicker
+            min={new Date(1900, 0, 1)}
+            max={new Date(2025, 12, 31)}
             visible={popupVisible}
             defaultValue={defaultRange}
             selectionMode='range'
             onClose={() => setPopupVisible(false)}
             onMaskClick={() => setPopupVisible(false)}
-            shouldDisableDate={(date: any) => {
-              return dayjs(date).isAfter(dayjs(), 'day'); // 禁用今天之后的日期  
-            }}
+            // shouldDisableDate={(date: any) => {
+            //   // 例如，禁用今天之后的日期
+            //   return dayjs(date).isAfter(dayjs(), 'day'); // 禁用今天之后的日期  
+            // }}
             onChange={(val: [Date, Date] | null) => {
               setVal(val)
             }}
@@ -661,7 +664,6 @@ export default function Message() {
           {<Bottom />}
         </div >
       }
-
     </>
   );
 }

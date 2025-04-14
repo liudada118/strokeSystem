@@ -260,7 +260,7 @@ const Bottom = forwardRef((props: bottomProps, refs: any) => {
     navigate('/message')
   }
   return (
-    <div className="bottomContent">
+    <div className="bottomContent" style={{ cursor: 'pointer' }}>
       {
         isModalOpen == true ? <AddUseModla isAddModalOpen={isModalOpen} onClose={(val: boolean) => setIsModalOpen(val)}></AddUseModla> : null
       }

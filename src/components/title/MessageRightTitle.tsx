@@ -113,7 +113,7 @@ export const MessageRightTitle = (props: messageParam) => {
                                 placeholder={['开始时间', '结束时间']}
                                 showNow={true}
                                 onChange={(dates, dateStrings) => handleDateChange(dates, dateStrings)}
-                                style={{ width: "18rem", height: "39px", marginLeft: "10px" }}
+                                style={{ width: "20rem", height: "39px", marginLeft: "10px" }}
                                 showTime />
                         </ConfigProvider>
                     </Space><div className="messageTitlediv2_you">

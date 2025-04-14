@@ -680,7 +680,7 @@ export default function Setting() {
     render: (text: any, record: any, index: any) => {
 
       return (
-        <div style={{ display: 'flex', color: '#0256FF' }}>
+        <div style={{ display: 'flex', color: '#0256FF', cursor: "pointer" }}>
           <div className='see' style={{ marginRight: '1rem', position: 'relative', }} onClick={() => {
 
             setUserShow(true)
@@ -788,7 +788,7 @@ export default function Setting() {
       render: (text: any, record: any, index: any) => {
 
         return (
-          <div style={{ display: 'flex', color: '#0256FF', justifyContent: 'center' }}>
+          <div style={{ display: 'flex', color: '#0256FF', justifyContent: 'center', cursor: "pointer" }}>
             <div className='edit' style={{ marginRight: '1rem' }} onClick={() => {
 
               setIsModalChangePasswordOpen(true)

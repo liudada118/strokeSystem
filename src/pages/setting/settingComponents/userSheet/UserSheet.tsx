@@ -276,7 +276,7 @@ export default function UserSheet(props: userSheetProps) {
             render: (text: any, record: any, index: any) => {
                 console.log(record)
                 return (
-                    <div style={{ display: 'flex', color: '#0256FF', justifyItems: 'center' }}>
+                    <div style={{ display: 'flex', color: '#0256FF', justifyItems: 'center', cursor: "pointer" }}>
                         <div className='edit' style={{ marginRight: '1rem' }} onClick={() => {
 
                             setIsModalChangePasswordOpen(true)
@@ -344,7 +344,7 @@ export default function UserSheet(props: userSheetProps) {
             <div className="projectContent">
 
                 <div className="projectTitle">护工管理
-                    <div style={{ color: '#0256ff', display: 'flex', alignItems: 'center' }} onClick={() => {
+                    <div style={{ color: '#0256ff', display: 'flex', alignItems: 'center', cursor: "pointer" }} onClick={() => {
                         setIsModalNurseOpen(true)
                         setDelete({ id: localStorage.getItem('organizeId') })
                     }}> <img src={add} style={{ width: '1rem' }} alt="" /> 新建护工</div></div>

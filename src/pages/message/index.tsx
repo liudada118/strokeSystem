@@ -105,8 +105,6 @@ export default function Message() {
       pageNum: e,
     });
   }
-
-
   const getMessage = async (reqparms: any = {}) => {
 
     const param = {
@@ -159,6 +157,7 @@ export default function Message() {
     })
     return message
   }
+  const [nurseType, setNurseType] = useState('其他提醒');
   // 表格状态
   const titleList = [
     {
@@ -189,13 +188,25 @@ export default function Message() {
       key: 'situp',
       title: "坐起提醒"
     },
-    // {
-    //   id: 7,
-    //   key: 'offline',
-    //   title: "离线提醒"
-    // },
+    {
+      id: 7,
+      key: '',
+      title: nurseType,
+    },
 
 
+  ]
+  const titleList1 = [
+    {
+      id: 1,
+      key: 'nursing',
+      title: "护理提醒"
+    },
+    {
+      id: 2,
+      key: 'offline',
+      title: "离线提醒"
+    }
   ]
   // 表格数据
   const data: any[] = dataList.map((item: any, index: number) => {
@@ -217,11 +228,11 @@ export default function Message() {
   const [titleId, setTitleId] = useState(1)
   const [titleKey, setTitleIdKey] = useState('')
   const [title, setTitle] = useState('全部提醒')
-  console.log(titleId, 'titleId');
+
   const [nursing, setNursing] = useState(false)
   const [isName, setIsName] = useState(false)
   const [pageTotal, setPageTotal] = useState(0)
-  const [nurseType, setNurseType] = useState('其他提醒');
+  const [titleTrue, setTitleTrue] = useState(false)
   const homeSelectNurse: any = [
     { value: 'nursing', label: '护理提醒' },
     { value: 'offline', label: '离线提醒' },
@@ -229,7 +240,18 @@ export default function Message() {
   // 标题切换
   const onTitle = (item: any) => {
     // setIsName(true)
-    // setNurseType('其他提醒')
+
+    if ((item.title !== '全部提醒' || item.title !== 'SOS提醒' || item.title !== '坠床提醒' || item.title !== '离床提醒' || item.title !== '坐起提醒')) {
+      setTitleTrue(true)
+    }
+    if (item.title !== '其他提醒' && nurseType !== '护理提醒' && nurseType !== '离线提醒') {
+      setNurseType('其他提醒')
+      setTitleTrue(false)
+    }
+    if ((item.title == '全部提醒' || item.title == 'SOS提醒' || item.title == '坠床提醒' || item.title == '离床提醒' || item.title == '坐起提醒')) {
+      setNurseType('其他提醒')
+      setTitleTrue(false)
+    }
     setTitle(item.title)
     setTitleId(item.id)
     setTitleIdKey(item.key)
@@ -425,40 +447,40 @@ export default function Message() {
                     </Button>
                   );
                 })}
-                <div className="h-[2.8rem] w-[7rem]" style={{ borderRadius: "0.6rem" }}>
-                  <Select
-                    className="MessageYiDOngTitlesearchSelect"
-                    defaultValue={isName === true ? '其他提醒' : nurseType}
-                    suffixIcon={null}
-                    style={{
-                      width: '7rem',
-                      height: "2.7rem",
-                      border: 'none',
-                      // borderRadius: "0.6rem",
-                      textAlign: "center",
-                      fontSize: "0.8rem",
-                      fontWeight: 900
-                    }}
-                    onChange={(e: any) => {
-                      const val = e === 'nursing' ? '护理提醒' : e === 'offline' ? '离线提醒' : ''
-                      setTitle(val)
-                      setNurseType(e)
-                      setParams({
-                        ...params,
-                        types: e,
-                        startMills: timeArr[0],
-                        endMills: timeArr[1],
+                {
+                  titleTrue === true ? <div style={{ fontSize: "0.8rem", position: 'absolute', top: '7.8rem', width: '7rem', height: '7rem', zIndex: '10', left: '59%', display: 'flex', flexDirection: 'column', alignItems: 'center', borderRadius: "5px", border: "solid 1px #ccc" }}>
+
+                    {
+                      titleList1.map((item: any) => {
+                        return (
+                          <div onClick={() => {
+
+                            setNurseType(item.title)
+
+                            setParams({
+                              ...params,
+                              types: item.key,
+                              startMills: timeArr[0],
+                              endMills: timeArr[1],
+                            })
+                            getMessage({
+                              ...params,
+                              types: item.key,
+                              startMills: timeArr[0],
+                              endMills: timeArr[1],
+                            })
+                            setTitleTrue(false)
+                          }} className="bg-[#fff] py-4 px-7">
+                            {item.title}
+                          </div>
+                        )
                       })
-                      getMessage({
-                        ...params,
-                        types: e,
-                        startMills: timeArr[0],
-                        endMills: timeArr[1],
-                      })
-                    }}
-                    options={homeSelectNurse}
-                  />
-                </div>
+                    }
+                  </div> : ""
+                }
+
+
+
               </div>
             </div>
             <div className="messageMainData">
@@ -547,36 +569,37 @@ export default function Message() {
                 )
               })
             }
-            <div className="h-[2rem]" style={{ borderRadius: "0.6rem" }}>
-              <Select
-                className="MessageYiDOngTitlesearchSelectyidong"
-                defaultValue={nurseType}
-                suffixIcon={null}
-                style={{
-                  // width: '7rem',
-                  height: "2rem",
-                  textAlign: "center",
-                  fontSize: "0.8rem",
-                  fontWeight: 900
-                }}
-                onChange={(e: any) => {
-                  const val = e === 'nursing' ? '护理提醒' : e === 'offline' ? '离线提醒' : ''
-                  setTitle(val)
-                  setParams({
-                    ...params,
-                    types: e,
-                    startMills: timeArr[0],
-                    endMills: timeArr[1],
+            {
+              titleTrue === true ? <div style={{ fontSize: "0.8rem", position: 'absolute', top: '7.8rem', width: '7rem', height: '7rem', zIndex: '99999', left: '59%', display: 'flex', flexDirection: 'column', alignItems: 'center', borderRadius: "5px", border: "solid 1px #ccc" }}>
+
+                {
+                  titleList1.map((item: any) => {
+                    return (
+                      <div onClick={() => {
+
+                        setNurseType(item.title)
+
+                        setParams({
+                          ...params,
+                          types: item.key,
+                          startMills: timeArr[0],
+                          endMills: timeArr[1],
+                        })
+                        getMessage({
+                          ...params,
+                          types: item.key,
+                          startMills: timeArr[0],
+                          endMills: timeArr[1],
+                        })
+                        setTitleTrue(false)
+                      }} className="bg-[#fff] py-4 px-7">
+                        {item.title}
+                      </div>
+                    )
                   })
-                  getMessage({
-                    ...params,
-                    types: e,
-                    startMills: timeArr[0],
-                    endMills: timeArr[1],
-                  })
-                }}
-                options={homeSelectNurse}
-              /></div>
+                }
+              </div> : ""
+            }
             <div className="MessageYiDOngTitledivMessageYiDOngTitlediv" style={{ position: 'fixed', right: "0", background: '#FFFFF', width: "2rem", height: "3rem", zIndex: 99 }}></div>
           </div>
           <div style={{ background: '#F5F8FA', overflow: "hidden", height: '100%', }}>

@@ -20,7 +20,6 @@ import homepc from '../../assets/icon/homepc.png'
 import unhomepc from '../../assets/icon/unhomepc.png'
 import set from '../../assets/icon/set.svg'
 import onSet from '../../assets/icon/onSet.svg'
-
 import { message } from 'antd';
 
 import { useGetWindowSize } from '../../hooks/hook';
@@ -31,7 +30,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { headImgSelect } from '@/redux/premission/premission';
 import { fetchEquips } from '@/redux/equip/equipSlice';
 import AddUseModla from '../Modal/addUseModla'
-
+import useWindowSize from '../../hooks/useWindowSize'
 let timeout: ReturnType<typeof setTimeout> | null;
 let currentValue: string;
 
@@ -63,6 +62,9 @@ let bottomArr = mobileBottomArr
 
 const Bottom = forwardRef((props: bottomProps, refs: any) => {
   const [macType, setMacType] = useState('')
+  const windowSize = useWindowSize()
+  const tab = useSelector((state: any) => state.nurse.showTabs)
+  console.log(tab, '.....................ataaaaaa');
 
   const dispatch: any = useDispatch()
   /**
@@ -282,11 +284,29 @@ const Bottom = forwardRef((props: bottomProps, refs: any) => {
             })
           }
         }}>
-
           <div style={{ position: 'relative' }}>
-            {a.name == '提醒' && (read) ? <div className='readMessage' style={{ position: 'absolute', right: 0, top: 0, borderRadius: '50%', backgroundColor: 'red' }}></div> : ''}
-            <img className='setImg' style={{ display: onIndex == index ? 'unset' : 'none' }} src={a.img} alt="" />
-            <img className='setImg' style={{ display: onIndex == index ? 'none' : 'unset' }} src={a.unImg} alt="" />
+
+            {tab === true && a.name == '提醒' && (read) ? (
+              <div
+                className="readMessage"
+                style={{ position: 'absolute', right: 0, top: 0, borderRadius: '50%', backgroundColor: 'red' }}
+              ></div>
+            ) : (
+              <>
+                <img
+                  className="setImg"
+                  style={{ display: onIndex == index ? 'unset' : 'none' }}
+                  src={a.img}
+                  alt=""
+                />
+                <img
+                  className="setImg"
+                  style={{ display: onIndex == index ? 'none' : 'unset' }}
+                  src={a.unImg}
+                  alt=""
+                />
+              </>
+            )}
           </div>
           <div className="bottomName" onClick={(index) => onMessage(index)}>{a.name}</div>
         </div>)}
@@ -301,6 +321,4 @@ const Bottom = forwardRef((props: bottomProps, refs: any) => {
     </div >
   )
 })
-
-
 export default Bottom

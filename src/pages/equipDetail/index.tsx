@@ -52,7 +52,6 @@ const EquipDetail = () => {
     const param = useParams()
     const { type, id } = param
     console.log(type, '.................monitormonitormonitor');
-
     const navigate = useNavigate()
     const token = useSelector(tokenSelect)
     const [activeKey, setActiveKey] = useState(activeKeyArr[(type || 0)])
@@ -144,7 +143,6 @@ const EquipDetail = () => {
         key: 'reporter',
         children: <Reporter />
     }]
-
     const handleTabChange = (key: string) => {
         setActiveKey(key);
         navigate(`/report/${activeKeyArr.indexOf(key)}/${id}`);

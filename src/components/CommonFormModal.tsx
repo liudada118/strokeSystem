@@ -58,17 +58,34 @@ const CommonFormModal: (props: CommonFormModalProps) => React.JSX.Element = (pro
     const [month, setMonth] = useState(1);
     const [day, setDay] = useState(1);
     const isPhone = useWindowSize().isMobile
+    const checkFutureDate = (yearValue: any, monthValue: any, dayValue: any) => {
+        const selectedDate = new Date(yearValue, monthValue - 1, dayValue);
+        const today = new Date();
+        console.log(selectedDate, today, '...............................selectedDateselectedDateselectedDate');
+
+        if (selectedDate > today) {
+            return message.info('所选日期不能大于当前日期'); // 提示用户  
+        }
+    };
     const handleFinish = (values: any) => {
         if (updateName) {
             if (!(values.patientName && values.roomNum && values.sex && values.telephone && values.address)) {
                 return message.info('请完善信息')
             }
             let age = values.age
+            const today = new Date();
             if (!isPhone) {
-                age = new Date().getTime() - new Date(`${year} ${month} ${day}`).getTime()
+                age = new Date().getTime() - new Date(`${year} ${month}`).getTime()
                 age = new Date(age);
                 age = age.getFullYear() - 1970
             }
+            console.log(age, '.......age..........selectedDateselectedDateselectedDate');
+            const selectedDate = new Date(year, month - 1, day);
+            if (today < selectedDate) {
+                return message.info('所选日期不能大于当前日期');
+            }
+
+
             axios({
                 method: "post",
                 url: netUrl + "/device/update",
@@ -81,7 +98,7 @@ const CommonFormModal: (props: CommonFormModalProps) => React.JSX.Element = (pro
                     deviceId: sensorName,
                     "headImg": values.headImg,
                     "patientName": values.patientName,
-                    "age": age, // '2025-3-1'
+                    "age": age === 0 && -1 ? 1 : age, // '2025-3-1'
                     "roomNum": values.roomNum,
                     "sex": values.sex,
                     "telephone": values.telephone,
@@ -145,6 +162,7 @@ const CommonFormModal: (props: CommonFormModalProps) => React.JSX.Element = (pro
         })
         setInitialValues(initialValues)
     }, [formList])
+
     const renderFormItem = (list: CommonFormItem[] | ComplexForm[],) => {
         return (
             <Fragment>
@@ -209,10 +227,15 @@ const CommonFormModal: (props: CommonFormModalProps) => React.JSX.Element = (pro
                                     <div className="date-input-item">
                                         <InputNumber
                                             value={year}
-                                            onChange={(e) => setYear(e as number)}
+                                            onChange={(e) => {
+                                                setYear(e as number)
+                                                checkFutureDate(e, month, day);
+                                            }}
                                             min={1900}
                                             max={2100}
                                             controls={false}
+                                            disabled
+
                                         />
                                         <div className="btn-box">
                                             <span onClick={() => setYear((prevMonth) => Math.min(2025, prevMonth + 1))}>▲</span>
@@ -225,24 +248,39 @@ const CommonFormModal: (props: CommonFormModalProps) => React.JSX.Element = (pro
                                     <div className="date-input-item">
                                         <InputNumber
                                             value={month}
-                                            onChange={(e) => setMonth(e as number)}
+                                            onChange={(e) => {
+                                                setMonth(e as number)
+                                                checkFutureDate(year, e, day)
+                                            }}
                                             min={1}
                                             max={12}
                                             controls={false}
+                                            disabled
                                         />
                                         <div className="btn-box">
-                                            <span onClick={() => setMonth((prevMonth) => Math.min(12, prevMonth + 1))}>▲</span>
-                                            <span onClick={() => setMonth((prevMonth) => Math.max(1, prevMonth - 1))}>▼</span>
+                                            <span onClick={() => {
+                                                console.log("Increasing month from", month);
+                                                setMonth((prevMonth) => Math.min(12, prevMonth + 1));
+                                            }}>▲</span>
+                                            <span onClick={() => {
+                                                console.log("Decreasing month from", month);
+                                                setMonth((prevMonth) => Math.max(1, prevMonth - 1));
+                                            }}>▼</span>
                                         </div>
                                     </div>
                                     月
                                     <div className="date-input-item">
                                         <InputNumber
                                             value={day}
-                                            onChange={(e) => setDay(e as number)}
+                                            onChange={(e) => {
+                                                setDay(e as number)
+                                                checkFutureDate(year, month, e)
+                                            }}
                                             min={1}
                                             max={31} // 可以根据月份变化调整  
                                             controls={false}
+                                            disabled
+
                                         />
                                         <div className="btn-box">
                                             <span onClick={() => setDay((prevMonth) => Math.min(31, prevMonth + 1))}>▲</span>

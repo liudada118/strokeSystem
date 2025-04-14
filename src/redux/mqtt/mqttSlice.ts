@@ -3,7 +3,8 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState: any = {
     client: null,
     timer: null,
-    radioChecked:'0'
+    radioChecked:'0',
+    
 }
 
 const mqttSlice = createSlice({
@@ -23,6 +24,7 @@ const mqttSlice = createSlice({
             state.client = null
             state.timer = null
         },
+      
     }
 })
 export const { mqttConnect, createTimer ,mqttLoginout} = mqttSlice.actions

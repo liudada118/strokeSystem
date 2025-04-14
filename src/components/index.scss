@@ -1,4 +1,11 @@
 .input_number_reset {
+
+    :where(.css-dev-only-do-not-override-19c4mm8).ant-input-number-outlined.ant-input-number-disabled, :where(.css-dev-only-do-not-override-19c4mm8).ant-input-number-outlined[disabled]{
+        background: #fff!important;
+    }
+    :where(.css-dev-only-do-not-override-19c4mm8).ant-input-number-disabled .ant-input-number-input, :where(.css-dev-only-do-not-override-19c4mm8).ant-input-number-readonly .ant-input-number-input{
+        color: #000!important;
+    }
     .ant-form-item-control-input-content {
         display: flex;
         align-items: center;

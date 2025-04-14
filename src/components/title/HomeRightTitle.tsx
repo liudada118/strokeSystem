@@ -4,6 +4,8 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { changeDisplayEquip, equipConstantSelect } from "@/redux/equip/equipSlice";
 import { initEquipPc } from "@/redux/equip/equipUtil";
+import { showTabsTabs } from '../../redux/Nurse/Nurse'
+import useWindowSize from '../../hooks//useWindowSize'
 const homeSelect = [
     { value: 'patientName', label: '姓名' },
     { value: 'roomNum', label: '床号' },
@@ -15,6 +17,7 @@ export const HomeRightTitle = () => {
     const [selectType, setSelectType] = useState('patientName');
     const equips = useSelector(equipConstantSelect)
     const dispatch = useDispatch()
+    const windowSize = useWindowSize()
     const search = (e: any) => {
         const value = e.target.value.trim()
         if (value) {
@@ -39,10 +42,18 @@ export const HomeRightTitle = () => {
         }, ms);
     }
     return (
-        <div className="searchInput">
+        <div className="searchInput" onClick={(e) => {
+            if (windowSize) {
+                // e.preventDefault()
+                e.stopPropagation()
+                dispatch(showTabsTabs(false))
+            }
+
+        }}>
             <Input
                 type="text"
                 onChange={(e) =>
+
                     debounce(search.bind(this, e), 300)
                 }
             />

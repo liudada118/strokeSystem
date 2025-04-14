@@ -26,6 +26,7 @@ import { DataContext } from ".";
 import { useGetWindowSize } from '@/hooks/hook'
 import TurnReport from '@/pages/turnReport/TurnReport'
 import './settingBlock.scss'
+import { log } from "node:console";
 enum TurnPlanStatus {
     DONE = '已完成',
     TIME_OUT_DONE = '超时完成',
@@ -162,9 +163,15 @@ const TurnPlan: (props: TurnPlanProps) => React.JSX.Element = (props) => {
     }
 
     const handleRecord = () => {
+        console.log('........1111111');
+
         setRecordModal(true)
         if (isMobile) {
+            console.log('.123.......1111111');
+
             setRecordModal(true)
+
+        } else {
 
         }
 

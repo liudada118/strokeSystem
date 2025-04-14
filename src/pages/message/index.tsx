@@ -570,7 +570,7 @@ export default function Message() {
               })
             }
             {
-              titleTrue === true ? <div style={{ fontSize: "0.8rem", position: 'absolute', top: '7.8rem', width: '7rem', height: '7rem', zIndex: '99999', left: '59%', display: 'flex', flexDirection: 'column', alignItems: 'center', borderRadius: "5px", border: "solid 1px #ccc" }}>
+              titleTrue === true ? <div style={{ fontSize: "1.3rem", position: 'absolute', top: '10.4rem', width: '7rem', height: '7rem', zIndex: '99999', left: '75%', display: 'flex', flexDirection: 'column', alignItems: 'center', borderRadius: "5px", border: "solid 1px #ccc" }}>
 
                 {
                   titleList1.map((item: any) => {
@@ -592,7 +592,7 @@ export default function Message() {
                           endMills: timeArr[1],
                         })
                         setTitleTrue(false)
-                      }} className="bg-[#fff] py-4 px-7">
+                      }} className="bg-[#fff]  p-[0.25rem 0.75rem 0.25rem 0.5rem]" style={{ padding: "0.75rem 0.25rem 0.5rem 0.25rem" }}>
                         {item.title}
                       </div>
                     )

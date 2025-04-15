@@ -669,11 +669,12 @@ export default function Message() {
             </div>
           </div>
           <CalendarPicker
-            min={new Date(1900, 0, 1)}
-            max={new Date(2025, 12, 31)}
+            min={new Date(1970, 1, 1)}  // 设置为一个较早的时间点
+            max={new Date()}
             visible={popupVisible}
             defaultValue={defaultRange}
             selectionMode='range'
+            // precision='minute'
             onClose={() => setPopupVisible(false)}
             onMaskClick={() => setPopupVisible(false)}
             // shouldDisableDate={(date: any) => {

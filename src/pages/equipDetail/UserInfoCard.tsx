@@ -25,7 +25,8 @@ export const userModal = [
         value: '',
         type: FormType.UPLOAD,
         mobileType: FormType.UPLOAD,
-    }, {
+    },
+    {
         label: '输入姓名',
         mobileLabel: '姓名',
         key: 'patientName',

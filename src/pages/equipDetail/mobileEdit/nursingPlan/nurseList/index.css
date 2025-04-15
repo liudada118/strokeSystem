@@ -39,7 +39,7 @@
 .nurse_list .list_item p:nth-child(3) {
   display: flex;
   align-items: center;
-  width: 3.4rem;
+  width: 4.4rem;
   color: #929EAB;
   justify-content: center;
 }

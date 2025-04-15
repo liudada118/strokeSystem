@@ -326,7 +326,7 @@ const CommonFormModal: (props: CommonFormModalProps) => React.JSX.Element = (pro
                                             {/* <img src={showUserinfo.img} alt="" /> */}
 
                                             <input type="file" name="img" style={{ opacity: 0, position: 'absolute', width: '100%', height: '100%', left: 0 }} id="img" onChange={(e) => {
-                                                setSpinning(true);
+                                                setSpinning(true);     
                                                 if (e.target.files) {
                                                     // res.then((e) => {})
                                                     // setImgFile(e.target.files[0])

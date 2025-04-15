@@ -218,11 +218,12 @@ export default function NurseTable(props: tableProps) {
       if (res && res.data.msg === "success") {
         const list: any = res.data.data.map((item: any, index: number) => {
           let dataList = JSON.parse(item.data || "{}");
-          const timeItem = (props.data || []).find((tItem) => {
+          const timeItem = Array.isArray(props?.data) ? props?.data.find((tItem) => {
             const startTime = tItem.time;
             const selectedTime = dayjs(+item.templateTime).format("HH:mm");
             if (selectedTime === startTime) return true;
-          });
+          }) : []
+
           if (timeItem) {
             dataList = {
               key: timeItem.key,

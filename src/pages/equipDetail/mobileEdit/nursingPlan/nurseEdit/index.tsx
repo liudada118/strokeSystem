@@ -47,8 +47,11 @@ export default function NurseConfEdit(props: any) {
   const [isShowChooseTemp, setIsShowChooseTemp] = useState(true);
   const [defaultTempInfo, setDefaultTempInfo] = useState(items[0]);
   const [tempList, setTempList] = useState([]);
+  const [nurseName, setNurseName] = useState('');
   const navigate = useNavigate();
   const onFinish = (value: any) => {
+    if (!nurseName) return message.warning("请填写护理名称！");
+    if (!value.hours || !value.minutes) return message.warning("请填写护理时间！");
     const hoursVal = parseFloat(value.hours);
     const minutesVal = parseFloat(value.minutes);
     const hoursFormat = hoursVal < 10 ? `0${hoursVal}` : hoursVal;
@@ -64,7 +67,7 @@ export default function NurseConfEdit(props: any) {
       key: templateTime.toString(),
       status: "todo",
       time: `${hoursFormat}:${minutesFormat}`,
-      title: value.title,
+      title: nurseName,
     });
   };
   const onFinishFailed = (value: any) => {
@@ -86,7 +89,12 @@ export default function NurseConfEdit(props: any) {
       },
     }).then((res: any) => {
       if (res.data.code === 0) {
-        const nursingConfig = JSON.parse(res.data.nursingConfig || "[]");
+        let nursingConfig = []
+        if (res.data.templateEffectiveFlag == 2) {
+            nursingConfig = JSON.parse(res.data.nursingConfig || '[]')
+        } else {
+            nursingConfig = JSON.parse(res.data.oldTemplate || '[]')
+        }
         if (nursingConfig.length > 0) {
           setTempList(nursingConfig);
         }
@@ -115,7 +123,7 @@ export default function NurseConfEdit(props: any) {
         className="use_nurse_form"
         requiredMark={false}
       >
-        {props.nurseList.length === 0 && (
+        {props.nurseList.length === 0 && !props.isDelete && (
           <Form.Item
             label=""
             name="use"
@@ -124,7 +132,7 @@ export default function NurseConfEdit(props: any) {
             ]}
           >
             <span>应用护理模版：</span>
-            <div className="use_nurse_template" style={{}}>
+            <div className="use_nurse_template">
               {[
                 { value: 1, label: "否" },
                 { value: 2, label: "是" },
@@ -153,10 +161,12 @@ export default function NurseConfEdit(props: any) {
         <Form.Item
           label=""
           name="title"
-          rules={[{ required: true, message: "请填写护理名称!" }]}
+          rules={[{ required: false, message: "请填写护理名称!" }]}
         >
           <span>护理名称：</span>
-          <Input className="h-10" />
+          <Input placeholder="请输入所添加的护理任务的名称" className="h-10 bg-[#F5F8FA]" onChange={(e) => {
+            setNurseName(e.target.value)
+          }} />
         </Form.Item>
 
         <div className="time_box">
@@ -166,17 +176,17 @@ export default function NurseConfEdit(props: any) {
               label=""
               name="hours"
               className="h-10"
-              rules={[{ required: true, message: "请选择!" }]}
+              rules={[{ required: false, message: "请选择!" }]}
             >
               <Select
                 showSearch
-                placeholder="请选择时间"
+                placeholder="时"
                 optionFilterProp="children"
                 className="h-10"
               >
                 {[...Array(24)].map((_, index) => (
                   <Select.Option key={index} value={(index + 1).toString().padStart(2, '0')}>
-                    {index.toString().padStart(2, '0')}点
+                    {index.toString().padStart(2, '0')}
                   </Select.Option>
                 ))}
               </Select>
@@ -185,11 +195,11 @@ export default function NurseConfEdit(props: any) {
             <Form.Item
               label=""
               name="minutes"
-              rules={[{ required: true, message: "请选择!" }]}
+              rules={[{ required: false, message: "请选择!" }]}
             >
               <Select
                 showSearch
-                placeholder="分钟"
+                placeholder="分"
                 optionFilterProp="children"
                 className="h-10"
               >

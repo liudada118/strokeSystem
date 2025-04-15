@@ -107,13 +107,13 @@ export const MessageRightTitle = (props: messageParam) => {
         <>
             {
                 !windowSize ? <div className="messageTitlediv2">
-                    <><Space style={{ width: "50rem", height: "39px", marginLeft: "10px" }} direction="vertical" size={12}>
+                    <><Space style={{ width: "50rem", height: "2.07rem", marginLeft: "0.7rem" }} direction="vertical" size={12}>
                         <ConfigProvider locale={zhCN}>
                             <RangePicker
                                 placeholder={['开始时间', '结束时间']}
                                 showNow={true}
                                 onChange={(dates, dateStrings) => handleDateChange(dates, dateStrings)}
-                                style={{ width: "20rem", height: "39px", marginLeft: "10px" }}
+                                style={{ width: "20rem", height: "2.07rem", marginLeft: "0.7rem" }}
                                 showTime />
                         </ConfigProvider>
                     </Space><div className="messageTitlediv2_you">

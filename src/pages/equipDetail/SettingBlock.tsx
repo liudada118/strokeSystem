@@ -662,8 +662,11 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (props) =>
     }
 
     const [isSettingClick, setIsSettingClick] = useState(false)
+    const role: any = localStorage.getItem('roleId')
+    console.log(role, roleId, '.......................roleIdroleIdroleIdroleId');
+
     const handleAlarmSettingClick = () => {
-        console.log('handleAlarmSettingClick')
+        // if (roleId !== 1 || role !== 2) return message.info('暂无权限')
         const flag = !isSettingClick
         setIsSettingClick(flag)
         if (flag) {
@@ -680,8 +683,6 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (props) =>
     //设备解绑
     const confirm: PopconfirmProps['onConfirm'] = async (e) => {
         let res: any = await unbindHheDevice(location.state.deviceId)
-        console.log(res.data.code, '.....................................................res...........');
-
         if (res.data.code == 500) {
             message.success('解绑成功')
             // navigator.

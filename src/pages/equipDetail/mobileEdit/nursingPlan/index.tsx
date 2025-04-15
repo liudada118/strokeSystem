@@ -25,6 +25,7 @@ export default function NursingPlan() {
   const [nurseList, setNurseList] = useState([]) as any;
   const [operType, setOperType] = useState("init");
   const [isEdit, setIsEdit] = useState(false);
+  const [isDelete, setIsDelete] = useState(false);
   const navigate = useNavigate();
 
   const editNurseConf = () => {
@@ -53,39 +54,26 @@ export default function NursingPlan() {
       },
     }).then((res: any) => {
       if (res.data.code === 0) {
-        const nursingConfig = JSON.parse(res.data.nursingConfig || "[]");
+        let nursingConfig = []
+        if (res.data.templateEffectiveFlag == 2) {
+            nursingConfig = JSON.parse(res.data.nursingConfig || '[]')
+        } else {
+            nursingConfig = JSON.parse(res.data.oldTemplate || '[]')
+        }
         if (nursingConfig.length > 0) {
           setTitle("护理计划");
         }
-        setNurseList(nursingConfig);
+        setNurseList(Array.isArray(nursingConfig) ? nursingConfig : []);
       }
     });
   };
   const [isModalChangePasswordOpen, setIsModalChangePasswordOpen] = useState(false)
   const [selectValue, setSelectValue] = useState(1)
-  console.log(selectValue, '.......selectValue');
 
   const handleChangePasswordOk = async () => {
-    Instancercv({
-      method: "get",
-      url: "/nursing/getNursingConfig",
-      headers: {
-        "content-type": "multipart/form-data",
-        token: localStorage.getItem("token"),
-      },
-      params: {
-        deviceId: sensorName,
-        // ...(type ? { type } : {}),
-        templateEffectiveFlag: selectValue,
-        templateUpdatetime: new Date().getTime()
-
-      },
-    }).then(async (res: any) => {
-      message.info('模版保存成功')
-      saveTemplate()
-      setIsModalChangePasswordOpen(false)
-    })
-
+    
+    saveTemplate()
+    setIsModalChangePasswordOpen(false)
 
   }
   const handleChangePasswordCancel = () => {
@@ -144,6 +132,7 @@ export default function NursingPlan() {
           return +item.key !== +params.key;
         });
         setNurseList(delList);
+        setIsDelete(true)
       },
     });
   };
@@ -159,7 +148,7 @@ export default function NursingPlan() {
       <CommonNavBar
         style={{ position: "inherit" }}
         title={
-          nurseList.length === 0
+          nurseList.length === 0 && !isDelete
             ? "护理配置"
             : operType === "init"
               ? "护理计划"
@@ -172,7 +161,7 @@ export default function NursingPlan() {
         onBack={() => navigate(-1)}
       />
       <div
-        className={`${nurseList.length === 0 && !isEdit ? "nurse_box_empty" : ""
+        className={`${nurseList.length === 0 && !isDelete && !isEdit ? "nurse_box_empty" : ""
           } nurse_box`}
       >
         {isEdit ? (
@@ -180,9 +169,10 @@ export default function NursingPlan() {
             nurseList={nurseList}
             sensorName={sensorName}
             setNurseTask={addNurseTask}
+            isDelete={isDelete}
           />
         ) : (operType === "init" || operType === "add") &&
-          nurseList.length > 0 ? (
+          (nurseList.length || isDelete) > 0 ? (
           <>
             <div className="title">
               <p>

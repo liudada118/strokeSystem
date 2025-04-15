@@ -147,57 +147,43 @@ const TurnPlan: (props: TurnPlanProps) => React.JSX.Element = (props) => {
     const [recordModal, setRecordModal] = useState<boolean>(false)
     const [choosedSleep, setChoosedSleep] = useState<string>('')
     const current = dayjs().format('HH:mm').split(':')
-
     // 未激活的计划状态判断
     const inactivePlan = (status: string) => {
         return status == TurnPlanStatus.UN_TIME_TO_BE_DOWN
     }
-
     const isTimeOut = (status: string) => {
         return status == TurnPlanStatus.TO_BE_DONE
     }
-
     const renderImagIcon = (data: any) => {
         if (inactivePlan(data.status)) return plan_gray
         return [TurnPlanStatus.DONE, TurnPlanStatus.TO_BE_DONE].includes(data.status) ? plan_blue : plan_orange
     }
-
     const handleRecord = () => {
-        console.log('........1111111');
-
         setRecordModal(true)
+        console.log(isMobile, '......isMobile........')
         if (isMobile) {
-            console.log('.123.......1111111');
-
             setRecordModal(true)
-
         } else {
-
+            setRecordModal(true)
         }
-
     }
-
     const handleChooseSleep = (value: string) => {
         setChoosedSleep(value)
     }
     // const changeLoadButtonToDownButton
     const [isModalOpen, setIsModalOpen] = useState(false);
-
     const showModal = () => {
         setIsModalOpen(true);
     };
-
     const handleOk = () => {
         setIsModalOpen(false);
     };
-
     const handleCancel = () => {
         setIsModalOpen(false);
     };
     const [logid, setDataList] = useState('');
     const WindowSize = useGetWindowSize()
     const renderButton = (data: any) => {
-
         const inactive = inactivePlan(data.status);
         return [TurnPlanStatus.DONE, TurnPlanStatus.TIME_OUT_DONE].includes(data.status) ? (
             <div onClick={() => {
@@ -224,8 +210,6 @@ const TurnPlan: (props: TurnPlanProps) => React.JSX.Element = (props) => {
                 className={`w-[6rem] h-[2.4rem] text-sm ${inactive ? '!bg-[#ECF0F4] !text-[#C2CDD6]' : ''} ${isTimeOut(data.status) ? 'bg-[#EC6E38]' : ''} border-none`}
             >去记录</Button>
     }
-
-
     return (
         <div className='bg-[#fff] w-full md:w-[94%] md:rounded-[10px] md:my-[10px] md:mx-auto border-b border-b-[#ECF0F4] md:border-0 pt-[25px] pl-[25px] md:pt-[1rem] md:pl-[1rem] pb-[10px]'>
             <NurseProcesst isModalOpenSend={recordModal} setIsModalOpenSend={setRecordModal} getNurse={getNurse} />
@@ -250,7 +234,7 @@ const TurnPlan: (props: TurnPlanProps) => React.JSX.Element = (props) => {
                 ))}
             </div>
             {
-                isModalOpen ? <Modal className="ModalStyle" closeIcon={false} width={"37rem"} height={'37rem'} style={{ background: "#F7F8FD" }} open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+                isModalOpen ? <Modal className="nurse_report_info" closeIcon={false} width={"37rem"} height={'auto'} style={{ background: "#F7F8FD" }} open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
                     <TurnReport id={id} logid={logid} ></TurnReport>
                 </Modal> : null
             }

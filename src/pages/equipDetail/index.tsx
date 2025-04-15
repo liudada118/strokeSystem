@@ -391,7 +391,13 @@ function Provide() {
                 deviceId: id
             }
         }).then((res) => {
-            const nursingConfig = JSON.parse(res.data.nursingConfig || '[]')
+            let nursingConfig = []
+            if (res.data.templateEffectiveFlag == 2) {
+                nursingConfig = JSON.parse(res.data.nursingConfig || '[]')
+            } else {
+                nursingConfig = JSON.parse(res.data.oldTemplate || '[]')
+            }
+            console.log(nursingConfig, 'nursingConfig............nursingConfig..........1111')
             setNursePersonTemplate(nursingConfig)
         })
     }

@@ -66,8 +66,8 @@ function NursingOpen(props: propsType) {
     },
   ];
   const [projectName, setProjectName] = useState<DefaultOptionType[]>([]); // 修改为数组类型
-  const [hours, setHours] = useState<string>("1点"); // 小时
-  const [minutes, setMinutes] = useState<string>("1分钟"); // 分钟
+  const [hours, setHours] = useState<string>("小时"); // 小时
+  const [minutes, setMinutes] = useState<string>("分钟"); // 分钟
   const [template, setTemplate] = useState<string>(""); // 模版
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [title, setTitle] = useState("自理老人护理模版");
@@ -78,7 +78,7 @@ function NursingOpen(props: propsType) {
   const [rightNurseList, setRightNurseList] = useState([]) as any;
   const dispatch = useDispatch();
   const yyyyyyy = useSelector((state: any) => state.nurse.sensorName);
-  console.log(yyyyyyy, '.......13..........yyyyyyyyyyyyyyyyyyyyyyyyyyyy11111');
+
 
   //是否隐藏单选按钮
   const { state } = useLocation();
@@ -88,29 +88,21 @@ function NursingOpen(props: propsType) {
   const showModal = () => {
     setIsModalOpen(true);
   };
-
   const handleOk = () => {
     setIsModalOpen(false);
   };
-
   const handleCancel = () => {
     setIsModalOpen(false);
   };
-
   const handleDropdownClick = async (e: any) => {
     const tit: any = items.find((item) => item.key === e.key);
-
     const nurseList = await getPersonTemplate(Number(e.key));
     setPreviewList(nurseList);
     setType(Number(e.key));
     setTitle(tit?.label); // 更新标题为点击的菜单项
     setDefaultTempInfo(tit);
   };
-
-  const sensorName: any =
-    window.location.href.split("/")[6] || getQueryParams("sensorName");
-  console.log(sensorName, "sensorName............");
-
+  const sensorName: any = window.location.href.split("/")[6] || getQueryParams("sensorName");
   const getPersonTemplate = async (type?: any) => {
     const res: any = await Instancercv({
       method: "get",
@@ -126,17 +118,19 @@ function NursingOpen(props: propsType) {
         type: 'common'
       },
     });
-
     if (res.data.code === 0) {
-      //注意这个东西要揭开
-      const nursingConfig = JSON.parse(res.data.nursingConfig || '[]');
-      // setPreviewList(nursingConfig)
-      return nursingConfig || [];
+        let list = []
+        if (res.data.templateEffectiveFlag == 2) {
+            list = JSON.parse(res.data.nursingConfig || '[]')
+        } else {
+            list = JSON.parse(res.data.oldTemplate || '[]')
+        }
+        // setPreviewList(nursingConfig)
+        return list || [];
     } else {
       return [];
     }
   };
-
   const addTempNurse = () => {
     const hoursVal = parseFloat(hours);
     const minutesVal = parseFloat(minutes);
@@ -148,10 +142,9 @@ function NursingOpen(props: propsType) {
     ).getTime();
     if (!templateTime) return message.error("请选择时间");
     if (!template) return message.error("请填写护理项目模版");
-    const isHasTemp = rightNurseList.find((item: any) => {
-      console.log();
+    const isHasTemp = Array.isArray(rightNurseList) ? (rightNurseList || []).find((item: any) => {
       return +item.key === +templateTime;
-    });
+    }) : false
     if (isHasTemp) return message.warning("该护理时间已存在请重新选择！");
     setRightNurseList([
       ...rightNurseList,
@@ -163,7 +156,6 @@ function NursingOpen(props: propsType) {
       },
     ]);
     if (isPhone) {
-      console.log(rightNurseList, "rightNurseList.......");
       dispatch(
         setNurseListData([
           ...rightNurseList,
@@ -252,8 +244,9 @@ function NursingOpen(props: propsType) {
 
   useEffect(() => {
     async function getCurrentTemplate() {
-      const nurseList = await getPersonTemplate();
-      console.log(nurseList, "nurseList.........");
+      let nurseList = await getPersonTemplate();
+      nurseList = Array.isArray(nurseList) ? nurseList : []
+
       setRightNurseList(nurseList);
     }
     getCurrentTemplate();
@@ -320,12 +313,13 @@ function NursingOpen(props: propsType) {
               </div>
               <div className="NursingOpenVal">
                 <div className="NursingOpenTitle text-[#000] font-bold">
-                  护理名称 :{" "}
+                  护理任务 :{" "}
                 </div>
                 <p className="pl-[0.6rem]">
                   <Input
+                    maxLength={20}
                     style={{ height: "2.7rem", width: "23rem" }}
-                    placeholder="请输入模版名称"
+                    placeholder="请输入护理任务，只能输入20个字符"
                     value={template}
                     onChange={(e) => setTemplate(e.target.value)}
                   />
@@ -333,7 +327,7 @@ function NursingOpen(props: propsType) {
               </div>
               <div className="NursingOpenVal">
                 <div className="NursingOpenTitle   text-[#000] font-bold">
-                  护理时间 :{" "}
+                  护理项目时间 :{" "}
                 </div>
                 <Select
                   showSearch
@@ -348,10 +342,19 @@ function NursingOpen(props: propsType) {
                   value={hours}
                   onChange={(value) => setHours(value as string)}
                 >
-                  {/* 动态生成小时选项 */}
-                  {[...Array(23)].map((item, index) => (
-                    <Select.Option key={index} value={(index + 1).toString()}>
-                      {index + 1}点
+                    <Select.Option value={'时'} disabled>
+                        <div className="flex justify-center">
+                            时
+                        </div>
+                    </Select.Option>
+                  {[...Array(24)].map((_, index) => (
+                    <Select.Option key={index} value={(index).toString().padStart(2, '0')}>
+                      {/* {
+                        index === 0 ? <div className="flex justify-center mb-3">时</div> : ""
+                      } */}
+                      <div className="flex justify-center ">
+                        {index.toString().padStart(2, '0')}
+                      </div>
                     </Select.Option>
                   ))}
                 </Select>{" "}
@@ -369,9 +372,19 @@ function NursingOpen(props: propsType) {
                   onChange={(value) => setMinutes(value as string)}
                 >
                   {/* 动态生成分钟选项 */}
-                  {[...Array(59)].map((_, index) => (
-                    <Select.Option key={index} value={(index + 1).toString()}>
-                      {index + 1}分钟
+                    <Select.Option value={'分'} disabled>
+                        <div className="flex justify-center">
+                            分
+                        </div>
+                    </Select.Option>
+                  {[...Array(60)].map((_, index) => (
+                    <Select.Option key={index} value={(index).toString()}>
+                      {/* {
+                        index === 0 ? <div className="flex justify-center mb-3">分</div> : ""
+                      } */}
+                      <div className="flex justify-center">
+                        {index.toString().padStart(2, '0')}
+                      </div>
                     </Select.Option>
                   ))}
                 </Select>
@@ -394,13 +407,13 @@ function NursingOpen(props: propsType) {
               type="project"
               getNurseTemplate={async () => {
                 const nurseList = await getPersonTemplate();
-                setRightNurseList(nurseList);
+                setRightNurseList(Array.isArray(nurseList) ? nurseList : []);
               }}
               deleteNurse={(params: any) => {
                 const delList = rightNurseList.filter((item: any) => {
                   return item.key !== params.key;
                 });
-                setRightNurseList(delList);
+                setRightNurseList(Array.isArray(delList) ? delList : []);
               }}
               saveNurseTemplate={props.saveNurseTemplate}
             ></NurseTable>
@@ -492,7 +505,7 @@ function NursingOpen(props: propsType) {
                     alt=""
                   />
                   <span className="pl-[0.5rem] pr-[0.5rem] text-[1.2rem] font-medium">
-                    应用护理模版1111 :{" "}
+                    应用护理模版 :{" "}
                   </span>
                 </div>
 
@@ -522,7 +535,6 @@ function NursingOpen(props: propsType) {
                 </div>
               </div>
             )}
-
             <div
               className="flex px-3 items-center "
               style={{
@@ -537,10 +549,9 @@ function NursingOpen(props: propsType) {
                   alt=""
                 />
                 <p className="text-[1.2rem] pl-[0.6rem] font-medium">
-                  护理名称 :
+                  护理任务 :
                 </p>{" "}
               </div>
-
               <Input
                 style={{
                   height: "3rem",
@@ -612,7 +623,7 @@ function NursingOpen(props: propsType) {
               className="w-[96%] mx-[2%]  flex"
               type="primary"
             >
-              {state ? "保存护理项目112" : "新建护理项目113"}
+              {state ? "保存护理项目" : "新建护理项目"}
             </Button>
           </div>
           {visible1 ? (
@@ -676,8 +687,9 @@ function NursingOpen(props: propsType) {
           ) : (
             ""
           )}
-        </div>
-      )}
+        </div >
+      )
+      }
     </>
   );
 }

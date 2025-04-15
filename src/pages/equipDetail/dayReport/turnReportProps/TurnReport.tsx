@@ -41,7 +41,7 @@ const columns: any = [
     }
   },
   {
-    title: '仰卧位',
+    title: '仰卧',
     dataIndex: 'center',
     key: 'center',
     align: 'center',

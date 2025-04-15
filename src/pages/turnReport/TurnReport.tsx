@@ -101,7 +101,7 @@ export default function TurnReport(props: PropsType) {
             // console.log(res.data.data, '999999997777777')
             const data = res.data.data
             const { startMatrix, endMatrix, posture, extra, did, remark, timeMillsEnd, timeMills, id } = data
-
+            console.log(data, 'data...1111..')
             let obj = {
                 //     normalArrRes: '',
                 //     inputArrRes: '',
@@ -245,13 +245,13 @@ export default function TurnReport(props: PropsType) {
                         </CardContainTitle>
 
                     </div>
-                </div> : <div className='w-[35rem] h-[33rem]  bg-[#F7F8FD]'>
+                </div> : <div className='w-full h-[33rem]  bg-[#F7F8FD]'>
                     <div className='w-full h-[10rem] bg-[#FFFFFF] rounded-md'>
-                        <div className='h-[3.8rem] w-full flex  lh-[3,7rem]' style={{ borderBottom: "solid 1px #ccc" }}>
+                        <div className='h-[3.8rem] px-[1rem] flex  lh-[3,7rem]' style={{width: '95%', margin: '0 auto', borderBottom: "solid 1px #ccc" }}>
                             <div className='h-[1.35rem] w-full flex  justify-center text-[1rem] font-bold  mt-[1.3rem]' style={{ fontSize: " Source Han Sans" }}>{dataList.patientName}的护理报告</div>
                             {/* <div className='mt-[1.78rem] ml-[6.9rem] text-[#888888]'>护理员编号{dataList.chargeMan}</div> */}
                         </div>
-                        <div className='mt-[0.8rem] flex'>
+                        <div className='mt-[0.8rem] flex' style={{width: '95%', margin: '0.8rem auto 0',}}>
                             <div className="">
                                 <img style={{ width: "4rem", height: "4rem" }} src={dataList.headImg ? dataList.headImg : nullImg} alt="" />
                             </div>
@@ -264,7 +264,7 @@ export default function TurnReport(props: PropsType) {
                                     </div>
                                     <div className="w-[11rem]">
                                         <div className=""><span className=' text-[#888888]'>床号</span><span style={{ fontFamily: 'Source Han Sans' }} className='font-bold  ml-[0.75rem]'>{dataList.roomNum}</span></div>
-                                        <div className='w-[10rem]'><span className=' text-[#888888]'>护理日期</span><span style={{ fontFamily: 'Source Han Sans' }} className='font-bold w-[8rem]  ml-[0.7rem]'>{timeMills}</span></div>
+                                        <div className='w-[20rem]'><span className=' text-[#888888]'>护理日期</span><span style={{ fontFamily: 'Source Han Sans' }} className='font-bold w-[8rem]  ml-[0.7rem]'>{timeMills}</span></div>
                                     </div>
                                     <div className="w-[5rem] ml-[3rem]">
                                         <div><span className=' text-[#888888]'>性别</span><span style={{ fontFamily: 'Source Han Sans' }} className='font-bold  ml-[0.75rem]'>男</span></div>
@@ -273,7 +273,7 @@ export default function TurnReport(props: PropsType) {
                             </div>
                         </div>
                     </div>
-                    <div className='w-full h-[20.6rem] mt-[0.6rem] flex bg-[#F7F8FD]' >
+                    <div className='w-full mt-[0.6rem] flex bg-[#F7F8FD]' >
                         <div className='mr-[0.6rem]'>
                             <div className='w-[8.3rem] h-[5.4rem] bg-[#fff] rounded-md' style={{}}>
                                 <div className='text-[#000000] text-[0.9rem] font-bold pt-[1rem]  pl-[1.1rem]' style={{ fontFamily: 'Source Han Sans' }}>在床时间</div>
@@ -285,15 +285,15 @@ export default function TurnReport(props: PropsType) {
                             </div>
                             <div className='h-[10rem] w-[8.3rem] mt-[0.6rem]  bg-[#fff] rounded-md'>
                                 <div className='text-[#000000] text-[0.9rem] font-bold pt-[1rem]  pl-[1.1rem]' style={{ fontFamily: 'Source Han Sans' }}>睡姿记录</div>
-                                <div className='pt-[1rem] pl-[1.1rem]'>{sleepArr[data.sleepPos]}</div>
-                                <img className='pt-[1rem] pl-[1.1rem]' style={{ width: "6.6rem", height: "4rem", }} src={data.headImg ? data.headImg : nullImg} alt="" />
+                                <div className='pt-[0.5rem] pl-[1.1rem]'>{sleepArr[data.sleepPos]}</div>
+                                <img className='pt-[0.5rem] pl-[1.1rem]' style={{ width: "6.6rem", height: "auto", }} src={data.headImg ? data.headImg : nullImg} alt="" />
                                 {/* <img src={data.headImg} style={{ height: '6rem' }} alt="" /> */}
                             </div>
                         </div>
-                        <div className='w-[32rem] h-[22rem]'>
+                        <div className='flex-1 h-[22rem]'>
                             <CardContainTitle style={{ color: "#000000", }} title={'护理前后压力对比'}>
-                                <div className="secondHeatmap justify-between" style={{ height: isMobile ? '' : '17.6rem' }}>
-                                    <div style={{ width: "11.5rem", height: "3rem" }}>
+                                <div className="flex secondHeatmap justify-between" style={{ height: isMobile ? '' : '17.6rem' }}>
+                                    <div style={{ flex: 1, marginRight: '1rem', height: "3rem" }}>
                                         <div style={{ display: 'flex', justifyContent: 'center', marginTop: isMobile ? '0.5rem' : "0" }}>
                                             <div style={{ textAlign: 'center', padding: isMobile ? '0.5rem 1rem' : "0", fontSize: isMobile ? '1rem' : '0.75rem', fontFamily: isMobile ? '' : 'Source Han Sans', color: isMobile ? "" : "#ccc" }}>护理前</div>
                                         </div>
@@ -309,7 +309,7 @@ export default function TurnReport(props: PropsType) {
 
                                         </div>
                                     </div>
-                                    <div style={{ width: "11.5rem", height: "3rem" }}>
+                                    <div style={{flex: 1, height: "3rem" }}>
                                         <div style={{ display: 'flex', justifyContent: 'center', marginTop: isMobile ? '0.5rem' : "0" }}>
                                             <div style={{ textAlign: 'center', padding: isMobile ? '0.5rem 1rem' : "0", fontSize: isMobile ? '1rem' : '0.75rem', fontFamily: isMobile ? '' : 'Source Han Sans', color: isMobile ? '' : "#ccc" }}>护理后</div>
                                         </div>

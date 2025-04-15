@@ -178,7 +178,12 @@ const NurseRecord: (props: NurseRecordProps) => React.JSX.Element = (props) => {
             }
         }).then((res) => {
             console.log(res.data, 'resssssssss')
-            const nursingConfig = JSON.parse(res.data.nursingConfig || '{}')
+            let nursingConfig = []
+            if (res.data.templateEffectiveFlag == 2) {
+                nursingConfig = JSON.parse(res.data.nursingConfig || '[]')
+            } else {
+                nursingConfig = JSON.parse(res.data.oldTemplate || '[]')
+            }
             console.log(nursingConfig)
             setNurseConfig(nursingConfig)
             setNueseConfigCopy(nursingConfig)

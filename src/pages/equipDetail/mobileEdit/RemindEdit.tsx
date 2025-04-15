@@ -135,12 +135,12 @@ export function RemindEdit() {
         dispatch(changeEquipInfo(obj))
         dispatch(changePersonalEquipAlarmInfo(obj))
     }
-   
+
     const formatSetting = (newValue: any) => {
         let obj = {}
         const keyArr = Object.keys(newValue)
         // let realObj: any = { ...userInfo }
-      
+
         let realObj: any = {}
         keyArr.forEach((item: string) => {
             const realValue = newValue[item]

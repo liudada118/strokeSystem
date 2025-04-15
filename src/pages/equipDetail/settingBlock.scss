@@ -10,3 +10,14 @@
         background-color: #F7F8FD!important; // 你想要的背景色
     }
 }
+.nurse_report_info.ant-modal {
+    padding-bottom: 0 !important;
+    .ant-modal-content {
+        padding: 0;
+    }
+    .ant-modal-footer {
+        width: 95%;
+        margin: 0 auto;
+        padding-bottom: 0.7rem;
+    }
+}

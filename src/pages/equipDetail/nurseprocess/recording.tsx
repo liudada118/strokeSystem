@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import ImgUpload from '@/components/imgUpload/ImgUpload'
 import { Button, Drawer, Form, Input, message, TimePicker, TimePickerProps } from 'antd'
-import dayjs from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
+import tuc from 'dayjs/plugin/utc'
 import { instance, Instancercv } from "@/api/api";
+dayjs.extend(tuc)
 interface proprsType {
     careList: any,
     sensorName: any
@@ -129,7 +131,6 @@ function Recording(props: proprsType) {
                         completionTime: dayjs(new Date().getTime())
                     }}
                 >
-
                     <Form.Item name="nurseProject" label="护理项目:" labelCol={{ style: { fontWeight: "600", fontSize: "0.8rem", marginRight: "1rem" } }} wrapperCol={{ style: { width: "calc(100%-100px)" } }}
                         rules={[{ required: true, message: '请输入护理项目!' }]}
                     >
@@ -140,16 +141,15 @@ function Recording(props: proprsType) {
                             { required: true, message: '请选择完成时间!' },
                             {
                                 validator: (_, value) => {
-                                    if (!value) return Promise.resolve();
-                                    const selectedTime = dayjs(value);
-                                    const isSame = props.careList.find((item: any) => {
-                                        const startTime = dayjs(item.time, 'HH:mm');
-                                        if (selectedTime.isSame(startTime)) {
-                                            return true
-                                        }
-                                    })
 
-                                    if (isSame) {
+                                    if (!value) return Promise.resolve();
+                                    const selectedTime: any = dayjs(value).utc().format('HH:mm');
+                                    const isDuplicate = props.careList.some((item: any) => {
+                                        const startTime = dayjs(item.time, 'HH:mm').utc().format('HH:mm');
+                                        return startTime === selectedTime;
+                                    });
+
+                                    if (isDuplicate) {
                                         return Promise.reject(new Error('护理时间重复，请重新选择！'));
                                     }
                                     return Promise.resolve();

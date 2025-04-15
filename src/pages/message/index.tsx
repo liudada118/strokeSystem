@@ -11,10 +11,14 @@ import { CaretDownOutlined, LeftOutlined, ZoomInOutlined } from '@ant-design/ico
 import { useGetWindowSize } from '../../hooks/hook'
 import zhCN from 'antd/locale/zh_CN';
 // import Kdsd from './messageDatePicker'
-import { CalendarPicker } from "antd-mobile";
-import fang from '../.././assets/images/容器@2x.png'
+
+import { ActionSheet, CalendarPicker } from "antd-mobile";
+import type {
+  Action,
+  ActionSheetShowHandler,
+} from 'antd-mobile/es/components/action-sheet'
 import { useNavigate } from "react-router-dom";
-import { spawn } from "child_process";
+
 const { Option } = Select;
 const { RangePicker } = DatePicker;
 // const { Option } = Select;
@@ -66,6 +70,7 @@ export default function Message() {
   const [total, setTotal] = useState(0)
   const [todayAlarmCount, setTodayAlarmCount] = useState(0)
   const WindowSize = useGetWindowSize()
+  const [visible, setVisible] = useState(false)
   // 昨天提醒 62 次 前天提醒 26 次
   console.log(total, '......total');
 
@@ -353,6 +358,7 @@ export default function Message() {
   const [fale, seFalse] = useState(false)
   const onShijian = () => {
     setPopupVisible(true)
+    setVisible(true)
   }
   // 时间选择器
   const handleDateChange = (dates: any, dateStrings: [string, string]) => {
@@ -427,7 +433,12 @@ export default function Message() {
       })
     }
   }, [val])
-
+  // setVisible
+  const actions: Action[] = [
+    { text: '复制', key: 'copy' },
+    { text: '修改', key: 'edit' },
+    { text: '保存', key: 'save' },
+  ]
   return (
     <>
       {
@@ -438,7 +449,7 @@ export default function Message() {
                 {titleList && titleList.map((item: any, index) => {
                   return (
                     <Button
-                      style={{ border: "none" }}
+                      style={{ border: "none", fontWeight: "900" }}
                       key={item.id}
                       className={`btn  ${(index + 1) === titleId ? 'on' : ''} `}
                       onClick={() => onTitle(item)}
@@ -449,7 +460,6 @@ export default function Message() {
                 })}
                 {
                   titleTrue === true ? <div style={{ fontSize: "0.8rem", position: 'absolute', top: '7.8rem', width: '7rem', height: '7rem', zIndex: '10', left: '59%', display: 'flex', flexDirection: 'column', alignItems: 'center', borderRadius: "5px", border: "solid 1px #ccc" }}>
-
                     {
                       titleList1.map((item: any) => {
                         return (
@@ -570,7 +580,7 @@ export default function Message() {
               })
             }
             {
-              titleTrue === true ? <div style={{ fontSize: "1.3rem", position: 'absolute', top: '10.4rem', width: '7rem', height: '7rem', zIndex: '99999', left: '75%', display: 'flex', flexDirection: 'column', alignItems: 'center', borderRadius: "5px", border: "solid 1px #ccc" }}>
+              titleTrue === true ? <div style={{ fontSize: "1.3rem", position: 'absolute', top: '10.4rem', width: '7rem', height: '7rem', zIndex: '99999', left: '75%', display: 'flex', flexDirection: 'column', alignItems: 'center', borderRadius: "5px", border: "solid 1px #ccc", background: "#fff" }}>
 
                 {
                   titleList1.map((item: any) => {
@@ -668,7 +678,7 @@ export default function Message() {
               </div>
             </div>
           </div>
-          <CalendarPicker
+          {/* <CalendarPicker
             min={new Date(1970, 1, 1)}  // 设置为一个较早的时间点
             max={new Date()}
             visible={popupVisible}
@@ -684,7 +694,14 @@ export default function Message() {
             onChange={(val: [Date, Date] | null) => {
               setVal(val)
             }}
+          /> */}
+          <ActionSheet
+            visible={visible}
+            actions={actions}
+            forceRender={true}
+            onClose={() => setVisible(false)}
           />
+
           {<Bottom />}
         </div >
       }

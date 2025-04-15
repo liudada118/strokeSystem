@@ -9,6 +9,7 @@ import {
   ImageUploadItem,
   restoreMotion,
 } from "antd-mobile";
+import { compressionFile } from "@/utils/imgCompressUtil";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { userModal } from "./UserInfoCard";
 import avatar from "../../assets/images/avatar.png";
@@ -30,8 +31,8 @@ import DayReportEdit from "./mobileEdit/DayReportEdit";
 import EquipTypeEdit from "./mobileEdit/EquipTypeEdit";
 import { useDispatch } from "react-redux";
 import { nurseSensorName } from "../../redux/Nurse/Nurse";
-import axios from 'axios';
-import { Instancercv, netUrl } from '@/api/api';
+import axios from "axios";
+import { Instancercv, netUrl } from "@/api/api";
 const EditingUser: React.FC = () => {
   const param = useParams();
   console.log(param);
@@ -65,7 +66,6 @@ const PersonalInfo = (props: any) => {
     userModal.forEach((item: any, index: any) => {
       listData[item.key] = item.value;
     });
-    setFileList([{ url: listData.headImg || "" }]);
   }, []);
   const navigate = useNavigate();
   const [editingInputInfo, setEditingInputInfo] = useState<any>({
@@ -118,6 +118,31 @@ const PersonalInfo = (props: any) => {
     });
   };
   const handleUpload = (file: File) => {
+    let res = compressionFile(file);
+    res.then((e) => {
+      console.log(e, "compressionFile");
+      const token = localStorage.getItem("token");
+      axios({
+        method: "post",
+        url: netUrl + "/file/fileUpload",
+        headers: {
+          "content-type": "multipart/form-data",
+          token: token,
+        },
+        data: {
+          file: e,
+        },
+      })
+        .then((res) => {
+          const img = res.data.data.src;
+          message.success("上传成功");
+          
+          modifyUserInfo({ headImg: img });
+        })
+        .catch((err) => {
+          message.error(err.error);
+        });
+    });
     return {
       url: URL.createObjectURL(file),
     };
@@ -207,55 +232,60 @@ const PersonalInfo = (props: any) => {
         url: "/device/selectSinglePatient",
         headers: {
           "content-type": "multipart/form-data",
-          "token": localStorage.getItem('token')
+          token: localStorage.getItem("token"),
         },
         params: {
           sensorName,
-          phoneNum: localStorage.getItem('phone')
-        }
+          phoneNum: localStorage.getItem("phone"),
+        },
       }).then((res: any) => {
         if (res && res.data.code == 0) {
-          const info = res.data?.data || {}
+          const info = res.data?.data || {};
           setUserInfo({
-            "headImg": info.headImg,
-            "patientName": info.patientName,
-            "age": info.age,
-            "roomNum": info.roomNum,
-            "sex": info.sex,
-            "telephone": info.telephone,
-            "address": info.address,
-            "medicalHistory": info.medicalHistory,
-          })
+            headImg: info.headImg,
+            patientName: info.patientName,
+            age: info.age,
+            roomNum: info.roomNum,
+            sex: info.sex,
+            telephone: info.telephone,
+            address: info.address,
+            medicalHistory: info.medicalHistory,
+          });
+          setFileList([
+            {
+              key: "1",
+              url: info.headImg,
+              thumbnailUrl: info.headImg,
+              extra: "",
+            },
+          ]);
         }
-
-      })
+      });
     }
-  }
+  };
   useEffect(() => {
     if (sensorName) {
-      getuserInfo()
+      getuserInfo();
     }
-  }, [sensorName])
+  }, [sensorName]);
 
   const modifyUserInfo = (params: any) => {
-
     axios({
       method: "post",
       url: netUrl + "/device/update",
 
       headers: {
         "content-type": "application/x-www-form-urlencoded",
-        "token": localStorage.getItem('token')
+        token: localStorage.getItem("token"),
       },
       params: {
         deviceId: sensorName,
         ...userInfo,
-        ...params
-      }
-
+        ...params,
+      },
     }).then((res) => {
-      if (res.data.msg == 'update success') {
-        getuserInfo()
+      if (res.data.msg == "update success") {
+        getuserInfo();
       }
     });
   };
@@ -276,7 +306,7 @@ const PersonalInfo = (props: any) => {
       });
       modifyUserInfo({
         [editingInputInfo.key]: editingInputInfo.value,
-      })
+      });
       setEditingInputInfo({
         show: false,
         key: "",
@@ -284,7 +314,6 @@ const PersonalInfo = (props: any) => {
         value: "",
       });
     };
-
 
     return (
       <Fragment>
@@ -345,7 +374,7 @@ const PersonalInfo = (props: any) => {
             ...userInfo,
             age: currentDay.diff(birthDay, "year"),
           });
-          modifyUserInfo({ age: currentDay.diff(birthDay, "year") })
+          modifyUserInfo({ age: currentDay.diff(birthDay, "year") });
         }}
       />
       <Picker
@@ -365,7 +394,7 @@ const PersonalInfo = (props: any) => {
             ...userInfo,
             sex: v[0],
           });
-          modifyUserInfo({ sex: v[0] })
+          modifyUserInfo({ sex: v[0] });
         }}
       />
     </div>
@@ -408,15 +437,18 @@ const PersonalOtherInfo = (props: otherInfoParam) => {
   return (
     <div
       className="bg-[#f4f5f6] pt-[4rem] flex"
-      style={{ height: "100%", flexDirection: "column", paddingTop: `${type !== "nurse" ? '4rem' : '0'}` }}
+      style={{
+        height: "100%",
+        flexDirection: "column",
+        paddingTop: `${type !== "nurse" ? "4rem" : "0"}`,
+      }}
     >
       {type !== "nurse" && (
         <>
           <CommonNavBar
             title={personalOtherInfoObj[type].title}
             onBack={() => {
-           
-              navigate(-1)
+              navigate(-1);
             }}
           />
           <PersonalContentInfo

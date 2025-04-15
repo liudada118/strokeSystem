@@ -286,7 +286,6 @@ export default function Equip() {
                                     </div>
                                 );
                             })}
-
                         </div>
                     </div>
                 }) : ''}
@@ -297,6 +296,9 @@ export default function Equip() {
                             const alarmInfo = alarm.filter((a: any) => {
                                 return a.sensorName == item.sensorName
                             })
+                            if (item.type === 'add') {
+                                return ''
+                            }
                             return (
                                 <div className={`equip`} key={item.sensorName}
                                     onClick={(e) => {
@@ -308,7 +310,7 @@ export default function Equip() {
                                     }}
                                 >
                                     {alarmInfo.length ?
-                                        <div className="newAlarmContent">
+                                        < div className="newAlarmContent">
                                             <img style={{ position: 'absolute', width: '100%', bottom: '0', left: 0, opacity: '0.5' }} src={newAlarmBgc} alt="" />
                                             <div style={{ position: 'absolute', width: '2rem', height: '2rem', textAlign: 'center', right: '0.5rem', top: '0.5rem', borderRadius: '50%', backgroundColor: 'rgba(255,255,255,0.4)', color: '#EC6E38', lineHeight: '2rem', fontWeight: '600', fontSize: '1rem' }}>{alarmStampToTime(Number(alarmInfo[0].time))}</div>
                                             <div className="newAlarmTypeAndInfo">
@@ -435,6 +437,6 @@ export default function Equip() {
                     </div>
                 </div>
             }
-        </div>
+        </div >
     )
 }

@@ -62,7 +62,7 @@ export default function NurseTable(props: tableProps) {
   const nurseIsOpenAdd = useSelector((state: any) => state.nurse.nurseOpen);
   const isPhone = useGetWindowSize();
   const navigate = useNavigate();
-  console.log(props.data, '................. NurseTableNurseTableNurseTable');
+  console.log(props.data, nurseIsOpenAdd, '................. NurseTableNurseTableNurseTable');
 
   const title = [
     {
@@ -262,7 +262,7 @@ export default function NurseTable(props: tableProps) {
     console.log(type, "isPhone....22222222");
     if (type === "project") {
       const nurseData = isPhone ? nurseListData : props.data;
-      const list: any = (nurseData || []).map((item: any) => {
+      const list: any = Array.isArray(nurseData) ? (nurseData || []).map((item: any) => {
         return {
           ...item,
           completionTime: +item.key,
@@ -271,7 +271,7 @@ export default function NurseTable(props: tableProps) {
           status: item.status === "todo" ? false : true,
           isTemp: true,
         };
-      });
+      }) : [];
       setDataLIst(list);
     }
   }, [data, nurseListData]);
@@ -299,6 +299,8 @@ export default function NurseTable(props: tableProps) {
         data: {
           deviceId: sensorName,
           config: JSON.stringify(list),
+          templateEffectiveFlag: selectValue,
+          templateUpdatetime: new Date().getTime()
         },
       }).then((res) => {
         message.success("保存成功");
@@ -343,27 +345,8 @@ export default function NurseTable(props: tableProps) {
   console.log(selectValue, '.......selectValue');
 
   const handleChangePasswordOk = async () => {
-    Instancercv({
-      method: "get",
-      url: "/nursing/getNursingConfig",
-      headers: {
-        "content-type": "multipart/form-data",
-        token: localStorage.getItem("token"),
-      },
-      params: {
-        deviceId: sensorName,
-        ...(type ? { type } : {}),
-        templateEffectiveFlag: selectValue,
-        templateUpdatetime: new Date().getTime()
-
-      },
-    }).then(async (res: any) => {
-      message.info('模版保存成功')
-      saveTemplate()
-      setIsModalChangePasswordOpen(false)
-    })
-
-
+    saveTemplate()
+    setIsModalChangePasswordOpen(false)
   }
   const handleChangePasswordCancel = () => {
     setIsModalChangePasswordOpen(false)
@@ -429,18 +412,18 @@ export default function NurseTable(props: tableProps) {
               </>
             )}
             <div
-              className="flex "
+              className="flex"
               style={{
                 overflowY: "auto",
                 height:
-                  nurseIsOpenAdd === true ? "calc(100% - 8.5rem)" : "calc(100%)",
+                  nurseIsOpenAdd === true ? "100%" : "calc(100%)",
               }}
             >
               <div
                 className="grow"
                 style={{ overflow: "hidden", textAlign: "center" }}
               >
-                <div className="bg-[#F5F8FA] flex  " style={{ borderRadius: "0.3rem" }}>
+                <div className="bg-[#F5F8FA] flex  " style={{ borderRadius: "0.3rem", fontSize: "0.75rem" }}>
                   {title.map((a) => {
                     if (type == "user" && a.key == "delete") {
                       return <></>;
@@ -456,7 +439,8 @@ export default function NurseTable(props: tableProps) {
                             width: nurseIsOpenAdd === true ? "7.5rem" : "6.4rem",
                             lineHeight: "1.7rem",
                             paddingLeft: "1rem",
-                            paddingBottom: '5px'
+                            paddingBottom: '5px',
+
                           }}
                           className="flex-shrink-0"
                         >
@@ -581,7 +565,7 @@ export default function NurseTable(props: tableProps) {
                                 );
                                 return (
                                   <div
-                                    className="flex "
+                                    className="flex"
                                     style={{ width: "6.2rem" }}
                                   >
                                     <span className={`w-[3.2rem] pl-[1rem]`}>
@@ -895,7 +879,7 @@ export default function NurseTable(props: tableProps) {
                       if (type == "user" && a.key == "delete") {
                         return <></>;
                       }
-                      if (a.type === "按时时间自动排序") {
+                      if (a.key === "completionTime") {
                         return (
                           <div
                             style={{
@@ -908,7 +892,7 @@ export default function NurseTable(props: tableProps) {
                             }}
                             className={`w-[${id === '1' ? '36%' : '6rem'}] flex-shrink-0`}
                           >
-                            {" "}
+                            {/* {" "} */}
                             <span className="text-[1.2rem] rounded-md">
                               {a.titleValue}
                             </span>

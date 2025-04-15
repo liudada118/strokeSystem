@@ -102,12 +102,17 @@
           width: 1rem;
           text-align: center;
           // height: 2.48rem;
-          line-height: 2rem;
+          line-height: 2.5rem;
           flex-shrink: 0;
       }
       .time_item {
           display: flex;
           width: calc(100% - 5.5rem);
+          .ant-select-selector{
+              height: 2.5rem;
+              display: flex;
+            
+          }
       
           .ant-form-item {
               flex: 1;

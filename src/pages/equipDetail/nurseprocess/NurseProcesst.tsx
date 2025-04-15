@@ -351,9 +351,9 @@ export default function NurseProcesst(props: nurseProcessProps) {
 
   const turnType = useSelector(turnbodyFlagSelect)
 
-
+  console.log(isModalOpenSend, turnType, '......isModalOpenSend.........')
   return (
-    <> {!isMobile ? '' :
+    <> {
 
 
       turnType == 1 ?
@@ -462,7 +462,7 @@ interface oneClickCareParam {
 const OneClickCare = (props: oneClickCareParam) => {
 
   const { isModalOpenSend, setIsModalOpenSend, setSleepType, sleepTypenur, submitReport } = props
-
+    console.log(isModalOpenSend, '.......isModalOpenSend.......')
   const sleepPose = [{
     value: '右侧',
     img: <img src={left} alt='' />,
@@ -499,7 +499,9 @@ const OneClickCare = (props: oneClickCareParam) => {
     setIsModalOpenSend(false)
   };
 
-  return (windowSize ? <Popup
+  console.log(windowSize, 'windowSize..1111....')
+
+  return (windowSize.isMobile ? <Popup
     visible={isModalOpenSend}
     onMaskClick={() => {
       setIsModalOpenSend(false)
@@ -537,22 +539,16 @@ const OneClickCare = (props: oneClickCareParam) => {
         </div>
       ))}
     </div>
-  </Popup> : <Modal title="Basic Modal" open={true} onOk={setIsModalOpenSend(false)} onCancel={handleCancel}>
-    <div className='flex justify-between items-center pt-[10px] px-[20px]'>
-      <span className='text-base text-[#3D3D3D]' onClick={() => {
-        setIsModalOpenSend(false)
-        // setChoosedSleep('')
-        setSleepType(-1)
-      }}>取消</span>
-      <span className='text-lg font-medium'>选择睡姿</span>
-      <span className='text-base text-[#0072EF]' onClick={() => {
+  </Popup> : <Modal title="选择睡姿" open={isModalOpenSend}
+    onOk={() => {
         console.log('submitReport')
         setIsModalOpenSend(false)
         submitReport()
         setSleepType(-1)
-        // setChoosedSleep('')
-      }}>提交</span>
-    </div>
+      }} onCancel={() => {
+        setIsModalOpenSend(false)
+        setSleepType(-1)
+      }}>
     <div className='flex justify-center items-center mt-[40px] pt-[10px] w-full'>
       {sleepPose.map((item, index) => (
         <div key={item.value} className='basis-1/3 flex flex-col items-center'>

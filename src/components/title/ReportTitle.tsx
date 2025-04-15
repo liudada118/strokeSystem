@@ -73,7 +73,7 @@ export const PcLeftTitle = (props: any) => {
     const equipInfo = useSelector(state => selectEquipBySensorname(state, param.id))
 
     return (
-        <>{props.path == 'report' ? <div className="titleContentItem" style={{ marginRight: '1rem', color: '#0072EF', fontSize: '1.1rem', fontWeight: '600' }}>
+        <>{props.path == 'report' ? <div className="titleContentItem" style={{ marginRight: '1rem', color: '#0072EF', fontSize: '1rem', fontWeight: '600' }}>
             <div style={{ paddingRight: '1.2rem', borderRight: '2px solid #BFBFBF' }}>工作台</div>
             <span className='w-[2px] mr-[15px]' />
             <span className='text-base font-semibold'>{equipInfo?.patientName}</span>
@@ -81,10 +81,10 @@ export const PcLeftTitle = (props: any) => {
     )
 }
 export const TitleRightInfo = (props: any) => {
-    const { setMessages, titleChangeGetMessage,titleKey } = props
+    const { setMessages, titleChangeGetMessage, titleKey } = props
     const phone = localStorage.getItem('phone')
     const windo: any = window.location.href.split('/')[4]
-   
+
 
     if (props.path == 'home') {
         return <HomeRightTitle />

@@ -57,6 +57,7 @@ const CommonFormModal: (props: CommonFormModalProps) => React.JSX.Element = (pro
     const [year, setYear] = useState(2023);
     const [month, setMonth] = useState(1);
     const [day, setDay] = useState(1);
+    const [headImg, setHeadImg] = useState('');
     const isPhone = useWindowSize().isMobile
     const checkFutureDate = (yearValue: any, monthValue: any, dayValue: any) => {
         const selectedDate = new Date(yearValue, monthValue - 1, dayValue);
@@ -96,7 +97,7 @@ const CommonFormModal: (props: CommonFormModalProps) => React.JSX.Element = (pro
                 },
                 params: {
                     deviceId: sensorName,
-                    "headImg": values.headImg,
+                    "headImg": headImg ? headImg : values.headImg,
                     "patientName": values.patientName,
                     "age": age === 0 && -1 ? 1 : age, // '2025-3-1'
                     "roomNum": values.roomNum,
@@ -317,7 +318,7 @@ const CommonFormModal: (props: CommonFormModalProps) => React.JSX.Element = (pro
                                     <button style={{ border: 0, background: 'none' }} type="button">
                                         <div className="imgContent">
                                             <div className="img" style={{
-                                                background: `url(${item.value ? item.value : nullImg
+                                                background: `url(${headImg ? headImg : item.value ? item.value : nullImg
                                                     })  center center / cover no-repeat`, cursor: 'pointer'
 
                                             }}></div>
@@ -349,7 +350,7 @@ const CommonFormModal: (props: CommonFormModalProps) => React.JSX.Element = (pro
                                                             setSpinning(false);
                                                             message.success('上传成功')
                                                             imgChange && imgChange(img)
-                                                            // setImg(img)
+                                                            setHeadImg(img)
                                                         }).catch((err) => {
                                                             message.error(err.error)
                                                             setSpinning(false);

@@ -243,6 +243,7 @@
     border-radius: 0.4rem;
     background: #F5F8FA;
     width: 76%;
+    z-index: 100;
   }
   .MessageYiDongDivInput .MessageYiDOngTitlesearchSelect {
     cursor: pointer;

@@ -661,7 +661,7 @@ const Heatmap = React.forwardRef((props: any, refs) => {
                 color = e.target.value
                 console.log(Intensity.prototype.gradient)
             }} /> <button onClick={() => {Intensity.prototype.setGradient(colorObj)}}>change</button></div> */}
-            <canvas style={{ width: '100%', }} ref={canvasRef} id={`heatmapcanvas${props.index ? props.index : ''}`} ></canvas>
+            <canvas style={{ width: '100%', height: "100%" }} ref={canvasRef} id={`heatmapcanvas${props.index ? props.index : ''}`} ></canvas>
             {
                 circleArr?.map((a, indexs) => {
                     return (

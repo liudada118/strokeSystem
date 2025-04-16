@@ -56,9 +56,9 @@ export default function NursingPlan() {
       if (res.data.code === 0) {
         let nursingConfig = []
         if (res.data.templateEffectiveFlag == 2) {
-            nursingConfig = JSON.parse(res.data.nursingConfig || '[]')
+          nursingConfig = JSON.parse(res.data.nursingConfig || '[]')
         } else {
-            nursingConfig = JSON.parse(res.data.oldTemplate || '[]')
+          nursingConfig = JSON.parse(res.data.oldTemplate || '[]')
         }
         if (nursingConfig.length > 0) {
           setTitle("护理计划");
@@ -71,7 +71,7 @@ export default function NursingPlan() {
   const [selectValue, setSelectValue] = useState(1)
 
   const handleChangePasswordOk = async () => {
-    
+
     saveTemplate()
     setIsModalChangePasswordOpen(false)
 
@@ -198,13 +198,13 @@ export default function NursingPlan() {
                 )}
               </p>
               {operType === "add" && (
-                <div className="tip flex items-center h-[2rem]  bg-[#F5F8FA] mt-[0.5rem]">
+                <div className="tip flex items-center h-[2rem]   mt-[0.5rem]">
                   <img
-                    className="w-[1rem] h-[1rem] mr-[5px] ml-2"
+                    className="w-[1rem] bg-[#F5F8FA] h-[1rem] mr-[5px] ml-2"
                     src={greyNotice}
                     alt=""
                   />
-                  <span className="text-[1rem] text-[#929EAB]">
+                  <span className="text-[1rem] bg-[#F5F8FA] text-[#929EAB]">
                     当前内容仅作为效果预览，不可作为实际页面使用
                   </span>
                 </div>

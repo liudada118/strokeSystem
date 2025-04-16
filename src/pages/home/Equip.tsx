@@ -177,7 +177,7 @@ export default function Equip() {
 
                                         </>
                                         }
-                                        {
+                                        {/* {
                                             item.onBed === 4 ? <div className="newAlarmContent" style={{ padding: ' 1.8rem 1.2rem 0.9rem' }}>
                                                 <img style={{ position: 'absolute', width: '100%', bottom: '0', left: 0, opacity: '0.5' }} src={newAlarmBgc} alt="" />
                                                 <div className='flex'>
@@ -189,7 +189,6 @@ export default function Equip() {
                                                 <div className="newAlarmTypeAndInfo " style={{ paddingBottom: "0.5rem" }}>
                                                     <div className="newAlarmType" style={{ width: '8.5rem' }}><div >
                                                         已坐床边
-
                                                     </div> </div>
                                                     <div className="newAlarmInfo" style={{ width: '8rem' }}>
                                                         <div className="newAlarmRoomnum newAlarmText" >
@@ -205,7 +204,7 @@ export default function Equip() {
                                                     }}
                                                 >我已知晓</div>
                                             </div> : ''
-                                        }
+                                        } */}
 
                                         <div
                                             className={`equipItem  ${stateToObj[onBedState(item)].class}

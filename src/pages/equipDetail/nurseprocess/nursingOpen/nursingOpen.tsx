@@ -119,14 +119,14 @@ function NursingOpen(props: propsType) {
       },
     });
     if (res.data.code === 0) {
-        let list = []
-        if (res.data.templateEffectiveFlag == 2) {
-            list = JSON.parse(res.data.nursingConfig || '[]')
-        } else {
-            list = JSON.parse(res.data.oldTemplate || '[]')
-        }
-        // setPreviewList(nursingConfig)
-        return list || [];
+      let list = []
+      if (res.data.templateEffectiveFlag == 2) {
+        list = JSON.parse(res.data.nursingConfig || '[]')
+      } else {
+        list = JSON.parse(res.data.oldTemplate || '[]')
+      }
+      // setPreviewList(nursingConfig)
+      return list || [];
     } else {
       return [];
     }
@@ -327,7 +327,7 @@ function NursingOpen(props: propsType) {
               </div>
               <div className="NursingOpenVal">
                 <div className="NursingOpenTitle   text-[#000] font-bold">
-                  护理项目时间 :{" "}
+                  护理时间 :{" "}
                 </div>
                 <Select
                   showSearch
@@ -342,11 +342,11 @@ function NursingOpen(props: propsType) {
                   value={hours}
                   onChange={(value) => setHours(value as string)}
                 >
-                    <Select.Option value={'时'} disabled>
-                        <div className="flex justify-center">
-                            时
-                        </div>
-                    </Select.Option>
+                  <Select.Option value={'时'} disabled>
+                    <div className="flex justify-center">
+                      时
+                    </div>
+                  </Select.Option>
                   {[...Array(24)].map((_, index) => (
                     <Select.Option key={index} value={(index).toString().padStart(2, '0')}>
                       {/* {
@@ -372,11 +372,11 @@ function NursingOpen(props: propsType) {
                   onChange={(value) => setMinutes(value as string)}
                 >
                   {/* 动态生成分钟选项 */}
-                    <Select.Option value={'分'} disabled>
-                        <div className="flex justify-center">
-                            分
-                        </div>
-                    </Select.Option>
+                  <Select.Option value={'分'} disabled>
+                    <div className="flex justify-center">
+                      分
+                    </div>
+                  </Select.Option>
                   {[...Array(60)].map((_, index) => (
                     <Select.Option key={index} value={(index).toString()}>
                       {/* {

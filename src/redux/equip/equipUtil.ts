@@ -163,7 +163,7 @@ export function alarmJudgeBase({ item, type }: alarmBase) {
     return true;
   }
   else if (type == "nurse") {
-    if (typeof (+item.pressureInjury) === 'number' && item.pressureInjury > (new Date as any).getTime()) {
+    if (typeof (+item.pressureInjury) === 'number' && item.pressureInjury > (new Date() as any).getTime()) {
       return false;
     }
   }

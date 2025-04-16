@@ -851,7 +851,7 @@ const SettingMoDal = (props: any) => {
     }, [])
     const navigate = useNavigate()
     const openOnCkick = () => {
-        if (!(roleId == 1 || roleId == 2)) return message.info('权限不足');
+        if (!(roleId == 1 || roleId == 2)) return message.info('暂无权限');
 
         let regex: any = /\/1\//;
         const match = location.pathname.match(regex);

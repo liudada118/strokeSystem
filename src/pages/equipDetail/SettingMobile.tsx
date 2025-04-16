@@ -27,7 +27,7 @@ function Card(props: cardParam) {
     const sensorName = param.id || location.state.sensorName
     const navigate = useNavigate()
     const setClick = (type: string) => {
-        if (!(roleId == 1 || roleId == 2)) return message.info('权限不足');
+        if (!(roleId == 1 || roleId == 2)) return message.info('暂无权限');
         navigate('/userInfo_editing', { state: { sensorName, type } })
     }
     return (

@@ -392,18 +392,18 @@ export default function NurseTable(props: tableProps) {
                   </span>
                 </div>
                 <div
-                  className="flex items-center mb-[20px] bg-[#F5F8FA] pl-[0.5rem]"
+                  className="flex  bg-[#F5F8FA] items-center mb-[20px] pl-[0.5rem]"
                   style={{
-                    width: `${nurseOpne === false ? "auto" : "calc(100% - 7rem)"
+                    width: `${nurseOpne === false ? "auto" : "calc(100% - 6.5rem)"
                       }`,
                   }}
                 >
                   <img
-                    className="w-[15px] h-[15px] mr-[5px]"
+                    className="w-[15px] h-[15px]  bg-[#F5F8FA] mr-[5px]"
                     src={greyNotice}
                     alt=""
                   />
-                  <span className="flex-shrink-0 flex-1 text-xs text-[#929EAB] pr-[5px] py-[3px]">
+                  <span className="flex-shrink-0  text-xs text-[#929EAB] pr-[5px] py-[3px]">
                     {nurseOpne === false
                       ? ""
                       : "当前内容仅作为效果预览，不可作为实际页面使用"}

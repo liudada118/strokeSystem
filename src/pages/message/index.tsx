@@ -191,7 +191,7 @@ export default function Message() {
     }, {
       id: 6,
       key: 'situp',
-      title: "坐起提醒"
+      title: "坐床边提醒"
     },
     {
       id: 7,

@@ -71,18 +71,18 @@ export const MessageRightTitle = (props: messageParam) => {
         if (selectType === 'patientName') {
             const newTimeoutId = setTimeout(() => {
                 titleChangeGetMessage({
-                    startMills: startMills,
-                    endMills: endMills,
                     patientName: value,
+                    pageNum: 1,
+                    pageSize: 10,
                 });
             }, 300);
             setTimeoutId(newTimeoutId);
         } else if (selectType === 'roomNum') {
             const newTimeoutId = setTimeout(() => {
                 titleChangeGetMessage({
-                    startMills: startMills,
-                    endMills: endMills,
-                    // pageSize: 10,
+
+                    pageNum: 1,
+                    pageSize: 10,
                     roomNum: value,
                 });
             }, 300);

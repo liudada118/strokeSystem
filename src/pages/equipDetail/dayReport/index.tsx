@@ -630,8 +630,9 @@ export default function DayReport() {
   const getBlobPng = () => {
     setFlag(false)
 
-    const node = document.querySelector(".dataContent");
-
+    message.info('正在生成日报，请稍后')
+    const node = document.querySelector(".dayRight");
+    console.log(equipInfo.patientName, node, '...............23332....2323323232patientNamepatientName');
     if (node) {
       domtoimage.toBlob(node).then((blob) => {
 
@@ -751,6 +752,30 @@ export default function DayReport() {
           </div>
           <Button onClick={getBlobPng} className='action'>导出</Button>
         </div>
+
+        {/* const getBlobPng = () => {
+          setFlag(false)
+    message.info('正在生成日报，请稍后')
+        const node = document.querySelector(".dataContent");
+
+        if (node) {
+          domtoimage.toBlob(node).then((blob) => {
+
+            // a
+            // 调用file-save方法 直接保存图片
+            saveAs(blob, `日报-${props.name}-${dayjs(dayDate).format('DD/MM/YYYY')}`)
+          }).catch(err => {
+            console.log(err)
+          })
+        }
+
+
+
+  } */}
+
+
+
+
       </div>
       <div className="dayContent">
         {!dayReport ? <div className="reprotMask">

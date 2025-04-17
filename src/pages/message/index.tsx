@@ -12,7 +12,7 @@ import { useGetWindowSize } from '../../hooks/hook'
 import zhCN from 'antd/locale/zh_CN';
 // import Kdsd from './messageDatePicker'
 
-import { ActionSheet, CalendarPicker } from "antd-mobile";
+import { ActionSheet, CalendarPicker, SpinLoading } from "antd-mobile";
 import type {
   Action,
   ActionSheetShowHandler,
@@ -125,10 +125,12 @@ export default function Message() {
   * @returns 服务器返回
   */
   const [dataList, setDataLIst] = useState([])
+  const [isFalse, setFalse] = useState(true)
   localStorage.setItem('dataList', JSON.stringify(dataList));
   // const [todayAlarmCount, setTodayAlarmCount] = useState(0)
   // 接口请求
   const baseFetch = async (param: any) => {
+
     try {
       const option = {
         method: "get",
@@ -142,7 +144,7 @@ export default function Message() {
       const res = await instance(option)
       setDataLIst(res.data.data.records)
       console.log(res.data.todayAlarmCount, '................................resdata');
-
+      setFalse(false)
       // setTodayAlarmCount(res.data.todayAlarmCoun)
       return res
     } catch (err) {
@@ -163,6 +165,7 @@ export default function Message() {
     return message
   }
   const [nurseType, setNurseType] = useState('其他提醒');
+
   // 表格状态
   const titleList = [
     {
@@ -195,7 +198,7 @@ export default function Message() {
     },
     {
       id: 7,
-      key: '',
+      key: !WindowSize ? '' : 'nursing,offline',
       title: nurseType,
     },
 
@@ -389,6 +392,10 @@ export default function Message() {
       });
       getMessage({
         ...params,
+        pageNum: 1,
+        pageSize: 10,
+        startMills: timeArr[0],
+        endMills: timeArr[1],
         patientName: patientNameRoomNum
 
       });
@@ -398,7 +405,10 @@ export default function Message() {
       });
       getMessage({
         ...params,
-
+        pageNum: 1,
+        pageSize: 10,
+        startMills: timeArr[0],
+        endMills: timeArr[1],
         roomNum: patientNameRoomNum
       });
     }
@@ -579,7 +589,7 @@ export default function Message() {
                 )
               })
             }
-            {
+            {/* {
               titleTrue === true ? <div style={{ fontSize: "1.3rem", position: 'absolute', top: '10.4rem', width: '7rem', height: '7rem', zIndex: '99999', left: '75%', display: 'flex', flexDirection: 'column', alignItems: 'center', borderRadius: "5px", border: "solid 1px #ccc", background: "#fff" }}>
 
                 {
@@ -609,7 +619,7 @@ export default function Message() {
                   })
                 }
               </div> : ""
-            }
+            } */}
             <div className="MessageYiDOngTitledivMessageYiDOngTitlediv" style={{ position: 'fixed', right: "0", background: '#FFFFF', width: "2rem", height: "3rem", zIndex: 99 }}></div>
           </div>
           <div style={{ background: '#F5F8FA', overflow: "hidden", height: '100%', }}>
@@ -640,6 +650,9 @@ export default function Message() {
                   </div>
                   <div className="w-[98%] h-[3.3rem] mt-4">
                     {
+                      isFalse === true ? <div className="text-[hsl(203,8%,80%)] text-lg flex items-center justify-center mt-16"><SpinLoading /> </div> : ""
+                    }
+                    {
                       data.length > 0 ?
                         data && data.map((item: any, index: number) => {
                           return <div key='index' className="flex" style={{ borderBottom: "solid 1px #F5F8FA" }}>
@@ -665,10 +678,7 @@ export default function Message() {
                             </div>
                           </div>
                         })
-                        : <Result
-                          status="warning"
-                          title="暂无数据"
-                        />
+                        : < div className="text-[hsl(203,8%,80%)] text-lg flex items-center justify-center mt-16">暂无数据</div>
                     }
                     <div className='msgToinfoStrPage '>
                       <Pagination style={{ marginRight: "40px" }} pageSize={10} current={params.pageNum} className="pagination" defaultCurrent={1} onChange={onChange} showSizeChanger={false} total={pageTotal} />
@@ -695,12 +705,7 @@ export default function Message() {
               setVal(val)
             }}
           /> */}
-          <ActionSheet
-            visible={visible}
-            actions={actions}
-            forceRender={true}
-            onClose={() => setVisible(false)}
-          />
+
 
           {<Bottom />}
         </div >

@@ -351,6 +351,8 @@ export default function NurseTable(props: tableProps) {
   const handleChangePasswordCancel = () => {
     setIsModalChangePasswordOpen(false)
   }
+  console.log(nurseIsOpenAdd, '......................nurseIsOpenAddnurseIsOpenAddnurseIsOpenAdd');
+
   return (
     <>
       {!isPhone ? (
@@ -373,7 +375,7 @@ export default function NurseTable(props: tableProps) {
                 <div
                   className="flex text-[1.3rem] font-semibold mb-[10px]"
                   style={{
-                    width: `${nurseOpne === false ? "auto" : "calc(100% - 15px)"
+                    width: `${nurseOpne === false ? "auto" : "calc(100% - 48px)"
                       }`,
                   }}
                 >
@@ -392,10 +394,10 @@ export default function NurseTable(props: tableProps) {
                   </span>
                 </div>
                 <div
-                  className="flex  bg-[#F5F8FA] items-center mb-[20px] pl-[0.5rem]"
+                  className="flex  bg-[#F5F8FA] items-center mb-[0.75rem] pl-[0.5rem]"
                   style={{
-                    width: `${nurseOpne === false ? "auto" : "calc(100% - 6.5rem)"
-                      }`,
+                    width: `${nurseOpne === false ? "auto" : "calc(100% - 6.5rem)"}`,
+                    height: nurseIsOpenAdd === false ? "" : "1.4rem"
                   }}
                 >
                   <img
@@ -415,8 +417,8 @@ export default function NurseTable(props: tableProps) {
               className="flex"
               style={{
                 overflowY: "auto",
-                height:
-                  nurseIsOpenAdd === true ? "100%" : "calc(100%)",
+                // height:
+                // nurseIsOpenAdd === false ? "100%" : "calc(100%-2rem)",
               }}
             >
               <div
@@ -434,9 +436,7 @@ export default function NurseTable(props: tableProps) {
                           style={{
                             display: "flex",
                             alignItems: "center",
-                            // flexDirection: "column",
-                            // width: "6.2rem",
-                            width: nurseIsOpenAdd === true ? "7.5rem" : "6.4rem",
+                            width: nurseIsOpenAdd === false ? "6.2rem" : "7.4rem",
                             lineHeight: "1.7rem",
                             paddingLeft: "1rem",
                             paddingBottom: '5px',
@@ -517,7 +517,7 @@ export default function NurseTable(props: tableProps) {
                 <div
                   style={{
                     overflowY: "auto",
-                    height: "95%",
+                    height: nurseIsOpenAdd === false ? "95%" : "72%",
                   }}
                 // style={{
                 //   overflowY: "auto",
@@ -963,7 +963,7 @@ export default function NurseTable(props: tableProps) {
                   </div>
                   <div
                     style={{
-                      overflowY: "scroll",
+                      overflowY: "auto",
                       height: nurseOpne == false ? "27rem" : "30rem",
                     }}
                   >

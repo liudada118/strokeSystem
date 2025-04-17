@@ -85,7 +85,6 @@ const equipSlice = createSlice({
         },
         changeEquipInfo(state, action){
             const equip = JSON.parse(JSON.stringify(state.equips))
-            console.log(equip)
             const { res, equipPc } = changeOnerEquipInfo({ equips: equip, changeInfo: action.payload })
 
             state.equips = res
@@ -446,16 +445,13 @@ const fetchObjs = ({ options, token, phone, equipRealOption }: fetchObjsParams) 
     }
     return Promise.all(asyncArr)
 }
-
 export const changeEquipAllInfo = createAsyncThunk('equip/changeAllinfo', async (options: equipAllInfo, { getState }) => {
     const state: any = getState()
     const token = state.token.token
     const phone = state.token.phone
     console.log(options, 'options')
-
     const valueArr = Object.values(options)
     const equipRealOption = valueArr.reduce((pre, cur) => Object.assign(pre, cur), {})
-
     return fetchObjs({ options: options, token, phone, equipRealOption })
     // Promise.all([])
     // // if(Object.keys(options)){
@@ -467,9 +463,7 @@ export const changeEquipAllInfo = createAsyncThunk('equip/changeAllinfo', async 
     // }
     // return await Promise.all(asyncArr)
     // }
-
 })
-
 /**
  * 添加设备
  */

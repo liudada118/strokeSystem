@@ -15,6 +15,7 @@ import dayjs from "dayjs";
 import { PersonalContentInfo } from "@/pages/equipDetail/EditingUser";
 import loog from '../../../../assets/images/logo.png'
 import jiaHao from '../../../../assets/images/image copy 2.png'
+import {getNurseConfist} from "@/utils/getNursingConfig"
 const { confirm } = Modal;
 
 export default function NursingPlan() {
@@ -39,6 +40,7 @@ export default function NursingPlan() {
     setNurseList([...nurseList, param]);
     setIsEdit(false);
   };
+  const [sensorNameUser, setSensorName] = useState('')
 
   const getPersonTemplate = (type?: any) => {
     Instancercv({
@@ -54,12 +56,12 @@ export default function NursingPlan() {
       },
     }).then((res: any) => {
       if (res.data.code === 0) {
-        let nursingConfig = []
-        if (res.data.templateEffectiveFlag == 2) {
-          nursingConfig = JSON.parse(res.data.nursingConfig || '[]')
-        } else {
-          nursingConfig = JSON.parse(res.data.oldTemplate || '[]')
-        }
+        let nursingConfig = getNurseConfist(res)
+        // if (res.data.templateEffectiveFlag == 1) {
+        //   nursingConfig = JSON.parse(res.data.nursingConfig || '[]')
+        // } else {
+        //   nursingConfig = JSON.parse(res.data.oldTemplate || '[]')
+        // }
         if (nursingConfig.length > 0) {
           setTitle("护理计划");
         }
@@ -67,6 +69,27 @@ export default function NursingPlan() {
       }
     });
   };
+  useEffect(() => {
+    getPersonTemplate();
+    Instancercv({
+      method: "get",
+      url: "/device/selectSinglePatient",
+      headers: {
+        "content-type": "multipart/form-data",
+        "token": localStorage.getItem("token"),
+      },
+      params: {
+        sensorName: sensorName,
+        phoneNum: localStorage.getItem('phone')
+      }
+    }).then((res: any) => {
+      console.log(res.data, '......................qweqweqwe');
+
+      setSensorName(res.data.data)
+    })
+  }, []);
+  console.log(sensorNameUser, '....................sensorNameUsersensorNameUsersensorNameUser');
+
   const [isModalChangePasswordOpen, setIsModalChangePasswordOpen] = useState(false)
   const [selectValue, setSelectValue] = useState(1)
 
@@ -112,7 +135,6 @@ export default function NursingPlan() {
     //   okText: "确认",
     //   cancelText: "取消",
     //   onOk() {
-
     //   },
     //   onCancel() {
     //     console.log("取消删除模版");
@@ -136,9 +158,7 @@ export default function NursingPlan() {
       },
     });
   };
-  useEffect(() => {
-    getPersonTemplate();
-  }, []);
+
   return (
     <>
       <div className="nurse_header_logo">
@@ -176,7 +196,7 @@ export default function NursingPlan() {
           <>
             <div className="title">
               <p>
-                <span className="text-[1rem]">老陈的护理计划</span>
+                <span className="text-[1rem]">的护理计划</span>
                 {operType === "init" && (
                   <span
                     className="mr-[1rem] cursor-pointer"

@@ -6,8 +6,8 @@ const initialState: any = {
   nurseOpen: false,
   sensorName: "",
   nurseListData: [],
-  isGotoNursePage: new Date().getTime(),
-  isRestNuserpage: new Date().getTime(),
+  isGotoNursePage: 0,
+  isRestNuserpage: 0,
   showTabs: true, 
 };
 
@@ -31,6 +31,7 @@ const mqttSlice = createSlice({
       state.nurseListData = action.payload;
     },
     setIsGotoNursePage(state) {
+        console.log('cccccccccccccactiveKey..111111.....')
       state.isGotoNursePage = new Date().getTime();
     },
     resetNuserpage(state) {

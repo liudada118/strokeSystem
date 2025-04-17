@@ -16,6 +16,7 @@ import { DataContext } from ".";
 import { TimePickerProps } from "antd/lib";
 import ImgUpload from "@/components/imgUpload/ImgUpload";
 import Recording from "./nurseprocess/recording";
+import {getNurseConfist} from "@/utils/getNursingConfig"
 
 const formMap: { [key: string]: string } = {
     state_picture: '记录皮肤状况',
@@ -178,12 +179,12 @@ const NurseRecord: (props: NurseRecordProps) => React.JSX.Element = (props) => {
             }
         }).then((res) => {
             console.log(res.data, 'resssssssss')
-            let nursingConfig = []
-            if (res.data.templateEffectiveFlag == 2) {
-                nursingConfig = JSON.parse(res.data.nursingConfig || '[]')
-            } else {
-                nursingConfig = JSON.parse(res.data.oldTemplate || '[]')
-            }
+            let nursingConfig = getNurseConfist(res)
+            // if (res.data.templateEffectiveFlag == 1) {
+            //     nursingConfig = JSON.parse(res.data.nursingConfig || '[]')
+            // } else {
+            //     nursingConfig = JSON.parse(res.data.oldTemplate || '[]')
+            // }
             console.log(nursingConfig)
             setNurseConfig(nursingConfig)
             setNueseConfigCopy(nursingConfig)

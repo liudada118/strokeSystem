@@ -79,6 +79,8 @@ const PersonalInfo = (props: any) => {
     visible: false,
     data: [[]],
   });
+
+
   const [fileList, setFileList] = useState<ImageUploadItem[]>([
     {
       key: "1",
@@ -136,7 +138,7 @@ const PersonalInfo = (props: any) => {
         .then((res) => {
           const img = res.data.data.src;
           message.success("上传成功");
-          
+
           modifyUserInfo({ headImg: img });
         })
         .catch((err) => {
@@ -467,7 +469,6 @@ interface personalInfoParam {
 }
 export const PersonalContentInfo = (props: personalInfoParam) => {
   const { title, img } = props;
-
   return (
     <div className="w-[92%] mx-auto bg-[#fff] flex flex-col items-center pt-[36px] pb-[13px] rounded-[10px] mb-[20px]">
       <img src={img} className="w-[44px] mb-[6px]" alt="" />
@@ -523,6 +524,13 @@ export const RenderListItem = ({
   setFormValue,
   setPickerInfo,
 }: renderListParam) => {
+  console.log(type,
+    // objKey: key,
+    label,
+    title = "",
+    formValue,
+    setFormValue,
+    setPickerInfo, '..........................setFormValuesetFormValuesetFormValue');
   const createTimeNumber: (
     val: number
   ) => { label: string; value: string }[] = (number) => {
@@ -539,11 +547,9 @@ export const RenderListItem = ({
       };
     });
   };
-
   const timeHour = createTimeNumber(24);
   const timeMinutes = createTimeNumber(60);
   const timeRangeColumns = [timeHour, timeMinutes, timeHour, timeMinutes];
-
   const handleClickListItem = (type: FormType, title: string, key: string) => {
     if (type === FormType.TIME_RANGE) {
       setPickerInfo({
@@ -568,7 +574,6 @@ export const RenderListItem = ({
       });
     }
   };
-
   switch (type) {
     case FormType.SWITCH:
       return (
@@ -578,10 +583,6 @@ export const RenderListItem = ({
             <Switch
               checked={formValue[key] as boolean}
               onChange={() => {
-                console.log(formValue, key, {
-                  ...formValue,
-                  [key]: !formValue[key],
-                });
                 setFormValue({ ...formValue, [key]: !formValue[key] });
               }}
             />
@@ -598,7 +599,7 @@ export const RenderListItem = ({
           key={key}
           extra={formValue[key]}
           onClick={() => {
-            console.log(key);
+            console.log(key, '.........2222..............formValue ');
             handleClickListItem(type, title, key);
           }}
         >

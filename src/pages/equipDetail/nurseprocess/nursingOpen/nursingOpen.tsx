@@ -19,6 +19,7 @@ import { Instancercv, instance } from "@/api/api";
 import NursingStencil from "./nursingStencil";
 import NurseTable from "../../../setting/nurseSetting/NurseSetting";
 import dayjs from "dayjs";
+import {getNurseConfist} from "@/utils/getNursingConfig"
 
 import { setNurseListData } from "@/redux/Nurse/Nurse";
 import yuanquan from "../../../../assets/images/yuanquan.png";
@@ -119,14 +120,14 @@ function NursingOpen(props: propsType) {
       },
     });
     if (res.data.code === 0) {
-      let list = []
-      if (res.data.templateEffectiveFlag == 2) {
-        list = JSON.parse(res.data.nursingConfig || '[]')
-      } else {
-        list = JSON.parse(res.data.oldTemplate || '[]')
-      }
+        let nursingConfig = getNurseConfist(res)
+    //   if (res.data.templateEffectiveFlag == 1) {
+    //     list = JSON.parse(res.data.nursingConfig || '[]')
+    //   } else {
+    //     list = JSON.parse(res.data.oldTemplate || '[]')
+    //   }
       // setPreviewList(nursingConfig)
-      return list || [];
+      return nursingConfig || [];
     } else {
       return [];
     }
@@ -428,7 +429,7 @@ function NursingOpen(props: propsType) {
             className="ModalNursingOpen"
             footer={[
               // 自定义页脚，只包含确认按钮
-              <Button key="ok" type="primary" style={{ width: "6.8rem", height: "2rem" }} onClick={handleOk}>
+              <Button key="ok" type="primary" style={{ width: "6.8rem", height: "2rem", marginTop: "1.2rem" }} onClick={handleOk}>
                 选择此模版
               </Button>,
             ]}
@@ -457,14 +458,14 @@ function NursingOpen(props: propsType) {
                   </Button>
                 </Dropdown>
               </Space>
-              <p className="flex w-[16rem] items-center ml-[0.9rem] mt-[0.4rem] bg-[#F5F8FA]">
+              <div className="flex w-[20rem] items-center ml-[0.9rem]  mt-[0.4rem] bg-[#F5F8FA]">
                 <img
                   className="w-[1rem] h-[1rem] mr-[0.5rem]"
                   src={yuanquan}
                   alt=""
                 />
-                <span> 特点：{defaultTempInfo.value}</span>
-              </p>
+                <span className="text-[1rem]"> 特点：{defaultTempInfo.value}</span>
+              </div>
               <NursingStencil
                 stylee="2"
                 sensorName={sensorName}

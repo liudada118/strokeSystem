@@ -436,15 +436,16 @@ const UserInfoCard: (props: UserInfoCardProps) => React.JSX.Element = (props) =>
                     {/* <LeftOutlined className='w-[8px] h-[12px] mb-[10px] mr-[20px]'  style={{fontSize:"300px",display:'flex'}} onClick={() => navigate(`/`)} /> */}
                     <img src={userInfo.headImg || nullImg} alt="" className='w-[4rem] mr-[1.2rem] rounded-[6px]' />
                     <div className='flex flex-col justify-center grow'>
-                        <span className='text-sm font-semibold'>{userInfo.patientName}</span>
-                        <span className='flex w-full'>
+                        <span className='text-sm font-semibold h-[2.4rem]'>{userInfo.patientName}</span>
+                        {/* 不要删除后期要上线，暂时注销了 */}
+                        {/* <span className='flex w-full'>
                             {[{ label: 'braden', value: '低风险' }].map(item => (
                                 <span key={item.label} className='text-sm text-[#6C7784]'>
                                     <span>{`${item.label}:`}</span>
                                     <span className='ml-[10px]'>{item.value}</span>
                                 </span>
                             ))}
-                        </span>
+                        </span> */}
                     </div>
                     {/* <img src={arrow} alt="" className='w-[8px] h-[12px] mb-[10px]'/> */}
 

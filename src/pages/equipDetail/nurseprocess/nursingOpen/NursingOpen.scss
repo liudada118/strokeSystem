@@ -148,9 +148,11 @@
   background-color: rgba(0, 0, 0, 0.4);
 }
 .ModalNursingOpen{
+  :where(.css-dev-only-do-not-override-1c4jdbw).ant-btn{
+    margin-right: 2rem;
+  }
   &:where(.css-dev-only-do-not-override-u4freh).ant-modal .ant-modal-footer{
     text-align: right;
     padding:  0 2rem;
   }
-
 }

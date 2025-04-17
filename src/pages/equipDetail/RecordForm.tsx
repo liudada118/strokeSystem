@@ -10,6 +10,7 @@ import { PreViewConfig } from "./mobileEdit/NurseEdit";
 import { instance, Instancercv } from "@/api/api";
 import { useSelector } from "react-redux";
 import { tokenSelect } from "@/redux/token/tokenSlice";
+import {getNurseConfist} from "@/utils/getNursingConfig"
 
 
 const plainOptions = ['1.助餐', '2.助浴', '3.更换床单', '4.更换药物', '5.敷药', '6.记录压疮位置与大小']
@@ -75,12 +76,12 @@ const RecordForm: React.FC = () => {
                 deviceId: sensorName
             }
         }).then((res) => {
-            let nursingConfig = []
-            if (res.data.templateEffectiveFlag == 2) {
-                nursingConfig = JSON.parse(res.data.nursingConfig || '[]')
-            } else {
-                nursingConfig = JSON.parse(res.data.oldTemplate || '[]')
-            }
+            let nursingConfig = getNurseConfist(res)
+            // if (res.data.templateEffectiveFlag == 1) {
+            //     nursingConfig = JSON.parse(res.data.nursingConfig || '[]')
+            // } else {
+            //     nursingConfig = JSON.parse(res.data.oldTemplate || '[]')
+            // }
             setNurseConfig(nursingConfig)
         })
     }, [])

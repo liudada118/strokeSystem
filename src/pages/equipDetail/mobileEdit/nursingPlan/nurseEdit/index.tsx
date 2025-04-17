@@ -24,6 +24,7 @@ import {
 } from "@ant-design/icons";
 import "./index.scss";
 import dayjs from "dayjs";
+import {getNurseConfist} from "@/utils/getNursingConfig"
 
 export default function NurseConfEdit(props: any) {
   const items = [
@@ -89,12 +90,12 @@ export default function NurseConfEdit(props: any) {
       },
     }).then((res: any) => {
       if (res.data.code === 0) {
-        let nursingConfig = []
-        if (res.data.templateEffectiveFlag == 2) {
-            nursingConfig = JSON.parse(res.data.nursingConfig || '[]')
-        } else {
-            nursingConfig = JSON.parse(res.data.oldTemplate || '[]')
-        }
+        let nursingConfig = getNurseConfist(res)
+        // if (res.data.templateEffectiveFlag == 1) {
+        //     nursingConfig = JSON.parse(res.data.nursingConfig || '[]')
+        // } else {
+        //     nursingConfig = JSON.parse(res.data.oldTemplate || '[]')
+        // }
         if (nursingConfig.length > 0) {
           setTempList(nursingConfig);
         }

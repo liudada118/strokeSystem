@@ -1,5 +1,5 @@
 // import {  } from "a"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { RenderListItem } from "../EditingUser"
 import { FormType } from "@/components/CommonFormModal"
 import { Picker, List } from "antd-mobile"
@@ -8,6 +8,7 @@ import { changeEquipInfo, changePersonalEquipAlarmInfo, selectEquipBySensorname 
 import { useLocation } from "react-router-dom"
 import { equipInfoFormatUtil } from "@/utils/dataToFormat"
 import { phoneSelect } from "@/redux/token/tokenSlice"
+import { Instancercv, instance } from "@/api/api";
 
 type modelUserInfo = {
     [key: string]: any
@@ -17,6 +18,7 @@ let objKeyToCloud: modelUserInfo = {
     switchB: "leaveBedAlarm",
     switchC: "situpAlarm",
     switchD: "fallbedAlarm",
+    switchE: "sosAlarm",
     timeIntervalB: "leaveBedPeriod",
     timeRangeB: {
         start: 'leaveBedStart',
@@ -29,6 +31,10 @@ let objKeyToCloud: modelUserInfo = {
     timeRangeD: {
         start: 'fallbedStart',
         end: 'fallbedEnd'
+    },
+    timeRangeE: {
+        start: 'sosStart',
+        end: 'sosEnd'
     },
 }
 
@@ -47,10 +53,9 @@ export function RemindEdit() {
         key: '',
         value: ''
     })
-
+    console.log(pickerInfo.visible, '................................pickerInfopickerInfopickerInfo');
     const location = useLocation()
     const sensorName = location.state.sensorName
-
     const phone = useSelector(phoneSelect)
     const equipInfo = useSelector(state => selectEquipBySensorname(state, sensorName))
 
@@ -58,21 +63,25 @@ export function RemindEdit() {
     // nurseStart, nurseEnd, fallbedStart, fallbedEnd, leaveBedStart, leaveBedEnd, situpStart, situpEnd, type, deviceId, leavebedParam
     // ...equipInfo
     // })
-    const { bedTypeFormat, timePeriodInitFormat, switchValueToboolean } = equipInfoFormatUtil
+
     const {
         fallbedStart, fallbedEnd, fallbedAlarm,
         leaveBedStart, leaveBedEnd, leaveBedPeriod, leaveBedAlarm,
         situpStart, situpEnd, situpAlarm,
-    } = equipInfo
+        sosAlarm, sosStart, sosEnd
+    } = equipInfo || {}
+    const { bedTypeFormat, timePeriodInitFormat, switchValueToboolean } = equipInfoFormatUtil
 
-    const [formValue, setFormValue] = useState({
-        timeRangeB: `${timePeriodInitFormat({ timeStamp: leaveBedStart, type: 'start' })} - ${timePeriodInitFormat({ timeStamp: leaveBedEnd, type: 'end' })} `,
+    let [formValue, setFormValue] = useState({
+        timeRangeB: `${timePeriodInitFormat({ timeStamp: leaveBedStart || '', type: 'start' })} - ${timePeriodInitFormat({ timeStamp: leaveBedEnd, type: 'end' })} `,
         timeIntervalB: `${leaveBedPeriod}min`,
         timeRangeC: `${timePeriodInitFormat({ timeStamp: situpStart, type: 'start' })} - ${timePeriodInitFormat({ timeStamp: situpEnd, type: 'end' })} `,
         timeRangeD: `${timePeriodInitFormat({ timeStamp: fallbedStart, type: 'start' })} - ${timePeriodInitFormat({ timeStamp: fallbedEnd, type: 'end' })} `,
+        timeRangeE: `${timePeriodInitFormat({ timeStamp: sosStart, type: 'start' })} - ${timePeriodInitFormat({ timeStamp: sosEnd, type: 'end' })} `,
         switchB: switchValueToboolean(leaveBedAlarm),
         switchC: switchValueToboolean(situpAlarm),
         switchD: switchValueToboolean(fallbedAlarm),
+        switchE: switchValueToboolean(sosAlarm),
     })
 
     const offBedArr = [
@@ -122,22 +131,67 @@ export function RemindEdit() {
             title: '设置监测时间段'
         },
     ]
+    const sosArr = [
+        {
+            type: FormType.SWITCH,
+            objKey: "switchE",
+            label: 'sos提醒'
+        },
+        {
+            type: FormType.TIME_RANGE,
+            objKey: "timeRangeE",
+            label: '监测时间段',
+            title: '设置监测时间段'
+        },
+    ]
 
+    const getEquipInfo = () => {
+        Instancercv({
+            method: "get",
+            url: "/device/selectSinglePatient",
+            headers: {
+            "content-type": "multipart/form-data",
+            token: localStorage.getItem("token"),
+            },
+            params: {
+            sensorName,
+            phoneNum: localStorage.getItem("phone"),
+            },
+        }).then((res: any) => {
+            const {
+                fallbedStart, fallbedEnd, fallbedAlarm,
+                leaveBedStart, leaveBedEnd, leaveBedPeriod, leaveBedAlarm,
+                situpStart, situpEnd, situpAlarm, sosAlarm, sosStart, sosEnd
+            } = res.data.data
+            setFormValue({
+                timeRangeB: `${timePeriodInitFormat({ timeStamp: leaveBedStart, type: 'start' })} - ${timePeriodInitFormat({ timeStamp: leaveBedEnd, type: 'end' })} `,
+                timeIntervalB: `${leaveBedPeriod}min`,
+                timeRangeC: `${timePeriodInitFormat({ timeStamp: situpStart, type: 'start' })} - ${timePeriodInitFormat({ timeStamp: situpEnd, type: 'end' })} `,
+                timeRangeD: `${timePeriodInitFormat({ timeStamp: fallbedStart, type: 'start' })} - ${timePeriodInitFormat({ timeStamp: fallbedEnd, type: 'end' })} `,
+                timeRangeE: `${timePeriodInitFormat({ timeStamp: sosStart, type: 'start' })} - ${timePeriodInitFormat({ timeStamp: sosEnd, type: 'end' })} `,
+                switchB: switchValueToboolean(leaveBedAlarm),
+                switchC: switchValueToboolean(situpAlarm),
+                switchD: switchValueToboolean(fallbedAlarm),
+                switchE: switchValueToboolean(sosAlarm),
+            })
+        });
+    }
 
+    useEffect(() => {
+        getEquipInfo()
+    }, [])
 
     const submitCloud = (newValue: any) => {
-        console.log(newValue)
         setFormValue(newValue)
         let obj = formatSetting(newValue)
         obj.userName = phone
         obj.deviceName = sensorName
-
-        dispatch(changeEquipInfo(obj))
+        // 暂时不要删除，目前看这句代码没有实际意义
+        // dispatch(changeEquipInfo(obj))
         dispatch(changePersonalEquipAlarmInfo(obj))
     }
-
     const formatSetting = (newValue: any) => {
-        let obj = {}
+  let obj = {}
         const keyArr = Object.keys(newValue)
         // let realObj: any = { ...userInfo }
 
@@ -155,8 +209,8 @@ export function RemindEdit() {
                     const startMin = start.split(':')[1]
                     const endHour = end.split(':')[0]
                     const endMin = end.split(':')[1]
-                    if (start) realObj[objKeyToCloud[item].start] = startHour * 60 * 60 * 1000 + startMin * 60 * 1000
-                    if (end) realObj[(objKeyToCloud[item]).end] = endHour * 60 * 60 * 1000 + endMin * 60 * 1000
+                  if (start) realObj[objKeyToCloud[item].start] = startHour * 60 * 60 * 1000 + startMin * 60 * 1000
+                    if (end) realObj[objKeyToCloud[item].end] = endHour * 60 * 60 * 1000 + endMin * 60 * 1000
                 }
                 // 提醒间隔
                 else {
@@ -170,23 +224,27 @@ export function RemindEdit() {
         })
         return realObj
     }
-
-
     return (
         <>
-            <List className="w-[92%] mx-auto mt-[10px] rounded-[10px] overflow-hidden">
+            <List className="w-[92%] mx-auto mt-[10px] rounded-[10px]">
                 {
                     offBedArr.map((offBedItem) => {
+                        if (!formValue.switchB && offBedItem.type !== FormType.SWITCH) {
+                            return ''
+                        }
                         return (
                             <RenderListItem type={offBedItem.type} objKey={offBedItem.objKey} label={offBedItem.label} title={offBedItem.title} formValue={formValue} setFormValue={submitCloud} setPickerInfo={setPickerInfo} />
                         )
                     })
                 }
             </List>
-            <List className='w-[92%] mx-auto mt-[10px] rounded-[10px] overflow-hidden'>
+            <List className='w-[92%] mx-auto mt-[10px] rounded-[10px]'>
 
                 {
                     sitArr.map((offBedItem) => {
+                        if (!formValue.switchC && offBedItem.type !== FormType.SWITCH) {
+                            return ''
+                        }
                         return (
                             <RenderListItem type={offBedItem.type} objKey={offBedItem.objKey} label={offBedItem.label} title={offBedItem.title} formValue={formValue} setFormValue={submitCloud} setPickerInfo={setPickerInfo} />
                         )
@@ -194,16 +252,29 @@ export function RemindEdit() {
                 }
 
             </List>
-            <List className='w-[92%] mx-auto mt-[10px] rounded-[10px] overflow-hidden'>
+            <List className='w-[92%] mx-auto mt-[10px] rounded-[10px]'>
                 {
                     fallBedArr.map((offBedItem) => {
+                        if (!formValue.switchD && offBedItem.type !== FormType.SWITCH) {
+                            return ''
+                        }
                         return (
                             <RenderListItem type={offBedItem.type} objKey={offBedItem.objKey} label={offBedItem.label} title={offBedItem.title} formValue={formValue} setFormValue={submitCloud} setPickerInfo={setPickerInfo} />
                         )
                     })
                 }
-
-
+            </List>
+            <List className='w-[92%] mx-auto mt-[10px] rounded-[10px]'>
+                {
+                    sosArr.map((offBedItem) => {
+                        if (!formValue.switchD && offBedItem.type !== FormType.SWITCH) {
+                            return ''
+                        }
+                        return (
+                            <RenderListItem type={offBedItem.type} objKey={offBedItem.objKey} label={offBedItem.label} title={offBedItem.title} formValue={formValue} setFormValue={submitCloud} setPickerInfo={setPickerInfo} />
+                        )
+                    })
+                }
             </List>
             <Picker
                 columns={pickerInfo.columns}

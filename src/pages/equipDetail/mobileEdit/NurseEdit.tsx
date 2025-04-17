@@ -23,6 +23,7 @@ import CommonTitle from "@/components/CommonTitle";
 import { useGetWindowSize } from "@/hooks/hook";
 import NursingStencil from "../nurseprocess/nursingOpen/nursingStencil";
 import NursingOpen from "../nurseprocess/nursingOpen/nursingOpen";
+import {getNurseConfist} from "@/utils/getNursingConfig"
 
 const CheckboxGroup = Checkbox.Group;
 
@@ -222,12 +223,12 @@ export function NurseEdit() {
       },
     }).then((res) => {
       console.log(res.data, "resssssssss");
-      let nursingConfig = []
-      if (res.data.templateEffectiveFlag == 2) {
-          nursingConfig = JSON.parse(res.data.nursingConfig || '[]')
-      } else {
-          nursingConfig = JSON.parse(res.data.oldTemplate || '[]')
-      }
+      let nursingConfig = getNurseConfist(res)
+    //   if (res.data.templateEffectiveFlag == 1) {
+    //       nursingConfig = JSON.parse(res.data.nursingConfig || '[]')
+    //   } else {
+    //       nursingConfig = JSON.parse(res.data.oldTemplate || '[]')
+    //   }
       console.log(nursingConfig);
       setNurseConfig(nursingConfig || []);
     });

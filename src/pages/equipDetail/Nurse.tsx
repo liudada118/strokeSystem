@@ -13,6 +13,7 @@ import NursingStencil from './nurseprocess/nursingOpen/nursingStencil'
 import img from '../../assets/images/nurseChuangjian.png'
 import './nurse.scss'
 import { PlusCircleOutlined } from "@ant-design/icons";
+import {getNurseConfist} from "@/utils/getNursingConfig"
 
 const ThemeTable = {
     components: {
@@ -53,12 +54,12 @@ const Nurse: React.FC = () => {
                 deviceId: sensorName
             }
         }).then((res: any) => {
-            let nursingConfig = []
-            if (res.data.templateEffectiveFlag == 2) {
-                nursingConfig = JSON.parse(res.data.nursingConfig || '[]')
-            } else {
-                nursingConfig = JSON.parse(res.data.oldTemplate || '[]')
-            }
+            let nursingConfig = getNurseConfist(res)
+            // if (res.data.templateEffectiveFlag == 1) {
+            //     nursingConfig = JSON.parse(res.data.nursingConfig || '[]')
+            // } else {
+            //     nursingConfig = JSON.parse(res.data.oldTemplate || '[]')
+            // }
 
             setNursePersonTemplate(nursingConfig)
         })

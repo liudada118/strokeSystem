@@ -18,6 +18,7 @@ import { tokenSelect } from "@/redux/token/tokenSlice";
 import { nurseOpen, resetNuserpage } from '../../redux/Nurse/Nurse'
 import axios from "axios";
 import { selectEquipBySensorname } from "@/redux/equip/equipSlice";
+import {getNurseConfist} from "@/utils/getNursingConfig"
 
 
 const TabTheme = {
@@ -51,7 +52,6 @@ const EquipDetail = () => {
 
     const param = useParams()
     const { type, id } = param
-    console.log(type, '.................monitormonitormonitor');
     const navigate = useNavigate()
     const token = useSelector(tokenSelect)
     const [activeKey, setActiveKey] = useState(activeKeyArr[(type || 0)])
@@ -286,9 +286,7 @@ function Provide() {
                 deviceId: id
             }
         }).then((res) => {
-            console.log(res.data, 'resssssssss...............')
             const flipbodyConfig = JSON.parse(res.data.flipbodyConfig)
-            console.log(flipbodyConfig, 'flipbodyConfig')
             const { flipbodyCount, flipbodyTime } = flipbodyConfig
             if (flipbodyCount) {
                 setNurseFormValue({
@@ -391,13 +389,12 @@ function Provide() {
                 deviceId: id
             }
         }).then((res) => {
-            let nursingConfig = []
-            if (res.data.templateEffectiveFlag == 2) {
-                nursingConfig = JSON.parse(res.data.nursingConfig || '[]')
-            } else {
-                nursingConfig = JSON.parse(res.data.oldTemplate || '[]')
-            }
-            console.log(nursingConfig, 'nursingConfig............nursingConfig..........1111')
+            let nursingConfig = getNurseConfist(res)
+            // if (res.data.templateEffectiveFlag == 1) {
+            //     nursingConfig = JSON.parse(res.data.nursingConfig || '[]')
+            // } else {
+            //     nursingConfig = JSON.parse(res.data.oldTemplate || '[]')
+            // }
             setNursePersonTemplate(nursingConfig)
         })
     }

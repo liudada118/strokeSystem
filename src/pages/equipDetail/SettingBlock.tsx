@@ -666,7 +666,7 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (props) =>
     console.log(role, roleId, '.......................roleIdroleIdroleIdroleId');
 
     const handleAlarmSettingClick = () => {
-        // if (roleId !== 1 || role !== 2) return message.info('暂无权限')
+        if (!(roleId == 1 || role == 2)) return message.info('暂无权限')
         const flag = !isSettingClick
         setIsSettingClick(flag)
         if (flag) {

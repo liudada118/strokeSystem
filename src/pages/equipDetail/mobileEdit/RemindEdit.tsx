@@ -74,7 +74,7 @@ export function RemindEdit() {
 
     let [formValue, setFormValue] = useState({
         timeRangeB: `${timePeriodInitFormat({ timeStamp: leaveBedStart || '', type: 'start' })} - ${timePeriodInitFormat({ timeStamp: leaveBedEnd, type: 'end' })} `,
-        timeIntervalB: `${leaveBedPeriod}min`,
+        timeIntervalB: leaveBedPeriod === 0 ? '实时提醒' : `${leaveBedPeriod}分钟`,
         timeRangeC: `${timePeriodInitFormat({ timeStamp: situpStart, type: 'start' })} - ${timePeriodInitFormat({ timeStamp: situpEnd, type: 'end' })} `,
         timeRangeD: `${timePeriodInitFormat({ timeStamp: fallbedStart, type: 'start' })} - ${timePeriodInitFormat({ timeStamp: fallbedEnd, type: 'end' })} `,
         timeRangeE: `${timePeriodInitFormat({ timeStamp: sosStart, type: 'start' })} - ${timePeriodInitFormat({ timeStamp: sosEnd, type: 'end' })} `,
@@ -165,7 +165,7 @@ export function RemindEdit() {
             } = res.data.data
             setFormValue({
                 timeRangeB: `${timePeriodInitFormat({ timeStamp: leaveBedStart, type: 'start' })} - ${timePeriodInitFormat({ timeStamp: leaveBedEnd, type: 'end' })} `,
-                timeIntervalB: `${leaveBedPeriod}min`,
+                timeIntervalB: leaveBedPeriod === 0 ? '实时提醒' : `${leaveBedPeriod}分钟`,
                 timeRangeC: `${timePeriodInitFormat({ timeStamp: situpStart, type: 'start' })} - ${timePeriodInitFormat({ timeStamp: situpEnd, type: 'end' })} `,
                 timeRangeD: `${timePeriodInitFormat({ timeStamp: fallbedStart, type: 'start' })} - ${timePeriodInitFormat({ timeStamp: fallbedEnd, type: 'end' })} `,
                 timeRangeE: `${timePeriodInitFormat({ timeStamp: sosStart, type: 'start' })} - ${timePeriodInitFormat({ timeStamp: sosEnd, type: 'end' })} `,
@@ -233,7 +233,7 @@ export function RemindEdit() {
                             return ''
                         }
                         return (
-                            <RenderListItem type={offBedItem.type} objKey={offBedItem.objKey} label={offBedItem.label} title={offBedItem.title} formValue={formValue} setFormValue={submitCloud} setPickerInfo={setPickerInfo} />
+                            <RenderListItem listType="offBed" type={offBedItem.type} objKey={offBedItem.objKey} label={offBedItem.label} title={offBedItem.title} formValue={formValue} setFormValue={submitCloud} setPickerInfo={setPickerInfo} />
                         )
                     })
                 }

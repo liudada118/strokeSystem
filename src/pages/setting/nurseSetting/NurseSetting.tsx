@@ -417,8 +417,7 @@ export default function NurseTable(props: tableProps) {
               className="flex"
               style={{
                 overflowY: "auto",
-                // height:
-                // nurseIsOpenAdd === false ? "100%" : "calc(100%-2rem)",
+                height: nurseIsOpenAdd === false ? "100%" : "40rem",
               }}
             >
               <div

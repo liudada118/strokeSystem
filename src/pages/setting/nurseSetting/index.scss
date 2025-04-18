@@ -57,7 +57,7 @@
 
 .isTemp.care_box {
   display: flex;
-  align-items: center;
+  // align-items: center;
   &:not(:last-child):before {
     top: 32px;
   }

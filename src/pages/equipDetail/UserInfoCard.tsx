@@ -464,7 +464,7 @@ const UserInfoCard: (props: UserInfoCardProps) => React.JSX.Element = (props) =>
             console.log('euqren')
         }
     }
-
+    const roleId: any = localStorage.getItem('roleId')
     return (
 
         <Fragment>
@@ -476,11 +476,19 @@ const UserInfoCard: (props: UserInfoCardProps) => React.JSX.Element = (props) =>
                     className='bg-[#fff] rounded-[2px] pt-[1.2rem] pl-[1rem] pb-[1rem] md:w-[96%] md:mx-auto md:rounded-[10px]'>
                     <div className='flex items-center justify-between mb-[0.8rem]'>
                         <span className='text-base font-semibold'>个人信息</span>
-                        {<span className='text-[#0072EF] text-sm cursor-pointer mr-[10px]'
-                            onClick={() => {
-                                handleClickUserEdit()
-                                setUpdate(true)
-                            }}>修改</span>}
+                        {
+                            roleId == 1 && 2 ?
+                                <span className='text-[#0072EF] text-sm cursor-pointer mr-[10px]'
+                                    onClick={() => {
+                                        handleClickUserEdit()
+                                        setUpdate(true)
+                                    }}>
+
+                                    修改
+                                </span>
+                                : ''
+                        }
+
                     </div>
                     <div className='flex'>
                         <img src={userInfo.headImg ? userInfo.headImg : nullImg} alt="" className='w-[4rem] mr-[1.2rem] rounded-[6px]' />

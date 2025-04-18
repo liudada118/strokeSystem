@@ -32,7 +32,7 @@ const mqttSlice = createSlice({
     },
     setIsGotoNursePage(state) {
         console.log('cccccccccccccactiveKey..111111.....')
-      state.isGotoNursePage = new Date().getTime();
+      state.isGotoNursePage+=1;
     },
     resetNuserpage(state) {
       state.isRestNuserpage = new Date().getTime();

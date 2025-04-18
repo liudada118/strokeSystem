@@ -3,6 +3,10 @@
   align-items: center;
 }
 
+.use_nurse_template .use_nurse_templatespan {
+  width: 3rem;
+}
+
 .use_nurse_template p {
   display: flex;
   align-items: center;

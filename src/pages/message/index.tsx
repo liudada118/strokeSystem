@@ -88,12 +88,13 @@ export default function Message() {
     pageSize: 10,
     startMills: timeArr[0],
     endMills: timeArr[1],
-    types: alarmValueToType(0),
+    types: 'nursing,fallbed,outOffBed,situp,offline,sos',
   })
   const [messages, setMessages] = useState<message[]>([]);
   // 请求msg
   useEffect(() => {
-    getMessage()
+    getMessage(
+    )
   }, [])
   /**
    * 
@@ -104,14 +105,12 @@ export default function Message() {
       ...params,
       pageNum: e,
     });
-
     getMessage({
       ...params,
       pageNum: e,
     });
   }
   const getMessage = async (reqparms: any = {}) => {
-
     const param = {
       ...params,
       ...reqparms
@@ -130,7 +129,6 @@ export default function Message() {
   // const [todayAlarmCount, setTodayAlarmCount] = useState(0)
   // 接口请求
   const baseFetch = async (param: any) => {
-
     try {
       const option = {
         method: "get",
@@ -143,14 +141,12 @@ export default function Message() {
       }
       const res = await instance(option)
       setDataLIst(res.data.data.records)
-      console.log(res.data.todayAlarmCount, '................................resdata');
       setFalse(false)
       // setTodayAlarmCount(res.data.todayAlarmCoun)
       return res
     } catch (err) {
     }
   }
-  console.log(datarq, datarq.todayAlarmCount, '................................datarq');
   /**
    * 
    * @param data  服务器接收的信息
@@ -165,7 +161,6 @@ export default function Message() {
     return message
   }
   const [nurseType, setNurseType] = useState('其他提醒');
-
   // 表格状态
   const titleList = [
     {
@@ -394,8 +389,8 @@ export default function Message() {
         ...params,
         pageNum: 1,
         pageSize: 10,
-        startMills: timeArr[0],
-        endMills: timeArr[1],
+        // startMills: timeArr[0],
+        // endMills: timeArr[1],
         patientName: patientNameRoomNum
 
       });
@@ -407,8 +402,8 @@ export default function Message() {
         ...params,
         pageNum: 1,
         pageSize: 10,
-        startMills: timeArr[0],
-        endMills: timeArr[1],
+        // startMills: timeArr[0],
+        // endMills: timeArr[1],
         roomNum: patientNameRoomNum
       });
     }
@@ -417,14 +412,10 @@ export default function Message() {
   // 标题切换
   const titleRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const defaultRange: [Date, Date] = [
-
-
     dayjs().toDate(),
     dayjs().add(2, 'day').toDate(),
   ]
-
   const [val, setVal] = useState<any>([])
-
   const [setDefaultRange, setsetDefaultRange] = useState()
   console.log(setDefaultRange);
   useEffect(() => {
@@ -568,7 +559,6 @@ export default function Message() {
             fale ? <Space style={{ width: "50rem", height: "39px", marginLeft: "10px" }} direction="vertical" size={12}>
               <RangePicker
                 placeholder={['开始时间', '结束时间']}
-
                 onChange={(dates, dateStrings) => handleDateChange(dates, dateStrings)}
                 style={{ width: "18rem", height: "39px", marginLeft: "10px" }}
                 showTime />
@@ -688,7 +678,7 @@ export default function Message() {
               </div>
             </div>
           </div>
-          {/* <CalendarPicker
+          <CalendarPicker
             min={new Date(1970, 1, 1)}  // 设置为一个较早的时间点
             max={new Date()}
             visible={popupVisible}
@@ -704,7 +694,7 @@ export default function Message() {
             onChange={(val: [Date, Date] | null) => {
               setVal(val)
             }}
-          /> */}
+          />
 
 
           {<Bottom />}

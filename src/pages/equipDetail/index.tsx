@@ -159,6 +159,8 @@ const EquipDetail = () => {
     };
     const isGotoNursePage = useSelector((state: any) => state.nurse.isGotoNursePage)
     useEffect(() => {
+        if (!isGotoNursePage) return
+        console.log(isGotoNursePage, 'isGotoNursePage...............')
         handleTabChange1('nurse')
         handleTabChange('nurse')
     }, [isGotoNursePage])

@@ -249,7 +249,8 @@ padding-top: 2.3rem!important;
     border-radius: 0.4rem;
     background: #F5F8FA;
     width: 76%;
-    z-index: 100;
+    // 999
+    // z-index: 100;
     .MessageYiDOngTitlesearchSelect{
      cursor: pointer;
          .ant-select-selector{
@@ -305,7 +306,8 @@ font-family: 'PingFang SC';
     background: #fff;
     font-size: 14px;
     // background:linear-gradient(.25turn, #FFFFFF, 98%, red)!important;
-    z-index: 1;
+    // 999
+    // z-index: 1;
    align-items: center;
     // line-height: 4.5rem;
     overflow-x: auto; 

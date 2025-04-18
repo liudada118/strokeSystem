@@ -1,5 +1,6 @@
+import React, { useState, useEffect } from "react";
+import "./index.scss";
 import { selectEquipBySensorname } from "@/redux/equip/equipSlice";
-import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import {
   Button,
@@ -22,11 +23,11 @@ import {
   MailOutlined,
   SettingOutlined,
 } from "@ant-design/icons";
-import "./index.scss";
 import dayjs from "dayjs";
-import {getNurseConfist} from "@/utils/getNursingConfig"
+import { getNurseConfist } from "@/utils/getNursingConfig"
 
 export default function NurseConfEdit(props: any) {
+
   const items = [
     {
       key: "1",
@@ -132,7 +133,7 @@ export default function NurseConfEdit(props: any) {
               { required: false, message: "Please input your username!" },
             ]}
           >
-            <span>应用护理模版：</span>
+            <span className="use_nurse_templatespan">应用护理模版：</span>
             <div className="use_nurse_template">
               {[
                 { value: 1, label: "否" },
@@ -164,7 +165,7 @@ export default function NurseConfEdit(props: any) {
           name="title"
           rules={[{ required: false, message: "请填写护理名称!" }]}
         >
-          <span>护理名称：</span>
+          <span className="">护理名称：</span>
           <Input placeholder="请输入所添加的护理任务的名称" className="h-10 bg-[#F5F8FA]" onChange={(e) => {
             setNurseName(e.target.value)
           }} />

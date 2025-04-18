@@ -11,6 +11,7 @@ import {
 } from "antd-mobile";
 import { compressionFile } from "@/utils/imgCompressUtil";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
+import nullImg from "@/assets/image/null.png";
 import { userModal } from "./UserInfoCard";
 import avatar from "../../assets/images/avatar.png";
 import { FormType } from "../../components/CommonFormModal";
@@ -60,6 +61,7 @@ const PersonalInfo = (props: any) => {
   const location = useLocation();
   const { sensorName, type, userModal } = location.state || props;
   const [userInfo, setUserInfo] = useState<any>({});
+  const [headImg, setHeadImg] = useState<any>("");
 
   useEffect(() => {
     const listData = {} as any;
@@ -79,7 +81,6 @@ const PersonalInfo = (props: any) => {
     visible: false,
     data: [[]],
   });
-
 
   const [fileList, setFileList] = useState<ImageUploadItem[]>([
     {
@@ -152,18 +153,77 @@ const PersonalInfo = (props: any) => {
 
   const renderUploaderAvatar = () => {
     return (
-      <ImageUploader
-        multiple={true}
-        maxCount={1}
-        value={fileList}
-        onChange={setFileList}
-        upload={handleUpload as any}
-      >
-        <div className="flex flex-col items-center justify-center w-[78px] h-[78px] my-[0.4rem] rounded-[6px] border border-[#D8D8D8] ml-[10px]">
-          <img src={plus} alt="" className="mb-[4px]" />
-          <span className="text-[#A2A2A2] text-[12px]">添加照片</span>
-        </div>
-      </ImageUploader>
+      //   <ImageUploader
+      //     multiple={true}
+      //     maxCount={1}
+      //     value={fileList}
+      //     onChange={setFileList}
+      //     upload={handleUpload as any}
+      //   >
+      <div style={{ height: "5rem", width: "5rem", position: 'relative' }}>
+        <div
+          className="img"
+          style={{
+            position: "absolute",
+            background: `url(${
+              userInfo.headImg ? userInfo.headImg : nullImg
+            })  center center / cover no-repeat`,
+            cursor: "pointer",
+            height: "5rem",
+            width: "5rem",
+          }}
+        ></div>
+        <input
+          type="file"
+          name="img"
+          style={{
+            opacity: 0,
+            position: "absolute",
+            width: "100%",
+            height: "100%",
+            left: 0,
+          }}
+          id="img"
+          onChange={(e) => {
+            // setSpinning(true);
+            if (e.target.files) {
+              // res.then((e) => {})
+              // setImgFile(e.target.files[0])
+              let res = compressionFile(e.target.files[0]);
+              res.then((e) => {
+                console.log(e, "compressionFile");
+                const token = localStorage.getItem("token");
+                axios({
+                  method: "post",
+                  url: netUrl + "/file/fileUpload",
+                  headers: {
+                    "content-type": "multipart/form-data",
+                    token: token,
+                  },
+                  data: {
+                    file: e,
+                  },
+                })
+                  .then((res) => {
+                    const img = res.data.data.src;
+                    message.success("上传成功");
+                    modifyUserInfo({headImg: img})
+                  })
+                  .catch((err) => {
+                    // message.error(err.error)
+                    // setSpinning(false);
+                  });
+              });
+            }
+          }}
+        />
+      </div>
+
+      //     <div className="flex flex-col items-center justify-center w-[78px] h-[78px] my-[0.4rem] rounded-[6px] border border-[#D8D8D8] ml-[10px]">
+      //       <img src={plus} alt="" className="mb-[4px]" />
+      //       <span className="text-[#A2A2A2] text-[12px]">添加照片</span>
+      //     </div>
+      //   </>
     );
   };
   const renderListItem = () => {
@@ -486,12 +546,12 @@ export const PersonalContentInfo = (props: personalInfoParam) => {
   );
 };
 
-const hourArr = [1, 2, 3];
+const hourArr = [3, 5, 10, 0];
 
 const timeIntervalColumns = [
   hourArr.map((item) => ({
-    label: `${item}小时`,
-    value: `${item}小时`,
+    label: item === 0 ? "实时提醒" : `${item}分钟`,
+    value: item === 0 ? item : `${item}分钟`,
   })),
 ];
 
@@ -510,6 +570,7 @@ interface renderListParam {
   label: string;
   title?: string;
   formValue: any;
+  listType?: string;
   setFormValue: Function;
   setPickerInfo: Function;
   // submitCloud : Function
@@ -523,14 +584,18 @@ export const RenderListItem = ({
   formValue,
   setFormValue,
   setPickerInfo,
+  listType,
 }: renderListParam) => {
-  console.log(type,
+  console.log(
+    type,
     // objKey: key,
     label,
-    title = "",
+    (title = ""),
     formValue,
     setFormValue,
-    setPickerInfo, '..........................setFormValuesetFormValuesetFormValue');
+    setPickerInfo,
+    "..........................setFormValuesetFormValuesetFormValue"
+  );
   const createTimeNumber: (
     val: number
   ) => { label: string; value: string }[] = (number) => {
@@ -597,9 +662,12 @@ export const RenderListItem = ({
       return (
         <List.Item
           key={key}
-          extra={formValue[key]}
+          extra={
+            listType === "offBed" && formValue[key] === 0
+              ? "实时提醒"
+              : formValue[key]
+          }
           onClick={() => {
-            console.log(key, '.........2222..............formValue ');
             handleClickListItem(type, title, key);
           }}
         >

@@ -1,6 +1,9 @@
 .use_nurse_template {
     display: flex;
     align-items: center;
+    .use_nurse_templatespan{
+      width: 3rem;
+    }
     p {
       display: flex;
       align-items: center;

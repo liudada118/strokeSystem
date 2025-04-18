@@ -59,8 +59,7 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (props) =>
     // const status = useSelector(statusSelect)
     const context = useContext(DataContext)
     const { nurseformValue, submitCloud, setNurseFormValue } = context
-    console.log(nurseformValue, '................................nurseformValue');
-
+ 
     const { onModify, } = props
     // TODO:合并成一个state对象
     const [editing, setEditing] = useState<boolean>(false);
@@ -385,15 +384,15 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (props) =>
                     children: [{
                         id: '3min',
                         value: 3,
-                        label: '3min'
+                        label: '3分钟'
                     }, {
                         id: '5min',
                         value: 5,
-                        label: '5min'
+                        label: '5分钟'
                     }, {
                         id: '10min',
                         value: 10,
-                        label: '10min'
+                        label: '10分钟'
                     }, {
                         id: '实时提醒',
                         value: 0,
@@ -704,6 +703,7 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (props) =>
     const isOpen = () => {
         setSwitchOpen(true)
     }
+    // const roleId: any = localStorage.getItem('roleId')
     const onBlurShezhi = () => {
         if (!switchOpenValue) return message.info('不能为空')
         if (switchOpenValue) {
@@ -730,36 +730,42 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (props) =>
         }
         setSwitchOpen(false)
     }
+
     return (
         <div className='overflow-scroll h-[calc(100%-11.2rem)] mt-6'>
             <div className="flex justify-between ">
                 <CommonTitle name={'提醒设置'} type="square" />
-                <div className="text-base text-sm leading-7 mr-[10px] text-[#0072EF]" onClick={handleAlarmSettingClick}>{isSettingClick ? '保存' : '设置'}</div>
+                {
+                    roleId == (1 || 2) ? < div className="text-base text-sm leading-7 mr-[10px] text-[#0072EF]" onClick={handleAlarmSettingClick}>{isSettingClick ? '保存' : '设置'}</div> : ""
+                }
             </div>
-            {settings.map((item) => (
-                <div className='bg-[#fff] mb-[10px] py-[0.5rem] px-[0.8rem]'
-                    key={item.label}>
-                    <div className='flex items-center justify-between'>
-                        <span className='text-base font-semibold'>{item.label}</span>
-                        {editing && <Switch size="small" checked={item.value} onClick={(value) => item.handleSwitch(value)} />}
-                    </div>
-                    {item.value && item.params?.map((_item, index) => (
-
-                        <div className={`flex items-center w-full ${index === 0 ? 'mt-[10px]' : ''} h-[2.6rem]`} key={_item.label}>
-                            <div className='text-sm text-[#32373E] w-[5rem]'>{_item.label}</div>
-                            <div
-                                className={`flex justify-between items-center h-full text-base ${index !== (item.params.length - 1) && 'border-b border-b-[#DCE3E9]'} p-[5px] w-[calc(100%-5rem)]`}>
-                                <span className='text-[#6C7784]'>{_item.label.includes('翻身') ? _item.value : _item.label.includes('提醒时间') ? `${_item.value}min` : _item.value}</span>
-                                {editing && <span className='text-sm text-[#0072EF] cursor-pointer'
-                                    onClick={() => _item.onChange()}>修改</span>}
-                            </div>
-                            {_item.modal}
+            {
+                settings.map((item) => (
+                    <div className='bg-[#fff] mb-[10px] py-[0.5rem] px-[0.8rem]'
+                        key={item.label}>
+                        <div className='flex items-center justify-between'>
+                            <span className='text-base font-semibold'>{item.label}</span>
+                            {editing && <Switch size="small" checked={item.value} onClick={(value) => item.handleSwitch(value)} />}
                         </div>
-                    ))}
-                </div>
-            ))}
+                        {item.value && item.params?.map((_item, index) => (
 
-            <div className="flex justify-between items-center" style={{ background: "#ffff", height: "4rem", lineHeight: "4rem", marginBottom: "1rem" }}><span className="text-base text-[#32373E] ml-[0.4rem]" style={{ fontWeight: "600" }} >离床参数 <span className="mr-[3rem]">{switchOpenValue}</span></span>{switchOpen ? <Input value={switchOpenValue} placeholder="请输入" onBlur={onBlurShezhi} onChange={((val: any) => setSwitchOpenValue(val.target.value))} className="w-[5rem] mr-[2rem]"></Input> : <span onClick={isOpen} className="mr-[2rem] " style={{ cursor: 'pointer' }}>设置</span>}</div>
+                            <div className={`flex items-center w-full ${index === 0 ? 'mt-[10px]' : ''} h-[2.6rem]`} key={_item.label}>
+                                <div className='text-sm text-[#32373E] w-[5rem]'>{_item.label}</div>
+                                <div
+                                    className={`flex justify-between items-center h-full text-base ${index !== (item.params.length - 1) && 'border-b border-b-[#DCE3E9]'} p-[5px] w-[calc(100%-5rem)]`}>
+                                    <span className='text-[#6C7784]'>{_item.label.includes('翻身') ? _item.value : _item.label.includes('提醒时间') ? `${_item.value === 0 ? '实时提醒' : _item.value+'分钟'}` : _item.value}</span>
+                                    {editing && <span className='text-sm text-[#0072EF] cursor-pointer'
+                                        onClick={() => _item.onChange()}>修改</span>}
+                                </div>
+                                {_item.modal}
+                            </div>
+                        ))}
+                    </div>
+                ))
+            }
+            {
+                roleId === (1 || 2) ? <div className="flex justify-between items-center" style={{ background: "#ffff", height: "4rem", lineHeight: "4rem", marginBottom: "1rem" }}><span className="text-base text-[#32373E] ml-[0.4rem]" style={{ fontWeight: "600" }} >离床参数 <span className="mr-[3rem]">{switchOpenValue}</span></span>{switchOpen ? <Input value={switchOpenValue} placeholder="请输入" onBlur={onBlurShezhi} onChange={((val: any) => setSwitchOpenValue(val.target.value))} className="w-[5rem] mr-[2rem]"></Input> : <span onClick={isOpen} className="mr-[2rem] " style={{ cursor: 'pointer' }}>设置</span>}</div> : ''
+            }
             {/* {renderFooterBtn()} */}
             <CommonTitle name={'健康配置'} type="square" />
             {/* <div className='bg-[#fff] mb-[10px] p-[10px] px-[0.8rem] flex justify-between items-center'>
@@ -793,7 +799,7 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (props) =>
                                         okText="是"
                                         cancelText="否"
                                     >
-                                        <span className="text-[#0072EF] ml-[1rem] " style={{ cursor: "pointer" }} >解绑设备</span>
+                                        {roleId === (1 || 2) ? <span className="text-[#0072EF] ml-[1rem] " style={{ cursor: "pointer" }} >解绑设备</span> : ''}
                                     </Popconfirm>
                                     : ""
                                 }

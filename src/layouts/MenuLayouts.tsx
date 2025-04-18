@@ -14,7 +14,6 @@ interface MenuLayoutProps {
 
 
 const MenuLayouts: (props: MenuLayoutProps) => React.JSX.Element = (props) => {
-
     // const status = useSelector()
 
     const { children, isMobile } = props

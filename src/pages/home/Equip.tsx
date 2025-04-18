@@ -124,6 +124,7 @@ export default function Equip() {
             }
             {!isMobile ? <Carousel
                 // afterChange={onChange}
+                dots={datalist.length > 1}
                 autoplaySpeed={6000} >
                 {datalist.length ? datalist.map((equips: Array<equip>, indexs: any) => {
                     return <div className="equipsContent" key={indexs}>

@@ -1,5 +1,5 @@
-import { selectEquipBySensorname } from "@/redux/equip/equipSlice";
 import React, { useEffect, useState } from "react";
+import { selectEquipBySensorname } from "@/redux/equip/equipSlice";
 import { useSelector } from "react-redux";
 import { useLocation, useParams, useNavigate } from "react-router-dom";
 import CommonNavBar from "../../../../components/CommonNavBar";
@@ -7,7 +7,6 @@ import { Instancercv, instance } from "@/api/api";
 import greyNotice from "@/assets/image/greyNotice.png";
 import NurseList from "./nurseList/index";
 import NurseConfEdit from "./nurseEdit/index";
-import "./index.scss";
 import { Button, message, Modal, Radio } from "antd";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
 import mobileNurse from "@/assets/image/mobileNurseBig.png";
@@ -15,9 +14,9 @@ import dayjs from "dayjs";
 import { PersonalContentInfo } from "@/pages/equipDetail/EditingUser";
 import loog from '../../../../assets/images/logo.png'
 import jiaHao from '../../../../assets/images/image copy 2.png'
-import {getNurseConfist} from "@/utils/getNursingConfig"
+import { getNurseConfist } from "@/utils/getNursingConfig"
+import "./index.scss";
 const { confirm } = Modal;
-
 export default function NursingPlan() {
   const param = useParams();
   const location = useLocation();

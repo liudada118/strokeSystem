@@ -25,5 +25,7 @@ export const getNurseConfist = (res: any) => {
         nursingConfig = JSON.parse(res.data.nursingConfig || "[]");
     }
   }
+  console.log(nursingConfig,res.data.flipbodyConfig,'.......444444..............typetype');
+  
   return Array.isArray(nursingConfig) ? nursingConfig : []
 };

@@ -50,12 +50,12 @@ function NursingOpen(props: propsType) {
   const isPhone = useGetWindowSize();
   const items = [
     {
-      key: "49",
+      key: "1",
       label: "自理老人护理模版",
       value: "意识清醒，行动自如，需生活辅助",
     },
     {
-      key: "47",
+      key: "2",
       label: "半自理老人护理模版",
       value: "部分活动受限，需助行/如厕协助",
     },
@@ -71,7 +71,7 @@ function NursingOpen(props: propsType) {
   const [template, setTemplate] = useState<string>(""); // 模版
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [title, setTitle] = useState("自理老人护理模版");
-  const [type, setType] = useState(4);
+  const [type, setType] = useState(1);
   const [defaultTempInfo, setDefaultTempInfo] = useState(items[0]);
   const token = localStorage.getItem("token");
   const [previewList, setPreviewList] = useState([]) as any;
@@ -115,10 +115,11 @@ function NursingOpen(props: propsType) {
         deviceId: sensorName,
         // ...(type ? { type } : {}),
         // 这个type展示献先写死 到时候要换成 这个里面的 iditems
-        type: 'common'
+        type: type
       },
     });
     if (res.data.code === 0) {
+      console.log(res, '...3333.............typetype');
       let nursingConfig = getNurseConfist(res)
       //   if (res.data.templateEffectiveFlag == 1) {
       //     list = JSON.parse(res.data.nursingConfig || '[]')

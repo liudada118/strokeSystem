@@ -29,6 +29,9 @@ function NurseAdd(props: any) {
         return list
     }
     const handleRecordForm = (values: any) => {
+        if (type === '新增一次') {
+            if (!(nurseProject && completionTime && uploadImage)) return message.info('请填写必填项')
+        }
         if (values) {
             const values = {
                 nurseProject,
@@ -36,8 +39,12 @@ function NurseAdd(props: any) {
                 uploadImage: JSON.stringify(uploadImage),
                 notes
             }
+            console.log(values.nurseProject, '....................valuesvalues');
 
+            if (values.nurseProject.length > 10) return message.info('护理项目不能超过10个字符')
+            if (values.notes.length > 20) return message.info('备注不能超过20个字符')
             const dataList = type === '新增一次' ?
+
                 {
                     did: sensorName,
                     timeMillis: completionTime,
@@ -105,7 +112,13 @@ function NurseAdd(props: any) {
                                 护理项目：
                             </div>
                             <div className="text-[#32373E] text-[1.25rem] m-[0rem] flex items-center">
-                                <Input type="text" disabled={props.type === '记录护理项目'} onChange={(e: any) => { setNurseProject(e) }} value={nurseProject} placeholder='请输入护理项目' />
+                                <Input type="text" disabled={props.type === '记录护理项目'} onChange={(e: any) => {
+                                    // if (e.target.value.length > 10) {
+                                    //     return message.info('请输入10个字内备注内容')
+                                    // }
+                                    setNurseProject(e)
+
+                                }} value={nurseProject} placeholder='请输入护理项目' />
                             </div>
                         </div>
                         <div className="mt-[2rem] h-[4.5rem] rounded-[0.4rem] bg-[#F5F8FA] flex items-center justify-between mb-[0.75rem]">
@@ -137,7 +150,7 @@ function NurseAdd(props: any) {
                                 title={'完成时间'}
                                 value={[]}
                                 onConfirm={v => {
-                                    if(!v) return
+                                    if (!v) return
                                     const hour = v[0] && +v[0] < 10 ? '0' + v[0] : v[0]
                                     const min = v[1] && +v[1] < 10 ? '0' + v[1] : v[1]
                                     const result = `${hour}:${min}`
@@ -225,7 +238,8 @@ function NurseAdd(props: any) {
                                     style={{ width: "auto", height: "100%", background: "#F5F8FA", borderRadius: "0.4rem", marginLeft: "1rem", paddingTop: "1rem" }}
                                     placeholder='请输入20个字内备注内容'
                                     value={notes}
-                                    onChange={val => {
+                                    onChange={(val: any) => {
+
                                         setNotes(val)
                                     }}
                                 />

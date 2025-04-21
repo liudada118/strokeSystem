@@ -136,6 +136,7 @@ export default function NurseConfEdit(props: any) {
     const onFinish = () => {
         if (!nurseName) return message.warning("请填写护理名称！");
         if (!hours || !minutes) return message.warning("请填写护理时间！");
+        if (nurseName.length > 10) return message.warning("名称不能超过10个字符");
         const hoursVal = parseFloat(hours);
         const minutesVal = parseFloat(minutes);
         const hoursFormat = hoursVal < 10 ? `0${hoursVal}` : hoursVal;
@@ -169,10 +170,11 @@ export default function NurseConfEdit(props: any) {
             params: {
                 deviceId: props.sensorName,
                 // 这个type展示献先写死 到时候要换成 这个里面的 iditems
-                type: 'common'
+                type: type
             },
         }).then((res: any) => {
             if (res.data.code === 0) {
+                console.log(res, '....222.............typetype');
                 let nursingConfig = getNurseConfist(res) as any
                 if (nursingConfig.length > 0) {
                     setTempList(nursingConfig);
@@ -263,7 +265,7 @@ export default function NurseConfEdit(props: any) {
                         </div>
 
                         <div className="form_item">
-                            <span className="form_title  w-[4rem]">护理名称：</span>
+                            <span className="form_title  w-[4rem]">护理任务：</span>
                             <Input placeholder="请输入所添加的护理任务的名称" className="h-[2.5rem]" style={{ width: '24rem' }} onChange={(e) => {
                                 setNurseName(e.target.value)
                             }} />
@@ -287,10 +289,10 @@ export default function NurseConfEdit(props: any) {
                                                 时
                                             </div>
                                         </Select.Option>
-                                        {[...Array(23)].map((_, index) => (
-                                            <Select.Option key={index} value={(index + 1).toString()}>
+                                        {[...Array(24)].map((_, index) => (
+                                            <Select.Option key={index} value={(index).toString()}>
                                                 <div className="flex justify-center">
-                                                    {(index + 1).toString()}
+                                                    {index.toString().padStart(2, '0')}
                                                 </div>
                                             </Select.Option>
                                         ))}
@@ -312,10 +314,10 @@ export default function NurseConfEdit(props: any) {
                                                 分
                                             </div>
                                         </Select.Option>
-                                        {[...Array(59)].map((_, index) => (
-                                            <Select.Option key={index} value={(index + 1).toString()}>
+                                        {[...Array(60)].map((_, index) => (
+                                            <Select.Option key={index} value={(index).toString()}>
                                                 <div className="flex justify-center">
-                                                    {(index + 1).toString()}
+                                                    {index.toString().padStart(2, '0')}
                                                 </div>
                                             </Select.Option>
                                         ))}

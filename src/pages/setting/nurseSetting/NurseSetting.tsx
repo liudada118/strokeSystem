@@ -299,7 +299,7 @@ export default function NurseTable(props: tableProps) {
         data: {
           deviceId: sensorName,
           config: JSON.stringify(list),
-          templateEffectiveFlag: selectValue,
+          templateEffectiveFlag: selectValue,     
           templateUpdatetime: new Date().getTime()
         },
       }).then((res) => {

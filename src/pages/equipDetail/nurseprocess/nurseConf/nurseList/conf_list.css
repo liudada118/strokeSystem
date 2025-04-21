@@ -80,7 +80,7 @@
 }
 
 .pc_nurse_conf_list .list_item p:nth-child(2) span:nth-child(1) {
-  font-size: 1.3rem;
+  font-size: 0.8rem;
   font-weight: 600;
   color: #32373E;
 }
@@ -122,7 +122,7 @@
 }
 
 .pc_nurse_conf_list .list_item:not(:first-child) p:not(:first-child) {
-  padding: 0.8rem 0.5rem 0.5rem 0.2rem;
+  padding: 1rem 0.5rem 0.5rem 0rem;
 }
 
 .pc_nurse_conf_list .list_item:not(:first-child) p:nth-child(1) span {

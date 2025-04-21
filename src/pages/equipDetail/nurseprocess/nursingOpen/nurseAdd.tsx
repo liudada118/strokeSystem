@@ -155,6 +155,9 @@ function NurseAdd(props: any) {
                                     const min = v[1] && +v[1] < 10 ? '0' + v[1] : v[1]
                                     const result = `${hour}:${min}`
                                     const time = new Date(dayjs().format("YYYY-MM-DD") + ' ' + `${result}`).getTime()
+                                    console.log(time, new Date().getTime(), '.......................newDategetTime');
+
+                                    if (time > new Date().getTime()) return message.info('时间不能大于当前时间')
                                     setCompletionTime(time)
                                 }}
                                 className='mobile_picker_box_add_nurse'

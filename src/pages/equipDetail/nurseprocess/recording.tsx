@@ -34,7 +34,7 @@ function Recording(props: proprsType) {
             const time = dayjs(values.completionTime).valueOf()
             values.completionTime = time
             values.uploadImage = JSON.stringify(uploadImage)
-            console.log(time, 'time........time............')
+            if (time > new Date().getTime()) return message.info('时间不能大于当前时间')
             const dataList = type === '新增一次' ?
                 {
                     did: sensorName,

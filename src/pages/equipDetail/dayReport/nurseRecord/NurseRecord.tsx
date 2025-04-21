@@ -181,7 +181,7 @@ function NurseRecord(props: nurseRecord) {
       {!location.pathname.includes('small') ? <>
 
         {dataSource[0] && dataSource[0].startMatrix != "undefined" && dataSource[0].startMatrix.length && props.heatmap ? <> <DayNurseReport img={dataSource[0].careImg} sensorName={sensorName} startMatrix={JSON.parse('[' + dataSource[0].startMatrix + ']')} endMatrix={JSON.parse('[' + dataSource[0].endMatrix + ']')} />
-          <TurnReportProps  pageRecords={pageRecords} date={props.dayDate} sensorName={sensorName} />
+          <TurnReportProps pageRecords={pageRecords} date={props.dayDate} sensorName={sensorName} />
         </> : ''}
         { }
         <div className="nurseContent" style={{ margin: 0, marginTop: isMobile ? '1rem' : 'unset' }} id="nurseContent">
@@ -191,7 +191,7 @@ function NurseRecord(props: nurseRecord) {
               if (props.changeFlag) {
                 props.changeFlag(false)
               }
-            }} style={{ width: '0.8rem', marginRight: '2rem' }} src={returnblack} alt="" /> 护理记录 </div>
+            }} style={{ width: '0.8rem', height: "0.8rem", marginRight: '2rem', marginTop: "0.7rem" }} src={returnblack} alt="" /> 护理记录 </div>
           {/* <div onClick={() => {
               navigate(`/turnReport`, {
                 state: {

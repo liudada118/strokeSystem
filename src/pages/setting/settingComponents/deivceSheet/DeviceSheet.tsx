@@ -34,7 +34,7 @@ export default function DeviceSheet(props: DeviceSheet) {
         key: 'mac',
     },
     {
-        title: '设备类型',
+        title: '设备类型33',
         dataIndex: 'type',
         key: 'type',
         render: (text: any, record: any, index: any) => {
@@ -252,7 +252,8 @@ export default function DeviceSheet(props: DeviceSheet) {
                             setDelete(record)
                         }
                     }
-                }} columns={device} /></div>
+                }} columns={device} />
+            </div>
         </>
     )
 }

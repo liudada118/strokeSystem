@@ -46,7 +46,6 @@ import FamilySheet from './settingComponents/familySheet/FamilySheet';
 import Bottom from '@/components/bottom/Bottom';
 import UserInfo from './user/UserInfo';
 import UploadImg from './uploadImg/UploadImg';
-// import NurseSetting from './nurseSetting/NurseSetting';
 import Title from '@/components/title/Title';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginOut, roleIdSelect } from '@/redux/premission/premission';
@@ -336,7 +335,7 @@ export default function Setting() {
 
   const [headImg, setHeadImg] = useState('')
 
-  const [current, setCurrent] = useState('use');
+  const [current, setCurrent] = useState('sysIntro');
   type MenuItem = Required<MenuProps>['items'][number];
   const onClick: MenuProps['onClick'] = (e) => {
     console.log('click ', e);
@@ -418,10 +417,10 @@ export default function Setting() {
       label: '护理选项',
       key: 'nurse',
     },
-    {
-      label: '配置翻身流程',
-      key: 'customOption',
-    },
+    // {
+    //   label: '配置翻身流程',
+    //   key: 'customOption',
+    // },
     {
       label: '上传LOGO',
       key: 'loadImg',
@@ -502,6 +501,12 @@ export default function Setting() {
     })
 
   }
+
+//   useEffect(() => {
+//     if (items[0] && items[0].children && items[0].children[0]) {
+//         setCurrent(items[0].children[0].key)
+//     }
+//   }, [items])
 
 
   const project = [
@@ -1775,7 +1780,7 @@ export default function Setting() {
           :
           <div className='setBoxPc'>
             <div className="selectBox">
-              <Menu onClick={onClick} selectedKeys={[current]} mode="inline" items={items} />
+              <Menu defaultOpenKeys={[items[0].key]} onClick={onClick} selectedKeys={[current]} mode="inline" items={items} />
               <div className='loginOut' onClick={showDrawer}>
                 <div className="loginOutButton">退出登录</div>
               </div>

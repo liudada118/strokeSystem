@@ -418,7 +418,9 @@ export default function DayReport() {
     }
 
     setDayReport(true)
-    if (data.sleeping_position[0]) data.sleeping_position[0] = data.sleeping_position[0].some((a: number) => a < 0) ? new Array(16).fill(0) : data.sleeping_position[0]
+    if (data.sleeping_position[0]) {
+        data.sleeping_position[0] = data.sleeping_position.some((a: number) => a < 0) ? new Array(16).fill(0) : data.sleeping_position[0]
+    }
 
     let pos = 0
     for (let i = 1; i < data.sleeping_position[0].length; i++) {

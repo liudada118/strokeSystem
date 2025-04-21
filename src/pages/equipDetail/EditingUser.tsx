@@ -18,6 +18,9 @@ import { FormType } from "../../components/CommonFormModal";
 import CommonNavBar from "../../components/CommonNavBar";
 import dayjs from "dayjs";
 import plus from "../../assets/images/plus.png";
+import './mobileEdit/nursingPlan/index.scss'
+import './mobileEdit/nursingPlan/nurseList/index.scss'
+import '@/pages/equipDetail/mobileEdit/nursingPlan/nurseList/index.scss'
 
 import mobileRemind from "@/assets/image/mobileRemindBig.png";
 import mobileEquiptype from "@/assets/image/mobileEquiptypeBig.png";
@@ -165,9 +168,8 @@ const PersonalInfo = (props: any) => {
           className="img"
           style={{
             position: "absolute",
-            background: `url(${
-              userInfo.headImg ? userInfo.headImg : nullImg
-            })  center center / cover no-repeat`,
+            background: `url(${userInfo.headImg ? userInfo.headImg : nullImg
+              })  center center / cover no-repeat`,
             cursor: "pointer",
             height: "5rem",
             width: "5rem",
@@ -207,7 +209,7 @@ const PersonalInfo = (props: any) => {
                   .then((res) => {
                     const img = res.data.data.src;
                     message.success("上传成功");
-                    modifyUserInfo({headImg: img})
+                    modifyUserInfo({ headImg: img })
                   })
                   .catch((err) => {
                     // message.error(err.error)
@@ -488,7 +490,7 @@ export const personalOtherInfoObj: any = {
   },
   equipType: {
     img: mobileEquiptype,
-    title: "设备类型设置",
+    title: "设备类型",
     component: <EquipTypeEdit />,
   },
 };

@@ -120,6 +120,10 @@
   font-family: 'PingFang SC';
 }
 
+.calendar-custom {
+  height: 27.8rem;
+}
+
 @media screen and (min-width: 940px) {
   .messageTitlediv2 {
     width: 600px;
@@ -246,7 +250,6 @@
     border-radius: 0.4rem;
     background: #F5F8FA;
     width: 76%;
-    z-index: 100;
   }
   .MessageYiDongDivInput .MessageYiDOngTitlesearchSelect {
     cursor: pointer;
@@ -295,8 +298,6 @@
     height: 4.5rem;
     background: #fff;
     font-size: 14px;
-    /* 999 */
-    /* z-index: 1; */
     align-items: center;
     overflow-x: auto;
     scrollbar-width: none;

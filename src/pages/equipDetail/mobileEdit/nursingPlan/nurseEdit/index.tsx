@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import "./index.scss";
+// import "./index.css";
+import '../nurseEdit/nurseEditList.scss'
 import { selectEquipBySensorname } from "@/redux/equip/equipSlice";
 import { useSelector } from "react-redux";
 import {
@@ -14,7 +15,7 @@ import {
 } from "antd";
 import { useLocation, useParams, useNavigate } from "react-router-dom";
 import shan from "../../../../../assets/images/shanjiao.png";
-import { Picker, Popup } from "antd-mobile";
+import { Picker, Popup, Empty } from "antd-mobile";
 import NurseList from "../nurseList/index";
 import { Instancercv } from "@/api/api";
 import {
@@ -27,7 +28,21 @@ import dayjs from "dayjs";
 import { getNurseConfist } from "@/utils/getNursingConfig"
 
 export default function NurseConfEdit(props: any) {
-
+  useEffect(() => {
+    let time: NodeJS.Timeout | null = null;
+    if (time) {
+      clearInterval(time);
+      time = setInterval(() => {
+        // 定时器逻辑
+        window.location.reload();
+      }, 3000);
+    }
+    return () => {
+      if (time) {
+        clearInterval(time); // 使用 clearInterval 清除定时器
+      }
+    };
+  }, []);
   const items = [
     {
       key: "1",
@@ -91,7 +106,7 @@ export default function NurseConfEdit(props: any) {
       },
     }).then((res: any) => {
       if (res.data.code === 0) {
-        let nursingConfig = getNurseConfist(res)
+        let nursingConfig = getNurseConfist(res) as any
         // if (res.data.templateEffectiveFlag == 1) {
         //     nursingConfig = JSON.parse(res.data.nursingConfig || '[]')
         // } else {
@@ -234,15 +249,15 @@ export default function NurseConfEdit(props: any) {
           bodyStyle={{ height: "70vh" }}
         >
           <div className="default-popup">
-            <div className="w-full h-[2rem] mt-[1.35rem] flex items-center ">
+            <div className="w-full h-[2rem] mt-[1.35rem] flex items-center justify-items-center relative">
               <div
                 onClick={() => setIsShowChooseTemp(false)}
-                className="pl-[1.3rem]"
+                className="pl-[1.3rem] absolute top-[0.3rem] left-0"
               >
                 <LeftOutlined />
               </div>
 
-              <Space direction="vertical">
+              <Space direction="vertical" style={{ margin: '0 auto' }}>
                 <Dropdown
                   menu={{ items, onClick: handleDropdownClick }}
                   placement="bottom"
@@ -267,16 +282,17 @@ export default function NurseConfEdit(props: any) {
               </Space>
             </div>
             <NurseList list={tempList}></NurseList>
+
             <Button
               onClick={() => {
                 // yyyyds();
               }}
               type="primary"
               style={{
-                width: "100%",
+                width: "calc(100% - 2rem)",
                 padding: "0 2%",
-                height: "4rem",
-                marginTop: "1rem",
+                height: "2.5rem",
+                margin: "1rem",
               }}
             >
               选择模版

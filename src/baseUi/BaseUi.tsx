@@ -83,8 +83,6 @@ export function CardWithoutTitle(props: any) {
     </div>
   )
 }
-
-
 // export function Card(props: any) {
 //   const { children, title, unheight, mdmb } = props
 //   return (

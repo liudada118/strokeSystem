@@ -373,7 +373,7 @@ function message({ payload, storeApi, data }: any) {
                             }
                         }
 
-                        console.log(arr)
+                        // console.log(arr)
                         /**
                         * 如果报警条件不满足了，那么在点击数组里面删除这个报警
                         */

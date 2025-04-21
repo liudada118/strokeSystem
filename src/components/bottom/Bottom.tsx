@@ -64,7 +64,6 @@ const Bottom = forwardRef((props: bottomProps, refs: any) => {
   const [macType, setMacType] = useState('')
   const windowSize = useWindowSize()
   const tab = useSelector((state: any) => state.nurse.showTabs)
-  console.log(tab, '.....................ataaaaaa');
 
   const dispatch: any = useDispatch()
   /**

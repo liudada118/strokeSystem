@@ -3,47 +3,38 @@ import ImgUpload from '@/components/imgUpload/ImgUpload'
 import { Button, Drawer, Form, Input, message, TimePicker, TimePickerProps } from 'antd'
 import dayjs, { Dayjs } from "dayjs";
 import tuc from 'dayjs/plugin/utc'
-import { instance, Instancercv } from "@/api/api";
+import { instance, Instancercv, netUrl } from "@/api/api";
+import nullImg from "@/assets/image/null.png";
+import axios from 'axios';
+import { compressionFile } from '@/utils/imgCompressUtil';
 dayjs.extend(tuc)
 interface proprsType {
-    careList: any,
+    nurseConfigList: any,
     sensorName: any
-    nurseConfig: string
     recordOpen: boolean
-    onClose: () => void
+    onClose: (val: any) => void
     Time?: any
     type?: string
-    handleChildData?: any
-    currentCare?: any
+    currentNurse?: any
 }
 function Recording(props: proprsType) {
-    const { sensorName, recordOpen, onClose, type, handleChildData, currentCare } = props
+    const { sensorName, onClose, type } = props
     const [recordOpen1, setRecordOpen] = useState<boolean>(props.recordOpen)
-    const [checkedList, setCheckedList] = useState<string[]>([]);
-    const [dataSource, setDataSource] = useState<any>([])
     const [img, setImg] = useState<any>('')
-    const [nurseConfig, setNurseConfig] = useState<any>([{}])
-    const [nurseConfigCopy, setNueseConfigCopy] = useState([{}])
-    const [templateTime, setTemplateTime] = useState("")
+
+    const [uploadImage, setUploadImage] = useState<any>([])
     const [form] = Form.useForm();
     const token = localStorage.getItem('token')
     const format = 'HH:mm';
     /**
      * 添加护理报告
      */
-    console.log();
-
     const handleRecordForm = (values: any) => {
-
-
         if (values) {
             const time = dayjs(values.completionTime).valueOf()
             values.completionTime = time
-            console.log(values, time, props, '................................................................values');
-            const timeString = dayjs(props.currentCare?.timeWithCurrentDate).format("HH:mm");
-            const fullDateTime = dayjs().format("YYYY-MM-DD") + " " + timeString; // 拼接当天日期
-            const dateTime = dayjs(fullDateTime, "YYYY-MM-DD HH:mm:ss").valueOf(); // 转换为 dayjs 对象
-
+            values.uploadImage = JSON.stringify(uploadImage)
+            console.log(time, 'time........time............')
             const dataList = type === '新增一次' ?
                 {
                     did: sensorName,
@@ -54,7 +45,7 @@ function Recording(props: proprsType) {
                 {
                     did: sensorName,
                     timeMillis: new Date().getTime(),
-                    templateTime: props.currentCare.templateTime,
+                    templateTime: props.currentNurse.templateTime,
                     data: JSON.stringify(values),
                 }
             instance({
@@ -68,45 +59,13 @@ function Recording(props: proprsType) {
             }).then((res) => {
 
                 if (res.data.msg == 'insert success') {
-                    handleChildData('新增一次', time)
-                    console.log('000000000000');
                     message.info('添加成功')
-                    onClose()
+                    onClose(true)
                 }
 
             })
         }
     }
-    const onTimeChange: TimePickerProps['onChange'] = (time, timeString) => {
-        console.log(time, timeString);
-        if (typeof timeString == 'string') {
-            const h = parseInt(timeString.split(':')[0])
-            const m = parseInt(timeString.split(':')[1])
-            setTemplateTime(`${h * 60 * 60 * 1000 + m * 60 * 1000}`)
-        }
-    };
-    /**
-     * 添加护理报告
-     */
-    // const addNurseReport = () => {
-    //     instance({
-    //         method: "post",
-    //         url: "/sleep/nurse/addDayNurse",
-    //         headers: {
-    //             "content-type": "application/json",
-    //             "token": token
-    //         },
-    //         data: {
-    //             did: sensorName,
-    //             timeMillis: new Date().getTime(),
-    //             data: JSON.stringify(nurseConfig),
-    //         },
-    //     }).then((res) => {
-    //         console.log(res, '................................................................res');
-    //         message.success('添加成功')
-    //         onClose()
-    //     })
-    // }
     const setImgVal = (url: string) => {
         form.setFieldsValue({ uploadImage: url })
         setImg(url)
@@ -116,53 +75,116 @@ function Recording(props: proprsType) {
             <Drawer
                 width='26rem'
                 className='nurseDrawer'
-                maskClosable={false}
+                // maskClosable={false}
                 title={<span className='text-2xl ' style={{ textAlign: "center" }}>{type === '新增一次' ? '新增一次' : '记录护理项目'}</span>}
                 onClose={() => {
                     form.resetFields()
-                    setCheckedList([])
                     setRecordOpen(false)
-                    onClose()
+                    onClose(false)
                 }}
                 open={recordOpen1}>
                 <Form form={form} onFinish={handleRecordForm}
                     initialValues={{
-                        nurseProject: props.currentCare?.templateTitle,
+                        nurseProject: props.currentNurse?.title,
                         completionTime: dayjs(new Date().getTime())
                     }}
                 >
                     <Form.Item name="nurseProject" label="护理项目:" labelCol={{ style: { fontWeight: "600", fontSize: "0.8rem", marginRight: "1rem" } }} wrapperCol={{ style: { width: "calc(100%-100px)" } }}
                         rules={[{ required: true, message: '请输入护理项目!' }]}
                     >
-                        <Input disabled={props.type === '去完成'} placeholder="请输入所有添加护理项目名称" style={{ borderRadius: "0" }} />
+                        <Input disabled={props.type === '记录护理项目'} placeholder="请输入所有添加护理项目名称" style={{ borderRadius: "0" }} />
                     </Form.Item>
                     <Form.Item name="completionTime" label="完成时间:" labelCol={{ style: { fontWeight: "600", fontSize: "0.8rem", marginRight: "1rem" } }}
                         rules={[
                             { required: true, message: '请选择完成时间!' },
                             {
                                 validator: (_, value) => {
-
                                     if (!value) return Promise.resolve();
                                     const selectedTime: any = dayjs(value).utc().format('HH:mm');
-                                    const isDuplicate = props.careList.some((item: any) => {
-                                        const startTime = dayjs(item.time, 'HH:mm').utc().format('HH:mm');
-                                        return startTime === selectedTime;
-                                    });
-
-                                    if (isDuplicate) {
-                                        return Promise.reject(new Error('护理时间重复，请重新选择！'));
+                                    try {
+                                        const isDuplicate = (Array.isArray(props.nurseConfigList) ? props.nurseConfigList : []).find((item: any) => {
+                                            const startTime = dayjs(item.time, 'HH:mm').utc().format('HH:mm');
+                                            return startTime === selectedTime;
+                                        });
+                                        if (isDuplicate) {
+                                            return Promise.reject(new Error('护理时间重复，请重新选择！'));
+                                        }
+                                    } catch (err) {
+                                        console.log(err, props, 'isDuplicate....111....isDuplicate')
                                     }
                                     return Promise.resolve();
                                 },
                             }
                         ]}
                     >
-                        <TimePicker disabled={props.type === '去完成'} popupClassName="time_picker_box" placeholder='请输入时间' format={format} />
+                        <TimePicker disabled={props.type === '记录护理项目'} popupClassName="time_picker_box" placeholder='请输入时间' format={format} />
                     </Form.Item>
                     <Form.Item name="uploadImage" label="上传图片:" labelCol={{ style: { fontWeight: "600", fontSize: "0.8rem", marginRight: "1rem" } }}
                         rules={[{ required: true, message: '请上传图片!' }]}
                     >
-                        <ImgUpload finish={(val: string) => setImgVal(val)} img={img} />
+                        <span style={{ display: 'flex', flexWrap: 'wrap' }}>
+                            {
+                                uploadImage.map((item: any) => {
+                                    return <img key={item} src={item} alt="" style={{ width: "6rem", height: "6rem", margin: "0 0.5rem 0.5rem 0" }} />
+                                })
+                            }
+                        </span>
+                        <div
+                            className="img"
+                            style={{
+                                position: "relative",
+                                background: `url(${nullImg})  center center / cover no-repeat`,
+                                cursor: "pointer",
+                                height: "6rem",
+                                width: "6rem",
+                            }}
+                        >
+                            <input
+                                type="file"
+                                name="img"
+                                style={{
+                                    opacity: 0,
+                                    position: "absolute",
+                                    width: "100%",
+                                    height: "100%",
+                                    left: '0',
+                                }}
+                                id="img"
+                                onChange={(e) => {
+                                    if (e.target.files) {
+                                        let res = compressionFile(e.target.files[0]);
+                                        res.then((e) => {
+                                            console.log(e, "compressionFile");
+                                            const token = localStorage.getItem("token");
+                                            axios({
+                                                method: "post",
+                                                url: netUrl + "/file/fileUpload",
+                                                headers: {
+                                                    "content-type": "multipart/form-data",
+                                                    token: token,
+                                                },
+                                                data: {
+                                                    file: e,
+                                                },
+                                            })
+                                                .then((res) => {
+                                                    const img = res.data.data.src;
+                                                    message.success("上传成功");
+                                                    setUploadImage([
+                                                        ...uploadImage,
+                                                        img
+                                                    ])
+                                                    setImgVal(img)
+                                                })
+                                                .catch((err) => {
+                                                    // message.error(err.error)
+                                                    // setSpinning(false);
+                                                });
+                                        });
+                                    }
+                                }}
+                            />
+                        </div>
                     </Form.Item>
                     <Form.Item name="notes" label="填写备注:" labelCol={{ style: { fontWeight: "600", fontSize: "0.8rem", marginRight: "1rem" } }} wrapperCol={{ style: { width: "calc(100%-100px)", backgroundColor: "#F5F8FA" } }}>
                         <Input maxLength={20} placeholder="请输入20字内备注内容" />
@@ -170,8 +192,7 @@ function Recording(props: proprsType) {
                     <Form.Item className='flex justify-around w-full'>
                         <Button color="primary" variant="outlined" className='w-[8rem] h-[2.4rem] mr-[10px] text-sm' onClick={() => {
                             form.resetFields()
-                            setCheckedList([])
-                            onClose()
+                            onClose(false)
                         }}>
                             取消
                         </Button>

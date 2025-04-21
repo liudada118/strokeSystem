@@ -49,7 +49,14 @@ export default function UserSheet(props: userSheetProps) {
             message.info('请填写完整信息');
             return;
         }
-
+        if (nurseUser.user === nurseUser.password) {
+            message.info('密码不能与用户名重复！');
+            return;
+        }
+        if (nurseUser.name === nurseUser.password) {
+            message.info('密码不能与护工名重复！');
+            return;
+        }
 
         // 正则表达式匹配密码规则
         if (!passwordRegex.test(nurseUser.password)) return message.info("密码应为8-16位字符，仅支持数字与英文大小写字母。");
@@ -223,7 +230,7 @@ export default function UserSheet(props: userSheetProps) {
     const handleChangePasswordOk = () => {
         console.log(deleteObj)
         if (!checkPassword.test(manPassword)) {
-            return message.info('密码 8-16位，至少1个大写字母，1个小写字母，1个数字和1个特殊字符')
+            return message.info('密码为 8-16位，至少1个大写字母，1个小写字母，1个数字和1个特殊字符')
         }
         setIsModalChangePasswordOpen(false)
         Instancercv({

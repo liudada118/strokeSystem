@@ -17,9 +17,8 @@ import { organizeIdSelect } from "@/redux/premission/premission";
 import shan from "../../../../assets/images/shanjiao.png";
 import { Instancercv, instance } from "@/api/api";
 import NursingStencil from "./nursingStencil";
-import NurseTable from "../../../setting/nurseSetting/NurseSetting";
 import dayjs from "dayjs";
-import {getNurseConfist} from "@/utils/getNursingConfig"
+import { getNurseConfist } from "@/utils/getNursingConfig"
 
 import { setNurseListData } from "@/redux/Nurse/Nurse";
 import yuanquan from "../../../../assets/images/yuanquan.png";
@@ -120,12 +119,12 @@ function NursingOpen(props: propsType) {
       },
     });
     if (res.data.code === 0) {
-        let nursingConfig = getNurseConfist(res)
-    //   if (res.data.templateEffectiveFlag == 1) {
-    //     list = JSON.parse(res.data.nursingConfig || '[]')
-    //   } else {
-    //     list = JSON.parse(res.data.oldTemplate || '[]')
-    //   }
+      let nursingConfig = getNurseConfist(res)
+      //   if (res.data.templateEffectiveFlag == 1) {
+      //     list = JSON.parse(res.data.nursingConfig || '[]')
+      //   } else {
+      //     list = JSON.parse(res.data.oldTemplate || '[]')
+      //   }
       // setPreviewList(nursingConfig)
       return nursingConfig || [];
     } else {
@@ -170,6 +169,9 @@ function NursingOpen(props: propsType) {
       );
       navigator(`/userInfo_NurseTable?sensorName=${sensorName}&type=project`)
     }
+    setHours('小时')
+    setMinutes('分钟')
+    setTemplate('')
   };
   // 之前有模版的添加
   // const addTempNurse = () => {
@@ -400,7 +402,7 @@ function NursingOpen(props: propsType) {
             </div>
           </div>
           <div className="w-[27rem] h-[full] bg-[#fff]">
-            <NurseTable
+            {/* <NurseTable
               name={name}
               templateId={templateId}
               data={rightNurseList || []}
@@ -417,7 +419,7 @@ function NursingOpen(props: propsType) {
                 setRightNurseList(Array.isArray(delList) ? delList : []);
               }}
               saveNurseTemplate={props.saveNurseTemplate}
-            ></NurseTable>
+            ></NurseTable> */}
           </div>
           <Modal
             width={"40.45rem"}

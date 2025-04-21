@@ -7,7 +7,7 @@ import greyNotice from "@/assets/image/greyNotice.png";
 import { Instancercv } from "@/api/api";
 import sheetDelete from "@/assets/images/shanchu.png";
 import { useSelector, useDispatch } from "react-redux";
-import Recording from "@/pages/equipDetail/nurseprocess/recording";
+// import Recording from "@/pages/equipDetail/nurseprocess/recording";
 import { instance } from "../../../api/api";
 import { useGetWindowSize } from "@/hooks/hook";
 import Title from "@/components/title/Title";
@@ -781,7 +781,7 @@ export default function NurseTable(props: tableProps) {
                   <p style={{ textAlign: "center" }}>确认{titleModal}?</p>
                 </Modal>
               }
-              {isFals ? (
+              {/* {isFals ? (
                 <Recording
                   careList={[...listData, ...(data || [])]}
                   recordOpen={isFals}
@@ -797,7 +797,7 @@ export default function NurseTable(props: tableProps) {
                 ></Recording>
               ) : (
                 ""
-              )}
+              )} */}
             </div>
           </div>
         </>
@@ -1208,7 +1208,7 @@ export default function NurseTable(props: tableProps) {
                     <p style={{ textAlign: "center" }}>确认{titleModal}?</p>
                   </Modal>
                 }
-                {isFals ? (
+                {/* {isFals ? (
                   <Recording
                     careList={[...listData, ...(data || [])]}
                     recordOpen={isFals}
@@ -1224,7 +1224,7 @@ export default function NurseTable(props: tableProps) {
                   ></Recording>
                 ) : (
                   ""
-                )}
+                )} */}
               </div>
             </div>
           </div>

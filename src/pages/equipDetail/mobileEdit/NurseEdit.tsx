@@ -23,7 +23,7 @@ import CommonTitle from "@/components/CommonTitle";
 import { useGetWindowSize } from "@/hooks/hook";
 import NursingStencil from "../nurseprocess/nursingOpen/nursingStencil";
 import NursingOpen from "../nurseprocess/nursingOpen/nursingOpen";
-import {getNurseConfist} from "@/utils/getNursingConfig"
+import { getNurseConfist } from "@/utils/getNursingConfig"
 
 const CheckboxGroup = Checkbox.Group;
 
@@ -224,11 +224,11 @@ export function NurseEdit() {
     }).then((res) => {
       console.log(res.data, "resssssssss");
       let nursingConfig = getNurseConfist(res)
-    //   if (res.data.templateEffectiveFlag == 1) {
-    //       nursingConfig = JSON.parse(res.data.nursingConfig || '[]')
-    //   } else {
-    //       nursingConfig = JSON.parse(res.data.oldTemplate || '[]')
-    //   }
+      //   if (res.data.templateEffectiveFlag == 1) {
+      //       nursingConfig = JSON.parse(res.data.nursingConfig || '[]')
+      //   } else {
+      //       nursingConfig = JSON.parse(res.data.oldTemplate || '[]')
+      //   }
       console.log(nursingConfig);
       setNurseConfig(nursingConfig || []);
     });
@@ -257,7 +257,7 @@ export function NurseEdit() {
         }}
         className="w-full m-auto mt-[15px] py-[16px] bg-[#0072EF] flex items-center justify-center text-[#fff] text-base rounded-[10px]"
       >
-        创建护理计划111
+        创建护理计划
         <img src={nurseAdd} className="w-[1rem] ml-[5px]" alt="" />
       </div>
       <div
@@ -935,19 +935,19 @@ function RenderNurseConfig({
               <Space className="w-full" direction="vertical">
                 {arr
                   ? arr.map((item: nurseSelectItemParam, itemIndex: number) => {
-                      return (
-                        <div
-                          className="relative flex"
-                          key={itemIndex + "radio"}
-                        >
-                          <div className="flex">
-                            <Radio className="pl-[5px]" value={item.value}>
-                              {item.value}
-                            </Radio>
-                          </div>
+                    return (
+                      <div
+                        className="relative flex"
+                        key={itemIndex + "radio"}
+                      >
+                        <div className="flex">
+                          <Radio className="pl-[5px]" value={item.value}>
+                            {item.value}
+                          </Radio>
                         </div>
-                      );
-                    })
+                      </div>
+                    );
+                  })
                   : ""}
               </Space>
             </Radio.Group>
@@ -967,143 +967,6 @@ function RenderNurseConfig({
               <Space className="w-full" direction="vertical">
                 {arr
                   ? arr.map((item: nurseSelectItemParam, itemIndex: number) => {
-                      return (
-                        <div className="relative flex items-center justify-center">
-                          <input
-                            key={item.id}
-                            value={item.value}
-                            onChange={(e) => {
-                              const value = e.target.value;
-                              changeItemValue({
-                                type: EditType.EDIT,
-                                value,
-                                index,
-                                itemIndex,
-                              });
-                            }}
-                            className="w-full leading-5 text-base py-[8px] rounded-[10px] pl-[25px]"
-                            type="text"
-                            placeholder={`输入${nurseItemIncludeChild[0].text}选项`}
-                          />
-                          <div className="flex justify-between items-center">
-                            <Radio
-                              className="absolute left-[5px]"
-                              value={item.value}
-                            ></Radio>
-                            {editItem ? (
-                              <div className="flex absolute right-[5px]">
-                                {itemIndex == arr.length - 1 ? (
-                                  <div
-                                    onClick={() => {
-                                      changeItemValue({
-                                        type: EditType.ADDITEM,
-                                        index,
-                                        itemIndex,
-                                      });
-                                    }}
-                                    className="mr-[10px]"
-                                  >
-                                    <img
-                                      src={nurseItemAdd}
-                                      className="w-[16px]"
-                                      alt=""
-                                    />
-                                  </div>
-                                ) : (
-                                  ""
-                                )}
-                                <div
-                                  onClick={() => {
-                                    changeItemValue({
-                                      type: EditType.DELETEITEM,
-                                      index,
-                                      itemIndex,
-                                    });
-                                  }}
-                                >
-                                  <img
-                                    src={nurseItemDelete}
-                                    className="w-[16px]"
-                                    alt=""
-                                  />
-                                </div>
-                              </div>
-                            ) : (
-                              ""
-                            )}
-                          </div>
-                        </div>
-                      );
-                    })
-                  : ""}
-              </Space>
-            </Radio.Group>
-          </Card>
-        );
-      }
-
-    case ConfigType.MULE:
-      if (display) {
-        return (
-          <Card
-            display={display}
-            changeItemValue={changeItemValue}
-            type={type}
-            index={index}
-            editItem={editItem}
-            setEditItem={setEditItem}
-            title={`${index + 1}.${title}(多选)`}
-          >
-            <Space direction="vertical">
-              <Checkbox
-                className="pl-[5px]"
-                onChange={onCheckAllChange}
-                checked={checkAll}
-              >
-                全选
-              </Checkbox>
-              {arr
-                ? arr.map((item: nurseSelectItemParam, itemIndex: number) => {
-                    return (
-                      <div className="relative">
-                        <div className="flex pl-[5px]">
-                          <Checkbox
-                            onChange={(e) => {
-                              itemChange(e, item.value);
-                            }}
-                            className=" left-[5px]"
-                            checked={checkArr.includes(item.value)}
-                          >
-                            {item.value}
-                          </Checkbox>
-                        </div>
-                      </div>
-                    );
-                  })
-                : ""}
-            </Space>
-          </Card>
-        );
-      } else {
-        return (
-          <Card
-            changeItemValue={changeItemValue}
-            type={type}
-            index={index}
-            editItem={editItem}
-            setEditItem={setEditItem}
-            title={`${index + 1}.${title}(多选)`}
-          >
-            <Space direction="vertical">
-              <Checkbox
-                className="pl-[5px]"
-                onChange={onCheckAllChange}
-                checked={checkAll}
-              >
-                全选
-              </Checkbox>
-              {arr
-                ? arr.map((item: nurseSelectItemParam, itemIndex: number) => {
                     return (
                       <div className="relative flex items-center justify-center">
                         <input
@@ -1120,16 +983,13 @@ function RenderNurseConfig({
                           }}
                           className="w-full leading-5 text-base py-[8px] rounded-[10px] pl-[25px]"
                           type="text"
-                          placeholder={`输入${nurseItemIncludeChild[1].text}选项`}
+                          placeholder={`输入${nurseItemIncludeChild[0].text}选项`}
                         />
                         <div className="flex justify-between items-center">
-                          <Checkbox
-                            onChange={(e) => {
-                              itemChange(e, item.value);
-                            }}
+                          <Radio
                             className="absolute left-[5px]"
-                            checked={checkArr.includes(item.value)}
-                          ></Checkbox>
+                            value={item.value}
+                          ></Radio>
                           {editItem ? (
                             <div className="flex absolute right-[5px]">
                               {itemIndex == arr.length - 1 ? (
@@ -1175,6 +1035,146 @@ function RenderNurseConfig({
                       </div>
                     );
                   })
+                  : ""}
+              </Space>
+            </Radio.Group>
+          </Card>
+        );
+      }
+
+    case ConfigType.MULE:
+      if (display) {
+        return (
+          <Card
+            display={display}
+            changeItemValue={changeItemValue}
+            type={type}
+            index={index}
+            editItem={editItem}
+            setEditItem={setEditItem}
+            title={`${index + 1}.${title}(多选)`}
+          >
+            <Space direction="vertical">
+              <Checkbox
+                className="pl-[5px]"
+                onChange={onCheckAllChange}
+                checked={checkAll}
+              >
+                全选
+              </Checkbox>
+              {arr
+                ? arr.map((item: nurseSelectItemParam, itemIndex: number) => {
+                  return (
+                    <div className="relative">
+                      <div className="flex pl-[5px]">
+                        <Checkbox
+                          onChange={(e) => {
+                            itemChange(e, item.value);
+                          }}
+                          className=" left-[5px]"
+                          checked={checkArr.includes(item.value)}
+                        >
+                          {item.value}
+                        </Checkbox>
+                      </div>
+                    </div>
+                  );
+                })
+                : ""}
+            </Space>
+          </Card>
+        );
+      } else {
+        return (
+          <Card
+            changeItemValue={changeItemValue}
+            type={type}
+            index={index}
+            editItem={editItem}
+            setEditItem={setEditItem}
+            title={`${index + 1}.${title}(多选)`}
+          >
+            <Space direction="vertical">
+              <Checkbox
+                className="pl-[5px]"
+                onChange={onCheckAllChange}
+                checked={checkAll}
+              >
+                全选
+              </Checkbox>
+              {arr
+                ? arr.map((item: nurseSelectItemParam, itemIndex: number) => {
+                  return (
+                    <div className="relative flex items-center justify-center">
+                      <input
+                        key={item.id}
+                        value={item.value}
+                        onChange={(e) => {
+                          const value = e.target.value;
+                          changeItemValue({
+                            type: EditType.EDIT,
+                            value,
+                            index,
+                            itemIndex,
+                          });
+                        }}
+                        className="w-full leading-5 text-base py-[8px] rounded-[10px] pl-[25px]"
+                        type="text"
+                        placeholder={`输入${nurseItemIncludeChild[1].text}选项`}
+                      />
+                      <div className="flex justify-between items-center">
+                        <Checkbox
+                          onChange={(e) => {
+                            itemChange(e, item.value);
+                          }}
+                          className="absolute left-[5px]"
+                          checked={checkArr.includes(item.value)}
+                        ></Checkbox>
+                        {editItem ? (
+                          <div className="flex absolute right-[5px]">
+                            {itemIndex == arr.length - 1 ? (
+                              <div
+                                onClick={() => {
+                                  changeItemValue({
+                                    type: EditType.ADDITEM,
+                                    index,
+                                    itemIndex,
+                                  });
+                                }}
+                                className="mr-[10px]"
+                              >
+                                <img
+                                  src={nurseItemAdd}
+                                  className="w-[16px]"
+                                  alt=""
+                                />
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                            <div
+                              onClick={() => {
+                                changeItemValue({
+                                  type: EditType.DELETEITEM,
+                                  index,
+                                  itemIndex,
+                                });
+                              }}
+                            >
+                              <img
+                                src={nurseItemDelete}
+                                className="w-[16px]"
+                                alt=""
+                              />
+                            </div>
+                          </div>
+                        ) : (
+                          ""
+                        )}
+                      </div>
+                    </div>
+                  );
+                })
                 : ""}
             </Space>
           </Card>

@@ -305,7 +305,7 @@ const UserInfoCard: (props: UserInfoCardProps) => React.JSX.Element = (props) =>
         let cloudObj = {
             ...userInfo, ...newObj
         }
-        console.log(cloudObj, 'cloudObj......1111111')
+
         // setUserInfo(cloudObj)
         getuserInfo()
     }
@@ -418,6 +418,7 @@ const UserInfoCard: (props: UserInfoCardProps) => React.JSX.Element = (props) =>
             data[item.key] = item.value
         })
     }, [userModal])
+    const roleId: any = localStorage.getItem('roleId')
     const handleClickUserEdit = () => {
         if (isMobile) {
             navigate('/userInfo_editing', { state: { sensorName, type: 'personal', userModal } })
@@ -426,6 +427,7 @@ const UserInfoCard: (props: UserInfoCardProps) => React.JSX.Element = (props) =>
 
         }
     }
+
     if (outer) {
         return (
             <div
@@ -448,10 +450,12 @@ const UserInfoCard: (props: UserInfoCardProps) => React.JSX.Element = (props) =>
                         </span> */}
                     </div>
                     {/* <img src={arrow} alt="" className='w-[8px] h-[12px] mb-[10px]'/> */}
+                    {
+                        roleId == 1 && 2 ? <p style={{ fontSize: "20px" }} onClick={() => navigate(`/equipInfo/${sensorName}`)} >
+                            设置
+                        </p> : ""
+                    }
 
-                    <p style={{ fontSize: "20px" }} onClick={() => navigate(`/equipInfo/${sensorName}`)} >
-                        设置
-                    </p>
                 </div>
             </div>
         )
@@ -464,7 +468,7 @@ const UserInfoCard: (props: UserInfoCardProps) => React.JSX.Element = (props) =>
             console.log('euqren')
         }
     }
-    const roleId: any = localStorage.getItem('roleId')
+
     return (
 
         <Fragment>

@@ -15,7 +15,7 @@ import { PersonalContentInfo } from "@/pages/equipDetail/EditingUser";
 import loog from '../../../../assets/images/logo.png'
 import jiaHao from '../../../../assets/images/image copy 2.png'
 import { getNurseConfist } from "@/utils/getNursingConfig"
-import "./index.scss";
+import "./index.css";
 const { confirm } = Modal;
 export default function NursingPlan() {
   const param = useParams();
@@ -82,9 +82,10 @@ export default function NursingPlan() {
         phoneNum: localStorage.getItem('phone')
       }
     }).then((res: any) => {
-      console.log(res.data, '......................qweqweqwe');
 
-      setSensorName(res.data.data)
+
+      setSensorName(res.data.data.patientName)
+      console.log(res.data.data.patientName, '......................qweqweqwe');
     })
   }, []);
   console.log(sensorNameUser, '....................sensorNameUsersensorNameUsersensorNameUser');
@@ -158,6 +159,8 @@ export default function NursingPlan() {
     });
   };
 
+
+
   return (
     <>
       <div className="nurse_header_logo">
@@ -195,7 +198,7 @@ export default function NursingPlan() {
           <>
             <div className="title">
               <p>
-                <span className="text-[1rem]">的护理计划</span>
+                <span className="text-[1rem]">{sensorNameUser}的护理计划</span>
                 {operType === "init" && (
                   <span
                     className="mr-[1rem] cursor-pointer"

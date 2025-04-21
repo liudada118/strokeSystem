@@ -140,6 +140,9 @@ const addUseModla = forwardRef((props: addUseModlaProps, ref) => {
      * 确认添加设备弹窗
      */
     const handleOk = () => {
+        if (didData.length > 0) {
+            return message.info('当前设备已存在，请勿重复添加！')
+        }
         if (!userinfo.patientName) {
             return message.info('请输入姓名')
         } else if (!userinfo.roomNum) {
@@ -164,7 +167,6 @@ const addUseModla = forwardRef((props: addUseModlaProps, ref) => {
                 console.log(userinfo['did'].length)
                 message.error('请输入正确的mac地址')
             } else {
-                // if(Object.values(userinfo).some((a)))
                 addEquip()
                 setIsModalOpen(false);
             }
@@ -274,6 +276,7 @@ const addUseModla = forwardRef((props: addUseModlaProps, ref) => {
      * 扫码
      */
     function handleScan(multiple: boolean) {
+        console.log('99999999999......')
         show({
             multiple,
             onOk: (code: any, close) => {
@@ -406,7 +409,7 @@ const addUseModla = forwardRef((props: addUseModlaProps, ref) => {
         <>
             <Modal title="为新设备添加信息" okText="确定" cancelText="取消" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
                 <div style={{ display: 'flex', alignItems: 'center' }} className='deviceItem'><div style={{ width: '4rem', }}> 头像:</div>
-                    <ImgUpload img={userinfo.img} finish={loadImg} />
+                    <span><ImgUpload img={userinfo.img} finish={loadImg} /></span>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }} className='deviceItem'>
                     <div className="deviceTitle">设备号:</div>

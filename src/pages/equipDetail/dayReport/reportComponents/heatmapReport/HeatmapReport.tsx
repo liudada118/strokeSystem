@@ -62,7 +62,9 @@ function HeatmapReport(props: heatmapProps) {
 
             if (heatMapRef.current && res.data.data.length) {
                 setHeatmapData((res.data.data))
-                heatMapRef.current.bthClickHandle(JSON.parse(res.data.data[0].data))
+                console.log('8888888888888..............')
+                const listData = Array.isArray(res.data?.data[0]?.data) ? res.data?.data[0]?.data : JSON.parse(res.data?.data[0]?.data || '[]')
+                heatMapRef.current.bthClickHandle(listData)
                 setProgressTime(dayjs(res.data.data[0].timeMills).format('HH:mm'))
             } else {
                 setHeatmapData([{ data: new Array(1024).fill(0) }])
@@ -147,7 +149,8 @@ function HeatmapReport(props: heatmapProps) {
     const renderDate = (value: any) => {
         if (heatmapData[value] && heatmapData[value].data) {
             if (heatMapRef.current) {
-                heatMapRef.current.bthClickHandle(JSON.parse(heatmapData[value].data))
+                const heatmapDataList = Array.isArray(heatmapData[value]?.data) ? heatmapData[value]?.data : JSON.parse(heatmapData[value]?.data)
+                heatMapRef.current.bthClickHandle(heatmapDataList)
                 setProgressTime(dayjs(heatmapData[value].timeMills).format('HH:mm'))
             }
         } else {

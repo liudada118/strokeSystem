@@ -1,11 +1,14 @@
 import { selectEquipBySensorname } from "@/redux/equip/equipSlice";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useLocation, useParams, useNavigate } from "react-router-dom";
-import "./index.scss";
+import shijian1 from '@/assets/images/shijian.png'
+
+import { Picker, Popup, Empty } from "antd-mobile";
+// import "./index.css";
+import './index.scss'
 
 export default function NurseList(props: any) {
-  console.log(props, '.....................propspropspropsprops');
   const columsList = [
     {
       title: "时间",
@@ -25,9 +28,26 @@ export default function NurseList(props: any) {
       dataIndex: "del",
     },
   ];
+  useEffect(() => {
+    let time: any = null;
+    if (time) {
+      clearInterval(time);
+      time = setInterval(() => {
+        // 定时器逻辑
+        window.location.reload();
+      }, 3000);
+    }
+    console.log('111122');
+
+    return () => {
+      if (time) {
+        clearInterval(time); // 使用 clearInterval 清除定时器
+      }
+    };
+  }, []);
   return (
-    <div className="nurse_scroll">
-      <div className="nurse_list">
+    <div className={'nurse_scroll'}>
+      <div className={'nurse_list'}>
         <div className="list_item">
           {columsList.map((item, index) => {
             if (props.operType !== "add" && item.title === "删除") return "";
@@ -41,11 +61,12 @@ export default function NurseList(props: any) {
           .map((item: any, index: number) => {
             return (
               <div key={"list_" + index} className="list_item is_line">
-                <p>
+                <p style={{ display: "flex" }}>
                   <span>{item.time}</span>
                   <span>{index + 1}</span>
                 </p>
-                <p>{item.title}</p>
+                <p className="flex items-center">
+                  <img className='w-[1rem] h-[1rem] mt-[0.3rem] mr-3' src={shijian1} alt="" />{item.title}</p>
                 <p>
                   <span style={{ color: props.operType === "init" ? "#ffff" : "#929EAB" }}>
                     {item.status || item.status === "todo"
@@ -59,6 +80,14 @@ export default function NurseList(props: any) {
               </div>
             );
           })}
+
+        {
+          props.list.length === 0 && <Empty
+            style={{ padding: '64px 0' }}
+            imageStyle={{ width: 128 }}
+            description='暂无护理计划，请添加'
+          />
+        }
       </div>
     </div>
   );

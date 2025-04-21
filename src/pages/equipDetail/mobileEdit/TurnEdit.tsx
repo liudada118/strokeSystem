@@ -49,13 +49,13 @@ export function TurnEdit() {
         {
             type: FormType.SECONDRATE,
             objKey: "timeRangeA",
-            label: '翻身次数',
+            label: '设置翻身次数',
             title: '设置翻身次数'
         },
         {
             type: FormType.TIME_INTERVAL,
             objKey: "timeIntervalA",
-            label: '翻身间隔',
+            label: '设置翻身间隔',
             title: '设置翻身间隔'
         },
     ]
@@ -67,7 +67,7 @@ export function TurnEdit() {
             flipbodyCount: parseInt(newValue.timeRangeA),
             flipbodyTime: parseInt(newValue.timeIntervalA) * 60
         }
-     
+
         // 开关关闭后  设置次数为0
         if (!newValue.switchA) {
             obj.flipbodyCount = 0
@@ -153,7 +153,7 @@ export function TurnEdit() {
                 title={pickerInfo.title}
                 value={pickerInfo.value}
                 onConfirm={v => {
-             
+
                     const result = v.length > 1 ? `${v[0]}:${v[1]} - ${v[2]}:${v[3]}` : v[0]
                     submitCloud({
                         ...formValue,

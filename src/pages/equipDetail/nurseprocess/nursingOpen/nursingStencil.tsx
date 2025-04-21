@@ -4,9 +4,13 @@ import { Instancercv } from "@/api/api";
 import { Button } from 'antd';
 import { nurseIsOpenAdd } from '../../../../redux/Nurse/Nurse'
 import { useDispatch } from 'react-redux'
-import NurseTable from '../../../setting/nurseSetting/NurseSetting'
 import { useGetWindowSize } from '@/hooks/hook'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
+import { getNurseConfist } from "@/utils/getNursingConfig"
+import PCNurseList from "../nurseConf/nurseList/index";
+import NurseEdit from "../nurseConf/nurseEdit/index";
+import img from '@/assets/images/nurseChuangjian.png'
+import { PlusCircleOutlined } from "@ant-design/icons";
 import './NursingOpen.scss'
 interface propsType {
     sensorName?: any,
@@ -14,14 +18,15 @@ interface propsType {
     nursePersonTemplate?: any,
     statue?: number,
     title?: string,
-    stylee?: string
+    stylee?: any
 }
 function NursingStencil(props: propsType) {
-    const { type, nursePersonTemplate, statue, title, sensorName, stylee } = props
-    const windowSize = useGetWindowSize()
     const dispatch = useDispatch()
+    const param = useParams()
+    const sensorName = param.id
     const [name, setName] = useState<any>('');
-    const navigate = useNavigate()
+    const [nurseConfigList, setNurseConfigList] = useState<any>([])
+    const [isModifyNurse, setIsModifyNurse] = useState<any>(false)
     useEffect(() => {
         Instancercv({
             method: "get",
@@ -38,94 +43,67 @@ function NursingStencil(props: propsType) {
             setName(res.data.data.patientName || '[]')
         })
     }, []);
-    const dian = () => {
-        dispatch(nurseIsOpenAdd(true))
+
+    const gotoEditNurse = () => {
+        setIsModifyNurse(true)
     }
-    const yyyyds = () => {
-        navigate(`/userInfo_NurseTable?sensorName=${sensorName}&type=project`)
+
+    const getNurseConfigfist = () => {
+        Instancercv({
+            method: "get",
+            url: "/nursing/getNursingConfig",
+            headers: {
+                "content-type": "multipart/form-data",
+                "token": localStorage.getItem('token')
+            },
+            params: {
+                deviceId: sensorName
+            }
+        }).then((res) => {
+            let nursingConfig = getNurseConfist(res);
+            console.log(nursingConfig, 'nursingConfignursingConfignursingConfignursingConfignursingConfig.....')
+            setNurseConfigList(nursingConfig)
+        })
     }
+
+    /**
+     * 请求护理配置
+     */
+    useEffect(() => {
+        getNurseConfigfist()
+    }, [])
     return (
         <>
             {
-                !windowSize ? <>{
-                    statue === 1 ? <div className='w-[25rem] text-[#32373E] font-semibold text-2xl ' style={{ margin: '2rem 0 0 3rem' }}>
-                        {name}护理项
-                    </div> : ''
-                }
-                    <div className={`NursingStencil w-full h-full mt-[1rem]`} style={{ height: statue === 2 ? 'calc(100% - 3rem)' : 'calc(100% - 5rem)' }}>
-                        <div className={`w-[full] h-[2.1rem] bg-[#F5F8FA] rounded flex items-center mt-[1rem] ml-[1rem] mr-[1rem]`}>
-                            <div className='mr-[3.2rem] text-center' style={{ width: statue == 1 ? '12.4rem' : "7rem", fontSize: "0.75rem", marginRight: statue ? '3.2rem' : "1.2rem" }}>时间</div>
-                            <div className='flex-1 text-left' style={{ fontSize: "0.75rem" }} >护理任务</div>
-                            <div className={'w-[4.3rem] mr-[0.3rem] text-center'} style={{ fontSize: "0.75rem" }}> 状态</div>
-                        </div>
-                        <div className={` h-full w-[full] scrollbar ml-[1rem] mr-[1rem]`} style={{ height: statue === 2 ? 'calc(100% - 3.3rem)' : 'calc(100% - 8.3rem)' }}>
-                            <div className='' style={{ overflowY: "auto", borderBottom: "solid 1px #D8D8D8", width: '100%', height: '100%' }}>
-                                {
-                                    Array.isArray(nursePersonTemplate) ? (nursePersonTemplate || []).map((item: any, index: number) => {
-                                        return (
-                                            <div key={index} className='flex nursingStencildivBox' style={{ backgroundColor: statue === 1 ? "#fff" : "#fff", }}>
-                                                <div className={`${statue == 2 ? "nursingStencildiv1" : 'nursingStencildiv'}  flex mr-[1.5rem]`} style={{ lineHeight: "4rem", width: statue == 1 ? '12.4rem' : "7rem" }}>
-                                                    <div className='w-[2.7rem] h-[0.7rem] text-[0.9rem] text-[#32373E] mt-[0.2rem] ml-[2.1rem] mr-[0.9rem]' style={{ marginLeft: statue == 1 ? '3rem' : '2.1rem', width: statue === 2 ? '2.7rem' : '2.7rem' }}>{item.time}</div>
-                                                    <div className='w-[1.3rem] h-[1.3rem] rounded-md text-[#fff] bg-[#D1D9E1] flex items-center justify-center' style={{ borderRadius: "1.37rem", position: 'relative', top: '1.6rem', }}>{index + 1}</div>
-                                                </div>
-                                                <div className='qx flex-1 flex  pt-[1.4rem] pm-[1.5rem]' style={{ borderBottom: index === nursePersonTemplate.length ? 'none' : "solid 1px #D8D8D8", }}>
-                                                    <div className='flex flex-1 mr-[0.8rem]' style={{ width: statue == 1 ? '10rem' : "" }}>
-                                                        <img className='w-[1rem] h-[1rem] mt-[0.33rem] mr-3' src={shijian1} alt="" />
-                                                        <div className='text-[#32373E] text-[1rem] font-medium mt-[0.1rem]' style={{ width: stylee == '1' ? '15rem' : '5rem' }}>{item.title}</div>
-                                                    </div>
-                                                    <div className='w-[3.5rem] h-[2rem] pm-[1rem]  flex items-center  text-[#929EAB] bg-[#E6EBF0] text-[0.8rem] rounded-md  font-medium justify-center mr-[0.5rem]'>待完成</div>
-                                                </div>
-                                            </div>
-                                        )
-                                    }) : []
-                                }
-                            </div >
-                        </div>
-                    </div >
+                !isModifyNurse ? <div className="nursingStencil h-full">
                     {
-                        statue === 1 ? <Button onClick={dian}
-                            className="h-[2rem] w-[10rem]" type='primary' style={{ position: 'absolute', bottom: '2rem', right: '2rem', }}>
-                            修改当前模版
-                        </Button >
-                            : ''
+                        nurseConfigList.length === 0 ? <div className="empty_nurse_box" style={{ textAlign: "center" }}>
+                            <p style={{ width: "15.5", display: ' flex', justifyContent: 'space-evenly' }}>
+                                <img style={{ width: "4.2rem", height: "5.2rem" }} src={img} alt="" />
+                            </p>
+                            <p className="mb-[1rem] text-[1.15rem] text-[#A4B0BC]">
+                                当前无护理计划
+                            </p>
+                            <Button onClick={() => setIsModifyNurse(true)} type="primary" className="h-[3rem] w-[15.5rem] text-[1rem]"><PlusCircleOutlined />创建护理项</Button>
+                        </div>
+                            : <>
+
+                                <div className='w-[25rem] text-[#32373E] font-semibold text-2xl ' style={{ margin: '0rem 0 0 3rem', paddingTop: '2rem' }}>
+                                    {name}护理项
+                                </div>
+                                <div className={`nurse_list_box`}>
+                                    <PCNurseList list={nurseConfigList || []} extParams={{ isShowTime: true, className: 'preview' }} />
+                                </div >
+                                <Button onClick={gotoEditNurse}
+                                    className="h-[2.5rem] w-[10rem]" type='primary' style={{ position: 'absolute', bottom: '2rem', right: '2rem', }}>
+                                    修改当前模版
+                                </Button >
+                            </>
                     }
-                </>
-                    : <div className={`NursingStencil w-full h-full mt-[1rem]`} >
-                        <div className={`w-[94%] h-[4rem] bg-[#F5F8FA] rounded flex items-center mx-[3%] rounded-md justify-between`} >
-                            <div style={{ fontSize: "1.2rem", width: "20%", textAlign: "center" }}>时间</div>
-                            <div style={{ fontSize: "1.2rem", width: '40%', textAlign: "center" }} >护理内容</div>
-                            <div style={{ fontSize: "1.2rem", width: '20%', textAlign: "center" }}> 状态</div>
-                        </div>
-                        {/* // nursingStencil.tsx */}
-                        <div style={{ width: '94%', margin: "0 3%", height: "30rem", overflow: 'hidden' }}>
-                            <div style={{ height: "22rem", overflowY: "auto" }}>
-                                {
-                                    Array.isArray(nursePersonTemplate) ? (nursePersonTemplate || []).map((item: any, index: number) => {
-                                        return (
-                                            <div key={index} className='' style={{ display: "flex" }}>
-                                                <div className={`${statue == 1 ? "nursingStencildiv1yidong" : 'nursingStencildivyidong'} flex w-[30%]`} style={{ lineHeight: "4rem" }}>
-                                                    <div className='w-[50%] h-[0.7rem] text-[1.2rem] text-[#32373E] mt-[0.2rem] ml-[2.1rem] mr-[rem]' style={{ marginLeft: statue == 1 ? '' : '1.4rem' }}>{item.time}</div>
-                                                    <div className='w-[1.5rem] h-[1.5rem] rounded-md text-[#fff] bg-[#D1D9E1] flex items-center justify-center' style={{ borderRadius: "1.37rem", position: 'relative', top: '1.5rem', alignItems: "center" }}>{index + 1}</div>
-                                                </div>
-                                                <div className='qx flex py-6' style={{ borderBottom: index === nursePersonTemplate.length - 1 ? 'none' : "solid 1px #D8D8D8", width: '80%' }}>
-                                                    <div className='flex' style={{ width: "70%", marginLeft: "2rem" }}>
-                                                        <img className='w-[1rem] h-[1rem] mt-[0.3rem] mr-3' src={shijian1} alt="" />
-                                                        <div className='text-[#32373E] text-[1.4rem] font-medium' style={{ width: stylee == '1' ? '15rem' : '5rem' }}>{item.title}</div>
-                                                    </div>
-                                                    <div className='w-[5rem] h-[2.7rem] flex items-center text-[#929EAB] bg-[#E6EBF0] text-[1.2rem] rounded-md font-medium justify-center'>待完成</div>
-                                                </div>
-                                            </div>
-                                        )
-                                    }) : ''
-                                }
-                            </div>
-                            <Button onClick={() => {
-                                yyyyds()
-                            }} type='primary' style={{ width: "100%", padding: "0 2%", height: "4rem", marginTop: "1rem" }}>选择模版</Button>
-                        </div>
-                    </div >
+                </div> : <NurseEdit nurseList={nurseConfigList || []} sensorName={sensorName} name={name} />
             }
         </>
+
     )
 }
 

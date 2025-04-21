@@ -111,7 +111,7 @@ export default function TurnReport(props: PropsType) {
                 // console.log(res.data.data, '999999997777777')
                 const data = res.data.data
                 const { startMatrix, endMatrix, posture, extra, did, remark, timeMillsEnd, timeMills, id } = data
-                console.log(data, 'data...1111..')
+                console.log(data, extra, 'dat1111a...1111..')
                 let obj = {
                     //     normalArrRes: '',
                     //     inputArrRes: '',
@@ -265,10 +265,10 @@ export default function TurnReport(props: PropsType) {
                                 <div>{sleepArr[data.sleepPos]}</div>
                             </div>
 
-                            {data.headImg ? <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '1rem' }}>
+                            {data.sleepPosImg ? <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '1rem' }}>
 
                                 <div>在床照片</div>
-                                <div><img src={data.headImg} style={{ height: '6rem' }} alt="" /></div>
+                                <div><img src={data.sleepPosImg} style={{ height: '6rem' }} alt="" /></div>
                             </div> : ''}
                         </CardContainTitle>
 
@@ -311,12 +311,15 @@ export default function TurnReport(props: PropsType) {
                                 <div className='text-[#000000] text-[0.9rem] font-bold pt-[1rem]  pl-[1.1rem]' style={{ fontFamily: 'Source Han Sans' }}>护理时间段</div>
                                 <div style={{ fontWeight: "800" }} className=' pt-[1rem] pl-[1.1rem]'>{dayjs((data.timeMills)).format('HH:mm')}</div>
                             </div>
-                            <div className='h-[10rem] w-[8.3rem] mt-[0.6rem]  bg-[#fff] rounded-md'>
-                                <div className='text-[#000000] text-[0.9rem] font-bold pt-[1rem]  pl-[1.1rem]' style={{ fontFamily: 'Source Han Sans' }}>睡姿记录</div>
-                                <div className='pt-[0.5rem] pl-[1.1rem]'>{sleepArr[data.sleepPos]}</div>
-                                <img className='pt-[0.5rem] pl-[1.1rem]' style={{ width: "6.6rem", height: "auto", }} src={data.headImg ? data.headImg : nullImg} alt="" />
-                                {/* <img src={data.headImg} style={{ height: '6rem' }} alt="" /> */}
-                            </div>
+                            {data.sleepPosImg ?
+                                < div className='h-[10rem] w-[8.3rem] mt-[0.6rem]  bg-[#fff] rounded-md'>
+                                    <div className='text-[#000000] text-[0.9rem] font-bold pt-[1rem]  pl-[1.1rem]' style={{ fontFamily: 'Source Han Sans' }}>睡姿记录</div>
+                                    <div className='pt-[0.5rem] pl-[1.1rem]'>{sleepArr[data.sleepPos]}</div>
+                                    <img className='pt-[0.5rem] pl-[1.1rem]' style={{ width: "6.6rem", height: "auto", }} src={data.sleepPosImg ? data.sleepPosImg : nullImg} alt="" />
+                                    {/* <img src={data.headImg} style={{ height: '6rem' }} alt="" /> */}
+                                </div> : ""
+                            }
+
                         </div>
                         <div className='flex-1 h-[22rem]'>
                             <CardContainTitle style={{ color: "#000000", }} title={'护理前后压力对比'}>
@@ -351,7 +354,7 @@ export default function TurnReport(props: PropsType) {
                                                 height='100%'
                                                 type={data.type}
                                                 sensorName={data.sensorName} />
-                                     
+
                                         </div>
                                     </div>
                                 </div>

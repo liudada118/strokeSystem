@@ -29,6 +29,7 @@ function Card(props: cardParam) {
     const setClick = (type: string) => {
         if (!(roleId == 1 || roleId == 2)) return message.info('暂无权限');
         navigate('/userInfo_editing', { state: { sensorName, type } })
+        window.location.reload()
     }
     return (
         <div onClick={() => {
@@ -57,8 +58,9 @@ export default function SettingMobile() {
             <Card title='提醒设置' img={mobileRemind} type='remind' />
             <Card title='翻身设置' img={mobileTurn} type='turn' border margin borderBottom />
             <Card title='护理设置' img={mobileNurse} type='nurse' border />
-            <Card title='推送日报设置' img={mobilePush} type='pushReport' />
-            <Card title='设备类型设置' img={mobileEquiptype} type='equipType' margin />
+            {/* 不要删除后期开发 */}
+            {/* <Card title='推送日报设置' img={mobilePush} type='pushReport' /> */}
+            <Card title='设备类型' img={mobileEquiptype} type='equipType' margin />
         </div>
     )
 }

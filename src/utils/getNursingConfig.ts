@@ -25,5 +25,5 @@ export const getNurseConfist = (res: any) => {
         nursingConfig = JSON.parse(res.data.nursingConfig || "[]");
     }
   }
-  return nursingConfig
+  return Array.isArray(nursingConfig) ? nursingConfig : []
 };

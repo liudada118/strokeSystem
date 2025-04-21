@@ -115,6 +115,9 @@ justify-content: center;
         font-family: 'PingFang SC';
     }
 }
+.calendar-custom{
+    height: 27.8rem;
+}
 //消息页头部
 @media screen and (min-width: $PadWidth) {
     .messageTitlediv2{
@@ -313,6 +316,7 @@ font-family: 'PingFang SC';
     overflow-x: auto; 
     scrollbar-width: none; 
     -ms-overflow-style: none; 
+    padding-right: 1rem;
     .btn{
         cursor: pointer;
     border-radius: 2.2rem;

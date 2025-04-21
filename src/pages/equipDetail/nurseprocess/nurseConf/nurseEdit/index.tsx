@@ -459,8 +459,7 @@ export default function NurseConfEdit(props: any) {
                   </Button>
                 </Dropdown>
               </Space>
-
-              <div className="flex items-center pl-[0.5rem] mt-[0.4rem] bg-[#F5F8FA]">
+              <div className="flex w-[45%] items-center pl-[0.5rem] mt-[0.4rem] bg-[#F5F8FA]">
                 <img
                   className="w-[1rem] h-[1rem] mr-[0.5rem]"
                   src={yuanquan}

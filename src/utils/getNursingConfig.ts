@@ -10,22 +10,50 @@ const isSameDay = (timestamp1: number, timestamp2: number) => {
  * 如果为1  护理的就用nursingConfig
  * 2.如果不为1  用现在的时间与 templateUpdatetime比较
  * 如果与templateUpdateTime在同一天 就用oldTemplate  否则 就用nursingConfig
- * @param res 
- * @returns 
+ * @param res
+ * @returns
  */
 export const getNurseConfist = (res: any) => {
   let nursingConfig = [];
   if (res.data.templateEffectiveFlag == 1) {
     nursingConfig = JSON.parse(res.data.nursingConfig || "[]");
   } else {
-    const nowTime = new Date().getTime()
+    const nowTime = new Date().getTime();
     if (isSameDay(res.data.templateUpdatetime, nowTime)) {
-        nursingConfig = JSON.parse(res.data.oldTemplate || "[]");
+      nursingConfig = JSON.parse(res.data.oldTemplate || "[]");
     } else {
-        nursingConfig = JSON.parse(res.data.nursingConfig || "[]");
+      nursingConfig = JSON.parse(res.data.nursingConfig || "[]");
     }
   }
-  console.log(nursingConfig,res.data.flipbodyConfig,'.......444444..............typetype');
-  
-  return Array.isArray(nursingConfig) ? nursingConfig : []
+  console.log(
+    nursingConfig,
+    res.data.flipbodyConfig,
+    ".......444444..............typetype"
+  );
+
+  return Array.isArray(nursingConfig) ? nursingConfig : [];
+};
+
+export const templateToData = (str: string) => {
+  const arr: any = [];
+  const splitArr = str?.replace("{", "").replace("}", "").split(",");
+  console.log(splitArr);
+  splitArr?.forEach((splitItem, index) => {
+    if (!splitItem.includes(":")) {
+      return;
+    }
+    const key = splitItem.split(":")[0];
+    let value = splitItem.split(":")[1];
+    value = value.replace(new RegExp('"', "g"), "");
+    console.log(key, value, new Date().toLocaleDateString(), key);
+    arr.push({
+      title: value,
+      time: dayjs(
+        new Date(new Date().toLocaleDateString()).getTime() + Number(key)
+      ).format("HH:mm"),
+      key: key,
+      status: "todo",
+    });
+  });
+  return arr;
 };

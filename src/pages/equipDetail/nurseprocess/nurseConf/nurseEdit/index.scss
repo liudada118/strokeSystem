@@ -70,11 +70,15 @@
         }
     }
     .nurse_edit_right {
+        display: flex;
+        flex-direction: column;
         width: 35%;
         background: #fff;
         height: 100%;
+        padding-bottom: 1rem;
         .right_nurse_list {
           display: flex;
+          flex: 1;
           padding: 0 1rem;
           height: calc(100% - 9.5rem);
           overflow: auto;

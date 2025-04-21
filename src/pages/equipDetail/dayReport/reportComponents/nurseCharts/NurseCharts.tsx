@@ -8,6 +8,8 @@ import { objToTidyChartsData, positionArr } from '../../dayReportComponent/right
 import { numToTime, stampToTime } from '@/utils/timeConvert'
 import { useGetWindowSize } from '@/hooks/hook'
 import PCNurseList from '@/pages/equipDetail/nurseprocess/nurseConf/nurseList/index'
+import PCNurseConfList from '@/pages/equipDetail/nurseprocess/nurseConf/nurseList/conf_list'
+// import MobileNurseList from '@/pages/equipDetail/nurseprocess/'
 import { instance } from '@/api/api'
 interface nurseChartsProps {
     dataSource: any
@@ -63,6 +65,7 @@ function NurseCharts(props: nurseChartsProps) {
     console.log(props, '....0000000.......propspropspropsprops');
 
     const isMobile = useGetWindowSize()
+    console.log(isMobile, '√√√..isMobileisMobileisMobile.....')
 
     function onbedTip(params: any) {
         let tip = '';
@@ -318,12 +321,20 @@ function NurseCharts(props: nurseChartsProps) {
                     </div>
 
                 </div>
-                <div className="w-[40rem] h-[50rem] bg-[#FFFFFF]">
-                    <div className='text-[#000000] text-[1.2rem] pl-[1rem] py-[1rem]' style={{ fontFamily: 'PingFang SC', fontWeight: "600" }}>护理记录</div>
-                    <div className=' px-[3%]  h-full'>
-                        <PCNurseList list={nurseConfigList || []} extParams={{ isShowTime: true, className: 'daEeport' }} />
+                {
+                    !isMobile ? <div className="w-[40rem] h-[50rem] bg-[#FFFFFF]">
+                        <div className='text-[#000000] text-[1.2rem] pl-[1rem] py-[1rem]' style={{ fontFamily: 'PingFang SC', fontWeight: "600" }}>护理记录</div>
+                        <div className=' px-[3%]  h-full'>
+                            <PCNurseList list={nurseConfigList || []} extParams={{ isShowTime: false, className: 'daEeport' }} />
+                        </div>
+                    </div> : <div className="h-[50rem] bg-[#FFFFFF]" style={{ width: '100%' }}>
+                        <div className='text-[#000000] text-[1.2rem] pl-[1rem] py-[1rem]' style={{ fontFamily: 'PingFang SC', fontWeight: "600" }}>护理记录</div>
+                        <div className=' px-[3%]  h-full'>
+                        <PCNurseList list={nurseConfigList || []} extParams={{ isShowTime: false, className: 'daEeport' }} />
+                        </div>
                     </div>
-                </div>
+                }
+
             </div > :
             <div className="nurseItemContent nurseContent">
                 <div className="nurseTitleName" style={{ marginBottom: '1.9rem' }}>在离床统计</div>
@@ -361,6 +372,7 @@ function NurseCharts(props: nurseChartsProps) {
                                 }} padding={positionArr} xdata={[...onBedTimeArr]} ydata={[...lessZeroIsZero([...onBedValueArr])]} index={32} /> : ''}
                         </div>
                     </div>
+
                 </div>
             </div>
         }

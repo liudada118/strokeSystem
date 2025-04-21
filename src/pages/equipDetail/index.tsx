@@ -18,7 +18,7 @@ import { tokenSelect } from "@/redux/token/tokenSlice";
 import { nurseOpen, resetNuserpage } from '../../redux/Nurse/Nurse'
 import axios from "axios";
 import { selectEquipBySensorname } from "@/redux/equip/equipSlice";
-import {getNurseConfist} from "@/utils/getNursingConfig"
+import { getNurseConfist } from "@/utils/getNursingConfig"
 
 
 const TabTheme = {
@@ -288,6 +288,8 @@ function Provide() {
                 deviceId: id
             }
         }).then((res) => {
+            console.log('typetype................55555');
+
             const flipbodyConfig = JSON.parse(res.data.flipbodyConfig)
             const { flipbodyCount, flipbodyTime } = flipbodyConfig
             if (flipbodyCount) {
@@ -392,6 +394,8 @@ function Provide() {
             }
         }).then((res) => {
             let nursingConfig = getNurseConfist(res)
+            console.log('typetype................66660000');
+
             // if (res.data.templateEffectiveFlag == 1) {
             //     nursingConfig = JSON.parse(res.data.nursingConfig || '[]')
             // } else {

@@ -125,7 +125,7 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
         deviceId: sensorName,
       },
     }).then((res) => {
-      console.log(res.data, "resssssssss");
+      console.log(res.data, "typetype..........777");
       const flipbodyConfig = JSON.parse(res.data.flipbodyConfig);
       console.log(flipbodyConfig);
       const { flipbodyCount, flipbodyTime } = flipbodyConfig;
@@ -1108,8 +1108,8 @@ const SettingMoDal = (props: any) => {
   }, []);
   const navigate = useNavigate();
   const openOnCkick = () => {
-    if (!(roleId == 1 || roleId == 2  || roleId == 0)) return message.info("暂无权限");
-   
+    if (!(roleId == 1 || roleId == 2 || roleId == 0)) return message.info("暂无权限");
+
     let regex: any = /\/1\//;
     const match = location.pathname.match(regex);
     if (!match) {

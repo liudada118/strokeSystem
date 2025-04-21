@@ -12,37 +12,47 @@ import {
   Dropdown,
   Space,
   message,
+  Modal
 } from "antd";
 import { useLocation, useParams, useNavigate } from "react-router-dom";
 import shan from "../../../../../assets/images/shanjiao.png";
 import { Picker, Popup, Empty } from "antd-mobile";
 import NurseList from "../nurseList/index";
 import { Instancercv } from "@/api/api";
+import loog from '../../../../../assets/images/logo.png'
 import {
   AppstoreOutlined,
+  ExclamationCircleOutlined,
   LeftOutlined,
   MailOutlined,
   SettingOutlined,
 } from "@ant-design/icons";
 import dayjs from "dayjs";
 import { getNurseConfist, templateToData } from "@/utils/getNursingConfig";
+import CommonNavBar from "@/components/CommonNavBar";
+import handleSettingPop from "@/utils/handleSettingPop";
 
+const { confirm } = Modal;
 export default function NurseConfEdit(props: any) {
-  useEffect(() => {
-    let time: NodeJS.Timeout | null = null;
-    if (time) {
-      clearInterval(time);
-      time = setInterval(() => {
-        // 定时器逻辑
-        window.location.reload();
-      }, 3000);
-    }
-    return () => {
-      if (time) {
-        clearInterval(time); // 使用 clearInterval 清除定时器
-      }
-    };
-  }, []);
+  const location = useLocation();
+  const { isEmpty } = location.state;
+  const sensorName = props.sensorName || location.state.sensorName;
+  console.log(isEmpty, '......isEmpty........111...........')
+  // useEffect(() => {
+  //   let time: NodeJS.Timeout | null = null;
+  //   if (time) {
+  //     clearInterval(time);
+  //     time = setInterval(() => {
+  //       // 定时器逻辑
+  //       window.location.reload();
+  //     }, 3000);
+  //   }
+  //   return () => {
+  //     if (time) {
+  //       clearInterval(time); // 使用 clearInterval 清除定时器
+  //     }
+  //   };
+  // }, []);
   const items = [
     {
       key: "1",
@@ -71,6 +81,8 @@ export default function NurseConfEdit(props: any) {
     if (!value.hours || !value.minutes)
       return message.warning("请填写护理时间！");
     if (nurseName.length > 10) return message.warning("名称不能超过10个字符");
+    const tempNurseList = localStorage.getItem("tempList") || "[]";
+    const list = JSON.parse(tempNurseList);
     const hoursVal = parseFloat(value.hours);
     const minutesVal = parseFloat(value.minutes);
     const hoursFormat = hoursVal < 10 ? `0${hoursVal}` : hoursVal;
@@ -78,16 +90,37 @@ export default function NurseConfEdit(props: any) {
     const templateTime = new Date(
       `1970-01-01 ${hoursFormat}:${minutesFormat}`
     ).getTime();
-    const isHasTemp = props.nurseList.find((item: any) => {
+    const isHasTemp = list.find((item: any) => {
       return +item.key === +templateTime;
     });
     if (isHasTemp) return message.warning("该护理时间已存在请重新选择！");
-    props.setNurseTask({
-      key: templateTime.toString(),
-      status: "todo",
-      time: `${hoursFormat}:${minutesFormat}`,
-      title: nurseName,
-    });
+    if (tempNurseList) {
+      localStorage.setItem("tempList", JSON.stringify([
+        ...list,
+        {
+          key: templateTime.toString(),
+          status: "todo",
+          time: `${hoursFormat}:${minutesFormat}`,
+          title: nurseName,
+        }
+      ]));
+    } else {
+      localStorage.setItem("tempList", JSON.stringify([
+        {
+          key: templateTime.toString(),
+          status: "todo",
+          time: `${hoursFormat}:${minutesFormat}`,
+          title: nurseName,
+        }
+      ]));
+    }
+    navigate(`/add_user_nurse_conf`, { state: { sensorName } });
+    // props.setNurseTask({
+    //   key: templateTime.toString(),
+    //   status: "todo",
+    //   time: `${hoursFormat}:${minutesFormat}`,
+    //   title: nurseName,
+    // });
   };
   const onFinishFailed = (value: any) => {
     console.log("Failed:", value);
@@ -129,7 +162,22 @@ export default function NurseConfEdit(props: any) {
   };
 
   return (
-    <>
+
+    <div
+      className="bg-[#f4f5f6] flex"
+      style={{
+        height: "100%",
+        flexDirection: "column",
+      }}
+    ><div className="nurse_header_logo">
+        <img onClick={() => handleSettingPop()} style={{ width: "2rem", height: "2rem", marginLeft: "1rem" }} src={loog} alt="" />
+        <p style={{ fontWeight: "600", fontSize: "1rem", marginLeft: "1rem" }}>JQ HEALTHCARE</p>
+      </div>
+      <CommonNavBar
+        style={{ position: "inherit" }}
+        title={'创建护理计划'}
+        onBack={() => navigate(-1)}
+      />
       <Form
         name="basic"
         layout={"vertical"}
@@ -143,7 +191,7 @@ export default function NurseConfEdit(props: any) {
         className="use_nurse_form"
         requiredMark={false}
       >
-        {props.nurseList.length === 0 && !props.isDelete && (
+        {isEmpty && (
           <Form.Item
             label=""
             name="use"
@@ -220,7 +268,7 @@ export default function NurseConfEdit(props: any) {
                 optionFilterProp="children"
                 className="h-[2.5rem] flex justify-center"
                 style={{ width: "9rem" }}
-                // onChange={(value => setHours(value as string))}
+              // onChange={(value => setHours(value as string))}
               >
                 {/* 动态生成分钟选项 */}
                 <Select.Option value={"分"} disabled>
@@ -247,7 +295,7 @@ export default function NurseConfEdit(props: any) {
                 optionFilterProp="children"
                 className="h-[2.5rem] flex justify-center"
                 style={{ width: "9rem" }}
-                // onChange={(value => setMinutes(value as string))}
+              // onChange={(value => setMinutes(value as string))}
               >
                 {/* 动态生成分钟选项 */}
                 <Select.Option value={"分"} disabled>
@@ -269,9 +317,10 @@ export default function NurseConfEdit(props: any) {
           htmlType="submit"
           style={{ width: "100%", height: "3rem" }}
         >
-          {props.nurseList.length === 0 ? "添加护理任务" : "保存护理任务"}
+          {isEmpty ? "添加护理任务" : "保存护理任务"}
         </Button>
       </Form>
+
       {isShowChooseTemp && (
         <Popup
           style={{
@@ -324,7 +373,9 @@ export default function NurseConfEdit(props: any) {
 
             <Button
               onClick={() => {
-                props.useDefaultTemp && props.useDefaultTemp(tempList);
+                // props.useDefaultTemp && props.useDefaultTemp(tempList);
+                localStorage.setItem("tempList", JSON.stringify(tempList));
+                navigate(`/add_user_nurse_conf`, { state: { sensorName } });
               }}
               type="primary"
               style={{
@@ -339,6 +390,6 @@ export default function NurseConfEdit(props: any) {
           </div>
         </Popup>
       )}
-    </>
+    </div>
   );
 }

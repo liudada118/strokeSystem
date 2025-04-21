@@ -75,7 +75,7 @@ const machineType = [{
     label: 'MAC地址',
     value: '1A2C3E4D'
 }, {
-    label: '设备校准',
+    label: '设备校准1111',
     value: ''
 }]
 const createTimeNumber: (val: number) => { label: string; value: string }[] = (number) => {
@@ -473,7 +473,7 @@ const UserInfoCard: (props: UserInfoCardProps) => React.JSX.Element = (props) =>
 
         <Fragment>
             {isMobile && (
-                <CommonNavBar title='个人信息及设置' onBack={() => navigate(-1)} />
+                <CommonNavBar title='个人信息及设置' onBack={() => navigate(`/report/0/${sensorName}`)} />
             )}
             <div className='md:pt-[4.5rem] h-full'>
                 <div

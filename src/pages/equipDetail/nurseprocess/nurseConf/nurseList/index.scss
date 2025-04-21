@@ -9,6 +9,7 @@
         position: relative;
         display: flex;
         padding: 0 0.5rem;
+     
         &:not(:last-child) {
             & > p {
                 span {
@@ -291,10 +292,22 @@
         &:nth-child(1) {
             background: #F5F8FA;
             border-radius: 0.2rem;
+            &.daEeport{
+                border-radius: 0.5rem;
+                background: #F5F5F5 !important;
+                p{
+                    padding-left: 1rem;
+                }
+                .content p:nth-child(1) {
+                    padding-left: 3.5rem;
+                }
+            }
+        
             & > p {
                 padding: 0.4rem 0;
                 border-bottom: 0px solid #fff;
             }
+        
             .content {
                 border-bottom: 0px solid #fff;
                 p {

@@ -29,7 +29,7 @@ export default function PCNurseList(props: any) {
             dataIndex: "del",
         },
     ];
-    console.log(extParams.className, '...........11111........................classNameclassName');
+    console.log(extParams, '.............extParamsextParams');
 
     return (
         <div className="nurse_scroll">
@@ -38,7 +38,6 @@ export default function PCNurseList(props: any) {
                     <p className="flex items-end">时间
                         {/* <span className="text-[0.5rem] pb-[0.1rem] pl-[0.1rem] " style={{ fontWeight: "normal" }}>按时间自动排序</span> */}
                     </p>
-
                     <div className="content">
                         <p>护理任务</p>
                         <p className={`${props.operType === "add" ? 'is-radius' : ''}`}>状态</p>

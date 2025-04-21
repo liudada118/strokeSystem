@@ -64,17 +64,24 @@
 }
 
 .pc_nurse_list .list_item .content p:nth-child(1) {
+  display: flex;
   padding: 0.8rem 0;
   flex: 1;
 }
 
-.pc_nurse_list .list_item .content p:nth-child(1) img {
-  margin-top: 0.1rem;
+.pc_nurse_list .list_item .content p:nth-child(1) span:nth-child(1) {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.pc_nurse_list .list_item .content p:nth-child(1) span:nth-child(2) {
+  flex: 1;
 }
 
 .pc_nurse_list .list_item .content p:nth-child(2) {
   padding: 0.8rem 0;
-  width: 5rem;
+  width: 5.5rem;
 }
 
 .pc_nurse_list .list_item .content p:nth-child(2) span {
@@ -115,6 +122,19 @@
 .pc_nurse_list .list_item:nth-child(1) {
   background: #F5F8FA;
   border-radius: 0.2rem;
+}
+
+.pc_nurse_list .list_item:nth-child(1).daEeport {
+  border-radius: 0.5rem;
+  background: #F5F5F5 !important;
+}
+
+.pc_nurse_list .list_item:nth-child(1).daEeport p {
+  padding-left: 1rem;
+}
+
+.pc_nurse_list .list_item:nth-child(1).daEeport .content p:nth-child(1) {
+  padding-left: 3.5rem;
 }
 
 .pc_nurse_list .list_item:nth-child(1) > p {

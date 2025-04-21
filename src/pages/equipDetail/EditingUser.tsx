@@ -496,7 +496,8 @@ export const personalOtherInfoObj: any = {
 };
 const PersonalOtherInfo = (props: otherInfoParam) => {
   const navigate = useNavigate();
-  const { type } = props;
+  const location = useLocation();
+  const { type } = props || location.state.type;
 
   return (
     <div

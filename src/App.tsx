@@ -10,6 +10,8 @@ import {
 } from "@ant-design/cssinjs";
 import { UAParser } from "ua-parser-js";
 import { Dialog } from "antd-mobile";
+import AddNurseConfList from "./pages/equipDetail/mobileEdit/nursingPlan/addNurseConfList/index";
+import NurseEditPage from "./pages/equipDetail/mobileEdit/nursingPlan/nurseEdit/index";
 
 const getHashPriorty = () => {
   let ua: any = UAParser(navigator.userAgent);
@@ -143,6 +145,22 @@ function App() {
               element={
                 <RequirAuthRoute>
                   <NurseTable data={[]} type={""} />
+                </RequirAuthRoute>
+              }
+            />
+            <Route
+              path="/add_user_nurse_conf"
+              element={
+                <RequirAuthRoute>
+                  <AddNurseConfList />
+                </RequirAuthRoute>
+              }
+            />
+            <Route
+              path="/edit_user_nurse"
+              element={
+                <RequirAuthRoute>
+                  <NurseEditPage />
                 </RequirAuthRoute>
               }
             />

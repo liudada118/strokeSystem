@@ -31,6 +31,8 @@ function NurseAdd(props: any) {
     const handleRecordForm = (values: any) => {
         if (type === '新增一次') {
             if (!(nurseProject && completionTime && uploadImage)) return message.info('请填写必填项')
+        } else {
+            if (!(notes && completionTime && uploadImage)) return message.info('请填写必填项')
         }
         if (values) {
             const values = {

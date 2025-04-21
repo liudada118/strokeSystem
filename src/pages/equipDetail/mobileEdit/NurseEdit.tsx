@@ -222,7 +222,7 @@ export function NurseEdit() {
         deviceId: sensorName,
       },
     }).then((res) => {
-      console.log(res.data, "resssssssss");
+      console.log(res.data, "typetype..........888");
       let nursingConfig = getNurseConfist(res)
       //   if (res.data.templateEffectiveFlag == 1) {
       //       nursingConfig = JSON.parse(res.data.nursingConfig || '[]')

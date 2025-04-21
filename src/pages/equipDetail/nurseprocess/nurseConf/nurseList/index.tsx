@@ -29,6 +29,8 @@ export default function PCNurseList(props: any) {
             dataIndex: "del",
         },
     ];
+    console.log(extParams.className, '...........11111........................classNameclassName');
+
     return (
         <div className="nurse_scroll">
             <div className="pc_nurse_list">

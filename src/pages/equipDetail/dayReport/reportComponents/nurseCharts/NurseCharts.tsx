@@ -7,6 +7,8 @@ import dayjs from 'dayjs'
 import { objToTidyChartsData, positionArr } from '../../dayReportComponent/rightContent/firstItem/FirstItem'
 import { numToTime, stampToTime } from '@/utils/timeConvert'
 import { useGetWindowSize } from '@/hooks/hook'
+import PCNurseList from '@/pages/equipDetail/nurseprocess/nurseConf/nurseList/index'
+import { instance } from '@/api/api'
 interface nurseChartsProps {
     dataSource: any
     onbed: any
@@ -19,6 +21,7 @@ interface nurseChartsProps {
     outBed: any
     dayData: any
     user?: boolean
+    sensorName?: string
 }
 
 
@@ -57,6 +60,7 @@ const includesObj = ({ str, arr }: any) => {
 }
 
 function NurseCharts(props: nurseChartsProps) {
+    console.log(props, '....0000000.......propspropspropsprops');
 
     const isMobile = useGetWindowSize()
 
@@ -73,11 +77,38 @@ function NurseCharts(props: nurseChartsProps) {
 
     const [onBedValueArr, setOnBedValueArr] = useState<any>([])
     const [onBedTimeArr, setOnBedTimeArr] = useState<any>([])
-
+    const [nurseConfigList, setNurseConfigList] = useState([])
     useEffect(() => {
-
-
-
+        const now = new Date();
+        const yesterday = new Date(now.getTime() - 24 * 60 * 60 * 1000); // 等价于 now - 1天
+        const startOfYesterday = new Date(
+            yesterday.getFullYear(), // 年
+            yesterday.getMonth(),    // 月（注意：这里直接使用 yesterday 的月份，无需调整）
+            yesterday.getDate(),     // 日
+            0, 0, 0                  // 时分秒设为 0
+        );
+        const endOfYesterday = new Date(
+            yesterday.getFullYear(),
+            yesterday.getMonth(),
+            yesterday.getDate(),
+            23, 59, 59 // 时分秒设为最大值
+        );
+        const timestampStart = Math.floor(startOfYesterday.getTime() / 1000); // 昨天 00:00:00 时间戳（秒）
+        const timestampEnd = Math.floor(endOfYesterday.getTime() / 1000);   // 昨天 23:59:59 时间戳（秒）
+        instance({
+            url: '/sleep/nurse/getDayNurseData',
+            method: 'get',
+            params: {
+                did: props.sensorName,
+                startTimeMillis: timestampStart,
+                endTimeMillis: timestampEnd
+            }
+        }).then((res: any) => {
+            setNurseConfigList(res.data.data)
+            console.log(res, '.............................QueryQuery');
+        })
+    }, [])
+    useEffect(() => {
         const objArr: any = []
         const arr = props.pageRecords
 
@@ -98,7 +129,6 @@ function NurseCharts(props: nurseChartsProps) {
             obj.drName = a.drName
             obj.drRemark = a.remark
             objArr.push(obj)
-
         })
         const data = objArr
         let chartsData: any = {
@@ -173,9 +203,10 @@ function NurseCharts(props: nurseChartsProps) {
 
     return (
         <>{!props.user ?
-            <div className="nurseItemContent nurseContent">
-                <div className="nurseTitleName" style={{ marginBottom: '1.9rem' }}>护理记录 </div>
-                {/* <div className="nurseValueItems">
+            <div>
+                <div className="nurseItemContent nurseContent">
+                    <div className="nurseTitleName" style={{ marginBottom: '1.9rem' }}>护理记录 </div>
+                    {/* <div className="nurseValueItems">
                 <div className="nurseValueItem">
                     <div className="nurseValueTitle">在床时间</div>
                     <div className="nurseValueContent">{props.onbedTime ? <>
@@ -211,82 +242,89 @@ function NurseCharts(props: nurseChartsProps) {
                 </div>
             </div> */}
 
-                <div className='nurseAndOnbedContent'>
-                    {isMobile ?
-                        <div className="seleteRateOrHeart">
-                            <div className="nurseSeleteHeart seleteRateOrHeartItem">
-                                <div className="seleteRateOrHeartValue"
-                                    style={{ color: showNurseOrOnbed == 'nurse' ? '#0072EF' : '#929EAB', backgroundColor: showNurseOrOnbed == 'nurse' ? '#fff' : 'unset', }}
-                                    onClick={() => { setShowNurseOrOnbed('nurse') }}>护理统计</div>
-                            </div>
-                            <div style={{ padding: '0 0.68rem', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                                <div style={{ width: '1px', height: '80%', backgroundColor: '#eee' }}></div>
-                            </div>
-                            <div className="nurseSeleteRate seleteRateOrHeartItem">
-                                <div className="seleteRateOrRateValue"
-                                    style={{ color: showNurseOrOnbed == 'onbed' ? '#0072EF' : '#929EAB', backgroundColor: showNurseOrOnbed == 'onbed' ? '#fff' : 'unset', }}
-                                    onClick={() => { setShowNurseOrOnbed('onbed') }}>在/离床统计</div>
-                            </div>
-                        </div> : ''}
-                    {(isMobile && showNurseOrOnbed == 'nurse') || !isMobile ? <div className="nurseStatis nurseChartsContent" style={{ flex: '0 0 calc(50% - 0.45rem)', marginRight: isMobile ? '0' : '0.9rem' }}>
-                        <div className="nurseChartTitleName">护理统计</div>
-                        <div className="daySleepInfo">
-                            <div className="daySleepItem">
-                                <span className="sleepDataNum">{nurseTotal}<span className="sleepDataUtil">次</span></span>
-                                <div className="sleepDataUtil">护理次数</div>
-                            </div>
-                            <div className="daySleepItem">
-                                <span className="sleepDataNum">{nurseProjectTotal}<span className="sleepDataUtil">个</span></span>
-                                <div className="sleepDataUtil">护理项目</div>
-                            </div>
-                        </div>
-                        <div className="nursecharts">
-                            {<CategoryChart barWidth={15} padding={positionArr} formatter={true} xdata={Object.keys(nurseChartsData)} ydata={Object.values(nurseChartsData)} index={30} />}
-                        </div>
-                    </div> : ''}
-                    {(isMobile && showNurseOrOnbed == 'onbed') || !isMobile ?
-                        <div className="nurseStatis nurseChartsContent" style={{ flex: '0 0 calc(50% - 0.45rem)' }}>
-                            <div className="nurseChartTitleName">在离床统计</div>
+                    <div className='nurseAndOnbedContent'>
+                        {isMobile ?
+                            <div className="seleteRateOrHeart">
+                                <div className="nurseSeleteHeart seleteRateOrHeartItem">
+                                    <div className="seleteRateOrHeartValue"
+                                        style={{ color: showNurseOrOnbed == 'nurse' ? '#0072EF' : '#929EAB', backgroundColor: showNurseOrOnbed == 'nurse' ? '#fff' : 'unset', }}
+                                        onClick={() => { setShowNurseOrOnbed('nurse') }}>护理统计</div>
+                                </div>
+                                <div style={{ padding: '0 0.68rem', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                                    <div style={{ width: '1px', height: '80%', backgroundColor: '#eee' }}></div>
+                                </div>
+                                <div className="nurseSeleteRate seleteRateOrHeartItem">
+                                    <div className="seleteRateOrRateValue"
+                                        style={{ color: showNurseOrOnbed == 'onbed' ? '#0072EF' : '#929EAB', backgroundColor: showNurseOrOnbed == 'onbed' ? '#fff' : 'unset', }}
+                                        onClick={() => { setShowNurseOrOnbed('onbed') }}>在/离床统计</div>
+                                </div>
+                            </div> : ''}
+                        {(isMobile && showNurseOrOnbed == 'nurse') || !isMobile ? <div className="nurseStatis nurseChartsContent" style={{ flex: '0 0 calc(50% - 0.45rem)', marginRight: isMobile ? '0' : '0.9rem' }}>
+                            <div className="nurseChartTitleName">护理统计</div>
                             <div className="daySleepInfo">
                                 <div className="daySleepItem">
-                                    <div>
-                                        {numToTime(props.onbedTime)[1] ? (
-                                            <>
-                                                <span className="sleepDataNum"> {numToTime(props.onbedTime)[1]}</span>
-                                                <span className="sleepDataUtil">时</span>
-                                            </>
-                                        ) : null}
-                                        <span className="sleepDataNum"> {numToTime(props.onbedTime)[0]}</span>
-                                        <span className="sleepDataUtil">分钟</span>
-                                    </div>
-                                    <div className="sleepDataUtil">在床时间</div>
+                                    <span className="sleepDataNum">{nurseTotal}<span className="sleepDataUtil">次</span></span>
+                                    <div className="sleepDataUtil">护理次数</div>
                                 </div>
-                                {/* <div className="daySleepItem">
-                            <span className="sleepDataNum">{22}<span className="sleepDataUtil">次/天</span></span>
-                            <div className="sleepDataUtil">最长在床时间</div>
-                        </div> */}
                                 <div className="daySleepItem">
-                                    <span className="sleepDataNum">{props.outBed}<span className="sleepDataUtil">次</span></span>
-                                    <div className="sleepDataUtil">离床次数</div>
+                                    <span className="sleepDataNum">{nurseProjectTotal}<span className="sleepDataUtil">个</span></span>
+                                    <div className="sleepDataUtil">护理项目</div>
                                 </div>
                             </div>
                             <div className="nursecharts">
-                                {props.onbed.onbedStampArr ? <CategoryChart
-                                    tipFormat={onbedTip}
-                                    yFormat={function (value: any) {
-                                        if (value == 1) {
-                                            return '在床'
-                                        } else {
-                                            return '离床'
-                                        }
-                                    }} padding={positionArr} xdata={[...onBedTimeArr]} ydata={[...lessZeroIsZero([...onBedValueArr])]} index={32} /> : ''}
+                                {<CategoryChart barWidth={15} padding={positionArr} formatter={true} xdata={Object.keys(nurseChartsData)} ydata={Object.values(nurseChartsData)} index={30} />}
                             </div>
-                        </div>
-                        : ''}
+                        </div> : ''}
+                        {(isMobile && showNurseOrOnbed == 'onbed') || !isMobile ?
+                            <div className="nurseStatis nurseChartsContent" style={{ flex: '0 0 calc(50% - 0.45rem)' }}>
+                                <div className="nurseChartTitleName">在离床统计</div>
+                                <div className="daySleepInfo">
+                                    <div className="daySleepItem">
+                                        <div>
+                                            {numToTime(props.onbedTime)[1] ? (
+                                                <>
+                                                    <span className="sleepDataNum"> {numToTime(props.onbedTime)[1]}</span>
+                                                    <span className="sleepDataUtil">时</span>
+                                                </>
+                                            ) : null}
+                                            <span className="sleepDataNum"> {numToTime(props.onbedTime)[0]}</span>
+                                            <span className="sleepDataUtil">分钟</span>
+                                        </div>
+                                        <div className="sleepDataUtil">在床时间</div>
+                                    </div>
+                                    {/* <div className="daySleepItem">
+                            <span className="sleepDataNum">{22}<span className="sleepDataUtil">次/天</span></span>
+                            <div className="sleepDataUtil">最长在床时间</div>
+                        </div> */}
+                                    <div className="daySleepItem">
+                                        <span className="sleepDataNum">{props.outBed}<span className="sleepDataUtil">次</span></span>
+                                        <div className="sleepDataUtil">离床次数</div>
+                                    </div>
+                                </div>
+                                <div className="nursecharts">
+                                    {props.onbed.onbedStampArr ? <CategoryChart
+                                        tipFormat={onbedTip}
+                                        yFormat={function (value: any) {
+                                            if (value == 1) {
+                                                return '在床'
+                                            } else {
+                                                return '离床'
+                                            }
+                                        }} padding={positionArr} xdata={[...onBedTimeArr]} ydata={[...lessZeroIsZero([...onBedValueArr])]} index={32} /> : ''}
+                                </div>
+                            </div>
+                            : ''}
+
+                    </div>
 
                 </div>
-
-            </div> :
+                <div className="w-[40rem] h-[50rem] bg-[#FFFFFF]">
+                    <div className='text-[#000000] text-[1.2rem] pl-[1rem] py-[1rem]' style={{ fontFamily: 'PingFang SC', fontWeight: "600" }}>护理记录</div>
+                    <div className=' px-[3%]  h-full'>
+                        <PCNurseList list={nurseConfigList || []} extParams={{ isShowTime: true, className: 'daEeport' }} />
+                    </div>
+                </div>
+            </div > :
             <div className="nurseItemContent nurseContent">
                 <div className="nurseTitleName" style={{ marginBottom: '1.9rem' }}>在离床统计</div>
 
@@ -324,7 +362,8 @@ function NurseCharts(props: nurseChartsProps) {
                         </div>
                     </div>
                 </div>
-            </div>}
+            </div>
+        }
         </>
     )
 }

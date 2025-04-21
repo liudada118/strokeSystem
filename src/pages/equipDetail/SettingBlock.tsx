@@ -915,28 +915,25 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
           {item.value &&
             item.params?.map((_item, index) => (
               <div
-                className={`flex items-center w-full ${
-                  index === 0 ? "mt-[10px]" : ""
-                } h-[2.6rem]`}
+                className={`flex items-center w-full ${index === 0 ? "mt-[10px]" : ""
+                  } h-[2.6rem]`}
                 key={_item.label}
               >
                 <div className="text-sm text-[#32373E] w-[5rem]">
                   {_item.label}
                 </div>
                 <div
-                  className={`flex justify-between items-center h-full text-base ${
-                    index !== item.params.length - 1 &&
+                  className={`flex justify-between items-center h-full text-base ${index !== item.params.length - 1 &&
                     "border-b border-b-[#DCE3E9]"
-                  } p-[5px] w-[calc(100%-5rem)]`}
+                    } p-[5px] w-[calc(100%-5rem)]`}
                 >
                   <span className="text-[#6C7784]">
                     {_item.label.includes("翻身")
                       ? _item.value
                       : _item.label.includes("提醒时间")
-                      ? `${
-                          _item.value === 0 ? "实时提醒" : _item.value + "分钟"
+                        ? `${_item.value === 0 ? "实时提醒" : _item.value + "分钟"
                         }`
-                      : _item.value}
+                        : _item.value}
                   </span>
                   {editing && (
                     <span
@@ -1056,7 +1053,7 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
                   >
                     复制
                   </span>
-                ):''}
+                ) : ''}
               </div>
               {item.params &&
                 item.params.map((_item, index) => (
@@ -1088,7 +1085,7 @@ const SettingMoDal = (props: any) => {
   const onFinish = (config: any) => {
     setNurseConfig(config);
   };
-  const handleFinish = () => {};
+  const handleFinish = () => { };
   const close = () => {
     setOpen(false);
   };
@@ -1111,8 +1108,8 @@ const SettingMoDal = (props: any) => {
   }, []);
   const navigate = useNavigate();
   const openOnCkick = () => {
-    if (!(roleId == 1 || roleId == 2)) return message.info("暂无权限");
-
+    if (!(roleId == 1 || roleId == 2  || roleId == 0)) return message.info("暂无权限");
+   
     let regex: any = /\/1\//;
     const match = location.pathname.match(regex);
     if (!match) {

@@ -96,6 +96,9 @@ export const TitleLeftInfo = (props: any) => {
   );
 };
 
+
+
+
 export const PcLeftTitle = (props: any) => {
   const param = useParams();
   const equipInfo = useSelector((state) =>

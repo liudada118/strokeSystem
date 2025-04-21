@@ -15,6 +15,7 @@ import { PersonalContentInfo } from "@/pages/equipDetail/EditingUser";
 import loog from '../../../../assets/images/logo.png'
 import jiaHao from '../../../../assets/images/image copy 2.png'
 import { getNurseConfist } from "@/utils/getNursingConfig"
+import handleSettingPop from '@/utils/handleSettingPop'
 import "./index.css";
 const { confirm } = Modal;
 export default function NursingPlan() {
@@ -42,7 +43,7 @@ export default function NursingPlan() {
   const useDefaultTemp = (param: any) => {
     setNurseList(param);
     setIsEdit(false);
-  }; 
+  };
   const [sensorNameUser, setSensorName] = useState('')
 
   const getPersonTemplate = (type?: any) => {
@@ -168,7 +169,7 @@ export default function NursingPlan() {
   return (
     <>
       <div className="nurse_header_logo">
-        <img style={{ width: "2rem", height: "2rem", marginLeft: "1rem" }} src={loog} alt="" />
+        <img onClick={() => handleSettingPop()} style={{ width: "2rem", height: "2rem", marginLeft: "1rem" }} src={loog} alt="" />
         <p style={{ fontWeight: "600", fontSize: "1rem", marginLeft: "1rem" }}>JQ HEALTHCARE</p>
       </div>
       <CommonNavBar

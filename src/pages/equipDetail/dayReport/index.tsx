@@ -419,7 +419,7 @@ export default function DayReport() {
 
     setDayReport(true)
     if (data.sleeping_position[0]) {
-        data.sleeping_position[0] = data.sleeping_position.some((a: number) => a < 0) ? new Array(16).fill(0) : data.sleeping_position[0]
+      data.sleeping_position[0] = data.sleeping_position.some((a: number) => a < 0) ? new Array(16).fill(0) : data.sleeping_position[0]
     }
 
     let pos = 0
@@ -519,19 +519,14 @@ export default function DayReport() {
         obj.drRemark = a.remark
         objArr1.push(obj)
         posArr[a.posture] = posArr[a.posture] + 1
-
         if (index >= 1) {
           if (a.posture != arr[index - 1].posture) {
             turnNumber++
           }
           turnMax = Math.max(arr[index - 1].timeMillsEnd - a.timeMillsEnd, turnMax)
-
         }
-
         setTurnNumber(turnNumber)
-
       })
-
       setTurnMax(turnMax)
       setPosMax(posArr.indexOf(Math.max(...posArr)))
 
@@ -634,7 +629,7 @@ export default function DayReport() {
 
     message.info('正在生成日报，请稍后')
     const node = document.querySelector(".dayRight");
-    console.log(equipInfo.patientName, node, '...............23332....2323323232patientNamepatientName');
+
     if (node) {
       domtoimage.toBlob(node).then((blob) => {
 
@@ -808,7 +803,7 @@ export default function DayReport() {
               <div className="turnContent">
                 {/* <div style={{width : '66%'}}> */}
                 <CardWithoutTitle>
-                  <NurseCharts dayData={dayDate} outBed={outoffbed} max={turnMax} onbedList={onbedList} onbedTime={onbedTime} changeFlag={setNueseReportFlag} pageRecords={pageRecords} dataSource={dataSource} onbed={onbed} />
+                  <NurseCharts sensorName={sensorName} dayData={dayDate} outBed={outoffbed} max={turnMax} onbedList={onbedList} onbedTime={onbedTime} changeFlag={setNueseReportFlag} pageRecords={pageRecords} dataSource={dataSource} onbed={onbed} />
                 </CardWithoutTitle>{/* </div> */}
               </div>
               <div style={{ fontSize: '0.8rem' }}>注意：这些结果并不是诊断，如有不适请及时就医。</div>

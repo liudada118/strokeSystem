@@ -65,7 +65,8 @@ const MqttMiddleware = (storeApi: any) => (next: any) => (action: any) => {
             connectTimeout: 5 * 1000,
             rejectUnauthorized: false,
             clientId: phone + new Date().getTime(),
-
+            username : 'web',
+            password : 'public'
         };
 
         const client = mqtt.connect(`wss://${HOST}:${PORT}/mqtt`, options);

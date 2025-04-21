@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 // import "./index.css";
-import '../nurseEdit/nurseEditList.scss'
+import "../nurseEdit/nurseEditList.scss";
 import { selectEquipBySensorname } from "@/redux/equip/equipSlice";
 import { useSelector } from "react-redux";
 import {
@@ -25,7 +25,7 @@ import {
   SettingOutlined,
 } from "@ant-design/icons";
 import dayjs from "dayjs";
-import { getNurseConfist } from "@/utils/getNursingConfig"
+import { getNurseConfist, templateToData } from "@/utils/getNursingConfig";
 
 export default function NurseConfEdit(props: any) {
   useEffect(() => {
@@ -64,11 +64,12 @@ export default function NurseConfEdit(props: any) {
   const [isShowChooseTemp, setIsShowChooseTemp] = useState(true);
   const [defaultTempInfo, setDefaultTempInfo] = useState(items[0]);
   const [tempList, setTempList] = useState([]);
-  const [nurseName, setNurseName] = useState('');
+  const [nurseName, setNurseName] = useState("");
   const navigate = useNavigate();
   const onFinish = (value: any) => {
     if (!nurseName) return message.warning("请填写护理名称！");
-    if (!value.hours || !value.minutes) return message.warning("请填写护理时间！");
+    if (!value.hours || !value.minutes)
+      return message.warning("请填写护理时间！");
     if (nurseName.length > 10) return message.warning("名称不能超过10个字符");
     const hoursVal = parseFloat(value.hours);
     const minutesVal = parseFloat(value.minutes);
@@ -93,11 +94,9 @@ export default function NurseConfEdit(props: any) {
   };
 
   const getPersonTemplate = (type?: any) => {
-    console.log(type, '.........1111.........info');
-
     Instancercv({
       method: "get",
-      url: "/nursing/getNursingConfig",
+      url: "/nursing/getNurseTemplateData",
       headers: {
         "content-type": "multipart/form-data",
         token: localStorage.getItem("token"),
@@ -105,20 +104,17 @@ export default function NurseConfEdit(props: any) {
       params: {
         deviceId: props.sensorName,
         // 这个type展示献先写死 到时候要换成 这个里面的 iditems
-        type: type
+        organizeId: "common",
       },
     }).then((res: any) => {
       if (res.data.code === 0) {
-        console.log(res, '....11111.............typetype');
-
-        let nursingConfig = getNurseConfist(res) as any
-        // if (res.data.templateEffectiveFlag == 1) {
-        //     nursingConfig = JSON.parse(res.data.nursingConfig || '[]')
-        // } else {
-        //     nursingConfig = JSON.parse(res.data.oldTemplate || '[]')
-        // }
-        if (nursingConfig.length > 0) {
-          setTempList(nursingConfig);
+        const targetTemp =
+          (res.data.data || []).find((item: any) => item.type === type) || {};
+        try {
+          const templateList = templateToData(targetTemp?.template);
+          setTempList(templateList);
+        } catch (error) {
+          console.error("获取默认模版报错了：", error);
         }
       }
     });
@@ -126,7 +122,7 @@ export default function NurseConfEdit(props: any) {
 
   const handleDropdownClick = async (e: any) => {
     const info: any = items.find((item) => item.key === e.key);
-    console.log(info, e, '.........info');
+    console.log(info, e, ".........info");
 
     setDefaultTempInfo(info);
     getPersonTemplate(+info.key);
@@ -188,9 +184,13 @@ export default function NurseConfEdit(props: any) {
           rules={[{ required: false, message: "请填写护理名称!" }]}
         >
           <span className="bg-[#F5F8FA]">护理任务：</span>
-          <Input placeholder="请输入所添加的护理任务的名称" className="h-10 bg-[#F5F8FA]" onChange={(e) => {
-            setNurseName(e.target.value)
-          }} />
+          <Input
+            placeholder="请输入所添加的护理任务的名称"
+            className="h-10 bg-[#F5F8FA]"
+            onChange={(e) => {
+              setNurseName(e.target.value);
+            }}
+          />
         </Form.Item>
 
         <div className="time_box">
@@ -219,19 +219,17 @@ export default function NurseConfEdit(props: any) {
                 placeholder="时"
                 optionFilterProp="children"
                 className="h-[2.5rem] flex justify-center"
-                style={{ width: '9rem' }}
-              // onChange={(value => setHours(value as string))}
+                style={{ width: "9rem" }}
+                // onChange={(value => setHours(value as string))}
               >
                 {/* 动态生成分钟选项 */}
-                <Select.Option value={'分'} disabled>
-                  <div className="flex justify-center">
-                    时
-                  </div>
+                <Select.Option value={"分"} disabled>
+                  <div className="flex justify-center">时</div>
                 </Select.Option>
                 {[...Array(24)].map((_, index) => (
-                  <Select.Option key={index} value={(index).toString()}>
+                  <Select.Option key={index} value={index.toString()}>
                     <div className="flex justify-center">
-                      {index.toString().padStart(2, '0')}
+                      {index.toString().padStart(2, "0")}
                     </div>
                   </Select.Option>
                 ))}
@@ -248,19 +246,17 @@ export default function NurseConfEdit(props: any) {
                 placeholder="分"
                 optionFilterProp="children"
                 className="h-[2.5rem] flex justify-center"
-                style={{ width: '9rem' }}
-              // onChange={(value => setMinutes(value as string))}
+                style={{ width: "9rem" }}
+                // onChange={(value => setMinutes(value as string))}
               >
                 {/* 动态生成分钟选项 */}
-                <Select.Option value={'分'} disabled>
-                  <div className="flex justify-center">
-                    分
-                  </div>
+                <Select.Option value={"分"} disabled>
+                  <div className="flex justify-center">分</div>
                 </Select.Option>
                 {[...Array(60)].map((_, index) => (
-                  <Select.Option key={index} value={(index).toString()}>
+                  <Select.Option key={index} value={index.toString()}>
                     <div className="flex justify-center">
-                      {index.toString().padStart(2, '0')}
+                      {index.toString().padStart(2, "0")}
                     </div>
                   </Select.Option>
                 ))}
@@ -268,7 +264,11 @@ export default function NurseConfEdit(props: any) {
             </Form.Item>
           </div>
         </div>
-        <Button type="primary" htmlType="submit" style={{ width: '100%', height: '3rem' }}>
+        <Button
+          type="primary"
+          htmlType="submit"
+          style={{ width: "100%", height: "3rem" }}
+        >
           {props.nurseList.length === 0 ? "添加护理任务" : "保存护理任务"}
         </Button>
       </Form>
@@ -296,7 +296,7 @@ export default function NurseConfEdit(props: any) {
                 <LeftOutlined />
               </div>
 
-              <Space direction="vertical" style={{ margin: '0 auto' }}>
+              <Space direction="vertical" style={{ margin: "0 auto" }}>
                 <Dropdown
                   menu={{ items, onClick: handleDropdownClick }}
                   placement="bottom"
@@ -324,7 +324,7 @@ export default function NurseConfEdit(props: any) {
 
             <Button
               onClick={() => {
-                // yyyyds();
+                props.useDefaultTemp && props.useDefaultTemp(tempList);
               }}
               type="primary"
               style={{

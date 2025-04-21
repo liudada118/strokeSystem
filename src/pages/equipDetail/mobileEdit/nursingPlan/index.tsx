@@ -39,6 +39,10 @@ export default function NursingPlan() {
     setNurseList([...nurseList, param]);
     setIsEdit(false);
   };
+  const useDefaultTemp = (param: any) => {
+    setNurseList(param);
+    setIsEdit(false);
+  }; 
   const [sensorNameUser, setSensorName] = useState('')
 
   const getPersonTemplate = (type?: any) => {
@@ -191,6 +195,7 @@ export default function NursingPlan() {
             nurseList={nurseList}
             sensorName={sensorName}
             setNurseTask={addNurseTask}
+            useDefaultTemp={useDefaultTemp}
             isDelete={isDelete}
           />
         ) : (operType === "init" || operType === "add") &&

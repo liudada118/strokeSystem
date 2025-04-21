@@ -61,7 +61,7 @@ export default function PCNurseList(props: any) {
                                 </p>
                                 <div className="content">
                                     <p style={{ display: 'flex', }}>
-                                        <img className='w-[1rem] h-[1rem] mr-3' src={shijian1} alt="" />
+                                        <span><img className='w-[1rem] h-[1rem] mr-3' src={shijian1} alt="" /></span>
                                         <span>
                                             {item.title}
                                         </span>

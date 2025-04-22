@@ -441,7 +441,7 @@ export default function Message() {
         loadMore({
           ...params,
           pageNum: 1,
-          types: titleKey,
+          // types: titleKey,
           patientName: value,
         }, []);
       }, 300);
@@ -451,7 +451,7 @@ export default function Message() {
         loadMore({
           ...params,
           pageNum: 1,
-          types: titleKey,
+          // types: titleKey,
           roomNum: value,
         }, []);
       }, 300);

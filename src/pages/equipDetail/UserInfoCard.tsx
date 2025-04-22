@@ -449,11 +449,15 @@ const UserInfoCard: (props: UserInfoCardProps) => React.JSX.Element = (props) =>
                         </span> */}
                     </div>
                     {/* <img src={arrow} alt="" className='w-[8px] h-[12px] mb-[10px]'/> */}
-                    {
+                    <p style={{ fontSize: "20px" }} onClick={() => navigate(`/equipInfo/${sensorName}`)} >
+                            设置
+                        </p >
+                    {/* {
                         roleId == 1 && 2 ? <p style={{ fontSize: "20px" }} onClick={() => navigate(`/equipInfo/${sensorName}`)} >
                             设置
                         </p> : ""
-                    }
+                    } */}
+
                 </div>
             </div>
         )

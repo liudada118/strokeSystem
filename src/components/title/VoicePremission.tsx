@@ -38,7 +38,7 @@ export default function VoicePremission() {
     const audio: any = document.getElementById("audio");
     audio.setAttribute("src", voice);
     if (audio) {
-      audio.pause();
+      audio.play();
       setIsVoiceModalOpen(false);
       first = false;
     } else {

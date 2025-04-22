@@ -427,11 +427,10 @@ const UserInfoCard: (props: UserInfoCardProps) => React.JSX.Element = (props) =>
 
         }
     }
-
     if (outer) {
         return (
             <div
-                className='fixed top-[2.8rem] z-[9] w-full h-[6rem] bg-[#fff]'>
+                className='fixed  top-[2.8rem] z-[90] w-full h-[6rem] bg-[#fff]'>
                 <div className='flex items-end justify-between w-[90%] h-full py-[1.2rem] bg-[#fff] mx-auto border-b border-b-[#DCE3E9]'>
                     <img src={arrow} alt="" style={{ transform: "rotate(180deg)" }} className='w-[8px] h-[12px] mb-[10px] mr-[20px]'
                         onClick={() => navigate(`/`)} />
@@ -455,12 +454,10 @@ const UserInfoCard: (props: UserInfoCardProps) => React.JSX.Element = (props) =>
                             设置
                         </p> : ""
                     }
-
                 </div>
             </div>
         )
     }
-
     // 保存设置
     const setting = (value: boolean) => {
         setIsModifying(value)

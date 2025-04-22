@@ -88,13 +88,6 @@ export const MessageRightTitle = (props: messageParam) => {
             }, 300);
             setTimeoutId(newTimeoutId);
         }
-
-
-
-
-
-
-
     };
     useEffect(() => {
         return () => {

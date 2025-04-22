@@ -849,12 +849,12 @@ export function CategoryChart(props: categoryChartProps) {
     const option = {
       tooltip: !props.tipFormat
         ? {
-            show: true,
-          }
+          show: true,
+        }
         : {
-            show: true,
-            formatter: props.tipFormat,
-          },
+          show: true,
+          formatter: props.tipFormat,
+        },
       xAxis: {
         type: "category",
         data: props.xdata,
@@ -868,10 +868,10 @@ export function CategoryChart(props: categoryChartProps) {
 
           formatter: props.formatter
             ? function (value: any) {
-                console.log(value);
-                let tip = value.slice(0, 2);
-                return tip;
-              }
+              console.log(value);
+              let tip = value.slice(0, 2);
+              return tip;
+            }
             : "{value}",
         },
         axisLine: {
@@ -1054,7 +1054,7 @@ export function SleepDateTypeChart(props: SleepDateType) {
   // for (let i = 0; i < 7; i++) {
   //   yArr[i] = dayjs(new Date(props.date).getTime() - 24 * i * 60 * 60 * 1000).format(dateFormat)
   // }
-  let yArr = ["左侧睡", "仰卧", "右侧睡"];
+  let yArr = ["右侧睡", "仰卧", "左侧睡"];
 
   let data = props.data;
 
@@ -1344,23 +1344,23 @@ export function SleepSegAndProp(props: SleepSegAndPropType) {
                       style={
                         sleepNowNum.left
                           ? {
-                              left:
-                                sleepNowNum.left < 25
-                                  ? sleepNowNum.left - 25
-                                  : sleepNowNum.left > 40
+                            left:
+                              sleepNowNum.left < 25
+                                ? sleepNowNum.left - 25
+                                : sleepNowNum.left > 40
                                   ? -10
                                   : 0,
-                            }
+                          }
                           : sleepNowNum.right
-                          ? {
+                            ? {
                               right:
                                 sleepNowNum.right < 25
                                   ? -sleepNowNum.right - 25
                                   : sleepNowNum.right > 40
-                                  ? -10
-                                  : 0,
+                                    ? -10
+                                    : 0,
                             }
-                          : {}
+                            : {}
                       }
                     >
                       <div className="showSleepItem">
@@ -1380,10 +1380,10 @@ export function SleepSegAndProp(props: SleepSegAndPropType) {
                           {item[0] === 0
                             ? "离床"
                             : item[0] === 1
-                            ? "清醒"
-                            : item[0] === 2
-                            ? "浅睡"
-                            : "深睡"}
+                              ? "清醒"
+                              : item[0] === 2
+                                ? "浅睡"
+                                : "深睡"}
                         </span>
                       </div>
                     </div>

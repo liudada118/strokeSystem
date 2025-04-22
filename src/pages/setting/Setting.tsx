@@ -413,10 +413,10 @@ export default function Setting() {
         { key: 'platform', label: '管理平台使用说明' },
       ],
     },
-    {
-      label: '护理选项',
-      key: 'nurse',
-    },
+    // {
+    //   label: '护理选项',
+    //   key: 'nurse',
+    // },
     // {
     //   label: '配置翻身流程',
     //   key: 'customOption',
@@ -502,11 +502,11 @@ export default function Setting() {
 
   }
 
-//   useEffect(() => {
-//     if (items[0] && items[0].children && items[0].children[0]) {
-//         setCurrent(items[0].children[0].key)
-//     }
-//   }, [items])
+  //   useEffect(() => {
+  //     if (items[0] && items[0].children && items[0].children[0]) {
+  //         setCurrent(items[0].children[0].key)
+  //     }
+  //   }, [items])
 
 
   const project = [

@@ -99,7 +99,7 @@ const Title = React.forwardRef((props: titleProps, refs) => {
    * @param pathname 路由pathname
    * @returns 返回title显示的文字
    */
-  
+
   const calTitleText = (pathname: string) => {
     const name = pathname.split('/')[1]
     if (name) {
@@ -111,8 +111,8 @@ const Title = React.forwardRef((props: titleProps, refs) => {
 
   const text = calTitleText(pathname)
   return (
-    <div className="title" id="title">
-      <VoicePremission  />
+    <div className="title " id="title">
+      <VoicePremission />
       <div className="homeTitle">
         <TitleLeftInfo text={text} path={path} isMobile={isMobile} />
         <TitleRightInfo titleKey={titleKey} titleChangeGetMessage={titleChangeGetMessage} setMessages={setMessages} path={path} isMobile={isMobile} />

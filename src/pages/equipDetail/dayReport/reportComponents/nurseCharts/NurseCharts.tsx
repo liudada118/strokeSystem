@@ -101,6 +101,10 @@ function NurseCharts(props: nurseChartsProps) {
         instance({
             url: '/sleep/nurse/getDayNurseData',
             method: 'get',
+            headers: {
+                'content-type': 'application/json',
+                'token': localStorage.getItem('token')
+            },
             params: {
                 did: props.sensorName,
                 startTimeMillis: timestampStart,
@@ -330,7 +334,7 @@ function NurseCharts(props: nurseChartsProps) {
                     </div> : <div className="h-[50rem] bg-[#FFFFFF]" style={{ width: '100%' }}>
                         <div className='text-[#000000] text-[1.2rem] pl-[1rem] py-[1rem]' style={{ fontFamily: 'PingFang SC', fontWeight: "600" }}>护理记录</div>
                         <div className=' px-[3%]  h-full'>
-                        <PCNurseList list={nurseConfigList || []} extParams={{ isShowTime: false, className: 'daEeport' }} />
+                            <PCNurseList list={nurseConfigList || []} extParams={{ isShowTime: false, className: 'daEeport' }} />
                         </div>
                     </div>
                 }

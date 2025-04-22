@@ -40,6 +40,7 @@ import type {
   ActionSheetShowHandler,
 } from "antd-mobile/es/components/action-sheet";
 import { useNavigate } from "react-router-dom";
+import e from "express";
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;
@@ -114,8 +115,7 @@ export default function Message() {
     startMills: timeArr[0],
     endMills: timeArr[1],
     types: "nursing,fallbed,outOffBed,situp,offline,sos",
-    patientName: "",
-    roomNum: "",
+
   });
   const [messages, setMessages] = useState<message[]>([]);
   // 请求msg
@@ -176,7 +176,7 @@ export default function Message() {
       }
       setFalse(false);
       return res;
-    } catch (err) {}
+    } catch (err) { }
   };
   /**
    *
@@ -242,6 +242,8 @@ export default function Message() {
       title: "离线提醒",
     },
   ];
+  console.log(WindowSize, '.....................WindowSizeWindowSize');
+
 
   const getDataList = (dataList: any) => {
     return dataList.map((item: any, index: number) => {
@@ -311,6 +313,9 @@ export default function Message() {
     setTitleId(item.id);
     setTitleIdKey(item.key);
     if (item.key === "otherReminders") return setNursing(true);
+    if (!WindowSize) {
+      if (item.title == '其他提醒') return ''
+    }
     setParams({
       ...params,
       pageNum: 1,
@@ -344,7 +349,7 @@ export default function Message() {
         beforeYestodayAlarmCount: res.data.beforeYestodayAlarmCount,
         todayAlarmCoun: res.beforeYestodayAlarmCount,
       });
-    } catch (err) {}
+    } catch (err) { }
   };
   const columns: TableProps<DataType>["columns"] = [
     {
@@ -422,22 +427,40 @@ export default function Message() {
   //     });
   //   }
   // }, [patientNameRoomNum]);
+  const [timeoutId, setTimeoutId] = useState<any>(null);
+  const handleInputChange = (value: any) => {
+    // setMobileData([]);
+
+    setpatientName(value);
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+    }
+
+    if (selectType === 'patientName') {
+      const newTimeoutId = setTimeout(() => {
+        loadMore({
+          ...params,
+          pageNum: 1,
+          types: titleKey,
+          patientName: value,
+        }, []);
+      }, 300);
+      setTimeoutId(newTimeoutId);
+    } else if (selectType === 'roomNum') {
+      const newTimeoutId = setTimeout(() => {
+        loadMore({
+          ...params,
+          pageNum: 1,
+          types: titleKey,
+          roomNum: value,
+        }, []);
+      }, 300);
+      setTimeoutId(newTimeoutId);
+    }
+  };
 
   const onBlur = () => {
-    setMobileData([]);
-    if (selectType === "patientName") {
-      loadMore({
-        ...params,
-        pageNum: 1,
-        patientName: patientNameRoomNum,
-      }, []);
-    } else if (selectType === "roomNum") {
-      loadMore({
-        ...params,
-        pageNum: 1,
-        roomNum: patientNameRoomNum,
-      }, []);
-    }
+
   };
   // 标题切换
   const titleRefs = useRef<(HTMLButtonElement | null)[]>([]);
@@ -453,8 +476,7 @@ export default function Message() {
   const regex = /^\d{4}-\d{1,2}-\d{1,2}-\d{2}:\d{2}$/;
   // const timeSearch = () => {
   //   console.log(dataRange, startInputTime, endInputTime, '..................endInputTimeendInputTime');
-  //   const startTimestamp = dayjs(dataRange[0]).hour(Number(hours)).minute(Number(minutes)).valueOf();
-  //   const endTimestamp = dayjs(dataRange[1]).hour(Number(hours)).minute(Number(minutes)).valueOf();
+
   //   const startTimestampInput: any = dayjs(startInputTime).valueOf();
   //   const endTimestampInput: any = dayjs(dataRange[1]).valueOf();
   //   if (!dataRange && !(startInputTime && endInputTime)) return message.error('请输入时间或者选择时间范围')
@@ -487,59 +509,96 @@ export default function Message() {
   //   // if (startTimestampInput > endTimestampInput && endTimestampInput > new Date().getTime()) return message.error('开始和结束时间不能大于当前时间')
   //   // if (!(regex.test(startInputTime) && regex.test(endInputTime))) return message.info('请输入正确的时间格式,示例 2025-1-1-10:10')
   //   // if (dataRange || (startInputTime && endInputTime)) {
-
   //   // }
   //   setVisible(false)
   // };
+  let formattedDates = dataRange.map((dateStr: any) => {
+    const date = new Date(dateStr);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}-${hours}-${minutes}`;
+  });
+  function convertToTimestamp(dateStr: any) {
+    if (typeof dateStr !== 'string') {
+      console.error('传入的参数不是字符串类型');
+      return null;
+    }
+    let formattedDateStr: any = dateStr.replace(/-/g, ':').replace(/(\d{2}:\d{2})$/, 'T$1:00');
+    return new Date(formattedDateStr).getTime();
+  }
+  // let yyds=formattedDates
+  const startTimestamp = convertToTimestamp(formattedDates[0]);
+  const endTimestamp = convertToTimestamp(formattedDates[1]);
+  console.log('开始时间的时间戳:', startTimestamp);
+  console.log('结束时间的时间戳:', endTimestamp);
   const today = new Date();
+  // const startTimestamp = dayjs(dataRange[0])
+  //   .hour(Number(hours))
+  //   .minute(Number(minutes))
+  //   .valueOf();
+  // const endTimestamp = dayjs(dataRange[1])
+  //   .hour(Number(hours))
+  //   .minute(Number(minutes))
+  //   .valueOf();
+  // console.log(formattedDates, '................startTimestampInputstartTimestampInput');
+  // const startTimestampInput = dayjs(formattedDates[0]).valueOf();
+  // const endTimestampInput = dayjs(formattedDates[1]).valueOf();
+  // const dataTimeStart = formattedDates[0].replace(/-/g, ':').replace(/(\d{2}:\d{2}:\d{2})$/, 'T$1');
+  // const dataTimeEnd = formattedDates[1].replace(/-/g, ':').replace(/(\d{2}:\d{2}:\d{2})$/, 'T$1');
+  // 创建 Date 对象
+  const startTimestampInput = new Date();
+  const endTimestampInput = new Date();
+  // 获取时间戳
+  console.log(dayjs(formattedDates[0]).valueOf(), '..............');
+
+  // const timestamp = date.getTime();
   const timeSearch = () => {
-    const startTimestamp = dayjs(dataRange[0])
-      .hour(Number(hours))
-      .minute(Number(minutes))
-      .valueOf();
-    const endTimestamp = dayjs(dataRange[1])
-      .hour(Number(hours))
-      .minute(Number(minutes))
-      .valueOf();
-    const startTimestampInput = dayjs(startTimestamp).valueOf();
-    const endTimestampInput = dayjs(endTimestamp).valueOf();
-    console.log(startTimestampInput, startTimestamp, endTimestamp, 'endTimestamp...')
-    // 检查 dataRange 是否存在
-    if (dataRange && dataRange.length > 0) {
-      // setParams({
-      //   ...params,
-      //   startMills: startTimestamp,
-      //   endMills: endTimestamp,
-      // });
-      // getMessage({
-      //   ...params,
-      //   startMills: startTimestamp,
-      //   endMills: endTimestamp,
-      // });
-      setMobileData([]);
-      loadMore({
-        ...params,
-        pageNum: 1,
-        startMills: startTimestampInput,
-        endMills: endTimestampInput,
-      }, []);
-      setVisible(false);
-      return;
-    }
-    if (!startInputTime || !endInputTime) {
-      return message.error("开始和结束时间不能为空");
-    }
-    if (!regex.test(startInputTime) || !regex.test(endInputTime)) {
-      return message.info("请输入正确的时间格式,示例 2025-1-1-10:10");
-    }
-    if (startTimestampInput >= endTimestampInput) {
-      return message.error("开始时间不能大于或等于结束时间");
-    }
+    console.log(startTimestampInput, endTimestampInput);
 
-    if (endTimestampInput > new Date().getTime()) {
-      return message.error("结束时间不能大于当前时间");
-    }
+    setMobileData([]);
+    loadMore({
+      ...params,
+      pageNum: 1,
+      startMills: dayjs(formattedDates[0]).valueOf(),
+      endMills: dayjs(formattedDates[1]).valueOf(),
+    }, []);
+    // setVisible(false);
 
+    // // 检查 dataRange 是否存在
+    // if (dataRange && dataRange.length > 0) {
+    //   // setParams({
+    //   //   ...params,
+    //   //   startMills: startTimestamp,
+    //   //   endMills: endTimestamp,
+    //   // });
+    //   // getMessage({
+    //   //   ...params,
+    //   //   startMills: startTimestamp,
+    //   //   endMills: endTimestamp,
+    //   // });
+    //   setMobileData([]);
+    //   loadMore({
+    //     ...params,
+    //     pageNum: 1,
+    //     startMills: dataTimeStart,
+    //     endMills: dataTimeEnd,
+    //   }, []);
+    //   setVisible(false);
+    //   return;
+    // }
+    // if (!startInputTime || !endInputTime) {
+    //   return message.error("开始和结束时间不能为空");
+    // }
+    // if (!regex.test(startInputTime) || !regex.test(endInputTime)) {
+    //   return message.info("请输入正确的时间格式,示例 2025-1-1-10:10");
+    // }
+    // if (startTimestampInput >= endTimestampInput) {
+    //   return message.error("开始时间不能大于或等于结束时间");
+    // }
+    // if (endTimestampInput > new Date().getTime()) {
+    //   return message.error("结束时间不能大于当前时间");
+    // }
     // setParams({
     //   ...params,
     //   startMills: startTimestampInput,
@@ -551,23 +610,12 @@ export default function Message() {
     //   endMills: endTimestampInput,
     // });
 
-    setMobileData([]);
-    loadMore({
-      ...params,
-      pageNum: 1,
-      startMills: startTimestampInput,
-      endMills: endTimestampInput,
-    }, []);
-
-    setVisible(false);
   };
   const currentYear = today.getFullYear();
   const currentMonth = today.getMonth(); // 月份为0索引
-
   const disableFutureDates = (date: any) => {
     const dateYear = date.getFullYear();
     const dateMonth = date.getMonth();
-
     // 检查日期是否在当前月份和年份
     if (dateYear === currentYear && dateMonth === currentMonth) {
       return (
@@ -576,7 +624,6 @@ export default function Message() {
         </div>
       );
     }
-
     // 渲染之前月份的日期
     if (
       dateYear < currentYear ||
@@ -588,7 +635,6 @@ export default function Message() {
         </div>
       );
     }
-
     return null; // 如果日期在未来，则返回 null
   };
   const loadMore = async (searchParams?: any, initData?: any) => {
@@ -626,9 +672,8 @@ export default function Message() {
                         <Button
                           style={{ border: "none", fontWeight: "900" }}
                           key={`${item.id}_v1`}
-                          className={`btn  ${
-                            index + 1 === titleId ? "on" : ""
-                          } `}
+                          className={`btn  ${index + 1 === titleId ? "on" : ""
+                            } `}
                           onClick={() => onTitle(item)}
                         >
                           {item.title}
@@ -696,8 +741,8 @@ export default function Message() {
                           className="font-pingfang-sc font-bold text-[35px] leading-normal tracking-normal "
                           style={{ color: "#0072EF" }}
                         >
-                          {" "}
-                          {todayAlarmCount}{" "}
+
+                          {todayAlarmCount}
                         </span>{" "}
                         次
                       </p>
@@ -772,9 +817,7 @@ export default function Message() {
         </>
       ) : (
         <div className="message_phone_box">
-          <Title
-            titleChangeGetMessage={(item: any) => getSearchValue(item)}
-          ></Title>
+          <Title titleChangeGetMessage={(item: any) => getSearchValue(item)} ></Title>
           <div className="MessageYiDong">
             <LeftOutlined
               onClick={() => navigator("/")}
@@ -801,9 +844,10 @@ export default function Message() {
                 className="messageTitlediv2_you_inp"
                 type="text"
                 value={patientNameRoomNum}
-                onChange={(e) => setpatientName(e.target.value)}
+                onChange={(e: any) => handleInputChange(e.target.value)}
+                // onChange={(e) => setpatientName(e.target.value)}
                 placeholder="请输入姓名/床号"
-                onBlur={onBlur}
+              // onBlur={onBlur}
               />
               {/* <img src={fang} style={{ width: "1.5rem", height: "1.5rem" }} alt="" /> */}
               {/* <ZoomInOutlined className="MessageYiDongFangDAJing" /> */}
@@ -1105,16 +1149,20 @@ export default function Message() {
                 </div>
                 <div className="flex justify-around">
                   <input
+                    value={formattedDates[0]}
+                    disabled
                     onChange={(e: any) => setStartInputTime(e.target.value)}
                     placeholder="2025-1-1-10:10"
                     style={{ fontFamily: "PingFang SC", textAlign: "center" }}
-                    className="w-[12rem] h-[2.67rem] rounded-[0.9rem] bg-[#ECF0F4] text-[1.4rem] "
+                    className="w-[12rem] h-[2.67rem] rounded-[0.9rem] bg-[#ECF0F4] text-[1.2rem] "
                   />
                   <input
+                    value={formattedDates[1]}
+                    disabled
                     onChange={(e: any) => setEndInputTime(e.target.value)}
                     placeholder="2025-1-1-10:10"
                     style={{ fontFamily: "PingFang SC", textAlign: "center" }}
-                    className="w-[12rem] h-[2.67rem] rounded-[0.9rem] bg-[#ECF0F4] text-[1.4rem] "
+                    className="w-[12rem] h-[2.67rem] rounded-[0.9rem] bg-[#ECF0F4] text-[1.2rem] "
                   />
                 </div>
               </div>
@@ -1122,7 +1170,7 @@ export default function Message() {
                 <Calendar
                   defaultValue={null}
                   renderDate={disableFutureDates}
-                  style={{ height: "26.8rem" }}
+                  style={{ height: "26.8rem", overflowY: "auto" }}
                   className="calendar-custom"
                   selectionMode="range"
                   allowClear
@@ -1134,7 +1182,7 @@ export default function Message() {
                   }}
                 />
               </div>
-              <div className="flex justify-center">
+              <div className="flex justify-center mt-[8rem]">
                 <Select
                   showSearch
                   style={{
@@ -1142,6 +1190,7 @@ export default function Message() {
                     height: "2.9rem",
                     marginRight: "0.7rem",
                     paddingLeft: "0.6rem",
+                    marginTop: ""
                   }}
                   placeholder="10"
                   optionFilterProp="children"

@@ -1,6 +1,6 @@
 import { useGetWindowSize } from '@/hooks/hook'
 import { alarmSelect, deleteAlarm, equipPcPlaySelect, equipPcSelect, equipPlaySelect, equipSelect, fetchEquips } from '@/redux/equip/equipSlice'
-import { Carousel, message, Popover, Skeleton, Spin } from 'antd'
+import { Carousel, Empty, message, Popover, Skeleton, Spin } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 // import { equip } from './Home'
@@ -39,18 +39,20 @@ export default function Equip() {
     const phone = localStorage.getItem('phone') || ''
     const token = localStorage.getItem('token') || ''
     const [equipPc1, setequipPc] = useState()
-
     const [datalist, setDataList] = useState([])
     const [datalistOld, setDataListOld] = useState([])
-
+    const [isFalse, setFasle] = useState(false)
     useEffect(() => {
         if (equipPc.length > 0 && JSON.stringify(datalistOld) !== JSON.stringify(equipPc)) {
             setDataListOld(equipPc)
             const datalist = JSON.parse(JSON.stringify(equipPc))
             datalist[datalist.length - 1].push({ type: 'add' })
             setDataList(datalist)
+            setFasle(true)
         }
     }, [equipPc])
+    console.log(equipPc, '................equipPc');
+
     const [i, setI] = useState()
     const data = () => {
         instance({
@@ -120,7 +122,7 @@ export default function Equip() {
                 isOPen ? <AddUseModla isAddModalOpen={isOPen} onClose={((val: boolean) => setOpen(val))}></AddUseModla> : null
             }
             {
-                datalist.length === 0 || datalist.length === 0 ? <Skeleton active ></Skeleton> : ''
+                datalist.length == 0 ? <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="暂无数据" /> : ''
             }
             {!isMobile ? <Carousel
                 // afterChange={onChange}
@@ -138,7 +140,6 @@ export default function Equip() {
                                         <img onClick={() => onOPen()} src={addImg} alt="" />
                                     </div>
                                 }
-
                                 return (
                                     <div className={`equip`} key={item.sensorName}
                                         onClick={() => {

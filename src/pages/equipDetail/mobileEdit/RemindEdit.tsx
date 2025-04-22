@@ -75,6 +75,7 @@ export function RemindEdit() {
     let [formValue, setFormValue] = useState({
         timeRangeB: `${timePeriodInitFormat({ timeStamp: leaveBedStart || '', type: 'start' })} - ${timePeriodInitFormat({ timeStamp: leaveBedEnd, type: 'end' })} `,
         timeIntervalB: leaveBedPeriod === 0 ? '实时提醒' : `${leaveBedPeriod}分钟`,
+        
         timeRangeC: `${timePeriodInitFormat({ timeStamp: situpStart, type: 'start' })} - ${timePeriodInitFormat({ timeStamp: situpEnd, type: 'end' })} `,
         timeRangeD: `${timePeriodInitFormat({ timeStamp: fallbedStart, type: 'start' })} - ${timePeriodInitFormat({ timeStamp: fallbedEnd, type: 'end' })} `,
         timeRangeE: `${timePeriodInitFormat({ timeStamp: sosStart, type: 'start' })} - ${timePeriodInitFormat({ timeStamp: sosEnd, type: 'end' })} `,
@@ -150,12 +151,12 @@ export function RemindEdit() {
             method: "get",
             url: "/device/selectSinglePatient",
             headers: {
-            "content-type": "multipart/form-data",
-            token: localStorage.getItem("token"),
+                "content-type": "multipart/form-data",
+                token: localStorage.getItem("token"),
             },
             params: {
-            sensorName,
-            phoneNum: localStorage.getItem("phone"),
+                sensorName,
+                phoneNum: localStorage.getItem("phone"),
             },
         }).then((res: any) => {
             const {
@@ -186,18 +187,20 @@ export function RemindEdit() {
         let obj = formatSetting(newValue)
         obj.userName = phone
         obj.deviceName = sensorName
+        console.log(obj, '..............................44444444...............yyyyds');
+
         // 暂时不要删除，目前看这句代码没有实际意义
-        // dispatch(changeEquipInfo(obj))
+        dispatch(changeEquipInfo(obj))
         dispatch(changePersonalEquipAlarmInfo(obj))
     }
     const formatSetting = (newValue: any) => {
-  let obj = {}
+        let obj = {}
         const keyArr = Object.keys(newValue)
         // let realObj: any = { ...userInfo }
-
         let realObj: any = {}
         keyArr.forEach((item: string) => {
             const realValue = newValue[item]
+            console.log('.............33333................yyyyds');
             if (typeof newValue[item] == 'string') {
                 //    提醒时间段
                 if (newValue[item].includes('-')) {
@@ -209,7 +212,9 @@ export function RemindEdit() {
                     const startMin = start.split(':')[1]
                     const endHour = end.split(':')[0]
                     const endMin = end.split(':')[1]
-                  if (start) realObj[objKeyToCloud[item].start] = startHour * 60 * 60 * 1000 + startMin * 60 * 1000
+
+
+                    if (start) realObj[objKeyToCloud[item].start] = startHour * 60 * 60 * 1000 + startMin * 60 * 1000
                     if (end) realObj[objKeyToCloud[item].end] = endHour * 60 * 60 * 1000 + endMin * 60 * 1000
                 }
                 // 提醒间隔

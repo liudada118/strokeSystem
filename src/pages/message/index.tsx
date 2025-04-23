@@ -86,7 +86,7 @@ export function msgToinfoStr(msg: string): string {
 
 const timeArr = [
   new Date(new Date().toLocaleDateString()).getTime(),
-  new Date(new Date().toLocaleDateString()).getTime() + 86400000,
+  new Date().getTime(),
 ];
 export default function Message() {
   const navigator = useNavigate();
@@ -145,7 +145,7 @@ export default function Message() {
     if (param.pageNum === 1) {
       setHasMore(true);
     }
-    initMessagesPage(res);
+    // initMessagesPage(res);
   };
   /**
    *
@@ -158,6 +158,9 @@ export default function Message() {
   // const [todayAlarmCount, setTodayAlarmCount] = useState(0)
   // 接口请求
   const baseFetch = async (param: any) => {
+    if (!param.patientName) {
+      delete param.patientName;
+    }
     try {
       const option = {
         method: "get",
@@ -175,6 +178,7 @@ export default function Message() {
         setDataLIst(res.data.data.records);
       }
       setFalse(false);
+      initMessagesPage(res);
       return res;
     } catch (err) { }
   };
@@ -408,29 +412,12 @@ export default function Message() {
     { value: "patientName", label: "姓名" },
     { value: "roomNum", label: "床号" },
   ];
-  const [otherRemindersType, setOtherRemindersType] = useState("");
   const [selectType, setSelectType] = useState("patientName");
-  const [fale, seFalse] = useState(false);
   // 搜索框
   const [patientNameRoomNum, setpatientName] = useState<any>("");
-  // useEffect(() => {
-  //   if (!patientNameRoomNum) {
-  //     setParams({
-  //       ...params,
-  //       pageNum: 1,
-  //       pageSize: 10,
-  //     });
-  //     getMessage({
-  //       ...params,
-  //       pageNum: 1,
-  //       pageSize: 10,
-  //     });
-  //   }
-  // }, [patientNameRoomNum]);
+
   const [timeoutId, setTimeoutId] = useState<any>(null);
   const handleInputChange = (value: any) => {
-    // setMobileData([]);
-
     setpatientName(value);
     if (timeoutId) {
       clearTimeout(timeoutId);
@@ -459,157 +446,25 @@ export default function Message() {
     }
   };
 
-  const onBlur = () => {
-
-  };
   // 标题切换
   const titleRefs = useRef<(HTMLButtonElement | null)[]>([]);
-  const defaultRange: [Date, Date] = [
-    dayjs().toDate(),
-    dayjs().add(2, "day").toDate(),
-  ];
-  const [dataRange, setDataRange] = useState<any>([]); //日期
-  const [hours, setHours] = useState<string>("10"); // 小时
-  const [minutes, setMinutes] = useState<string>("10"); // 分钟
-  const [startInputTime, setStartInputTime] = useState<any>(null);
-  const [endInputTime, setEndInputTime] = useState<any>(null);
-  const regex = /^\d{4}-\d{1,2}-\d{1,2}-\d{2}:\d{2}$/;
-  // const timeSearch = () => {
-  //   console.log(dataRange, startInputTime, endInputTime, '..................endInputTimeendInputTime');
+  const [dataRange, setDataRange] = useState<any>(null); //日期
+  const [hours, setHours] = useState<string>("0"); // 小时
+  const [minutes, setMinutes] = useState<string>("0"); // 分钟
+  const [chooseTimeType, setChooseTimeType] = useState<any>('start');
+  const [timeList, setTimeList] = useState<any>(timeArr);
 
-  //   const startTimestampInput: any = dayjs(startInputTime).valueOf();
-  //   const endTimestampInput: any = dayjs(dataRange[1]).valueOf();
-  //   if (!dataRange && !(startInputTime && endInputTime)) return message.error('请输入时间或者选择时间范围')
-  //   if (dataRange) {
-  //     setParams({
-  //       ...params,
-  //       startMills: startTimestamp,
-  //       endMills: endTimestamp,
-  //     });
-  //     getMessage({
-  //       ...params,
-  //       startMills: startTimestamp,
-  //       endMills: endTimestamp,
-  //     });
-  //     return
-  //   }
-  //   if (!startInputTime && !endInputTime) return message.error('开始和结束时间不能为空')
-  //   if (startInputTime && endInputTime) {
-  //     setParams({
-  //       ...params,
-  //       startMills: startTimestampInput,
-  //       endMills: endTimestampInput,
-  //     });
-  //     getMessage({
-  //       ...params,
-  //       startMills: startTimestampInput,
-  //       endMills: endTimestampInput,
-  //     });
-  //   }
-  //   // if (startTimestampInput > endTimestampInput && endTimestampInput > new Date().getTime()) return message.error('开始和结束时间不能大于当前时间')
-  //   // if (!(regex.test(startInputTime) && regex.test(endInputTime))) return message.info('请输入正确的时间格式,示例 2025-1-1-10:10')
-  //   // if (dataRange || (startInputTime && endInputTime)) {
-  //   // }
-  //   setVisible(false)
-  // };
-  let formattedDates = dataRange.map((dateStr: any) => {
-    const date = new Date(dateStr);
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}-${hours}-${minutes}`;
-  });
-  function convertToTimestamp(dateStr: any) {
-    if (typeof dateStr !== 'string') {
-      console.error('传入的参数不是字符串类型');
-      return null;
-    }
-    let formattedDateStr: any = dateStr.replace(/-/g, ':').replace(/(\d{2}:\d{2})$/, 'T$1:00');
-    return new Date(formattedDateStr).getTime();
-  }
-  // let yyds=formattedDates
-  const startTimestamp = convertToTimestamp(formattedDates[0]);
-  const endTimestamp = convertToTimestamp(formattedDates[1]);
-  console.log('开始时间的时间戳:', startTimestamp);
-  console.log('结束时间的时间戳:', endTimestamp);
   const today = new Date();
-  // const startTimestamp = dayjs(dataRange[0])
-  //   .hour(Number(hours))
-  //   .minute(Number(minutes))
-  //   .valueOf();
-  // const endTimestamp = dayjs(dataRange[1])
-  //   .hour(Number(hours))
-  //   .minute(Number(minutes))
-  //   .valueOf();
-  // console.log(formattedDates, '................startTimestampInputstartTimestampInput');
-  // const startTimestampInput = dayjs(formattedDates[0]).valueOf();
-  // const endTimestampInput = dayjs(formattedDates[1]).valueOf();
-  // const dataTimeStart = formattedDates[0].replace(/-/g, ':').replace(/(\d{2}:\d{2}:\d{2})$/, 'T$1');
-  // const dataTimeEnd = formattedDates[1].replace(/-/g, ':').replace(/(\d{2}:\d{2}:\d{2})$/, 'T$1');
-  // 创建 Date 对象
-  const startTimestampInput = new Date();
-  const endTimestampInput = new Date();
-  // 获取时间戳
-  console.log(dayjs(formattedDates[0]).valueOf(), '..............');
 
-  // const timestamp = date.getTime();
   const timeSearch = () => {
-    console.log(startTimestampInput, endTimestampInput);
-
+    setVisible(false);
     setMobileData([]);
     loadMore({
       ...params,
       pageNum: 1,
-      startMills: dayjs(formattedDates[0]).valueOf(),
-      endMills: dayjs(formattedDates[1]).valueOf(),
+      startMills: dayjs(timeList[0]).valueOf(),
+      endMills: dayjs(timeList[1]).valueOf(),
     }, []);
-    // setVisible(false);
-
-    // // 检查 dataRange 是否存在
-    // if (dataRange && dataRange.length > 0) {
-    //   // setParams({
-    //   //   ...params,
-    //   //   startMills: startTimestamp,
-    //   //   endMills: endTimestamp,
-    //   // });
-    //   // getMessage({
-    //   //   ...params,
-    //   //   startMills: startTimestamp,
-    //   //   endMills: endTimestamp,
-    //   // });
-    //   setMobileData([]);
-    //   loadMore({
-    //     ...params,
-    //     pageNum: 1,
-    //     startMills: dataTimeStart,
-    //     endMills: dataTimeEnd,
-    //   }, []);
-    //   setVisible(false);
-    //   return;
-    // }
-    // if (!startInputTime || !endInputTime) {
-    //   return message.error("开始和结束时间不能为空");
-    // }
-    // if (!regex.test(startInputTime) || !regex.test(endInputTime)) {
-    //   return message.info("请输入正确的时间格式,示例 2025-1-1-10:10");
-    // }
-    // if (startTimestampInput >= endTimestampInput) {
-    //   return message.error("开始时间不能大于或等于结束时间");
-    // }
-    // if (endTimestampInput > new Date().getTime()) {
-    //   return message.error("结束时间不能大于当前时间");
-    // }
-    // setParams({
-    //   ...params,
-    //   startMills: startTimestampInput,
-    //   endMills: endTimestampInput,
-    // });
-    // getMessage({
-    //   ...params,
-    //   startMills: startTimestampInput,
-    //   endMills: endTimestampInput,
-    // });
-
   };
   const currentYear = today.getFullYear();
   const currentMonth = today.getMonth(); // 月份为0索引
@@ -639,7 +494,6 @@ export default function Message() {
   };
   const loadMore = async (searchParams?: any, initData?: any) => {
     const pageNum = params.pageNum + 1;
-    console.log(pageNum, "pageNum....");
     setParams({
       ...params,
       pageNum,
@@ -654,6 +508,33 @@ export default function Message() {
     setMobileData([...(initData ? initData : mobileData), ...list]);
     setHasMore((res.data?.data?.records || []).length > 0);
   };
+
+  const checkoutTime = (value: any) => {
+    const currentTime = new Date().getTime();
+    if (chooseTimeType === 'start') {
+      const start = new Date(value).getTime();
+      const end = new Date(timeList[1]).getTime();
+
+      if (start > currentTime) {
+        return message.info("开始时间不能大于当前时间");
+      }
+      if (start > end) {
+        return message.info("开始时间不能大于结束时间");
+      }
+    } else {
+      const start = new Date(value).getTime();
+      const end = new Date(timeList[0]).getTime();
+
+      if (start > currentTime) {
+        return message.info("结束时间不能大于当前时间");
+      }
+      if (start < end) {
+        return message.info("结束时间不能小于开始时间");
+      }
+    }
+    return false;
+  };
+
   return (
     <>
       {!WindowSize ? (
@@ -830,6 +711,7 @@ export default function Message() {
                 style={{ width: 80 }}
                 onChange={(e) => {
                   setSelectType(e);
+                  patientNameRoomNum('')
                 }}
                 options={homeSelect}
               />
@@ -1148,38 +1030,78 @@ export default function Message() {
                   自定义区间
                 </div>
                 <div className="flex justify-around">
-                  <input
+                  {/* <input
                     value={formattedDates[0]}
                     disabled
                     onChange={(e: any) => setStartInputTime(e.target.value)}
                     placeholder="2025-1-1-10:10"
                     style={{ fontFamily: "PingFang SC", textAlign: "center" }}
                     className="w-[12rem] h-[2.67rem] rounded-[0.9rem] bg-[#ECF0F4] text-[1.2rem] "
-                  />
-                  <input
+                    onClick={() => {
+                      console.log('000000000000000')
+                    }}
+                  /> */}
+                  <span
+                    className="w-[12rem] h-[2.67rem] rounded-[0.9rem] bg-[#ECF0F4] text-[1.2rem] text-center lint-height-[2.67rem]"
+                    style={{ lineHeight: '2.67rem', color: chooseTimeType !== 'start' ? '#666' : '#0072EF' }}
+                    onClick={() => {
+                      setChooseTimeType('start')
+                    }}
+                  >
+                    {dayjs(timeList[0]).format('YYYY-MM-DD')}-{dayjs(timeList[0]).format('HH:mm')}
+                  </span>
+                  {/* <input
                     value={formattedDates[1]}
                     disabled
                     onChange={(e: any) => setEndInputTime(e.target.value)}
                     placeholder="2025-1-1-10:10"
                     style={{ fontFamily: "PingFang SC", textAlign: "center" }}
                     className="w-[12rem] h-[2.67rem] rounded-[0.9rem] bg-[#ECF0F4] text-[1.2rem] "
-                  />
+                  /> */}
+                  <span
+                    className="w-[12rem] h-[2.67rem] rounded-[0.9rem] bg-[#ECF0F4] text-[1.2rem] text-center lint-height-[2.67rem]"
+                    style={{ lineHeight: '2.67rem', color: chooseTimeType !== 'end' ? '#666' : '#0072EF' }}
+                    onClick={() => {
+                      setChooseTimeType('end')
+                    }}
+                  >
+                    {dayjs(timeList[1]).format('YYYY-MM-DD')}-{dayjs(timeList[1]).format('HH:mm')}
+                  </span>
                 </div>
               </div>
               <div className="h-[18.8rem]">
                 <Calendar
                   defaultValue={null}
-                  renderDate={disableFutureDates}
+                  // renderDate={disableFutureDates}
                   style={{ height: "26.8rem", overflowY: "auto" }}
                   className="calendar-custom"
-                  selectionMode="range"
+                  selectionMode="single"
                   allowClear
                   value={dataRange}
                   max={new Date()}
                   min={new Date(1900, 0, 1)}
                   onChange={(dataRange: any) => {
-                    setDataRange(dataRange);
-                  }}
+                    console.log(dataRange, '3423434234234');
+                    const date = new Date(dataRange)
+                    const dateStr = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`
+                    if (chooseTimeType === 'start') {
+                      const hourse = dayjs(timeList[0]).format('HH:mm')
+                      const date = `${dateStr} ${hourse}`
+                      if (!checkoutTime(date)) {
+                        setTimeList([date, timeList[1] || null])
+                        setDataRange(dataRange)
+                      }
+
+                    } else {
+                      const hourse = dayjs(timeList[1]).format('HH:mm')
+                      const date = `${dateStr} ${hourse}`
+                      if (!checkoutTime(date)) {
+                        setTimeList([timeList[0] || null, date])
+                        setDataRange(dataRange)
+                      }
+                    }
+                  }
+                  }
                 />
               </div>
               <div className="flex justify-center mt-[8rem]">
@@ -1195,7 +1117,29 @@ export default function Message() {
                   placeholder="10"
                   optionFilterProp="children"
                   value={hours}
-                  onChange={(value) => setHours(value as string)}
+                  onChange={(value) => {
+                    if (chooseTimeType === 'start') {
+                      const date = new Date(timeList[0])
+                      date.setHours(+value)
+                      if (!checkoutTime(date)) {
+                        setTimeList([
+                          date,
+                          timeList[1],
+                        ])
+                        setHours(value as string)
+                      }
+                    } else {
+                      const date = new Date(timeList[1])
+                      date.setHours(+value)
+                      if (!checkoutTime(date)) {
+                        setTimeList([
+                          timeList[0],
+                          date.toISOString(),
+                        ])
+                        setHours(value as string)
+                      }
+                    }
+                  }}
                 >
                   <Select.Option value={"时"} disabled>
                     <div className="flex justify-center">时</div>
@@ -1203,7 +1147,7 @@ export default function Message() {
                   {[...Array(24)].map((_, index) => (
                     <Select.Option
                       key={`${index}_v4`}
-                      value={index.toString().padStart(2, "0")}
+                      value={index.toString()}
                     >
                       <div className="flex justify-center ">
                         {index.toString().padStart(2, "0")}
@@ -1221,7 +1165,29 @@ export default function Message() {
                   placeholder="10"
                   optionFilterProp="children"
                   value={minutes}
-                  onChange={(value) => setMinutes(value as string)}
+                  onChange={(value) => {
+                    if (chooseTimeType === 'start') {
+                      const date = new Date(timeList[0])
+                      date.setMinutes(+value)
+                      if (!checkoutTime(date)) {
+                        setTimeList([
+                          date,
+                          timeList[1],
+                        ])
+                        setMinutes(value as string)
+                      }
+                    } else {
+                      const date = new Date(timeList[1])
+                      date.setMinutes(+value)
+                      if (!checkoutTime(date)) {
+                        setTimeList([
+                          timeList[0],
+                          date.toISOString(),
+                        ])
+                        setMinutes(value as string)
+                      }
+                    }
+                  }}
                 >
                   <Select.Option value={"分"} disabled>
                     <div className="flex justify-center">分</div>

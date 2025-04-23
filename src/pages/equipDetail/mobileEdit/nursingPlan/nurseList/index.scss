@@ -1,4 +1,6 @@
-.nurse_scroll {
+// @import '../../../../../variable';
+// @media screen and (min-width: $phoneWidth) and (max-width: $PadWidth) {
+    .nurse_scroll {
     // height: calc(100% - 2rem);
     flex: 1;
     overflow: auto;
@@ -100,3 +102,4 @@
         }
     }
 }
+// }

@@ -84,12 +84,16 @@ const equipSlice = createSlice({
             state.equipConstant = []
         },
         changeEquipInfo(state, action){
-            const equip = JSON.parse(JSON.stringify(state.equips))
-            const { res, equipPc } = changeOnerEquipInfo({ equips: equip, changeInfo: action.payload })
-
-            state.equips = res
-            state.equipPc = equipPc
-            state.equipConstant = res
+            try {
+                const equip = JSON.parse(JSON.stringify(state.equips))
+                const { res, equipPc } = changeOnerEquipInfo({ equips: equip, changeInfo: action.payload })
+    
+                state.equips = res
+                state.equipPc = equipPc
+                state.equipConstant = res
+            } catch (error) {
+                console.log(error, '2131212124121...................44444444...............yyyyds')
+            }
         }
     },
     extraReducers(builder) {
@@ -309,23 +313,28 @@ interface alarmParam {
     situpAlarm?: number
 }
 export const changePersonalEquipAlarmInfo = createAsyncThunk('equip/changeAlarmInfo', async (options: alarmParam, { getState }) => {
-    const state: any = getState()
-    const token = state.token.token
-    const phone = state.token.phone
-    const realOption = {
-        method: 'post',
-        url: `/device/updateAlarmConfig`,
-        params: {
-            ...options,
-            userName: phone
-        },
-        headers: {
-            "content-type": "application/x-www-form-urlencoded",
-            "token": token
-        },
+    try {
+
+        const state: any = getState()
+        const token = state.token.token
+        const phone = state.token.phone
+        const realOption = {
+            method: 'post',
+            url: `/device/updateAlarmConfig`,
+            params: {
+                ...options,
+                userName: phone
+            },
+            headers: {
+                "content-type": "application/x-www-form-urlencoded",
+                "token": token
+            },
+        }
+        const response = await fetchDatarcv(realOption)
+        return response.data
+    } catch (error) {
+        console.log(error, '000000.................44444444...............yyyyds....yyyyds')
     }
-    const response = await fetchDatarcv(realOption)
-    return response.data
 })
 
 /**

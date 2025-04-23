@@ -508,22 +508,24 @@ const PersonalOtherInfo = (props: otherInfoParam) => {
         paddingTop: `${type !== "nurse" ? "4rem" : "0"}`,
       }}
     >
-      {type !== "nurse" && (
-        <>
-          <CommonNavBar
-            title={personalOtherInfoObj[type].title}
-            onBack={() => {
-              navigate(-1);
-            }}
-          />
-          <PersonalContentInfo
-            title={personalOtherInfoObj[type].title}
-            img={personalOtherInfoObj[type].img}
-          />
-        </>
-      )}
+      {
+        type !== "nurse" && (
+          <>
+            <CommonNavBar
+              title={personalOtherInfoObj[type].title}
+              onBack={() => {
+                navigate(-1);
+              }}
+            />
+            <PersonalContentInfo
+              title={personalOtherInfoObj[type].title}
+              img={personalOtherInfoObj[type].img}
+            />
+          </>
+        )
+      }
       {personalOtherInfoObj[type].component}
-    </div>
+    </div >
   );
 };
 interface personalInfoParam {
@@ -542,7 +544,7 @@ export const PersonalContentInfo = (props: personalInfoParam) => {
         ""
       ) : (
         <div className="text-sm w-[60%] text-[#6C7784] text-center">
-          设置老人的提醒类型与内容设置老人的提醒类型与内容
+          设置老人的提醒类型与内容
         </div>
       )}
     </div>

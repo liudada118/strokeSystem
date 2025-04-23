@@ -69,27 +69,29 @@ export const TitleLeftInfo = (props: any) => {
         <div
           style={{ width: "100px" }}
           className="titleLeft"
-          onClick={() => {
-            console.log("first");
-            // if(window.showSettingPop) window.showSettingPop()
-            try {
-              // eval(`window.showSettingPop();`)
 
-              const u = window.navigator.userAgent;
-              if (u.indexOf("Android") > -1 || u.indexOf("Adr") > -1) {
-                eval(`Android.showSettingPop();`);
-              }
-            } catch (err: any) {
-              console.log(err);
-            }
-            try {
-              eval(`showSettingPop();`);
-            } catch (err: any) {
-              console.log(err);
-            }
-          }}
         >
-          <img src={headImg ? headImg : logo} alt="" />
+          <img
+            onClick={() => {
+              console.log("first");
+              // if(window.showSettingPop) window.showSettingPop()
+              try {
+                // eval(`window.showSettingPop();`)
+
+                const u = window.navigator.userAgent;
+                if (u.indexOf("Android") > -1 || u.indexOf("Adr") > -1) {
+                  eval(`Android.showSettingPop();`);
+                }
+              } catch (err: any) {
+                console.log(err);
+              }
+              try {
+                eval(`showSettingPop();`);
+              } catch (err: any) {
+                console.log(err);
+              }
+            }}
+            src={headImg ? headImg : logo} alt="" />
         </div>
       )}
     </>

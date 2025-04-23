@@ -20,13 +20,8 @@ export default function Login() {
   const dispatch = useDispatch()
   const token = localStorage.getItem('token') || ''
   const company = localStorage.getItem('company') || '/JQ'
-
-
   const status = useSelector((state: any) => state.equip.status)
   const permissionStatus = useSelector((state: any) => state.premission.status)
-
-
-
   let navigate = useNavigate();
   useEffect(() => {
     document.documentElement.style.fontSize = `${window.innerWidth / 100}px`;
@@ -34,18 +29,14 @@ export default function Login() {
       document.documentElement.style.fontSize = `${window.innerWidth / 100}px`;
     });
   });
-
   const [nowType, setNowType] = useState<number>(1);
   const [phone, setPhone] = useState<string>('');
   const [verCode, setVerCode] = useState<string>('')
-  console.log(nowType, '................................................................nowType')
+
   const img = localStorage.getItem('headImg') ? localStorage.getItem('headImg') : logo
   const [headImg, setHeadImg] = useState(img)
-  console.log(phone, '................................................................phoneyyyds');
-
   // 获取头像
   useEffect(() => {
-
     if (!localStorage.getItem('headImg')) {
       axios({
         method: "get",
@@ -61,8 +52,6 @@ export default function Login() {
         const image = res.data.commonConfig.image
         const roleId = res.data.data.roleId
         localStorage.setItem('roleId', roleId)
-        console.log("roleId...........................................", roleId);
-
         if (image) {
           setHeadImg(image)
           localStorage.setItem('headImg', image)
@@ -72,8 +61,6 @@ export default function Login() {
         console.log(err)
       })
     }
-
-
   }, [])
 
   const getVerCode = () => {
@@ -124,7 +111,7 @@ export default function Login() {
         },
       }).then((res) => {
 
-      
+
 
 
         if (res.data.code === 0) {
@@ -237,7 +224,7 @@ export default function Login() {
           {!nowType ? <Input className="verifiValue" placeholder={!nowType ? "请输入验证码" : "请输入密码"}
             value={verCode}
             onChange={(e) => { setVerCode(e.target.value) }}
-          /> : <Input.Password className="verifiValue" placeholder={"请输入密码"} value={verCode}
+          /> : <Input.Password className="verifiValue py-[0.35rem] flex items-center" placeholder={"请输入密码"} value={verCode}
             onChange={(e) => { setVerCode(e.target.value) }} />}
           {/* <div className="verifiText" onClick={() => { getVerCode() }}>获取短信验证码</div> */}
           {!nowType ? <VerCode phone={phone} /> : ''}

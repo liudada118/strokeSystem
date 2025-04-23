@@ -10,6 +10,7 @@ import {
 } from "@ant-design/cssinjs";
 import { UAParser } from "ua-parser-js";
 import { Dialog } from "antd-mobile";
+import '@/pages/equipDetail/mobileEdit/nursingPlan/nurseList/index.scss'
 import AddNurseConfList from "./pages/equipDetail/mobileEdit/nursingPlan/addNurseConfList/index";
 import NurseEditPage from "./pages/equipDetail/mobileEdit/nursingPlan/nurseEdit/index";
 

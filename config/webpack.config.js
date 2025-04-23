@@ -535,7 +535,9 @@ module.exports = function (webpackEnv) {
                 loader: 'sass-resources-loader',
                 options: {
                   // 这里是写全局 sass 文件路径
-                  resources: [path.resolve(__dirname, './../src/_variable.scss')]
+                  resources: [
+                    path.resolve(__dirname, './../src/_variable.scss'),
+                  ]
                 }
               }),
               // Don't consider CSS imports dead code even if the
@@ -561,6 +563,7 @@ module.exports = function (webpackEnv) {
                 },
                 'sass-loader'
               ),
+              sideEffects: true,
             },
             // "file" loader makes sure those assets get served by WebpackDevServer.
             // When you `import` an asset, you get its (virtual) filename.

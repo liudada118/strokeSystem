@@ -29,7 +29,7 @@ function Card(props: cardParam) {
     const setClick = (type: string) => {
         if (!(roleId == 1 || roleId == 2)) return message.info('暂无权限');
         navigate('/userInfo_editing', { state: { sensorName, type } })
-        window.location.reload()
+        // window.location.reload()
     }
     return (
         <div onClick={() => {

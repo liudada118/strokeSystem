@@ -35,7 +35,7 @@ import img208 from '../../assets/info/2.3/2.扫码.png'
 // import SeeUser from '../../phoneComponents/settingComponents/seeUser/SeeUser';
 // import CustomOption from '../../phoneComponents/settingComponents/customOption/CustomOption';
 import { useGetWindowSize } from '../../hooks/hook';
-import { instance, Instancercv } from '@/api/api';
+import { instance, Instancercv, netUrl } from '@/api/api';
 import SeeUser from './settingComponents/seeUser/SeeUser';
 import { compressionFile } from '@/utils/imgCompressUtil';
 // import Title from 'antd/es/skeleton/Title';
@@ -52,7 +52,7 @@ import { loginOut, roleIdSelect } from '@/redux/premission/premission';
 import { equipLoginOut } from '@/redux/equip/equipSlice';
 import { tokenLoginout } from '@/redux/token/tokenSlice';
 import { mqttLoginout } from '@/redux/mqtt/mqttSlice';
-
+import axios from 'axios';
 
 const sysIntroObj = {
   title: {
@@ -216,8 +216,10 @@ const product = {
 export default function Setting() {
   const phone = localStorage.getItem('phone') || ''
   const token = localStorage.getItem('token') || ''
-
+  const [organizationId, setOrganizationId] = useState('')
+  const roleId = useSelector(roleIdSelect)
   const dispatch: any = useDispatch()
+  console.log(roleId, '...............roleIdroleId');
 
   const [open, setOpen] = useState(false);
   const [placement, setPlacement] = useState<DrawerProps['placement']>('bottom');
@@ -243,7 +245,7 @@ export default function Setting() {
   const isMobile = useGetWindowSize()
 
   useEffect(() => {
-    if (phone == 'admin') {
+    if (roleId == 0) {
       getProjectList()
     } else {
 
@@ -314,8 +316,27 @@ export default function Setting() {
   //     }
   //   })
   // }, [])
+  // 318
+  useEffect(() => {
+    if (roleId == 0) {
+      Instancercv({
+        method: "get",
+        url: "/organize/getOrganizationList",
+        headers: {
+          "content-type": "multipart/form-data",
+          "token": token
+        },
+        params: {
+          token: token,
+        }
+      }).then((res) => {
 
-
+        setDeviceSource(res.data.data)
+        // setDeviceSource
+      })
+    }
+  }, [])
+  const [deviceSource, setDeviceSource] = useState<Array<any>>([{}])
   const getProjectList = () => {
     Instancercv({
       method: "get",
@@ -330,14 +351,18 @@ export default function Setting() {
     }).then((res) => {
 
       setStrokeSource(res.data.data)
+      // setDeviceSource
     })
   }
+  console.log(deviceSource, '.................deviceSourcedeviceSource');
+
 
   const [headImg, setHeadImg] = useState('')
-
   const [current, setCurrent] = useState('sysIntro');
   type MenuItem = Required<MenuProps>['items'][number];
   const onClick: MenuProps['onClick'] = (e) => {
+    console.log(e, '...........................onClickonClick');
+
     console.log('click ', e);
     setCurrent(e.key);
     if (e.key == 'project') {
@@ -359,8 +384,6 @@ export default function Setting() {
     }
   };
   // const items: MenuItem[] = 
-
-
   let allTitle: any = {
     factoryAdmin: [
       {
@@ -404,12 +427,20 @@ export default function Setting() {
       key: 'delete',
     },
     {
-      label: '设备管理',
-      key: 'equip',
-    }, {
+      label: '项目管理',
+      key: 'projectTitle',
+
+      children: [
+        { key: 'project', label: '项目管理' },
+        // { key: 'equip', label: '设备管理' },
+        // { key: 'user', label: '护工管理' },
+      ],
+    },
+    {
       label: '护工管理',
       key: 'user',
-    },],
+    },
+    ],
     manage: [{
       label: '使用说明',
       key: 'use',
@@ -454,8 +485,8 @@ export default function Setting() {
     }]
   }
 
-  const roleId = useSelector(roleIdSelect)
 
+  const [userName, seusetName] = useState('')
   const calRoleIdToPermissions = (roleId: number, phone: string): string => {
     if (phone == 'factoryAdmin') {
       return 'factoryAdmin'
@@ -474,12 +505,13 @@ export default function Setting() {
 
   const items = allTitle[premission]
 
+  console.log(items, '...........................yyyyyyyydsdssd');
 
   const [strokeSource, setStrokeSource] = useState([])
   const [manageSource, setManageSource] = useState([])
   const [personSource, setPersonSource] = useState([])
   const [projectManageSource, setProjectManageSource] = useState<Array<any>>([])
-  const [deviceSource, setDeviceSource] = useState<Array<any>>([{}])
+
   const [deleteClick, setDeleteClick] = useState(false)
   console.log(deviceSource, 'deviceSourcedeviceSource');
   const deleteEquip = ({ did, index, user }: any) => {
@@ -516,70 +548,72 @@ export default function Setting() {
   //   }, [items])
 
 
-  const project = [
-    {
-      title: '序号',
-      dataIndex: 'id',
-      key: 'id',
-    },
-    {
-      title: '项目名称',
-      dataIndex: 'organizeName',
-      key: 'organizeName',
-      render: (record: any) => {
+  // const project: any = [
+  //   {
+  //     title: '序号',
+  //     dataIndex: 'id',
+  //     key: 'id',
+  //   },
+  //   {
+  //     title: '项目名称',
+  //     dataIndex: 'organizeName',
+  //     key: 'organizeName',
+  //     render: (record: any) => {
 
-        return (
+  //       return (
 
-          <div className='projectName' style={{ color: '#0256FF' }} onClick={() => {
+  //         <div className='projectName' style={{ color: '#0256FF' }} onClick={() => {
 
-          }}>{record} </div>
+  //         }}>{record} </div>
 
-        )
-      }
-    },
-    {
-      title: '项目管理员',
-      dataIndex: 'projecMan',
-      key: 'projecMan',
-      render: (record: any) => {
+  //       )
+  //     }
+  //   },
+  //   {
+  //     title: '项目管理员',
+  //     dataIndex: 'projecMan',
+  //     key: 'projecMan',
+  //     render: (record: any) => {
 
-        return (
+  //       return (
 
-          <div className='projectMan' style={{ color: '#0256FF' }} onClick={() => {
+  //         <div className='projectMan' style={{ color: '#0256FF' }} onClick={() => {
 
-          }}>查看</div>
+  //         }}>查看</div>
 
-        )
-      }
-    },
-    {
-      title: '项目地址',
-      dataIndex: 'address',
-      key: 'address',
-    },
-    {
-      title: '操作',
-      dataIndex: 'operate',
-      key: 'operate',
-      render: (record: any) => {
+  //       )
+  //     }
+  //   },
+  //   {
+  //     title: '项目地址',
+  //     dataIndex: 'address',
+  //     key: 'address',
+  //   },
+  //   {
+  //     title: '操作',
+  //     dataIndex: 'operate',
+  //     key: 'operate',
+  //     render: (record: any) => {
 
-        return (
-          <div style={{ display: 'flex', color: '#0256FF', justifyItems: 'center' }}>
-            <div className='edit' style={{ marginRight: '1rem' }} onClick={() => {
-              console.log(record)
-            }}>编辑 </div>
-            <div className='delete'>删除</div>
-          </div>
-        )
-      }
-    },
+  //       return (
+  //         <div style={{ display: 'flex', color: '#0256FF', justifyItems: 'center' }}>
+  //           <div className='edit' style={{ marginRight: '1rem' }} onClick={() => {
+  //             console.log(record)
+  //           }}>编辑 </div>
+  //           <div className='delete'>删除</div>
+  //         </div>
+  //       )
+  //     }
+  //   },
 
-  ]
+  // ]
 
   const deleteUserByOrganizeIdAndUsername = ({ user, id, type }: any) => {
-    Instancercv({
+    console.log(user, id, type, '...........................deleteUserByOrganizeIdAndUsername');
+
+    axios({
       method: "get",
-      url: "/organize/deleteUserByOrganizeIdAndUsername",
+      url: netUrl + "/organize/deleteUserByOrganizeIdAndUsername",
       headers: {
         "content-type": "multipart/form-data",
         "token": token
@@ -589,14 +623,16 @@ export default function Setting() {
         organizeId: id
       }
     }).then((res) => {
-
+      if (res.data.msg === 'delete success') {
+        message.success('删除成功')
+      }
       if (type == 'device') {
-        getItemManage(id)
-        getProjectManage({ id, user: manUseruser })
+
+        getItemManage(organizationId)
+        getProjectManage(organizationId)
       } else if (type == 'person') {
         getItemPerson(id)
       }
-
     })
   }
   const getDeviceSUser = (id: any) => {
@@ -792,6 +828,15 @@ export default function Setting() {
       title: '管理员分级',
       dataIndex: 'level',
       key: 'level',
+      render: (text: any, record: any, index: any) => {
+        return (
+          <div>
+            {
+              record.roleId == 1 ? '超级管理员' : record.roleId == 2 ? '管理员' : '普通用户'
+            }
+          </div>
+        );
+      },
     },
     {
       title: '操作',
@@ -808,33 +853,62 @@ export default function Setting() {
             }}>重置密码 </div>
             <div className='delete' style={{ marginRight: '1rem' }}
               onClick={() => {
+                console.log('............................32233232');
 
                 setDelete(record)
                 setIsModalDeviceUserOpen(true)
               }}
             >删除</div>
-            <div onClick={() => {
-              console.log(deleteObj, '关联成功关联成功关联成功关联成功')
-              Instancercv({
-                method: "post",
-                url: "/device/batchBindDevice",
-                headers: {
-                  "content-type": "multipart/form-data",
-                  "token": token
-                },
-                params: {
-                  superAdminUserName: manUseruser,
-                  username: record.user,
-                }
-              }).then((res) => {
+            {
+              record.roleId == 1 ? <div
+                style={{ cursor: 'pointer', color: "#ccc" }}
+                onClick={() => {
 
-              })
-            }}>
-
-              一键关联
+                }}>
+                {/* <Popconfirm
+                title="你确认要一键关联吗？"
+                onConfirm={confirm}
+                onCancel={cancel}
+                okText="是"
+                cancelText="否"
+              >一键关联
+              </Popconfirm> */}
 
 
-            </div>
+              </div> : record.roleId == 2 ? <div
+                style={{ cursor: 'pointer' }}
+                onClick={() => {
+                  console.log(deleteObj)
+                  axios({
+                    method: "post",
+                    url: netUrl + "/device/batchBindDevice",
+                    headers: {
+                      "content-type": "multipart/form-data",
+                      "token": token
+                    },
+                    params: {
+                      superAdminUserName: userName,
+                      username: record.user,
+                    }
+                  }).then((res) => {
+                    if (res.data.code === 500) {
+                      return message.error('设备同步失败')
+                    }
+                    message.success('设备同步成功')
+                  })
+                }}>
+                {/* <Popconfirm
+                title="你确认要一键关联吗？"
+                onConfirm={confirm}
+                onCancel={cancel}
+                okText="是"
+                cancelText="否"
+              >一键关联
+              </Popconfirm> */}
+                一键关联
+
+              </div> : '普通用户'
+            }
           </div>
         )
       }
@@ -845,6 +919,7 @@ export default function Setting() {
   const [deviceOneUser, setDeviceOneUser] = useState<Array<any>>([])
 
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isModalOpenTitle, setIsModalOpenTitle] = useState('')
   const [isModalManOpen, setIsModalManOpen] = useState(false)
 
   const bottomRef = useRef<any>({})
@@ -852,23 +927,32 @@ export default function Setting() {
   const [isModalNurseOpen, setIsModalNurseOpen] = useState(false)
   const [isModalPersonOpen, setIsModalPersonOpen] = useState(false)
   const handleOk = () => {
-    Instancercv({
-      method: "post",
-      url: "/organize/addOrganization",
-      headers: {
-        "content-type": "application/x-www-form-urlencoded",
-        "token": token
-      },
-      params: {
-        organizeName: projectName,
-        address: projectAddress,
-        image: img,
-      },
-    }).then((res) => {
-      console.log(res.data.organizationId)
+    if (isModalOpenTitle === '1') {
       Instancercv({
         method: "post",
-        url: "/organize/addOrganizeManager",
+        url: netUrl + "/organize/addOrganization",
+        headers: {
+          "content-type": "application/x-www-form-urlencoded",
+          "token": token
+        },
+        params: {
+          organizeName: projectName,
+          address: projectAddress,
+          image: img,
+          organizeType: projectUser.organizeType
+        },
+      }).then((res) => {
+        console.log(res.data.msg, '...00.........添加成功....');
+        if (res.data.msg == "success") {
+          message.info('添加成功')
+          setOrganizationId(res.data.organizationId)
+          getProjectList()
+        }
+      })
+    } else if (isModalOpenTitle === '2') {
+      Instancercv({
+        method: "post",
+        url: netUrl + "/organize/addOrganizeManager",
         headers: {
           "content-type": "application/x-www-form-urlencoded",
           "token": token
@@ -877,16 +961,15 @@ export default function Setting() {
           userName: projectUser.user,
           password: projectUser.password,
           nickName: projectUser.name,
-          organizeId: res.data.organizationId,
+          organizeId: organizationId,
           roleId: 1
         },
       }).then((res) => {
-        console.log(res.data)
+        console.log(res.data.msg, '....99........添加成功....');
+
         if (res.data.msg == "success") {
-          getProjectList()
-        }
-        if (res.data.msg == "add Manager Success") {
           message.info('添加成功')
+          getProjectList()
         }
         if (res.data.code == 500) {
           message.error('该用户已绑定过其他的项目')
@@ -894,16 +977,21 @@ export default function Setting() {
       }).catch((e) => {
         message.error('服务器异常')
       })
-
-    })
+    }
     setIsModalOpen(false)
   }
-
+  const roleId1: any = localStorage.getItem('roleId')
+  const [roleId11, setRoleId] = useState(1)
+  const validCharRegex = /^[a-zA-Z0-9]+$/;
   const handleManOk = () => {
+    console.log(manUser.user, manUser.password, '........................ manUsessworanUserpassword');
+    if (!validCharRegex.test(manUser.user) && !validCharRegex.test(manUser.password)) {
+      return message.error('用户名或密码只能输入英文字母和数字')
+    }
     if (manUser.user.length > 5) {
-      Instancercv({
+      instance({
         method: "post",
-        url: "/organize/addOrganizeManager",
+        url: netUrl + "/organize/addOrganizeManager",
         headers: {
           "content-type": "application/x-www-form-urlencoded",
           "token": token
@@ -913,15 +1001,18 @@ export default function Setting() {
           password: manUser.password,
           nickName: manUser.name,
           organizeId: deleteManObj.id,
-          roleId: 2
+          roleId: roleId11
         },
       }).then((res) => {
-        getProjectManage({ id: manId, user: manUseruser })
-        if (res.data.msg == "add Manager Success") {
-          message.info('添加成功')
+        getProjectManage({ id: organizationId, user: manUseruser })
+        if (res.data.code == 500 && res.data.msg == 'add Manager Failed') {
+          message.error('添加失败')
         }
         if (res.data.code == 500) {
-          message.error('该用户已绑定过其他的项目')
+          message.error(res.data.msg)
+        }
+        if (res.data.code == 0) {
+          message.success('添加成功')
         }
       }).catch((e) => {
         message.error('服务器异常')
@@ -938,6 +1029,8 @@ export default function Setting() {
   }
 
   const handleDeleteOk = () => {
+    console.log('00000000.....................');
+
     Instancercv({
       method: "post",
       url: "/organize/deleteOrganization",
@@ -948,9 +1041,13 @@ export default function Setting() {
       params: {
         organizeId: manId,
       },
-    }).then(() => {
-      setIsModalDeleteOpen(false)
-      getProjectList()
+    }).then((res: any) => {
+      if (res.data.msg == 'deleteOrganization success') {
+        setIsModalDeleteOpen(false)
+        getProjectList()
+        message.success('删除成功')
+      }
+
     })
   }
 
@@ -972,7 +1069,7 @@ export default function Setting() {
       },
       params: {
         organizeId: id,
-        roleIds: `${[3]}`
+        roleIds: `${roleId == 0 ? [1, 2] : [3]}`
       }
     }).then((res) => {
 
@@ -1015,42 +1112,40 @@ export default function Setting() {
   }
 
   const getProjectManage = ({ id, user }: any) => {
-    Instancercv({
+
+    axios({
       method: "get",
-      url: "/organize/getManagerListByOrganizeId",
+      url: netUrl + "/organize/getManagerListByOrganizeId",
       headers: {
         "content-type": "multipart/form-data",
         "token": token
       },
       params: {
-        organizeId: id,
-        roleIds: `${[2]}`
+        // organizeId: id === 2 ? organizationId : deleteObj.type === 'del' ? organizationId : organizationId,
+        organizeId: id ? id : id == 1 || 2 ? organizationId : organizationId,
+        roleIds: `${[1, 2]}`
       }
-    }).then((res) => {
-
-
+    }).then((res: any) => {
+      res.data.data.forEach((item: any) => {
+        if (item.roleId == 1) {
+          seusetName(item.username)
+        }
+      })
       let data = [...res.data.data]
       data = data.map((a: any, index: any) => {
         a.id = index + 2
-
         a.user = a.username
-
-
         a.level = '管理员'
-
-
         return a
       })
       console.log(deleteObj)
-      let data1 = [{
-        id: 1,
-        user: user,
-        level: '超级管理员'
-      }]
-
-      const res1 = [...data1, ...data]
+      // let data1 = [{
+      //   id: 1,
+      //   user: user,
+      //   level: '超级管理员'
+      // }]
+      const res1 = [...data]
       setProjectManageSource(res1)
-
       // setManageSource(res.data.data)
     })
   }
@@ -1063,7 +1158,7 @@ export default function Setting() {
 
   const getItemDevice = (id: any) => {
 
-
+    //318
     Instancercv({
       method: "get",
       url: "/organize/getDeviceListByOrganizeId",
@@ -1083,6 +1178,7 @@ export default function Setting() {
       })
 
       // message.info('添加成功')
+      console.log(res.data.data, '................................添加成功.');
 
 
       setDeviceSource(res.data.data)
@@ -1120,9 +1216,13 @@ export default function Setting() {
         organizeName: projectName,
         address: projectAddress
       }
-    }).then(() => {
-      getProjectList()
-      setIsChangeModalOpen(false)
+    }).then((res: any) => {
+      if (res.data.msg == 'update success') {
+        getProjectList()
+        setIsChangeModalOpen(false)
+        message.success('修改成功')
+      }
+
     })
   }
   const handleChangeCancel = () => {
@@ -1138,7 +1238,7 @@ export default function Setting() {
 
   const [projectManItem, setProjectManItem] = useState('')
 
-  const [projectUser, setProjectUser] = useState<any>({})
+  const [projectUser, setProjectUser] = useState<any>({ organizeType: 2 })
   const [nurseUser, setnurseUser] = useState<any>({})
   const [manUser, setmanUser] = useState<any>({})
 
@@ -1147,7 +1247,7 @@ export default function Setting() {
       try {
         Instancercv({
           method: "post",
-          url: "/organize/addOrganizeManager",
+          url: netUrl + "/organize/addOrganizeManager",
           headers: {
             "content-type": "application/x-www-form-urlencoded",
             "token": token
@@ -1207,7 +1307,7 @@ export default function Setting() {
     if (nurseUser.user.length > 5) {
       Instancercv({
         method: "post",
-        url: "/organize/addOrganizeManager",
+        url: netUrl + "/organize/addOrganizeManager",
         headers: {
           "content-type": "application/x-www-form-urlencoded",
           "token": token
@@ -1447,6 +1547,15 @@ export default function Setting() {
         username: deleteObj.username ? deleteObj.username : deleteObj.user,
         newPwd: manPassword
       }
+    }).then((res: any) => {
+      if (res.data.msg == 'update passwd success') {
+        message.success('更新成功')
+      } else {
+        message.error('更新失败')
+
+      }
+
+
     })
 
   }
@@ -1464,6 +1573,87 @@ export default function Setting() {
       bottomRef.current.changeImg(headImg)
     }
   }
+  const [inputAdmin, setInputAdmin] = useState('')
+  const [listData, setDataList] = useState([])
+
+  const inputValue = () => {
+    const list: any = strokeSource.filter((item: any) => {
+      return item.organizeName.includes(inputAdmin)
+    })
+    setDataList(list)
+  }
+  const project = [
+    {
+      title: '项目名称',
+      render: (title: any, item: any, index: any) => {
+
+        return (
+
+          <div >{index + 1}</div>
+
+        )
+      }
+    },
+    {
+      title: '项目ID',
+      dataIndex: 'id',
+      key: 'id',
+    },
+    {
+      title: '项目名称',
+      dataIndex: 'organizeName',
+      key: 'organizeName',
+      render: (record: any) => {
+
+        return (
+
+          <div className='projectName' style={{ color: '#0256FF' }} onClick={(record) => {
+            console.log(record, '.............recordrecordrecordrecord')
+
+          }}>{record} </div>
+
+        )
+      }
+    },
+    {
+      title: '项目管理员',
+      dataIndex: 'projecMan',
+      key: 'projecMan',
+      render: (record: any) => {
+
+        return (
+
+          <div className='projectMan' style={{ color: '#0256FF' }} onClick={() => {
+
+          }}>查看</div>
+
+        )
+      }
+    },
+    {
+      title: '项目地址',
+      dataIndex: 'address',
+      key: 'address',
+    },
+    {
+      title: '操作',
+      dataIndex: 'operate',
+      key: 'operate',
+      render: (record: any) => {
+
+        return (
+          <div style={{ display: 'flex', color: '#0256FF', justifyItems: 'center' }}>
+            <div className='edit' style={{ marginRight: '1rem' }} onClick={() => {
+              console.log(record)
+            }}>编辑 </div>
+            <div className='delete'>删除</div>
+          </div>
+        )
+      }
+    },
+
+  ]
+  console.log(strokeSource, listData, '................3243433443443');
 
   return (
     <>
@@ -1518,89 +1708,101 @@ export default function Setting() {
 
       <Modal title="添加新项目" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
         <div style={{ padding: '0.5rem 3rem' }}>
-          <div style={{ display: 'flex', alignItems: 'center' }} className="deviceItem"><div style={{ width: '5rem', }}> 上传logo:</div>
-            <div style={{ flex: 1 }}>
-              <img src={img} style={{ width: '5rem', height: '5rem', borderRadius: '5px' }} alt="" />
-              <input type="file" name="img" style={{ opacity: 0, position: 'absolute', width: '100%', height: '100%', left: 0, top: 0 }} id="img" onChange={(e) => {
 
-                setSpinning(true);
-                if (e.target.files) {
-                  // res.then((e) => {})
+          {isModalOpenTitle === '1' ?
+            <>
+              <div style={{ display: 'flex', alignItems: 'center' }} className="deviceItem"><div style={{ width: '5rem', }}> 上传logo:</div>
+                <div style={{ flex: 1 }}>
+                  <img src={img} style={{ width: '5rem', height: '5rem', borderRadius: '5px' }} alt="" />
+                  <input type="file" name="img" style={{ opacity: 0, position: 'absolute', width: '100%', height: '100%', left: 0, top: 0 }} id="img" onChange={(e) => {
 
-                  let res = compressionFile(e.target.files[0])
-                  res.then((e) => {
-                    const token = localStorage.getItem('token')
-                    Instancercv({
-                      method: "post",
-                      url: "/file/fileUpload",
-                      headers: {
-                        "content-type": "multipart/form-data",
-                        "token": token
-                      },
-                      data: {
-                        file: e,
-                      }
-                    }).then((res) => {
+                    setSpinning(true);
+                    if (e.target.files) {
+                      // res.then((e) => {})
 
-                      setSpinning(false);
-                      message.success('上传成功')
-                      // const value = { ...userinfo }
-                      // setUserInfo({
-                      //     ...value,
-                      //     img: res.data.data.src
-                      // })
-                      setImg(res.data.data.src)
-                    });
-                  })
+                      let res = compressionFile(e.target.files[0])
+                      res.then((e) => {
+                        const token = localStorage.getItem('token')
+                        Instancercv({
+                          method: "post",
+                          url: "/file/fileUpload",
+                          headers: {
+                            "content-type": "multipart/form-data",
+                            "token": token
+                          },
+                          data: {
+                            file: e,
+                          }
+                        }).then((res) => {
 
-                }
-              }} />
-            </div>
-            {/* <Input value={projectName} style={{ flex: 1 }} onChange={(e) => {
+                          setSpinning(false);
+                          message.success('上传成功')
+                          // const value = { ...userinfo }
+                          // setUserInfo({
+                          //     ...value,
+                          //     img: res.data.data.src
+                          // })
+                          setImg(res.data.data.src)
+                        });
+                      })
+
+                    }
+                  }} />
+                </div>
+                {/* <Input value={projectName} style={{ flex: 1 }} onChange={(e) => {
             setProjectName(e.target.value)
           }} /> */}
 
 
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center' }} className="deviceItem"><div style={{ width: '5rem', }}> 项目名称:</div> <Input value={projectName} style={{ flex: 1 }} onChange={(e) => {
-            setProjectName(e.target.value)
-          }} /></div>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center' }} className="deviceItem"><div style={{ width: '5rem', }}> 项目名称:</div> <Input value={projectName} style={{ flex: 1 }} onChange={(e) => {
+                setProjectName(e.target.value)
+              }} /></div>
 
-          <div style={{ display: 'flex', alignItems: 'center' }} className="deviceItem"><div style={{ width: '5rem', }}> 项目地址:</div> <Input value={projectAddress} style={{ flex: 1 }} onChange={(e) => {
-            setProjectAddress(e.target.value)
-          }} /></div>
-          <div style={{ display: 'flex', alignItems: 'center' }} className="deviceItem"><div style={{ width: '5rem', }}> 用户名:</div> <Input value={projectUser.user} style={{ flex: 1 }} onChange={(e) => {
-            // setProjectAddress(e.target.value)
-            let obj = { ...projectUser }
-            obj.user = e.target.value
-            setProjectUser(obj)
-          }} /></div>
+              <div style={{ display: 'flex', alignItems: 'center' }} className="deviceItem"><div style={{ width: '5rem', }}> 项目地址:</div> <Input value={projectAddress} style={{ flex: 1 }} onChange={(e) => {
+                setProjectAddress(e.target.value)
+              }} /></div>
+              <div style={{ display: 'flex', alignItems: 'center' }} className="deviceItem"><div style={{ width: '5rem', }}> 组织性质:</div>
+                <Radio.Group onChange={(e) => {
+                  const value = { ...projectUser, organizeType: e.target.value }
+                  setProjectUser(value)
 
-          <div style={{ display: 'flex', alignItems: 'center' }} className="deviceItem"><div style={{ width: '5rem', }}> 密码:</div> <Input value={projectUser.password} style={{ flex: 1 }} onChange={(e) => {
-            // setProjectAddress(e.target.value)
+                }} value={projectUser.organizeType}>
+                  <Radio value={2}>ToB</Radio>
+                  <Radio value={1}>ToC</Radio>
+                </Radio.Group>
+              </div>
 
-            let obj = { ...projectUser }
-            obj.password = e.target.value
-            setProjectUser(obj)
-          }} /></div>
+            </> : <>
 
-          <div style={{ display: 'flex', alignItems: 'center' }} className="deviceItem"><div style={{ width: '5rem', }}> 管理员名:</div> <Input value={projectUser.name} style={{ flex: 1 }} onChange={(e) => {
 
-            let obj = { ...projectUser }
-            obj.name = e.target.value
-            setProjectUser(obj)
-            // setProjectAddress(e.target.value)
-          }} /></div>
+              <div style={{ display: 'flex', alignItems: 'center' }} className="deviceItem"><div style={{ width: '5rem', }}> 密码:</div> <Input value={projectUser.password} style={{ flex: 1 }} onChange={(e) => {
+                // setProjectAddress(e.target.value)
 
-          <div style={{ display: 'flex', alignItems: 'center' }} className="deviceItem"><div style={{ width: '5rem', }}> 组织性质:</div>
-            <Input value={projectUser.name} style={{ flex: 1 }} onChange={(e) => {
-              let obj = { ...projectUser }
-              obj.name = e.target.value
-              setProjectUser(obj)
-            }} />
-          </div>
+                let obj = { ...projectUser }
+                obj.password = e.target.value
+                setProjectUser(obj)
+              }} /></div>
+
+              <div style={{ display: 'flex', alignItems: 'center' }} className="deviceItem"><div style={{ width: '5rem', }}> 管理员名:</div> <Input value={projectUser.name} style={{ flex: 1 }} onChange={(e) => {
+
+                let obj = { ...projectUser }
+                obj.name = e.target.value
+                setProjectUser(obj)
+                // setProjectAddress(e.target.value)
+              }} /></div>
+
+              <div style={{ display: 'flex', alignItems: 'center' }} className="deviceItem"><div style={{ width: '5rem', }}> 组织性质:</div>
+                <Input value={projectUser.name} style={{ flex: 1 }} onChange={(e) => {
+                  let obj = { ...projectUser }
+                  obj.name = e.target.value
+                  setProjectUser(obj)
+                }} />
+              </div>
+            </>
+          }
         </div>
-      </Modal>
+      </Modal >
 
       <Modal title="添加新管理" open={isModalManOpen} onOk={handleManOk} onCancel={handleManCancel}>
         <div style={{ padding: '0.5rem 3rem' }}>
@@ -1619,14 +1821,24 @@ export default function Setting() {
             obj.password = e.target.value
             setmanUser(obj)
           }} /></div>
-
+          <div style={{ display: 'flex', alignItems: 'center' }} className="deviceItem"><div style={{ width: '6rem', }}>选择管理员</div>
+            <Radio.Group onChange={(e) => {
+              setRoleId(e.target.value)
+              let obj = { ...manUser }
+              obj.roleId = roleId
+              setmanUser(obj)
+            }} value={roleId11}>
+              <Radio value={2}>普通管理员</Radio>
+              <Radio value={1}>超级管理员</Radio>
+            </Radio.Group>
+          </div>
           {/* <div style={{ display: 'flex', alignItems: 'center' }} className="deviceItem"><div style={{ width: '5rem', }}> 护工名:</div> <Input value={manUser.name} style={{ flex: 1 }} onChange={(e) => {
 
-            let obj = { ...manUser }
-            obj.name = e.target.value
-            setmanUser(obj)
-            // setProjectAddress(e.target.value)
-          }} /></div>    */}
+  let obj = { ...manUser }
+  obj.name = e.target.value
+  setmanUser(obj)
+  // setProjectAddress(e.target.value)
+}} /></div>    */}
         </div>
       </Modal>
 
@@ -1806,8 +2018,13 @@ export default function Setting() {
                     <>
                       <div className="projectContent">
                         <div className="projectTitle">
-                          <div><Breadcrumb items={nav} /></div>   {navIndex == 0 ? <div onClick={() => {
+                          <div><Breadcrumb items={nav} /></div>
+                          <div>
+                            <Input allowClear value={inputAdmin} onChange={(e) => setInputAdmin(e.target.value)} style={{ width: "200px", borderRadius: "20px 0 0 20px" }} placeholder="请搜索设备名称" /><Button style={{ borderRadius: "0 20px 20px 0" }} onClick={inputValue}>搜索</Button>
+                          </div>
+                          {navIndex == 0 ? <div onClick={() => {
                             setIsModalOpen(true)
+                            setIsModalOpenTitle('1')
                           }}>新建项目</div> :
                             projectManItem == 'projectMan' ? <div onClick={() => {
                               setIsModalManOpen(true)
@@ -1817,10 +2034,10 @@ export default function Setting() {
 
 
                         {navIndex == 0 ?
-                          <Table dataSource={strokeSource} onRow={(record: any) => {
+                          <Table dataSource={!inputAdmin ? strokeSource : listData} onRow={(record: any) => {
                             return {
                               onClick: (e: any) => {
-
+                                setOrganizationId(record.id)
                                 setManDelete(record)
                                 setManId(record.id)
                                 setManUseruser(record.userName)
@@ -1873,13 +2090,7 @@ export default function Setting() {
                                   })
                                   setNav([res[0], res[1]])
                                   console.log(deleteObj, 'deleteObj')
-
                                 }
-
-
-
-
-
                               }
                             }
                           }} columns={project} /> : projectManItem == 'projectMan' ?
@@ -1903,6 +2114,7 @@ export default function Setting() {
                                 }
                               }
                             }} columns={projectManage} /> :
+
                             <div>
 
                               <div>超级管理员  {deleteObj.userName}</div>
@@ -1924,16 +2136,11 @@ export default function Setting() {
                                       getAllDeviceSUser(record.deviceId)
                                     }
 
-
-
-
-
                                   }
                                 }
                               }} columns={device} />
                             </div>
                         }
-
                       </div>
                     </>
 

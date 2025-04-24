@@ -10,7 +10,7 @@ import { useGetWindowSize } from '@/hooks/hook'
 import PCNurseList from '@/pages/equipDetail/nurseprocess/nurseConf/nurseList/index'
 import PCNurseConfList from '@/pages/equipDetail/nurseprocess/nurseConf/nurseList/conf_list'
 // import MobileNurseList from '@/pages/equipDetail/nurseprocess/'
-import { instance } from '@/api/api'
+import { instance, netRepUrl } from '@/api/api'
 interface nurseChartsProps {
     dataSource: any
     onbed: any
@@ -82,24 +82,20 @@ function NurseCharts(props: nurseChartsProps) {
     const [onBedTimeArr, setOnBedTimeArr] = useState<any>([])
     const [nurseConfigList, setNurseConfigList] = useState([])
     useEffect(() => {
-        const now = new Date();
-        const yesterday = new Date(now.getTime() - 24 * 60 * 60 * 1000); // 等价于 now - 1天
-        const startOfYesterday = new Date(
-            yesterday.getFullYear(), // 年
-            yesterday.getMonth(),    // 月（注意：这里直接使用 yesterday 的月份，无需调整）
-            yesterday.getDate(),     // 日
-            0, 0, 0                  // 时分秒设为 0
-        );
-        const endOfYesterday = new Date(
-            yesterday.getFullYear(),
-            yesterday.getMonth(),
-            yesterday.getDate(),
-            23, 59, 59 // 时分秒设为最大值
-        );
-        const timestampStart = Math.floor(startOfYesterday.getTime() / 1000); // 昨天 00:00:00 时间戳（秒）
-        const timestampEnd = Math.floor(endOfYesterday.getTime() / 1000);   // 昨天 23:59:59 时间戳（秒）
+        const currentDate = new Date();
+        const yesterday = new Date(currentDate);
+        yesterday.setDate(currentDate.getDate() - 1);
+        const startOfYesterday = new Date(yesterday);
+        startOfYesterday.setHours(0, 0, 0, 0);
+        const endOfYesterday = new Date(yesterday);
+        endOfYesterday.setHours(23, 59, 59, 999);
+        const timestampStart = startOfYesterday.getTime();
+        const timestampEnd = endOfYesterday.getTime();
+
         instance({
-            url: '/sleep/nurse/getDayNurseData',
+            // url: "https://juqiao.bodyta.com/sleep/nurse/getDayNurseData?did=V1esebX84nRyno1kEfLR&startTimeMillis=1745337832000&endTimeMillis=1745424232000",
+            url: netRepUrl + '/sleep/nurse/getDayNurseData',
+            // url: "https://juqiao.bodyta.com/sleep/nurse/getDayNurseData",
             method: 'get',
             headers: {
                 'content-type': 'application/json',
@@ -107,8 +103,8 @@ function NurseCharts(props: nurseChartsProps) {
             },
             params: {
                 did: props.sensorName,
-                startTimeMillis: timestampStart,
-                endTimeMillis: timestampEnd
+                startTimeMillis: '1745337832000',
+                endTimeMillis: '1745424232000'
             }
         }).then((res: any) => {
             setNurseConfigList(res.data.data)
@@ -253,9 +249,9 @@ function NurseCharts(props: nurseChartsProps) {
                         {isMobile ?
                             <div className="seleteRateOrHeart">
                                 <div className="nurseSeleteHeart seleteRateOrHeartItem">
-                                    <div className="seleteRateOrHeartValue"
+                                    {/* <div className="seleteRateOrHeartValue"
                                         style={{ color: showNurseOrOnbed == 'nurse' ? '#0072EF' : '#929EAB', backgroundColor: showNurseOrOnbed == 'nurse' ? '#fff' : 'unset', }}
-                                        onClick={() => { setShowNurseOrOnbed('nurse') }}>护理统计</div>
+                                        onClick={() => { setShowNurseOrOnbed('nurse') }}>护理统计</div> */}
                                 </div>
                                 <div style={{ padding: '0 0.68rem', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                                     <div style={{ width: '1px', height: '80%', backgroundColor: '#eee' }}></div>
@@ -266,7 +262,20 @@ function NurseCharts(props: nurseChartsProps) {
                                         onClick={() => { setShowNurseOrOnbed('onbed') }}>在/离床统计</div>
                                 </div>
                             </div> : ''}
-                        {(isMobile && showNurseOrOnbed == 'nurse') || !isMobile ? <div className="nurseStatis nurseChartsContent" style={{ flex: '0 0 calc(50% - 0.45rem)', marginRight: isMobile ? '0' : '0.9rem' }}>
+                        {
+                            !isMobile ? <div className="w-[40rem] h-[50rem] bg-[#FFFFFF]">
+                                <div className='text-[#000000] text-[1.2rem] pl-[1rem] py-[1rem]' style={{ fontFamily: 'PingFang SC', fontWeight: "600" }}>护理记录</div>
+                                <div className=' px-[3%]  h-full'>
+                                    <PCNurseList list={nurseConfigList || []} extParams={{ isShowTime: false, className: 'daEeport' }} />
+                                </div>
+                            </div> : <div className="h-[50rem] bg-[#FFFFFF]" style={{ width: '100%' }}>
+                                <div className='text-[#000000] text-[1.2rem] pl-[1rem] py-[1rem]' style={{ fontFamily: 'PingFang SC', fontWeight: "600" }}>护理记录</div>
+                                <div className=' px-[3%]  h-full'>
+                                    <PCNurseList list={nurseConfigList || []} extParams={{ isShowTime: false, className: 'daEeport' }} />
+                                </div>
+                            </div>
+                        }
+                        {/* {(isMobile && showNurseOrOnbed == 'nurse') || !isMobile ? <div className="nurseStatis nurseChartsContent" style={{ flex: '0 0 calc(50% - 0.45rem)', marginRight: isMobile ? '0' : '0.9rem' }}>
                             <div className="nurseChartTitleName">护理统计</div>
                             <div className="daySleepInfo">
                                 <div className="daySleepItem">
@@ -281,7 +290,7 @@ function NurseCharts(props: nurseChartsProps) {
                             <div className="nursecharts">
                                 {<CategoryChart barWidth={15} padding={positionArr} formatter={true} xdata={Object.keys(nurseChartsData)} ydata={Object.values(nurseChartsData)} index={30} />}
                             </div>
-                        </div> : ''}
+                        </div> : ''} */}
                         {(isMobile && showNurseOrOnbed == 'onbed') || !isMobile ?
                             <div className="nurseStatis nurseChartsContent" style={{ flex: '0 0 calc(50% - 0.45rem)' }}>
                                 <div className="nurseChartTitleName">在离床统计</div>
@@ -325,19 +334,7 @@ function NurseCharts(props: nurseChartsProps) {
                     </div>
 
                 </div>
-                {
-                    !isMobile ? <div className="w-[40rem] h-[50rem] bg-[#FFFFFF]">
-                        <div className='text-[#000000] text-[1.2rem] pl-[1rem] py-[1rem]' style={{ fontFamily: 'PingFang SC', fontWeight: "600" }}>护理记录</div>
-                        <div className=' px-[3%]  h-full'>
-                            <PCNurseList list={nurseConfigList || []} extParams={{ isShowTime: false, className: 'daEeport' }} />
-                        </div>
-                    </div> : <div className="h-[50rem] bg-[#FFFFFF]" style={{ width: '100%' }}>
-                        <div className='text-[#000000] text-[1.2rem] pl-[1rem] py-[1rem]' style={{ fontFamily: 'PingFang SC', fontWeight: "600" }}>护理记录</div>
-                        <div className=' px-[3%]  h-full'>
-                            <PCNurseList list={nurseConfigList || []} extParams={{ isShowTime: false, className: 'daEeport' }} />
-                        </div>
-                    </div>
-                }
+
 
             </div > :
             <div className="nurseItemContent nurseContent">

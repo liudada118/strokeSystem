@@ -13,6 +13,7 @@ interface DeviceSheet {
 export default function DeviceSheet(props: DeviceSheet) {
     const phone = localStorage.getItem('phone') || ''
     const token = localStorage.getItem('token') || ''
+    const roleId: any = localStorage.getItem("roleId")
     const [userShow, setUserShow] = useState(false)
     const [familyShow, setFamilyShow] = useState(false)
     const [deleteDeviceObj, setDeleteDeviceObj] = useState<any>({})
@@ -34,7 +35,7 @@ export default function DeviceSheet(props: DeviceSheet) {
         key: 'mac',
     },
     {
-        title: '设备类型33',
+        title: '设备类型',
         dataIndex: 'type',
         key: 'type',
         render: (text: any, record: any, index: any) => {
@@ -245,14 +246,19 @@ export default function DeviceSheet(props: DeviceSheet) {
             </Modal>
 
             <div className="projectContent">
-                <div className="projectTitle">设备管理</div>
-                <Table dataSource={props.deviceSource} onRow={(record: any) => {
-                    return {
-                        onClick: (e: any) => {
-                            setDelete(record)
-                        }
-                    }
-                }} columns={device} />
+                {
+                    roleId == 0 ? <div>1</div> : <>
+                        <div className="projectTitle">设备管理</div>
+                        <Table dataSource={props.deviceSource} onRow={(record: any) => {
+                            return {
+                                onClick: (e: any) => {
+                                    setDelete(record)
+                                }
+                            }
+                        }} columns={device} />
+                    </>
+                }
+
             </div>
         </>
     )

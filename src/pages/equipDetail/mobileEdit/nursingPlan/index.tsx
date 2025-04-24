@@ -28,6 +28,12 @@ export default function NursingPlan() {
   const [isDelete, setIsDelete] = useState(false);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const html = document.getElementsByTagName("html");
+    html[0].style.fontSize = '16px'
+  }, []);
+
+
   const editNurseConf = () => {
     // setOperType("add");
     console.log('addNurseConf.........');
@@ -87,6 +93,16 @@ export default function NursingPlan() {
     })
   }, []);
 
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    const waitFontSize = () => {
+      const fontSize = parseFloat(getComputedStyle(document.documentElement).fontSize);
+      if (fontSize > 16) setReady(true);
+      else setTimeout(waitFontSize, 16);
+    };
+    waitFontSize();
+  }, []);
   const [isModalChangePasswordOpen, setIsModalChangePasswordOpen] = useState(false)
   const [selectValue, setSelectValue] = useState(1)
 
@@ -97,7 +113,6 @@ export default function NursingPlan() {
   const handleChangePasswordCancel = () => {
     setIsModalChangePasswordOpen(false)
   }
-
 
 
   return (
@@ -160,6 +175,7 @@ export default function NursingPlan() {
             <Button
               type="primary"
               onClick={() => {
+
                 navigate(`/edit_user_nurse`, { state: { sensorName, isEmpty: true } });
               }}
               style={{}}

@@ -28,23 +28,7 @@ export default function NurseList(props: any) {
       dataIndex: "del",
     },
   ];
-  useEffect(() => {
-    let time: any = null;
-    if (time) {
-      clearInterval(time);
-      time = setInterval(() => {
-        // 定时器逻辑
-        window.location.reload();
-      }, 3000);
-    }
-    console.log('111122');
 
-    return () => {
-      if (time) {
-        clearInterval(time); // 使用 clearInterval 清除定时器
-      }
-    };
-  }, []);
   return (
     <div className={'nurse_scroll'}>
       <div className={'nurse_list'}>

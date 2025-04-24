@@ -126,7 +126,10 @@ const addUseModla = forwardRef((props: addUseModlaProps, ref) => {
                 mac: newValue,
             }
         }).then((res) => {
+
             if (res.data.data.length) {
+                console.log(res.data.data, '.........99999...................943CC6F6797C943CC6F6797C');
+
                 setDidData(res.data.data)
             } else {
                 setDidData([])
@@ -140,18 +143,18 @@ const addUseModla = forwardRef((props: addUseModlaProps, ref) => {
      * 确认添加设备弹窗
      */
     const handleOk = () => {
-        if (didData.length > 0) {
-            return message.info('当前设备已存在，请勿重复添加！')
-        }
-        if (!userinfo.patientName) {
-            return message.info('请输入姓名')
-        } else if (!userinfo.roomNum) {
-            return message.info('请输入床号')
-        } else if (!userinfo.age) {
-            return message.info('请输入年龄')
-        } else if (!userinfo.did) {
-            return message.info('请输入设备号')
-        }
+        // if (didData.length > 0) {
+        //     return message.info('当前设备已存在，请勿重复添加！')
+        // }
+        // if (!userinfo.patientName) {
+        //     return message.info('请输入姓名')
+        // } else if (!userinfo.roomNum) {
+        //     return message.info('请输入床号')
+        // } else if (!userinfo.age) {
+        //     return message.info('请输入年龄')
+        // } else if (!userinfo.did) {
+        //     return message.info('请输入设备号')
+        // }
         if (mac || userinfo.did.length == 12) {
             const arr = ['patientName', 'roomNum', 'age', 'did']
             const zeroArr = []
@@ -209,6 +212,7 @@ const addUseModla = forwardRef((props: addUseModlaProps, ref) => {
             },
         }).then((res) => {
             addEquipResule(res)
+
         })
     }
 
@@ -232,6 +236,8 @@ const addUseModla = forwardRef((props: addUseModlaProps, ref) => {
                 did: (userinfo.did).trim(),
             },
         }).then((res) => {
+            console.log(res, '......................addEquipResule');
+
             addEquipResule(res)
         });
     }
@@ -243,7 +249,6 @@ const addUseModla = forwardRef((props: addUseModlaProps, ref) => {
     const addEquipResule = (res: any) => {
         if (res.data.code == 0) {
             message.success('添加成功')
-
             // 清空用户输入
             clearInfo()
             // if (props.getEquipList) props.getEquipList()
@@ -252,7 +257,6 @@ const addUseModla = forwardRef((props: addUseModlaProps, ref) => {
             message.error('设备绑定失败')
         }
     }
-
     const addEquip = () => {
         console.log('addEquip')
         if (didData.length) {
@@ -261,8 +265,6 @@ const addUseModla = forwardRef((props: addUseModlaProps, ref) => {
             addNewEquip()
         }
     }
-
-
     function parseJson(json: string) {
         let res = json
         while (typeof res == 'string') {
@@ -296,6 +298,7 @@ const addUseModla = forwardRef((props: addUseModlaProps, ref) => {
                             },
                             params: {
                                 mac: did,
+
                             }
                         }).then((res) => {
 

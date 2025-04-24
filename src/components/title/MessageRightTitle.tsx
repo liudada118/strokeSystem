@@ -7,6 +7,7 @@ import fang from '../../assets/images/容器@2x.png'
 import './index.scss'
 import { useGetWindowSize } from '../../hooks/hook'
 import useDebounce from '../../utils/publicInput'
+import logg from '@/assets/image/loog.png'
 const { RangePicker } = DatePicker;
 interface messageParam {
     titleChangeGetMessage: Function,
@@ -96,6 +97,7 @@ export const MessageRightTitle = (props: messageParam) => {
             }
         };
     }, [timeoutId]);
+    const [loog, setLoog] = useState('JQHEALTHCARE')
     return (
         <>
             {
@@ -131,7 +133,9 @@ export const MessageRightTitle = (props: messageParam) => {
                                 placeholder="请输入姓名/床号" />
                             {/* <img style={{ width: "1rem", height: "1rem", marginRight: "20px" }} src={fang} alt="" /> */}
                         </div></>
-                </div> : <div className="homeTitle  messageTitledivTitle" style={{ display: "flex", justifyContent: 'normal', fontWeight: "900", fontSize: "1rem" }}>JQHEALTHCARE</div>
+                </div> : <div className="homeTitle  messageTitledivTitle" style={{ display: "flex", justifyContent: 'normal', fontWeight: "900", }}>
+                    {loog}
+                </div>
             }
         </>
     )

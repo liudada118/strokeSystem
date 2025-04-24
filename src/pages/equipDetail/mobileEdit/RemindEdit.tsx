@@ -9,6 +9,7 @@ import { useLocation } from "react-router-dom"
 import { equipInfoFormatUtil } from "@/utils/dataToFormat"
 import { phoneSelect } from "@/redux/token/tokenSlice"
 import { Instancercv, instance } from "@/api/api";
+import { message } from "antd"
 
 type modelUserInfo = {
     [key: string]: any
@@ -182,6 +183,7 @@ export function RemindEdit() {
     }, [])
 
     const submitCloud = (newValue: any) => {
+
         setFormValue(newValue)
         let obj = formatSetting(newValue)
         obj.userName = phone
@@ -258,7 +260,6 @@ export function RemindEdit() {
                 }
             </List>
             <List className='w-[92%] mx-auto mt-[10px] rounded-[10px]'>
-
                 {
                     sitArr.map((offBedItem) => {
                         if (!formValue.switchC && offBedItem.type !== FormType.SWITCH) {

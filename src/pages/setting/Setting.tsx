@@ -402,6 +402,13 @@ export default function Setting() {
     {
       label: '删除设备',
       key: 'delete',
+    },
+    {
+      label: '设备管理',
+      key: 'equip',
+    }, {
+      label: '护工管理',
+      key: 'user',
     },],
     manage: [{
       label: '使用说明',
@@ -417,10 +424,10 @@ export default function Setting() {
     //   label: '护理选项',
     //   key: 'nurse',
     // },
-    // {
-    //   label: '配置翻身流程',
-    //   key: 'customOption',
-    // },
+    {
+      label: '配置翻身流程',
+      key: 'customOption',
+    },
     {
       label: '上传LOGO',
       key: 'loadImg',

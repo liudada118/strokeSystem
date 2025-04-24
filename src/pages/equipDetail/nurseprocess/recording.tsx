@@ -122,13 +122,6 @@ function Recording(props: proprsType) {
                     <Form.Item name="uploadImage" label="上传图片:" labelCol={{ style: { fontWeight: "600", fontSize: "0.8rem", marginRight: "1rem" } }}
                         rules={[{ required: true, message: '请上传图片!' }]}
                     >
-                        <span style={{ display: 'flex', flexWrap: 'wrap' }}>
-                            {
-                                uploadImage.map((item: any) => {
-                                    return <img key={item} src={item} alt="" style={{ width: "6rem", height: "6rem", margin: "0 0.5rem 0.5rem 0" }} />
-                                })
-                            }
-                        </span>
                         <div
                             className="img"
                             style={{
@@ -151,6 +144,7 @@ function Recording(props: proprsType) {
                                 }}
                                 id="img"
                                 onChange={(e) => {
+                                    if (uploadImage.length > 3) return message.info('只能上传4张图片')
                                     if (e.target.files) {
                                         let res = compressionFile(e.target.files[0]);
                                         res.then((e) => {
@@ -185,6 +179,13 @@ function Recording(props: proprsType) {
                                 }}
                             />
                         </div>
+                        <span style={{ display: 'flex', flexWrap: 'wrap' }}>
+                            {
+                                uploadImage.map((item: any) => {
+                                    return <img key={item} src={item} alt="" style={{ width: "6rem", height: "6rem", margin: "0 0.5rem 0.5rem 0" }} />
+                                })
+                            }
+                        </span>
                     </Form.Item>
                     <Form.Item name="notes" label="填写备注:" labelCol={{ style: { fontWeight: "600", fontSize: "0.8rem", marginRight: "1rem" } }} wrapperCol={{ style: { width: "calc(100%-100px)", backgroundColor: "#F5F8FA" } }}>
                         <Input maxLength={20} placeholder="请输入20字内备注内容" />
@@ -203,7 +204,6 @@ function Recording(props: proprsType) {
                         </Button>
                     </Form.Item>
                 </Form>
-
             </Drawer>
         </div>
     )

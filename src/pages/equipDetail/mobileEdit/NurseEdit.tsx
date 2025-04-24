@@ -252,7 +252,6 @@ export function NurseEdit() {
         onClick={() => {
           // setNurseConfig([])
           // setVisible1(true)
-          console.log("2222222222222222");
           navigate(`/userInfo_NursingOpen?sensorName=${sensorName}`);
         }}
         className="w-full m-auto mt-[15px] py-[16px] bg-[#0072EF] flex items-center justify-center text-[#fff] text-base rounded-[10px]"

@@ -61,7 +61,8 @@ function NursingStencil(props: propsType) {
             }
         }).then((res) => {
             let nursingConfig = getNurseConfist(res);
-            console.log(nursingConfig, 'nursingConfignursingConfignursingConfignursingConfignursingConfig.....')
+            console.log(nursingConfig, 'ddddddddddd.....')
+
             setNurseConfigList(nursingConfig)
         })
     }

@@ -45,6 +45,7 @@ const equipSlice = createSlice({
         initData(state, action) {
             // console.log(action.payload)
             const { equips, equipPc, riskArr, switchArr, realAlarmArr, newVoiceExample, equipConstant, equipsPlay, equipPcPlay } = action.payload
+
             if (equips) state.equips = equips
             if (equipPc) state.equipPc = equipPc
             if (riskArr) state.riskArr = riskArr
@@ -66,8 +67,12 @@ const equipSlice = createSlice({
         },
         changeDisplayEquip(state, action) {
             const { equips, equipPc } = action.payload
-            if (equips) state.equipsPlay = equips
-            if (equipPc) state.equipPcPlay = equipPc
+            if (equips) {
+                state.equipsPlay = equips
+            }
+            if (equipPc) {
+                state.equipPcPlay = equipPc
+            }
         },
         equipLoginOut(state, action) {
             state.equips = []
@@ -224,6 +229,8 @@ export const fetchEquips = createAsyncThunk('equip/fetchEquips', async (_, { get
         },
     }
     const response = await fetchDatarcv(realOption)
+   
+    
     return response.data
 })
 

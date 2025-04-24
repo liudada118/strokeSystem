@@ -115,7 +115,6 @@ export default function Message() {
     startMills: timeArr[0],
     endMills: timeArr[1],
     types: "nursing,fallbed,outOffBed,situp,offline,sos",
-
   });
   const [messages, setMessages] = useState<message[]>([]);
   // 请求msg
@@ -508,7 +507,6 @@ export default function Message() {
     setMobileData([...(initData ? initData : mobileData), ...list]);
     setHasMore((res.data?.data?.records || []).length > 0);
   };
-
   const checkoutTime = (value: any) => {
     const currentTime = new Date().getTime();
     if (chooseTimeType === 'start') {
@@ -1050,6 +1048,9 @@ export default function Message() {
                   >
                     {dayjs(timeList[0]).format('YYYY-MM-DD')}-{dayjs(timeList[0]).format('HH:mm')}
                   </span>
+                  <span
+                    className="w-[2rem] h-[0.1rem] flex justify-center items-center  bg-[#999999]lint-height-[2.67rem]"
+                  ></span>
                   {/* <input
                     value={formattedDates[1]}
                     disabled
@@ -1154,7 +1155,7 @@ export default function Message() {
                       </div>
                     </Select.Option>
                   ))}
-                </Select>{" "}
+                </Select>{" "}——{" "}
                 <Select
                   showSearch
                   style={{

@@ -20,6 +20,7 @@ import PCNurseConfList from "./nurseprocess/nurseConf/nurseList/conf_list";
 import { getNurseConfist } from "@/utils/getNursingConfig"
 import jiaHao from '@/assets/images/image copy 2.png'
 
+
 const formMap: { [key: string]: string } = {
     state_picture: '记录皮肤状况',
     buffet: '助餐',
@@ -50,6 +51,8 @@ const NurseRecord: (props: NurseRecordProps) => React.JSX.Element = (props) => {
     const sensorName = param.id
 
     const [nurseConfigList, setNurseConfigList] = useState<any>([{}])
+
+    const [tempList, setTempList] = useState<any>([])
 
     // const nurseTableColumns = [{
     //     title: '序号',
@@ -295,7 +298,8 @@ const NurseRecord: (props: NurseRecordProps) => React.JSX.Element = (props) => {
     // };
     const [recordOpenNurseOpne, setRecordOpenNurseOpne] = useState()
     const nurseOpne = useSelector((state: any) => state.nurse.opne)
-
+    const isDataList = useSelector((state: any) => state.nurse.isDataList)
+    const roleId: any = localStorage.getItem('roleId')
     useEffect(() => {
         setRecordOpenNurseOpne(nurseOpne)
     }, [])
@@ -307,6 +311,14 @@ const NurseRecord: (props: NurseRecordProps) => React.JSX.Element = (props) => {
                     <span className='text-lg text-[#32373E] font-semibold'>护理</span>
                     <span className='cursor-pointer text-[#0072EF] text-sm font-medium'
                         onClick={() => {
+                            console.log(isDataList, '.............................isDataListisDataList');
+
+                            if (tempList.length === 0) {
+                                if (roleId !== 1 || roleId !== 2 || roleId !== 0) {
+                                    message.info(`${roleId == (1 || 2 || 0) ? '请先添加护理计划！' : "请先联系管理员添加护理计划！"}`)
+                                    return
+                                }
+                            }
                             setOperNurseTitle('新增一次')
                             addOpen()
                         }}>新增一次</span>
@@ -344,6 +356,12 @@ const NurseRecord: (props: NurseRecordProps) => React.JSX.Element = (props) => {
                     {isMobile && <span
                         style={{ display: 'flex', alignItems: 'center' }}
                         onClick={() => {
+                            if (tempList.length === 0) {
+                                if (roleId !== 1 || roleId !== 2 || roleId !== 0) {
+                                    message.info(`${roleId == (1 || 2 || 0) ? '请先添加护理计划！' : "请先联系管理员添加护理计划！"}`)
+                                    return
+                                }
+                            }
                             setMobileAddNurseOpen(true)
                             setOperNurseTitle('新增一次')
                         }}
@@ -352,7 +370,7 @@ const NurseRecord: (props: NurseRecordProps) => React.JSX.Element = (props) => {
                     </span>}
                 </div>
                 <div className="flex-1" style={{ overflow: 'auto', padding: '0 1rem' }}>
-                    <PCNurseConfList list={nurseConfigList || []} sensorName={sensorName} gotoFinshNurse={(item: any) => {
+                    <PCNurseConfList list={nurseConfigList || []} sensorName={sensorName} getTempList={(list: any) => setTempList(list)} gotoFinshNurse={(item: any) => {
                         setCurrentNurse(item)
                         setOperNurseTitle('记录护理项目')
                         addOpen()

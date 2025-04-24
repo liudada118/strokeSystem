@@ -129,7 +129,7 @@ function App() {
               path="/userInfo_editing"
               element={
                 <RequirAuthRoute>
-                  <EditingUser />
+                  <EditingUser key={window.location.pathname} />
                 </RequirAuthRoute>
               }
             />
@@ -153,7 +153,7 @@ function App() {
               path="/add_user_nurse_conf"
               element={
                 <RequirAuthRoute>
-                  <AddNurseConfList />
+                  <AddNurseConfList key={window.location.pathname} />
                 </RequirAuthRoute>
               }
             />
@@ -161,7 +161,7 @@ function App() {
               path="/edit_user_nurse"
               element={
                 <RequirAuthRoute>
-                  <NurseEditPage />
+                  <NurseEditPage key={window.location.pathname} />
                 </RequirAuthRoute>
               }
             />

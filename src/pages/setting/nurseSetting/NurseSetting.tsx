@@ -215,6 +215,8 @@ export default function NurseTable(props: tableProps) {
         templateData,
       },
     }).then((res: any) => {
+      console.log(res, "res1111111.....11111...................");
+
       if (res && res.data.msg === "success") {
         const list: any = res.data.data.map((item: any, index: number) => {
           let dataList = JSON.parse(item.data || "{}");
@@ -299,7 +301,7 @@ export default function NurseTable(props: tableProps) {
         data: {
           deviceId: sensorName,
           config: JSON.stringify(list),
-          templateEffectiveFlag: selectValue,     
+          templateEffectiveFlag: selectValue,
           templateUpdatetime: new Date().getTime()
         },
       }).then((res) => {

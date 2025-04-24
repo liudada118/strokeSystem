@@ -4,10 +4,11 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useLocation, useParams, useNavigate } from "react-router-dom";
 import { Instancercv } from "@/api/api";
-
+import { fetchEquips } from '@/redux/equip/equipSlice'
+import { useDispatch } from 'react-redux'
 export default function EquipTypeEdit(props?: any) {
   const roleId: any = localStorage.getItem("roleId");
-  const isAdmin = +roleId === 1 || +roleId === 2;
+  const isAdmin = +roleId === 1 || +roleId === 2 || + roleId === 0;
   const param = useParams();
   let navigate = useNavigate();
   const location = useLocation();
@@ -16,6 +17,7 @@ export default function EquipTypeEdit(props?: any) {
     selectEquipBySensorname(state, sensorName)
   );
   const [equipTypeInfo, setEquipTypeInfo] = useState({}) as any;
+  const dispale = useDispatch();
   console.log(
     equipInfo,
     sensorName,
@@ -50,6 +52,8 @@ export default function EquipTypeEdit(props?: any) {
         },
       }).then((e) => {
         message.success("解绑成功");
+        dispale(fetchEquips() as any);
+
         navigate('/', { replace: true })
       });
       return;
@@ -80,7 +84,7 @@ export default function EquipTypeEdit(props?: any) {
           const info = res.data?.data || {};
           setEquipTypeInfo({
             type: info.type,
-            deviceId: sensorName,
+            deviceId: info.deviceId,
             leavebedParam: info.leavebedParam,
           });
         }
@@ -96,9 +100,8 @@ export default function EquipTypeEdit(props?: any) {
         {equipType.map((item: any, index: number) => {
           return (
             <div
-              className={`py-[10px] flex items-center text-base ${
-                index === equipType.length - 1 ? "" : "border-b"
-              }`}
+              className={`py-[10px] flex items-center text-base ${index === equipType.length - 1 ? "" : "border-b"
+                }`}
             >
               <span className="w-[7rem]">{item.text}</span>
               <div className="flex  w-full">

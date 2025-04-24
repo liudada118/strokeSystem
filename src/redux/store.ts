@@ -5,6 +5,7 @@ import MqttMiddleware from "./Middleware/mqttMiddleware";
 import mqttSlice from "./mqtt/mqttSlice";
 import premissionSlice from './premission/premission'
 import nurseSlice from './Nurse/Nurse'
+import homeSlice from './home/home'
 
 const store = configureStore({
     reducer: {
@@ -12,7 +13,8 @@ const store = configureStore({
         equip: equipSlice,
         mqtt: mqttSlice,
         premission: premissionSlice,
-        nurse:nurseSlice
+        nurse:nurseSlice,
+        home:homeSlice
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware({
         serializableCheck: false

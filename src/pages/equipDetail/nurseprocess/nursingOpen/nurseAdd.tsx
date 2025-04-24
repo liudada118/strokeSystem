@@ -172,11 +172,7 @@ function NurseAdd(props: any) {
                             </div>
 
                             <div style={{ display: 'flex', flexWrap: 'wrap', height: "auto", width: "auto", padding: "0 0 0.5rem 1rem" }}>
-                                {
-                                    uploadImage.map((item: any) => {
-                                        return <img key={item} src={item} alt="" style={{ width: "6rem", height: "6rem", margin: "0 0.5rem 0.5rem 0" }} />
-                                    })
-                                }
+
                                 <div
                                     className="img"
                                     style={{
@@ -188,6 +184,7 @@ function NurseAdd(props: any) {
                                     }}
                                 >
                                     <input
+                                        disabled={uploadImage.length > 3 ? true : false}
                                         type="file"
                                         name="img"
                                         style={{
@@ -199,6 +196,7 @@ function NurseAdd(props: any) {
                                         }}
                                         id="img"
                                         onChange={(e) => {
+                                            if (uploadImage.length > 3) return message.info('ss')
                                             if (e.target.files) {
                                                 let res = compressionFile(e.target.files[0]);
                                                 res.then((e) => {
@@ -231,7 +229,13 @@ function NurseAdd(props: any) {
                                             }
                                         }}
                                     />
+
                                 </div>
+                                {
+                                    uploadImage.map((item: any) => {
+                                        return <img key={item} src={item} alt="" style={{ width: "6rem", height: "6rem", margin: "0 0.5rem 0.5rem 0" }} />
+                                    })
+                                }
                             </div>
                         </div>
                         <div>

@@ -9,6 +9,7 @@ const initialState: any = {
   isGotoNursePage: 0,
   isRestNuserpage: 0,
   showTabs: true, 
+  isDataList:true
 };
 
 const mqttSlice = createSlice({
@@ -40,9 +41,14 @@ const mqttSlice = createSlice({
     showTabsTabs(state, action) {
       state.showTabs = action.payload
   },
+  showDataLIst(state, action) {
+    console.log(state.isDataList, action.payload,'........3333............isDataList');
+    
+    state.isDataList = action.payload
+},
   },
 });
-export const { nurseOpen, nurseDataList, nurseIsOpenAdd, resetNuserpage, nurseSensorName, setNurseListData,setIsGotoNursePage,showTabsTabs } =
+export const { nurseOpen, nurseDataList, nurseIsOpenAdd, resetNuserpage, nurseSensorName, setNurseListData,setIsGotoNursePage,showTabsTabs,showDataLIst } =
   mqttSlice.actions;
 export const mqttSelect = (state: any) => state.mqtt.client;
 

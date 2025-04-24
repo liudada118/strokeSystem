@@ -26,13 +26,19 @@ function Card(props: cardParam) {
     const location = useLocation()
     const sensorName = param.id || location.state.sensorName
     const navigate = useNavigate()
+
+
+
     const setClick = (type: string) => {
-        if (!(roleId == 1 || roleId == 2)) return message.info('暂无权限');
+
         navigate('/userInfo_editing', { state: { sensorName, type } })
         // window.location.reload()
     }
     return (
         <div onClick={() => {
+            if (!(roleId == 1 || roleId == 2 || roleId == 0) && title == "护理设置") {
+                return message.error("您没有权限修改该信息");
+            }
             setClick(type)
         }} className={` px-[8px] flex items-center justify-between bg-[#fff] md:mx-auto md:w-[96%] ${border ? '' : 'rounded-[10px]'} ${margin ? '' : 'mb-[15px]'}`}>
             <div className={`flex py-[14px]  px-[7px] w-full items-center ${borderBottom ? 'border-b' : ''}`}>

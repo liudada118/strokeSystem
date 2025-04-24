@@ -29,7 +29,7 @@ export default function PCNurseList(props: any) {
             dataIndex: "del",
         },
     ];
-    console.log(extParams, '.............extParamsextParams');
+    console.log(extParams, '.......11111......extParamsextParams');
 
     return (
         <div className="nurse_scroll">
@@ -77,7 +77,7 @@ export default function PCNurseList(props: any) {
                                         </span>
                                     </p>
                                     {props.operType === "add" && (
-                                        <p className="flex" onClick={() => props.delTemp({ ...item, index })}>
+                                        <p style={{ color: "#1777ff" }} className="flex" onClick={() => props.delTemp({ ...item, index })}>
                                             <img src={nurseItemSelect} alt="" className="w-[1rem] h-[1rem]" />
                                             删除
                                         </p>

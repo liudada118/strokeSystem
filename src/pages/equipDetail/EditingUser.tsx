@@ -620,6 +620,8 @@ export const RenderListItem = ({
   const timeHour = createTimeNumber(24);
   const timeMinutes = createTimeNumber(60);
   const timeRangeColumns = [timeHour, timeMinutes, timeHour, timeMinutes];
+  const roleId: any = localStorage.getItem('roleId')
+
   const handleClickListItem = (type: FormType, title: string, key: string) => {
     if (type === FormType.TIME_RANGE) {
       setPickerInfo({
@@ -650,12 +652,17 @@ export const RenderListItem = ({
         <List.Item
           key={key}
           extra={
-            <Switch
-              checked={formValue[key] as boolean}
-              onChange={() => {
-                setFormValue({ ...formValue, [key]: !formValue[key] });
-              }}
-            />
+            <>
+              {
+                !(roleId == 1 || roleId == 2 || roleId == 0) ? '' : <Switch
+                  checked={formValue[key] as boolean}
+                  onChange={() => {
+                    setFormValue({ ...formValue, [key]: !formValue[key] });
+                  }}
+                />
+              }
+            </>
+
           }
         >
           {label}
@@ -672,8 +679,14 @@ export const RenderListItem = ({
               ? "实时提醒"
               : formValue[key]
           }
+
           onClick={() => {
-            handleClickListItem(type, title, key);
+            if (!(roleId == 1 || roleId == 2 || roleId == 0)) {
+              message.error("您没有权限修改该信息");
+            } else {
+              handleClickListItem(type, title, key);
+            }
+
           }}
         >
           {label}

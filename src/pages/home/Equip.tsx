@@ -17,17 +17,22 @@ import sitRate from '../../assets/image/sitRate.png'
 import newHeart from '../../assets/image/newHeart.png'
 import newRate from '../../assets/image/newRate.png'
 import { nurseInfoClass, OnBedState, onBedState, onBedStateText, onBedStateTime, stateToObj } from './TimeState'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { equip } from '.'
 import { netUrl, instance, fetchDatarcv } from '../../api/api'
 import AddUseModla from '../../components/Modal/addUseModla'
 import addImg from '../../assets/image/add.jpg'
+import { initEquipPc } from "@/redux/equip/equipUtil";
+import { setHomeSelectValue, setHomeSelectType } from '../../redux/home/home'
+// import { setHomeSelectValue } from '../../redux/home/home'
 
 export default function Equip() {
     const navigate = useNavigate()
     const equip = useSelector(equipPlaySelect)
     const equipPc = useSelector(equipPcPlaySelect)
     const alarm = useSelector(alarmSelect)
+    const homeSelectValue = useSelector((state: any) => state.home.homeSelectValue)
+    const homeSelectType = useSelector((state: any) => state.home.homeSelectType)
     const isMobile = useGetWindowSize()
     const alarmConfirmFunSensorName = ({ sensorName }: any) => {
         dispatch(deleteAlarm({ sensorName }))
@@ -42,16 +47,36 @@ export default function Equip() {
     const [datalist, setDataList] = useState([])
     const [datalistOld, setDataListOld] = useState([])
     const [isFalse, setFasle] = useState(false)
+    const location = useLocation();
+
     useEffect(() => {
-        if (equipPc.length > 0 && JSON.stringify(datalistOld) !== JSON.stringify(equipPc)) {
+        dispatch(setHomeSelectValue(''))
+        dispatch(setHomeSelectType('patientName'))
+    }, [location]);
+    useEffect(() => {
+        if (!homeSelectValue && equipPc.length > 0 && JSON.stringify(datalistOld) !== JSON.stringify(equipPc)) {
             setDataListOld(equipPc)
             const datalist = JSON.parse(JSON.stringify(equipPc))
             datalist[datalist.length - 1].push({ type: 'add' })
             setDataList(datalist)
             setFasle(true)
         }
-    }, [equipPc])
-    console.log(equipPc, '................equipPc');
+    }, [equipPc, homeSelectValue])
+
+    useEffect(() => {
+        console.log(homeSelectValue, homeSelectType, equip, '√homeSelectValuehomeSelectValue..........')
+        if (homeSelectValue) {
+            const res = equip.filter((equip: any) => {
+                return equip[homeSelectType] && equip[homeSelectType].toString().includes(homeSelectValue)
+            })
+            const list = initEquipPc(res)
+            const datalist = JSON.parse(JSON.stringify(list))
+            if (datalist.length > 0) {
+                datalist[datalist.length - 1].push({ type: 'add' })
+            }
+            setDataList(datalist)
+        }
+    }, [homeSelectValue])
 
     const [i, setI] = useState()
     const data = () => {

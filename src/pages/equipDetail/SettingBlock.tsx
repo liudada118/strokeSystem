@@ -24,6 +24,8 @@ import { DataContext } from ".";
 import { unbindHheDevice } from "../../api/index";
 import { nurseOpen } from "../../redux/Nurse/Nurse";
 import { setIsGotoNursePage } from "../../redux/Nurse/Nurse";
+import { fetchEquips } from '../../redux/equip//equipSlice'
+
 interface SettingBlockProps {
   onModify: (value: boolean) => void;
   userInfo: any;
@@ -832,9 +834,13 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
 
   //设备解绑
   const confirm: PopconfirmProps["onConfirm"] = async (e) => {
+
     let res: any = await unbindHheDevice(sensorName);
     if (res.data.code == 0) {
       message.success("解绑成功");
+      dispatch(fetchEquips())
+      fetchEquips()
+      console.log('..............11111..........................943CC6F6797C943CC6F6797C');
       // navigator.
       navigate("/", {
         replace: true,
@@ -843,6 +849,8 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
         },
       });
     } else {
+      dispatch(fetchEquips())
+      fetchEquips()
       message.error("解绑失败");
     }
   };
@@ -894,7 +902,7 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
             {isSettingClick ? "保存" : "设置"}
           </div>
         ) : (
-          ""
+          <> </>
         )}
       </div>
       {settings.map((item) => (
@@ -1026,7 +1034,7 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
                     okText="是"
                     cancelText="否"
                   >
-                    {roleId === (1 || 2) ? (
+                    {roleId === (1 || 2 || 0) ? (
                       <span
                         className="text-[#0072EF] ml-[1rem] "
                         style={{ cursor: "pointer" }}

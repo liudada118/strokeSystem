@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { Empty } from "antd";
+import { Empty, message } from "antd";
 import "./conf_list.scss";
 import dayjs from "dayjs";
 import instance from "@/api/api";
 import { ImageViewer } from "antd-mobile";
+import { showDataLIst } from '@/redux/Nurse/Nurse'
+import { useDispatch } from "react-redux";
 
 export default function PCNurseList(props: any) {
     const { sensorName } = props;
     const [listData, setDataList] = useState<any>([]);
+    const dispatch = useDispatch();
     const getDataList = () => {
         // 获取当前日期
         const currentDate = dayjs();
@@ -18,7 +21,7 @@ export default function PCNurseList(props: any) {
         // 获取开始和结束时间戳
         const startTimeMillis: any = startTime.valueOf();
         const endTimeMillis: any = endTime.valueOf();
-        const templateData = (Array.isArray(props?.list) ? props?.list : []).map(
+        let templateData = (Array.isArray(props?.list) ? props?.list : []).map(
             (item: any) => {
                 const timestamp = dayjs().format("YYYY-MM-DD") + " " + item.time; // 拼接当天日期
                 const unixTimestamp = dayjs(timestamp, "YYYY-MM-DD HH:mm").valueOf(); // 转换成时间戳
@@ -27,6 +30,7 @@ export default function PCNurseList(props: any) {
                 };
             }
         );
+        templateData = templateData.filter((item: any) => Object.keys(item).length > 0)
         instance({
             method: "post",
             url: "/sleep/nurse/getDayNurseDataTempl",
@@ -42,6 +46,7 @@ export default function PCNurseList(props: any) {
             },
         }).then((res: any) => {
             if (res && res.data.msg === "success") {
+                dispatch(showDataLIst(true))
                 const list: any = res.data.data.map((item: any, index: number) => {
                     let dataList = JSON.parse(item.data || "{}");
                     const timeItem = Array.isArray(props?.list)
@@ -83,6 +88,7 @@ export default function PCNurseList(props: any) {
                 });
                 console.log(list, "listlistlistlistlistlistlist......");
                 setDataList(list);
+                props.getTempList && props.getTempList(list);
             }
         });
     };

@@ -39,6 +39,7 @@ import { fakeData } from "../fakeData";
 import { getMonthStartEndTimestamps, stampToTime } from "@/utils/timeConvert";
 import { selectEquipBySensorname } from "@/redux/equip/equipSlice";
 import { CardWithoutTitle } from "../Monitor/realReport/Card";
+import useWindowSize from '@/hooks/useWindowSize'
 const { RangePicker } = DatePicker;
 type RangePickerProps = GetProps<typeof DatePicker.RangePicker>;
 const dateFormat = 'YYYY-MM-DD';
@@ -216,7 +217,7 @@ export default function DayReport() {
   const param = useParams()
   const sensorName = param.id
   const equipInfo = useSelector((state) => selectEquipBySensorname(state, sensorName))
-
+  const windowSize = useWindowSize()
   const phone = localStorage.getItem('phone') || ''
   const token = localStorage.getItem('token') || ''
   let navigate = useNavigate();
@@ -645,7 +646,6 @@ export default function DayReport() {
 
   }
 
-
   return (
     <>
       <Modal title="压力分布图" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
@@ -747,7 +747,10 @@ export default function DayReport() {
 
 
           </div>
-          <Button onClick={getBlobPng} className='action'>导出</Button>
+          {
+            !windowSize.isMobile ? <Button onClick={getBlobPng} className='action'>导出</Button> : ""
+          }
+
         </div>
 
         {/* const getBlobPng = () => {

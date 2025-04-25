@@ -4,8 +4,8 @@ import { useSelector } from "react-redux";
 import { useLocation, useParams, useNavigate } from "react-router-dom";
 import CommonNavBar from "../../../../../components/CommonNavBar";
 import { Instancercv, instance } from "@/api/api";
-// import NurseList from "../nurseList/index";
-import NurseList from '@/pages/equipDetail/nurseprocess/nurseConf/nurseList/index'
+import NurseList from "../nurseList/index";
+// import NurseList from '@/pages/equipDetail/nurseprocess/nurseConf/nurseList/index'
 import { Button, message, Modal, Radio } from "antd";
 import loog from '../../../../../assets/images/logo.png'
 import jiaHao from '../../../../../assets/images/image copy 2.png'
@@ -222,15 +222,15 @@ export default function AddNurseConfList() {
                         </span>
                     </div>
                 </div>
-                <div className="w-[94%] px-[3%]">
+                {/* <div className="w-[94%] px-[3%]">
                     <NurseList
                         list={nurseList}
                         delTemp={delTemp}
                         operType="add"
                         extParams={{ className: "modify" }}
                     />
-                </div>
-                {/* <NurseList list={nurseList} operType="add" delTemp={delTemp} /> */}
+                </div> */}
+                <NurseList list={nurseList} operType="add" delTemp={delTemp} />
                 <div className="bg-[#f4f5f6] w-[full]">
                     <Button
                         type="primary"

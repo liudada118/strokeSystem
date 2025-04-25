@@ -19,8 +19,8 @@ function NurseAdd(props: any) {
     const [timeVisible, setTimeVisible] = useState<any>(false)
     const [completionTime, setCompletionTime] = useState<any>(props.currentNurse?.completionTime || new Date().getTime()) as any
     const getCloumn = (number: number) => {
-        const list = [...Array(23)].map((_: any, index: number) => {
-            const item = index + 1
+        const list = [...Array(number)].map((_: any, index: number) => {
+            const item = index
             return {
                 label: item < 10 ? '0' + item : item,
                 value: item
@@ -142,8 +142,8 @@ function NurseAdd(props: any) {
                             </div>
                             {timeVisible && <Picker
                                 columns={[
-                                    getCloumn(23),
-                                    getCloumn(59),
+                                    getCloumn(24),
+                                    getCloumn(60),
                                 ]}
                                 visible={timeVisible}
                                 onClose={() => {

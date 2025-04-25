@@ -27,12 +27,11 @@ const columns: any = [
   //   key: 'startTime',
   // },
   {
-    title: '左侧卧',
-    dataIndex: 'left',
-    key: 'left',
+    title: '右侧卧',
+    dataIndex: 'right',
+    key: 'right',
     align: 'center',
     render: (record: any) => {
-
       return (
         <div className='flex justify-center'>
           {record ? <img className="careImg" src={yes} style={{ height: '1rem', width: '1rem' }} /> : <img className="careImg" src={noReport} style={{ height: '1rem', width: '1rem' }} />}
@@ -55,11 +54,12 @@ const columns: any = [
     }
   },
   {
-    title: '右侧卧',
-    dataIndex: 'right',
-    key: 'right',
+    title: '左侧卧',
+    dataIndex: 'left',
+    key: 'left',
     align: 'center',
     render: (record: any) => {
+
       return (
         <div className='flex justify-center'>
           {record ? <img className="careImg" src={yes} style={{ height: '1rem', width: '1rem' }} /> : <img className="careImg" src={noReport} style={{ height: '1rem', width: '1rem' }} />}
@@ -67,6 +67,8 @@ const columns: any = [
       )
     }
   },
+
+
   // {
   //   title: '皮肤情况',
   //   dataIndex: 'condition',

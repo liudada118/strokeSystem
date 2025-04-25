@@ -208,7 +208,7 @@ function NurseCharts(props: nurseChartsProps) {
         <>{!props.user ?
             <div>
                 <div className="nurseItemContent nurseContent">
-                    <div className="nurseTitleName" style={{ marginBottom: '1.9rem' }}>护理记录 </div>
+                    {/* <div className="nurseTitleName" style={{ marginBottom: '1.9rem' }}>护理记录 </div> */}
                     {/* <div className="nurseValueItems">
                 <div className="nurseValueItem">
                     <div className="nurseValueTitle">在床时间</div>
@@ -264,7 +264,7 @@ function NurseCharts(props: nurseChartsProps) {
                             </div> : ''}
                         {
                             !isMobile ? <div className="w-[40rem] h-[50rem] bg-[#FFFFFF]">
-                                <div className='text-[#000000] text-[1.2rem] pl-[1rem] py-[1rem]' style={{ fontFamily: 'PingFang SC', fontWeight: "600" }}>护理记录</div>
+                                <div className='text-[#000000] text-[1.2rem] pl-[1rem] pb-[1rem]' style={{ fontFamily: 'PingFang SC', fontWeight: "600" }}>护理记录</div>
                                 <div className=' px-[3%]  h-full'>
                                     <PCNurseList list={nurseConfigList || []} extParams={{ isShowTime: false, className: 'daEeport' }} />
                                 </div>

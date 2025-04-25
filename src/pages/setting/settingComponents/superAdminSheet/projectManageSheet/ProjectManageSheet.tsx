@@ -12,7 +12,7 @@ export default function ProjectManageSheet() {
     const [isModalDeviceUserOpen, setIsModalDeviceUserOpen] = useState(false)
     const [manUseruser, setManUseruser] = useState('')
     const [deleteObj, setDelete] = useState<any>({})
-    const projectManage = [
+    const projectManage: any = [
         {
             title: '序号',
             dataIndex: 'id',
@@ -33,6 +33,7 @@ export default function ProjectManageSheet() {
             title: '操作',
             dataIndex: 'operate',
             key: 'operate',
+            align: 'center',
             render: (text: any, record: any, index: any) => {
 
                 return (

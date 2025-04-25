@@ -58,10 +58,21 @@
     text-align: center;
 }
 
+.footItemsWeb{
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 1.42rem;
+}
 .footItems{
     display: flex;
+  
     margin-bottom: 0.42rem;
+
+    justify-content: space-around
+
 }
+
+
 
 .footItem{
     flex: 1;
@@ -74,7 +85,11 @@
     font-size: 0.73rem;
     margin-bottom: 1.25rem;
 }
-
+.footCompanyWeb{
+    color: rgba(0,0,0,0.45);
+    font-size: 3.73rem;
+    margin-bottom: 1.25rem;
+}
 // 修改antd样式
 .phoneInput{
   

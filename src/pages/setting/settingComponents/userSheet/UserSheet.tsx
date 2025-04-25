@@ -253,7 +253,7 @@ export default function UserSheet(props: userSheetProps) {
     const handleChangePasswordCancel = () => {
         setIsModalChangePasswordOpen(false)
     }
-    const manage = [
+    const manage: any = [
         {
             title: '序号',
             dataIndex: 'id',
@@ -280,10 +280,11 @@ export default function UserSheet(props: userSheetProps) {
             title: '操作',
             dataIndex: 'operate',
             key: 'operate',
+            align: 'center',
             render: (text: any, record: any, index: any) => {
                 console.log(record)
                 return (
-                    <div style={{ display: 'flex', color: '#0256FF', justifyItems: 'center', cursor: "pointer" }}>
+                    <div style={{ display: 'flex', justifyContent: "center", color: '#0256FF', justifyItems: 'center', cursor: "pointer" }}>
                         <div className='edit' style={{ marginRight: '1rem' }} onClick={() => {
 
                             setIsModalChangePasswordOpen(true)

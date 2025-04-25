@@ -39,13 +39,13 @@ export default function ProjectDeviceSheet(props: projectDeviceSheetProps) {
         align: 'center',
     },
     {
-        title: '关联用户1',
+        title: '关联用户',
         dataIndex: 'operate',
         key: 'operate',
         align: 'center',
         render: (text: any, record: any, index: any) => {
             return (
-                <div style={{ display: 'flex', color: '#0256FF', justifyContent: 'center', cursor: "pointer" }}>
+                <div style={{ display: 'flex', justifyItems: "center", color: '#0256FF', justifyContent: 'center', cursor: "pointer" }}>
                     <div className='see' style={{ marginRight: '1rem', position: 'relative', }} onClick={() => {
 
                         setUserShow(true)

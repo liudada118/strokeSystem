@@ -115,9 +115,7 @@ justify-content: center;
         font-family: 'PingFang SC';
     }
 }
-.calendar-custom{
-    height: 27.8rem;
-}
+
 //消息页头部
 @media screen and (min-width: $PadWidth) {
     .messageTitlediv2{
@@ -273,7 +271,7 @@ padding-top: 2.3rem!important;
         height: 1.5rem;
         border: none;
         outline: none;
-        outline:none;
+       font-size: 1.3rem;
         margin-left: 1rem;
         box-shadow: none;
         background: #F5F8FA;
@@ -352,6 +350,7 @@ font-family: 'PingFang SC';
         line-height: 4.5rem;
         border-radius: 2.2rem;
         background: #F5F8FA;
+        font-size: 1.3rem;
     }
     .onn{
         font-weight: 900;
@@ -449,14 +448,11 @@ font-family: 'PingFang SC';
     padding-right: 1.2rem;
     width: 13rem;
 }
-
-
 }
 .MessageYiDOngTitledivMessageYiDOngTitlediv{
     background:  linear - gradient(270deg, #FFFFFF 66% ,rgba(255, 255, 255, 0) 103%);
 }
 .notificationTable{
- 
     height: 3.3rem;
     line-height: 3.3rem;
     color: #929EAB;
@@ -465,5 +461,17 @@ font-family: 'PingFang SC';
 .notificationTableDiv{
     width: 25%;
     height: 5.3rem;
-    // border-bottom: ;
+}
+// .ant-calendar-table td {
+//     whiteSpace: nowrap,
+//     overflow: 'hidden',
+//     textOverflow: 'ellipsis'
+//   }
+.customStyle{
+    
+   .adm-calendar-cells{
+    white-space: nowrap;
+    overflow: hidden; 
+    text-overflow: ellipsis;
+  } 
 }

@@ -6,6 +6,7 @@ import { instance } from "@/api/api";
 import Title from "@/components/title/Title";
 import Bottom from "@/components/bottom/Bottom";
 import type { TableProps, GetProps } from "antd";
+
 import {
   DatePicker,
   Pagination,
@@ -26,7 +27,7 @@ import {
 import { useGetWindowSize } from "../../hooks/hook";
 import zhCN from "antd/locale/zh_CN";
 // import Kdsd from './messageDatePicker'
-
+import isBetween from 'dayjs/plugin/isBetween';
 import {
   ActionSheet,
   PullToRefresh,
@@ -40,7 +41,9 @@ import type {
   ActionSheetShowHandler,
 } from "antd-mobile/es/components/action-sheet";
 import { useNavigate } from "react-router-dom";
-import e from "express";
+import nian from '@/assets/image/nian.png'
+import yue from '@/assets/image/yue.png'
+dayjs.extend(isBetween);
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;
@@ -532,7 +535,45 @@ export default function Message() {
     }
     return false;
   };
-
+  const [currentMonth1, setCurrentMonth] = useState(dayjs());
+  const startOfMonth = currentMonth1.startOf('month').toDate();
+  const endOfMonth = currentMonth1.endOf('month').toDate();
+  const renderDate = (date: any) => {
+    const isInRange: any = dayjs(date).isBetween(startOfMonth, endOfMonth, null, '[]');
+    if (!isInRange) {
+      return <div style={{ visibility: 'hidden' }}></div>;
+    }
+    const formattedDate = dayjs(date).format('D');
+    return (
+      <div>
+        {formattedDate}
+      </div>
+    );
+  };
+  const handlePrevMonth = () => {
+    setCurrentMonth(currentMonth1.subtract(1, 'month'));
+  };
+  const handlePrevYear = () => {
+    setCurrentMonth(currentMonth1.subtract(1, 'year'));
+  };
+  const handleNextMonth = () => {
+    setCurrentMonth(currentMonth1.add(1, 'month'));
+  };
+  const handleNextYear = () => {
+    setCurrentMonth(currentMonth1.add(1, 'year'));
+  };
+  const prevMonthButton = <img style={{ width: "1.5rem", height: "1.5rem", }} src={yue} onClick={handlePrevMonth} alt="" />;
+  const prevYearButton = <img style={{ width: "1.6rem", height: "1.6rem", marginLeft: "0.3rem" }} src={nian} onClick={handlePrevYear} alt="" />;
+  const nextMonthButton = <img style={{ width: "1.6rem", height: "1.6rem", transform: 'rotate(180deg)', }} src={yue} onClick={handleNextMonth} alt="" />;
+  const nextYearButton = <img style={{ width: "1.5rem", height: "1.5rem", transform: "rotate(180deg)", marginRight: "0.3rem" }} src={nian} onClick={handleNextYear} alt="" />;
+  // useEffect(() => {
+  //   const cells: any = document.querySelectorAll('.adm-calendar-cells');
+  //   cells.forEach((cell: any) => {
+  //     cell.style.whiteSpace = 'nowrap';
+  //     cell.style.overflow = 'hidden';
+  //     cell.style.textOverflow = 'ellipsis';
+  //   });
+  // }, []);
   return (
     <>
       {!WindowSize ? (
@@ -709,7 +750,7 @@ export default function Message() {
                 style={{ width: 80 }}
                 onChange={(e) => {
                   setSelectType(e);
-                  patientNameRoomNum('')
+                  setpatientName('')
                 }}
                 options={homeSelect}
               />
@@ -985,7 +1026,7 @@ export default function Message() {
             onClose={() => {
               setVisible(false);
             }}
-            bodyStyle={{ height: "66vh", borderRadius: "0.75rem 0.75rem 0 0" }}
+            bodyStyle={{ borderRadius: "0.75rem 0.75rem 0 0" }}
           >
             <div>
               <div
@@ -1070,19 +1111,20 @@ export default function Message() {
                   </span>
                 </div>
               </div>
-              <div className="h-[18.8rem]">
+              <div className="customStyle">
                 <Calendar
                   defaultValue={null}
-                  // renderDate={disableFutureDates}
-                  style={{ height: "26.8rem", overflowY: "auto" }}
+                  renderDate={renderDate}
                   className="calendar-custom"
                   selectionMode="single"
                   allowClear
-                  value={dataRange}
                   max={new Date()}
                   min={new Date(1900, 0, 1)}
+                  prevMonthButton={prevMonthButton}
+                  prevYearButton={prevYearButton}
+                  nextMonthButton={nextMonthButton}
+                  nextYearButton={nextYearButton}
                   onChange={(dataRange: any) => {
-                    console.log(dataRange, '3423434234234');
                     const date = new Date(dataRange)
                     const dateStr = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`
                     if (chooseTimeType === 'start') {
@@ -1092,7 +1134,6 @@ export default function Message() {
                         setTimeList([date, timeList[1] || null])
                         setDataRange(dataRange)
                       }
-
                     } else {
                       const hourse = dayjs(timeList[1]).format('HH:mm')
                       const date = `${dateStr} ${hourse}`
@@ -1105,7 +1146,7 @@ export default function Message() {
                   }
                 />
               </div>
-              <div className="flex justify-center mt-[8rem]">
+              <div className="flex justify-center">
                 <Select
                   showSearch
                   style={{
@@ -1155,7 +1196,7 @@ export default function Message() {
                       </div>
                     </Select.Option>
                   ))}
-                </Select>{" "}——{" "}
+                </Select>{" "}—{" "}
                 <Select
                   showSearch
                   style={{

@@ -67,6 +67,7 @@ export const HomeRightTitle = () => {
 
         }}>
             <Input
+                style={{ fontSize: "1.4rem" }}
                 type="text"
                 // value={searchValue}
                 onChange={(e) =>
@@ -74,7 +75,7 @@ export const HomeRightTitle = () => {
                     debounce(search.bind(this, e), 0)
                 }
             />
-            <img src={searchImg} alt="" />
+            {/* <img src={searchImg} alt="" /> */}
             <Select
                 className="searchSelect"
                 defaultValue={selectType}

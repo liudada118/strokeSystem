@@ -23,7 +23,7 @@ const skinObj: any = {
     '9': '破溃',
 }
 
-const sleepArr = ['仰卧', '左侧', '右侧']
+const sleepArr = ['仰卧', '左侧卧', '右侧卧']
 interface PropsType {
     turnOver?: any
     idturnOver?: string
@@ -265,7 +265,7 @@ export default function TurnReport(props: PropsType) {
                                 <div>{sleepArr[data.sleepPos]}</div>
                             </div>
 
-                            {data.sleepPosImg ? <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '1rem' }}>
+                            {!data.sleepPosImg ? <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '1rem' }}>
 
                                 <div>在床照片</div>
                                 <div><img src={data.sleepPosImg} style={{ height: '6rem' }} alt="" /></div>

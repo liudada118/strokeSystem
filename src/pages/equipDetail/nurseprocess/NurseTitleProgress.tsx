@@ -23,11 +23,11 @@ const turnOverInfoText = [
         hint: '仰卧：将护理对象置为仰卧'
     },
     {
-        posture: '左侧躺',
+        posture: '左侧卧',
         hint: '左侧卧：护理对象左手侧'
     },
     {
-        posture: '右侧躺',
+        posture: '右侧卧',
         hint: '右侧卧：护理对象右手侧'
     },
 ]

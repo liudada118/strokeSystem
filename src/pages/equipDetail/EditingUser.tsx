@@ -544,7 +544,7 @@ export const PersonalContentInfo = (props: personalInfoParam) => {
         ""
       ) : (
         <div className="text-sm w-[60%] text-[#6C7784] text-center">
-          设置老人的提醒类型与内容
+
         </div>
       )}
     </div>

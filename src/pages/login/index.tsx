@@ -11,6 +11,7 @@ import VerCode from "./verCode/VerCode";
 import { useDispatch, useSelector } from "react-redux";
 import { reduxSetPhone, reduxSetToken } from "@/redux/token/tokenSlice";
 import { loginOut } from '../../redux/premission/premission'
+import useWindowSize from '@/hooks/useWindowSize'
 const { Option } = Select;
 
 const loginType = ["账号登录"];
@@ -36,32 +37,32 @@ export default function Login() {
   const img = localStorage.getItem('headImg') ? localStorage.getItem('headImg') : logo
   const [headImg, setHeadImg] = useState(img)
   // 获取头像
-  useEffect(() => {
-    if (!localStorage.getItem('headImg')) {
-      axios({
-        method: "get",
-        url: netUrl + "/organize/getUserAuthority",
-        headers: {
-          "content-type": "multipart/form-data",
-          "token": token
-        },
-        params: {
-          username: phone,
-        }
-      }).then((res) => {
-        const image = res.data.commonConfig.image
-        const roleId = res.data.data.roleId
-        localStorage.setItem('roleId', roleId)
-        if (image) {
-          setHeadImg(image)
-          localStorage.setItem('headImg', image)
-        }
-      }
-      ).catch((err) => {
-        console.log(err)
-      })
-    }
-  }, [])
+  // useEffect(() => {
+  //   if (!localStorage.getItem('headImg')) {
+  //     axios({
+  //       method: "get",
+  //       url: netUrl + "/organize/getUserAuthority",
+  //       headers: {
+  //         "content-type": "multipart/form-data",
+  //         "token": token
+  //       },
+  //       params: {
+  //         username: phone,
+  //       }
+  //     }).then((res) => {
+  //       const image = res.data.commonConfig.image
+  //       const roleId = res.data.data.roleId
+  //       localStorage.setItem('roleId', roleId)
+  //       if (image) {
+  //         setHeadImg(image)
+  //         localStorage.setItem('headImg', image)
+  //       }
+  //     }
+  //     ).catch((err) => {
+  //       console.log(err)
+  //     })
+  //   }
+  // }, [])
 
   const getVerCode = () => {
     axios({
@@ -177,6 +178,9 @@ export default function Login() {
       fn()
     }, ms);
   }
+  const windowSize = useWindowSize()
+  console.log(windowSize, '..................windowSizewindowSize');
+
   return (
     <div className="loginContainer sy">
       <div className="loginContent">
@@ -242,12 +246,13 @@ export default function Login() {
         </Button>
       </div>
       <div className="foot">
-        <div className="footItems">
-          <div className="footItem">帮助</div>
-          <div className="footItem">隐私</div>
-          <div className="footItem">条款</div>
+        {/* <div className={`${windowSize.isMobile === false ? 'footCompany' : 'footCompanyWeb'}`}> */}
+        <div className={`${windowSize.isMobile === false ? 'footItems' : 'footItemsWeb'}`}>
+          <div className={`${windowSize.isMobile === false ? 'footItem' : 'footItemsWeb'}`}>帮助</div>
+          <div className={`${windowSize.isMobile === false ? 'footItem' : 'footItemsWeb'}`}>隐私</div>
+          <div className={`${windowSize.isMobile === false ? 'footItem' : 'footItemsWeb'}`}>条款</div>
         </div>
-        <div className="footCompany">
+        <div className={`${windowSize.isMobile === false ? 'footCompany' : 'footCompanyWeb'}`}>
           copyright@威海矩侨工业科技有限公司
         </div>
       </div>

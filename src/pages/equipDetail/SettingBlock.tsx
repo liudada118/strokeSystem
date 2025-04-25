@@ -859,13 +859,13 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
     message.info("取消成功");
   };
   const [switchOpen, setSwitchOpen] = useState(false);
-  const [switchOpenValue, setSwitchOpenValue] = useState("0");
+  const [switchOpenValue, setSwitchOpenValue] = useState(0);
   const isOpen = () => {
     setSwitchOpen(true);
   };
   // const roleId: any = localStorage.getItem('roleId')
   const onBlurShezhi = () => {
-    if (!switchOpenValue) return message.info("不能为空");
+    if (!switchOpenValue) return message.info("离床参数不能为空不能为空");
     if (switchOpenValue) {
       try {
         Instancercv({
@@ -979,7 +979,7 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
               placeholder="请输入"
               onBlur={onBlurShezhi}
               onChange={(val: any) => setSwitchOpenValue(val.target.value)}
-              className="w-[5rem] mr-[2rem]"
+              className="w-[4rem] mr-[2rem]"
             ></Input>
           ) : (
             <span

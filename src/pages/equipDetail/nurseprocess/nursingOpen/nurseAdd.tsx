@@ -41,12 +41,9 @@ function NurseAdd(props: any) {
                 uploadImage: JSON.stringify(uploadImage),
                 notes
             }
-            console.log(values.nurseProject, '....................valuesvalues');
-
             if (values.nurseProject.length > 10) return message.info('护理项目不能超过10个字符')
             if (values.notes.length > 20) return message.info('备注不能超过20个字符')
             const dataList = type === '新增一次' ?
-
                 {
                     did: sensorName,
                     timeMillis: completionTime,
@@ -68,12 +65,10 @@ function NurseAdd(props: any) {
                 },
                 data: dataList
             }).then((res) => {
-
                 if (res.data.msg == 'insert success') {
                     message.info('添加成功')
                     onClose(true)
                 }
-
             })
         }
     }

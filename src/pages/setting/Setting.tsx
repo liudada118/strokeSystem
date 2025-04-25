@@ -423,10 +423,6 @@ export default function Setting() {
       key: 'warehouse',
     },
     {
-      label: '删除设备',
-      key: 'delete',
-    },
-    {
       label: '项目管理',
       key: 'projectTitle',
 
@@ -437,9 +433,11 @@ export default function Setting() {
       ],
     },
     {
-      label: '护工管理',
-      key: 'user',
+      label: '删除设备',
+      key: 'delete',
     },
+
+
     ],
     manage: [{
       label: '使用说明',
@@ -728,7 +726,7 @@ export default function Setting() {
     render: (text: any, record: any, index: any) => {
 
       return (
-        <div style={{ display: 'flex', color: '#0256FF', cursor: "pointer" }}>
+        <div style={{ display: 'flex', justifyContent: "center", color: '#0256FF', cursor: "pointer" }}>
           <div className='see' style={{ marginRight: '1rem', position: 'relative', }} onClick={() => {
 
             setUserShow(true)
@@ -812,7 +810,7 @@ export default function Setting() {
 
   ]
 
-  const projectManage = [
+  const projectManage: any = [
     {
       title: '序号',
       dataIndex: 'id',
@@ -842,10 +840,11 @@ export default function Setting() {
       title: '操作',
       dataIndex: 'operate',
       key: 'operate',
+      align: 'center',
       render: (text: any, record: any, index: any) => {
 
         return (
-          <div style={{ display: 'flex', color: '#0256FF', justifyContent: 'center', cursor: "pointer" }}>
+          <div style={{ display: 'flex', justifyItems: "center", color: '#0256FF', justifyContent: 'center', cursor: "pointer" }}>
             <div className='edit' style={{ marginRight: '1rem' }} onClick={() => {
 
               setIsModalChangePasswordOpen(true)
@@ -1582,7 +1581,7 @@ export default function Setting() {
     })
     setDataList(list)
   }
-  const project = [
+  const project: any = [
     {
       title: '项目名称',
       render: (title: any, item: any, index: any) => {
@@ -1639,10 +1638,11 @@ export default function Setting() {
       title: '操作',
       dataIndex: 'operate',
       key: 'operate',
+      align: 'center',
       render: (record: any) => {
 
         return (
-          <div style={{ display: 'flex', color: '#0256FF', justifyItems: 'center' }}>
+          <div style={{ display: 'flex', justifyContent: "center", color: '#0256FF', justifyItems: 'center' }}>
             <div className='edit' style={{ marginRight: '1rem' }} onClick={() => {
               console.log(record)
             }}>编辑 </div>

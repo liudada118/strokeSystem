@@ -6,9 +6,13 @@ const web = 'juqiao.bodyta.com'
 // export const netUrl = `http://${web}:8080/rcv`;
 // export const netRepUrl = `http://${web}:8081`;
 // export const voiceUrl = `http://${web}`
-export const netUrl = "https://sensor.bodyta.com/rcv";
-export const netRepUrl = "https://sensor.bodyta.com";
-export const voiceUrl = 'https://sensor.bodyta.com'
+
+export const netUrl = `https://${web}/rcv`;
+export const netRepUrl = `https://${web}`;
+export const voiceUrl = `https://${web}`
+// export const netUrl = "https://sensor.bodyta.com/rcv";
+// export const netRepUrl = "https://sensor.bodyta.com";
+// export const voiceUrl = 'https://sensor.bodyta.com'
 
 // export const netUrl = "http://10.100.14.214:8080/rcv";
 // export const netRepUrl = "http://10.100.14.214:8081";

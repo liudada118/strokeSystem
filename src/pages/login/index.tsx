@@ -191,7 +191,7 @@ export default function Login() {
                 <div className="w-full">
                   <div
                     onClick={() => {
-                      setNowType(index);
+                      // setNowType(index);
                     }}
                     style={{ color: index == nowType ? "#0033A1" : "#000", fontWeight: 'bold', width: "100%", textAlign: "center", marginBottom: "2rem" }}
                   >

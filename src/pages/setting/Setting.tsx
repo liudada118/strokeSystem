@@ -1967,7 +1967,7 @@ export default function Setting() {
 
           <div className='setTitle' onClick={() => {
             navigate('/userInfo')
-          }}><div className="setTitleInfo flex"><img className='setTitleImg' src={setItem} alt="" /> 使用说明</div> <img src={goRight} alt="" /></div>
+          }}><div className="setTitleInfo flex"><img className='setTitleImg' src={setItem} alt="" /> 产品介绍</div> <img src={goRight} alt="" /></div>
 
           <div className='setTitle' onClick={() => {
             navigate('/productInfo')

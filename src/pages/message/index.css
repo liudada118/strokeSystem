@@ -120,10 +120,6 @@
   font-family: 'PingFang SC';
 }
 
-.calendar-custom {
-  height: 27.8rem;
-}
-
 @media screen and (min-width: 940px) {
   .messageTitlediv2 {
     width: 600px;
@@ -267,7 +263,7 @@
     height: 1.5rem;
     border: none;
     outline: none;
-    outline: none;
+    font-size: 1.3rem;
     margin-left: 1rem;
     box-shadow: none;
     background: #F5F8FA;
@@ -302,6 +298,7 @@
     overflow-x: auto;
     scrollbar-width: none;
     -ms-overflow-style: none;
+    padding-right: 1rem;
   }
   .MessageYiDOngTitle .btn {
     cursor: pointer;
@@ -336,6 +333,7 @@
     line-height: 4.5rem;
     border-radius: 2.2rem;
     background: #F5F8FA;
+    font-size: 1.3rem;
   }
   .MessageYiDOngTitle .onn {
     font-weight: 900;
@@ -437,4 +435,23 @@
 .notificationTableDiv {
   width: 25%;
   height: 5.3rem;
+}
+
+.customStyle .adm-calendar-cells {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.calendar-set-box .adm-calendar-cell {
+  height: auto;
+}
+
+.calendar-set-box .adm-calendar-cell .adm-calendar-cell-bottom {
+  height: 0;
+  line-height: 0;
+}
+
+.calendar-set-box .adm-calendar-cell.adm-calendar-cell-disabled {
+  height: auto;
 }

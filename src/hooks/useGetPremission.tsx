@@ -1,5 +1,5 @@
 import { Instancercv } from "@/api/api"
-import { useEffect, useState } from "react"
+import react, { useEffect, useState } from "react"
 
 
 export function useGetTurnConfig() {
@@ -24,11 +24,6 @@ export function useGetUserPermission({ phone, token }: getUserPermissionParam) {
 
     const [roleId, setRoleId] = useState(roleIdInit)
     const [headImg, setHeadImg] = useState(headImgInit)
-
-    if (roleId && headImg) {
-        return { roleId, headImg }
-    }
-
     useEffect(() => {
         Instancercv({
             method: "get",
@@ -50,6 +45,11 @@ export function useGetUserPermission({ phone, token }: getUserPermissionParam) {
         })
 
     }, [])
+
+    if (roleId && headImg) {
+        return { roleId, headImg }
+    }
+
 
     return { roleId, headImg }
 }

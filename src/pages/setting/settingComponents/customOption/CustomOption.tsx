@@ -16,6 +16,12 @@ export default function CustomOption() {
     const [value, setValue] = useState(turnType);
     const token = useSelector(tokenSelect)
     const organizeId = useSelector(organizeIdSelect)
+    message.config({
+        top: 100,
+        duration: 1.5,
+        maxCount: 3,
+        rtl: true,
+    });
     const onChange = (e: RadioChangeEvent) => {
         const value = e.target.value
         console.log('radio checked', e.target.value);

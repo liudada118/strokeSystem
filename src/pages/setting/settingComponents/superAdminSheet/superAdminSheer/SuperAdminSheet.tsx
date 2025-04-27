@@ -36,7 +36,7 @@ export default function SuperAdminSheet(props: superAdminUserNameProps) {
 
         ])
 
-    const project = [
+    const project: any = [
         {
             title: '序号',
             dataIndex: 'id',
@@ -81,6 +81,7 @@ export default function SuperAdminSheet(props: superAdminUserNameProps) {
             title: '操作',
             dataIndex: 'operate',
             key: 'operate',
+            align: 'center',
             render: (record: any) => {
 
                 return (
@@ -88,7 +89,7 @@ export default function SuperAdminSheet(props: superAdminUserNameProps) {
                         <div className='edit' style={{ marginRight: '1rem' }} onClick={() => {
                             console.log(record)
                         }}>编辑 </div>
-                        <div className='delete'>删除</div>
+                        <div className='delete'>删除11111</div>
                     </div>
                 )
             }

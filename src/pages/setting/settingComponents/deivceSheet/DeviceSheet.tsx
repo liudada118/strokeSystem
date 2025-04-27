@@ -102,6 +102,12 @@ export default function DeviceSheet(props: DeviceSheet) {
     },
 
     ]
+    message.config({
+        top: 100,
+        duration: 1.5,
+        maxCount: 3,
+        rtl: true,
+    });
     const [deviceOneUser, setDeviceOneUser] = useState<Array<any>>([])
     const [familyOneUser, setFamilyOneUser] = useState<Array<any>>([])
     const onChange = (value: string) => {

@@ -6,6 +6,7 @@ import { instance } from "@/api/api";
 import Title from "@/components/title/Title";
 import Bottom from "@/components/bottom/Bottom";
 import type { TableProps, GetProps } from "antd";
+
 import {
   DatePicker,
   Pagination,
@@ -18,7 +19,7 @@ import {
   Result,
   message,
 } from "antd";
-import {
+import Icon, {
   CaretDownOutlined,
   LeftOutlined,
   ZoomInOutlined,
@@ -26,7 +27,7 @@ import {
 import { useGetWindowSize } from "../../hooks/hook";
 import zhCN from "antd/locale/zh_CN";
 // import Kdsd from './messageDatePicker'
-
+import isBetween from 'dayjs/plugin/isBetween';
 import {
   ActionSheet,
   PullToRefresh,
@@ -40,10 +41,14 @@ import type {
   ActionSheetShowHandler,
 } from "antd-mobile/es/components/action-sheet";
 import { useNavigate } from "react-router-dom";
-import e from "express";
+import nian from '@/assets/image/nian.png'
+import yue from '@/assets/image/yue.png'
+import { render } from "@testing-library/react";
+dayjs.extend(isBetween);
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;
+let currentCalendarValue = new Date();
 // const { Option } = Select;
 type RangePickerProps = GetProps<typeof DatePicker.RangePicker>;
 export interface message {
@@ -95,6 +100,12 @@ export default function Message() {
   const [total, setTotal] = useState(0);
   const [todayAlarmCount, setTodayAlarmCount] = useState(0);
   const WindowSize = useGetWindowSize();
+  message.config({
+    top: 100,
+    duration: 1.5,
+    maxCount: 3,
+    rtl: true,
+  });
 
   const [visible, setVisible] = useState(false);
   // 昨天提醒 62 次 前天提醒 26 次
@@ -278,6 +289,7 @@ export default function Message() {
   const [isName, setIsName] = useState(false);
   const [pageTotal, setPageTotal] = useState(0);
   const [titleTrue, setTitleTrue] = useState(false);
+  const [weekForFirstMonth, setWeekForFirstMonth] = useState(-1);
   const homeSelectNurse: any = [
     { value: "nursing", label: "护理提醒" },
     { value: "offline", label: "离线提醒" },
@@ -532,6 +544,110 @@ export default function Message() {
     }
     return false;
   };
+  const [currentMonth1, setCurrentMonth] = useState(dayjs());
+  const startOfMonth = currentMonth1.startOf('month').toDate();
+  const endOfMonth = currentMonth1.endOf('month').toDate();
+  const renderDate = (date: any) => {
+    const { firstDay, lastDay } = getCurrentMonthFirstAndLastDay(currentCalendarValue);
+    const firstDate = firstDay.date.getTime()
+    const lastDate = lastDay.date.getTime()
+    const newDate = new Date(date);
+    newDate.setHours(0, 0, 0, 0)
+    if (firstDate > date.getTime() || lastDate < date.getTime()) {
+      return '';
+    }
+
+    const isInRange: any = dayjs(date).isBetween(startOfMonth, endOfMonth, null, '[]');
+    const formattedDate = dayjs(date).format('D');
+    // if (!isInRange) {
+    //   return <div style={{ visibility: 'hidden' }}></div>;
+    // }
+    return (
+      <div style={{ lineHeight: '40px', height: '40px', marginBottom: '12px' }}>
+        {formattedDate}
+      </div>
+    );
+  };
+  const getCurrentMonthFirstAndLastDay = (date: any) => {
+    const now = date;
+
+    // 获取当月第一天（00:00:00）
+    const firstDay = new Date(now.getFullYear(), now.getMonth(), 1);
+
+    // 获取当月最后一天（23:59:59）
+    const lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+    lastDay.setHours(23, 59, 59, 999); // 设置为当天最后一毫秒
+
+    return {
+      firstDay: {
+        date: firstDay,
+        timestamp: firstDay.getTime(),
+        formatted: firstDay.toLocaleDateString()
+      },
+      lastDay: {
+        date: lastDay,
+        timestamp: lastDay.getTime(),
+        formatted: lastDay.toLocaleDateString()
+      }
+    };
+  }
+  const getNaturalMonthOffsetDates = (date: any, type?: any) => {
+    const now = date;
+
+    // 一个月后的今天（自然月）
+    const nextMonth = new Date(now);
+    if (type === 'month') {
+      nextMonth.setMonth(nextMonth.getMonth() + 1);
+    } else {
+      nextMonth.setFullYear(nextMonth.getFullYear() + 1);
+    }
+
+    // 前一个月的今天（自然月）
+    const prevMonth = new Date(now);
+    if (type === 'month') {
+      prevMonth.setMonth(prevMonth.getMonth() - 1);
+    } else {
+      prevMonth.setFullYear(prevMonth.getFullYear() + 1);
+    }
+    return {
+      nextMonth: {
+        date: nextMonth,
+        formatted: nextMonth.toLocaleDateString()
+      },
+      prevMonth: {
+        date: prevMonth,
+        formatted: prevMonth.toLocaleDateString()
+      }
+    };
+  }
+  const handlePrevMonth = () => {
+    setCurrentMonth(currentMonth1.subtract(1, 'month'));
+    currentCalendarValue = getNaturalMonthOffsetDates(currentCalendarValue, 'month').prevMonth.date
+  };
+  const handlePrevYear = () => {
+    setCurrentMonth(currentMonth1.subtract(1, 'year'));
+    currentCalendarValue = new Date(currentMonth1.subtract(1, 'year').valueOf())
+  };
+  const handleNextMonth = () => {
+    setCurrentMonth(currentMonth1.add(1, 'month'));
+    currentCalendarValue = getNaturalMonthOffsetDates(currentCalendarValue, 'month').nextMonth.date
+  };
+  const handleNextYear = () => {
+    setCurrentMonth(currentMonth1.add(1, 'year'));
+    currentCalendarValue = new Date(currentMonth1.add(1, 'year').valueOf())
+  };
+  const prevMonthButton = <img style={{ width: "1.5rem", height: "1.5rem", }} src={yue} onClick={handlePrevMonth} alt="" />;
+  const prevYearButton = <img style={{ width: "1.6rem", height: "1.6rem", marginLeft: "0.3rem" }} src={nian} onClick={handlePrevYear} alt="" />;
+  const nextMonthButton = <img style={{ width: "1.6rem", height: "1.6rem", transform: 'rotate(180deg)', }} src={yue} onClick={handleNextMonth} alt="" />;
+  const nextYearButton = <img style={{ width: "1.5rem", height: "1.5rem", transform: "rotate(180deg)", marginRight: "0.3rem" }} src={nian} onClick={handleNextYear} alt="" />;
+  // useEffect(() => {
+  //   const cells: any = document.querySelectorAll('.adm-calendar-cells');
+  //   cells.forEach((cell: any) => {
+  //     cell.style.whiteSpace = 'nowrap';
+  //     cell.style.overflow = 'hidden';
+  //     cell.style.textOverflow = 'ellipsis';
+  //   });
+  // }, []);
 
   return (
     <>
@@ -709,7 +825,7 @@ export default function Message() {
                 style={{ width: 80 }}
                 onChange={(e) => {
                   setSelectType(e);
-                  patientNameRoomNum('')
+                  setpatientName('')
                 }}
                 options={homeSelect}
               />
@@ -985,7 +1101,7 @@ export default function Message() {
             onClose={() => {
               setVisible(false);
             }}
-            bodyStyle={{ height: "66vh", borderRadius: "0.75rem 0.75rem 0 0" }}
+            bodyStyle={{ borderRadius: "0.75rem 0.75rem 0 0" }}
           >
             <div>
               <div
@@ -1070,19 +1186,20 @@ export default function Message() {
                   </span>
                 </div>
               </div>
-              <div className="h-[18.8rem]">
+              <div className="customStyle">
                 <Calendar
-                  defaultValue={null}
-                  // renderDate={disableFutureDates}
-                  style={{ height: "26.8rem", overflowY: "auto" }}
-                  className="calendar-custom"
+                  defaultValue={new Date()}
+                  renderDate={renderDate}
+                  className={`calendar-set-box`}
                   selectionMode="single"
                   allowClear
-                  value={dataRange}
                   max={new Date()}
                   min={new Date(1900, 0, 1)}
+                  prevMonthButton={prevMonthButton}
+                  prevYearButton={prevYearButton}
+                  nextMonthButton={nextMonthButton}
+                  nextYearButton={nextYearButton}
                   onChange={(dataRange: any) => {
-                    console.log(dataRange, '3423434234234');
                     const date = new Date(dataRange)
                     const dateStr = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`
                     if (chooseTimeType === 'start') {
@@ -1092,7 +1209,6 @@ export default function Message() {
                         setTimeList([date, timeList[1] || null])
                         setDataRange(dataRange)
                       }
-
                     } else {
                       const hourse = dayjs(timeList[1]).format('HH:mm')
                       const date = `${dateStr} ${hourse}`
@@ -1105,7 +1221,7 @@ export default function Message() {
                   }
                 />
               </div>
-              <div className="flex justify-center mt-[8rem]">
+              <div className="flex justify-center pb-[1rem]">
                 <Select
                   showSearch
                   style={{
@@ -1155,7 +1271,7 @@ export default function Message() {
                       </div>
                     </Select.Option>
                   ))}
-                </Select>{" "}——{" "}
+                </Select>{" "}—{" "}
                 <Select
                   showSearch
                   style={{

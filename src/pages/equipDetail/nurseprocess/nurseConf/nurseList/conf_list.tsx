@@ -6,10 +6,13 @@ import instance from "@/api/api";
 import { ImageViewer } from "antd-mobile";
 import { showDataLIst } from '@/redux/Nurse/Nurse'
 import { useDispatch } from "react-redux";
+import useWindowSize from '@/hooks/useWindowSize'
 
 export default function PCNurseList(props: any) {
     const { sensorName } = props;
     const [listData, setDataList] = useState<any>([]);
+    const windowSize = useWindowSize()
+    const isMobile = windowSize.isMobile;
     const dispatch = useDispatch();
     const getDataList = () => {
         // 获取当前日期
@@ -138,6 +141,7 @@ export default function PCNurseList(props: any) {
                                                 setImgData(item.uploadImage);
                                                 setVisible(true);
                                             }}
+                                            className={`${!isMobile ? 'pc_nurse_conf_list_img' : ''}`}
                                         >
                                             {item.uploadImage.map((item: any) => {
                                                 return <img key={item} src={item} alt="" />;

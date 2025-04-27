@@ -96,15 +96,19 @@
 }
 
 .pc_nurse_conf_list .list_item p:nth-child(2) span:nth-child(3) img {
-  width: 3rem;
+  width: 5rem;
   height: auto;
   margin: 0 0.5rem 0.5rem 0;
+}
+
+.pc_nurse_conf_list .list_item p:nth-child(2) span:nth-child(3).pc_nurse_conf_list_img:nth-child(3) img {
+  width: 2rem;
 }
 
 .pc_nurse_conf_list .list_item p:nth-child(3) {
   display: flex;
   align-items: center;
-  width: 5rem;
+  width: 5.5rem;
   color: #929EAB;
   justify-content: center;
 }

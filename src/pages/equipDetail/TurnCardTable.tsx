@@ -104,6 +104,8 @@ const TurnCardTable: (props: TurnCardTableProps) => React.JSX.Element = (props) 
             // message.error('')
         });
     }
+    console.log(flipbodyData, '.............................flipbodyDataflipbodyDataflipbodyData');
+
     const turnAroundCard: CardItem[] = [{
         label: '翻身次数',
         value: `${dataList.flipBodyCount}`,
@@ -114,7 +116,7 @@ const TurnCardTable: (props: TurnCardTableProps) => React.JSX.Element = (props) 
         unit: '次/分'
     }, {
         label: '翻身超时',
-        value: `${flipbodyData}`,
+        value: `${dataList.flipBodyTimeoutCount}`,
         unit: '次'
     }]
     const commonClass = 'inline-block w-[20px] h-[20px] md:w-[12px] md:h-[12px] rounded-full'

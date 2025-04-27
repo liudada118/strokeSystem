@@ -23,6 +23,12 @@ export default function RealNurse(props: any) {
   const phone = localStorage.getItem('phone')
   const token = localStorage.getItem('token')
 
+  message.config({
+    top: 100,
+    duration: 1.5,
+    maxCount: 3,
+    rtl: true,
+  });
   useEffect(() => {
     Instancercv({
       method: "get",

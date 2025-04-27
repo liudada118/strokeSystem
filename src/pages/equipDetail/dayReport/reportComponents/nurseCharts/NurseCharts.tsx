@@ -10,7 +10,7 @@ import { useGetWindowSize } from '@/hooks/hook'
 import PCNurseList from '@/pages/equipDetail/nurseprocess/nurseConf/nurseList/index'
 import PCNurseConfList from '@/pages/equipDetail/nurseprocess/nurseConf/nurseList/conf_list'
 // import MobileNurseList from '@/pages/equipDetail/nurseprocess/'
-import { instance, netRepUrl } from '@/api/api'
+import { instance, voiceUrl } from '@/api/api'
 interface nurseChartsProps {
     dataSource: any
     onbed: any
@@ -91,30 +91,32 @@ function NurseCharts(props: nurseChartsProps) {
         endOfYesterday.setHours(23, 59, 59, 999);
         const timestampStart = startOfYesterday.getTime();
         const timestampEnd = endOfYesterday.getTime();
-
-        instance({
-            // url: "https://juqiao.bodyta.com/sleep/nurse/getDayNurseData?did=V1esebX84nRyno1kEfLR&startTimeMillis=1745337832000&endTimeMillis=1745424232000",
-            url: netRepUrl + '/sleep/nurse/getDayNurseData',
-            // url: "https://juqiao.bodyta.com/sleep/nurse/getDayNurseData",
-            method: 'get',
-            headers: {
-                'content-type': 'application/json',
-                'token': localStorage.getItem('token')
-            },
-            params: {
-                did: props.sensorName,
-                startTimeMillis: '1745337832000',
-                endTimeMillis: '1745424232000'
-            }
-        }).then((res: any) => {
-            setNurseConfigList(res.data.data)
-            console.log(res, '.............................QueryQuery');
-        })
+        try {
+            instance({
+                url: voiceUrl + '/sleep/nurse/getDayNurseData',
+                method: 'get',
+                headers: {
+                    'content-type': 'application/json',
+                    'token': localStorage.getItem('token')
+                },
+                params: {
+                    did: props.sensorName,
+                    startTimeMillis: '1745337832000',
+                    endTimeMillis: '1745424232000'
+                }
+            }).then((res: any) => {
+                setNurseConfigList(res.data.data)
+                console.log(res, '.............................QueryQuery');
+            }).catch(() => {
+                console.log('error');
+            })
+        } catch (error) {
+            // console.log(error);
+        }
     }, [])
     useEffect(() => {
         const objArr: any = []
         const arr = props.pageRecords
-
         arr.forEach((a: any, index: number) => {
             let obj: any = {}
             obj.serialNum = index
@@ -208,7 +210,7 @@ function NurseCharts(props: nurseChartsProps) {
         <>{!props.user ?
             <div>
                 <div className="nurseItemContent nurseContent">
-                    <div className="nurseTitleName" style={{ marginBottom: '1.9rem' }}>护理记录 </div>
+                    {/* <div className="nurseTitleName" style={{ marginBottom: '1.9rem' }}>护理记录 </div> */}
                     {/* <div className="nurseValueItems">
                 <div className="nurseValueItem">
                     <div className="nurseValueTitle">在床时间</div>
@@ -264,7 +266,7 @@ function NurseCharts(props: nurseChartsProps) {
                             </div> : ''}
                         {
                             !isMobile ? <div className="w-[40rem] h-[50rem] bg-[#FFFFFF]">
-                                <div className='text-[#000000] text-[1.2rem] pl-[1rem] py-[1rem]' style={{ fontFamily: 'PingFang SC', fontWeight: "600" }}>护理记录</div>
+                                <div className='text-[#000000] text-[1.2rem] pl-[1rem] pb-[1rem]' style={{ fontFamily: 'PingFang SC', fontWeight: "600" }}>护理记录</div>
                                 <div className=' px-[3%]  h-full'>
                                     <PCNurseList list={nurseConfigList || []} extParams={{ isShowTime: false, className: 'daEeport' }} />
                                 </div>

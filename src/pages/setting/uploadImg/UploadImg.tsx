@@ -15,6 +15,12 @@ interface propsImg {
 // userId={userOrganizeId} username={userOrganizeName} img={headImg}
 
 export default function UploadImg(props: propsImg) {
+    message.config({
+        top: 100,
+        duration: 1.5,
+        maxCount: 3,
+        rtl: true,
+    });
     const [spinning, setSpinning] = React.useState<boolean>(false);
     const [img, setImg] = useState(props.img)
     const tokenA = localStorage.getItem('token')
@@ -54,7 +60,7 @@ export default function UploadImg(props: propsImg) {
 
                         let res = compressionFile(e.target.files[0])
                         res.then((e) => {
-                            console.log(e , 'compressionFile')
+                            console.log(e, 'compressionFile')
                             const token = localStorage.getItem('token')
                             Instancercv({
                                 method: "post",

@@ -67,9 +67,9 @@ const nurseNoticeList = [
 ];
 
 const sleepType = [
-  { name: "左侧", img: right, unImg: unRight },
+  { name: "左侧卧", img: right, unImg: unRight },
   { name: "仰卧", img: back, unImg: unBack },
-  { name: "右侧", img: left, unImg: unLeft },
+  { name: "右侧卧", img: left, unImg: unLeft },
 ];
 
 const posArrText = ["仰卧", "左侧躺", "右侧躺"];
@@ -430,8 +430,9 @@ export default function NurseProcesst(props: nurseProcessProps) {
             <div className={`nurseConent ${guide ? "scrool" : ""}`}>
               <Drawer
                 title="注意事项"
+                // header={<div className="ant-drawer-header-title">自定义抽屉标题</div>}
                 placement={"bottom"}
-                // closable={false}
+                closable={false}
                 onClose={onClose}
                 open={open && isModalOpenSend && index == 1}
                 key={"bottom"}
@@ -555,7 +556,7 @@ export default function NurseProcesst(props: nurseProcessProps) {
               />
             </div>
           )}
-        </NurseModal>
+        </NurseModal >
       ) : (
         <OneClickCare
           submitReport={submitReport}
@@ -564,7 +565,8 @@ export default function NurseProcesst(props: nurseProcessProps) {
           setSleepType={setSleepType}
           sleepTypenur={sleepTypenur}
         />
-      )}
+      )
+      }
     </>
   );
 }
@@ -587,7 +589,7 @@ const OneClickCare = (props: oneClickCareParam) => {
   console.log(isModalOpenSend, ".......isModalOpenSend.......");
   const sleepPose = [
     {
-      value: "右侧",
+      value: "右侧卧",
       img: <img src={left} alt="" />,
       unimg: <img src={unLeft} alt="" />,
     },
@@ -597,7 +599,7 @@ const OneClickCare = (props: oneClickCareParam) => {
       unimg: <img src={unBack} alt="" />,
     },
     {
-      value: "左侧",
+      value: "左侧卧",
       img: <img src={left} alt="" className="scale-x-[-1]" />,
       unimg: <img src={unLeft} alt="" className="scale-x-[-1]" />,
     },
@@ -670,11 +672,10 @@ const OneClickCare = (props: oneClickCareParam) => {
             className="basis-1/3 flex flex-col items-center"
           >
             <div
-              className={`w-[70%] ${
-                sleepTypenur === index
-                  ? "bg-gradient-to-b from-[#009FFF] to-[#006CFD] shadow-md shadow-[#1D79EA]"
-                  : "bg-[#F6F7FD]"
-              } mb-[10px] rounded-[6px]`}
+              className={`w-[70%] ${sleepTypenur === index
+                ? "bg-gradient-to-b from-[#009FFF] to-[#006CFD] shadow-md shadow-[#1D79EA]"
+                : "bg-[#F6F7FD]"
+                } mb-[10px] rounded-[6px]`}
               onClick={() => handleChooseSleep(item, index)}
             >
               {sleepTypenur === index ? item.unimg : item.img}
@@ -706,11 +707,10 @@ const OneClickCare = (props: oneClickCareParam) => {
             className="basis-1/3 flex flex-col items-center"
           >
             <div
-              className={`w-[70%] ${
-                sleepTypenur === index
-                  ? "bg-gradient-to-b from-[#009FFF] to-[#006CFD] shadow-md shadow-[#1D79EA]"
-                  : "bg-[#F6F7FD]"
-              } mb-[10px] rounded-[6px]`}
+              className={`w-[70%] ${sleepTypenur === index
+                ? "bg-gradient-to-b from-[#009FFF] to-[#006CFD] shadow-md shadow-[#1D79EA]"
+                : "bg-[#F6F7FD]"
+                } mb-[10px] rounded-[6px]`}
               onClick={() => handleChooseSleep(item, index)}
             >
               {sleepTypenur === index ? item.unimg : item.img}

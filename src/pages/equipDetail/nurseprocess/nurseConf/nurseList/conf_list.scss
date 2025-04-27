@@ -92,9 +92,14 @@
                         display: flex;
                         flex-wrap: wrap;
                         img {
-                            width: 3rem;
+                            width: 5rem;
                             height: auto;
                             margin: 0 0.5rem 0.5rem 0;
+                        }
+                        &.pc_nurse_conf_list_img:nth-child(3) {
+                            img {
+                                width: 2rem;
+                            }
                         }
                     }
                 }

@@ -18,6 +18,12 @@ const loginType = ["账号登录"];
 
 export default function Login() {
 
+  message.config({
+    top: 100,
+    duration: 1.5,
+    maxCount: 3,
+    rtl: true,
+  });
   const dispatch = useDispatch()
   const token = localStorage.getItem('token') || ''
   const company = localStorage.getItem('company') || '/JQ'

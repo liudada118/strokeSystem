@@ -23,6 +23,12 @@ export default function NurseSetting(props: any) {
   const phone = localStorage.getItem('phone')
   const tokenA = localStorage.getItem('token')
   const [isModalOpen, setIsModalOpen] = useState(false);
+  message.config({
+    top: 100,
+    duration: 1.5,
+    maxCount: 3,
+    rtl: true,
+  });
   const handleCancel = () => {
     setIsModalOpen(false);
     setCheckedList([''])

@@ -18,6 +18,12 @@ export default function FamilySheet(props: familySheetProps) {
     const [nurseUser, setnurseUser] = useState<any>({})
     const [isModalDeletePersonOpen, setIsModalDeletePersonOpen] = useState(false)
 
+    message.config({
+        top: 100,
+        duration: 1.5,
+        maxCount: 3,
+        rtl: true,
+    });
     const person: any = [
         {
             title: '序号',

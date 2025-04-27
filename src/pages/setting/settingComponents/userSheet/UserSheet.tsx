@@ -21,6 +21,12 @@ export default function UserSheet(props: userSheetProps) {
     const [manUseruser, setManUseruser] = useState('')
     const [projectManageSource, setProjectManageSource] = useState<Array<any>>([])
     const [manPassword, setmanPassword] = useState('')
+    message.config({
+        top: 100,
+        duration: 1.5,
+        maxCount: 3,
+        rtl: true,
+    });
 
     const syncManAndUser = (obj: any) => {
         Instancercv({

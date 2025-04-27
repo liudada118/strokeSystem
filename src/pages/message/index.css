@@ -442,3 +442,16 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+.calendar-set-box .adm-calendar-cell {
+  height: auto;
+}
+
+.calendar-set-box .adm-calendar-cell .adm-calendar-cell-bottom {
+  height: 0;
+  line-height: 0;
+}
+
+.calendar-set-box .adm-calendar-cell.adm-calendar-cell-disabled {
+  height: auto;
+}

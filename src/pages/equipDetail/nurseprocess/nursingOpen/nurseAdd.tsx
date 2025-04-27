@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Select } from "antd";
 import { TextArea, Picker, Popup, Input } from "antd-mobile";
 import xaingjing from '@/assets/image/xaingjing.png'
-import { RightOutline } from 'antd-mobile-icons'
+import { CloseOutline, RightOutline } from 'antd-mobile-icons'
 import nullImg from "@/assets/image/null.png";
 import { compressionFile } from "@/utils/imgCompressUtil";
 import axios from "axios";
@@ -28,6 +28,12 @@ function NurseAdd(props: any) {
         })
         return list
     }
+    message.config({
+        top: 100,
+        duration: 1.5,
+        maxCount: 3,
+        rtl: true,
+    });
     const handleRecordForm = (values: any) => {
         if (type === '新增一次') {
             if (!(nurseProject && completionTime && uploadImage)) return message.info('请填写必填项')
@@ -179,7 +185,6 @@ function NurseAdd(props: any) {
                                     }}
                                 >
                                     <input
-                                        disabled={uploadImage.length > 3 ? true : false}
                                         type="file"
                                         name="img"
                                         style={{
@@ -190,10 +195,11 @@ function NurseAdd(props: any) {
                                             left: '0',
                                         }}
                                         id="img"
-                                        onChange={(e) => {
-                                            if (uploadImage.length > 3) return message.info('ss')
+                                        onChange={(e: any) => {
+                                            if (uploadImage.length > 3) return message.info('只能上传4张图片')
                                             if (e.target.files) {
                                                 let res = compressionFile(e.target.files[0]);
+                                                e.target.value = ''
                                                 res.then((e) => {
                                                     console.log(e, "compressionFile");
                                                     const token = localStorage.getItem("token");
@@ -228,7 +234,20 @@ function NurseAdd(props: any) {
                                 </div>
                                 {
                                     uploadImage.map((item: any) => {
-                                        return <img key={item} src={item} alt="" style={{ width: "6rem", height: "6rem", margin: "0 0.5rem 0.5rem 0" }} />
+                                        return <i style={{ position: "relative", width: "6rem", height: "6rem", margin: "0 0.5rem 0.5rem 0" }}>
+                                            <CloseOutline
+                                                onClick={(e: any) => {
+                                                    e.stopPropagation();
+                                                    e.preventDefault();
+                                                    setUploadImage(
+                                                        uploadImage.filter((img: any) => img !== item)
+                                                    );
+                                                }}
+                                                style={{ position: "absolute", top: "0", right: "0", width: '1.2rem', height: '1.2rem', }}
+                                            />
+                                            <img key={item} src={item} alt="" style={{ width: "100%", height: "100%", }} />
+                                        </i>;
+
                                     })
                                 }
                             </div>

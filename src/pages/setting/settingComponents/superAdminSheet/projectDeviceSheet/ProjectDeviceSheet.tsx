@@ -61,6 +61,12 @@ export default function ProjectDeviceSheet(props: projectDeviceSheetProps) {
 
 
     ]
+    message.config({
+        top: 100,
+        duration: 1.5,
+        maxCount: 3,
+        rtl: true,
+    });
 
 
     const [userShow, setUserShow] = useState(false)

@@ -7,6 +7,7 @@ import { instance, Instancercv, netUrl } from "@/api/api";
 import nullImg from "@/assets/image/null.png";
 import axios from 'axios';
 import { compressionFile } from '@/utils/imgCompressUtil';
+import { CloseOutlined } from '@ant-design/icons';
 dayjs.extend(tuc)
 interface proprsType {
     nurseConfigList: any,
@@ -18,6 +19,12 @@ interface proprsType {
     currentNurse?: any
 }
 function Recording(props: proprsType) {
+    message.config({
+        top: 100,
+        duration: 1.5,
+        maxCount: 3,
+        rtl: true,
+    });
     const { sensorName, onClose, type } = props
     const [recordOpen1, setRecordOpen] = useState<boolean>(props.recordOpen)
     const [img, setImg] = useState<any>('')
@@ -147,7 +154,7 @@ function Recording(props: proprsType) {
                                     if (uploadImage.length > 3) return message.info('只能上传4张图片')
                                     if (e.target.files) {
                                         let res = compressionFile(e.target.files[0]);
-                                        res.then((e) => {
+                                        res.then((e: any) => {
                                             console.log(e, "compressionFile");
                                             const token = localStorage.getItem("token");
                                             axios({
@@ -169,6 +176,7 @@ function Recording(props: proprsType) {
                                                         img
                                                     ])
                                                     setImgVal(img)
+                                                    e.target.value = ''
                                                 })
                                                 .catch((err) => {
                                                     // message.error(err.error)
@@ -182,7 +190,20 @@ function Recording(props: proprsType) {
                         <span style={{ display: 'flex', flexWrap: 'wrap' }}>
                             {
                                 uploadImage.map((item: any) => {
-                                    return <img key={item} src={item} alt="" style={{ width: "6rem", height: "6rem", margin: "0 0.5rem 0.5rem 0" }} />
+                                    return <i style={{ position: "relative", width: "6rem", height: "6rem", margin: "0 0.5rem 0.5rem 0" }}>
+                                        <CloseOutlined
+                                            onClick={(e: any) => {
+                                                e.stopPropagation();
+                                                e.preventDefault();
+                                                setUploadImage(
+                                                    uploadImage.filter((img: any) => img !== item)
+                                                );
+                                            }}
+                                            style={{ position: "absolute", top: "0", right: "0", width: '1.2rem', height: '1.2rem', }}
+                                        />
+                                        <img key={item} src={item} alt="" style={{ width: "100%", height: "100%", }} />
+                                    </i>;
+
                                 })
                             }
                         </span>

@@ -22,6 +22,12 @@ export default function SuperAdminSheet() {
     const [deviceSource, setDeviceSource] = useState<Array<any>>([{}])
     const [projectManItem, setProjectManItem] = useState('')
     const [isModalOpen, setIsModalOpen] = useState(false)
+    message.config({
+        top: 100,
+        duration: 1.5,
+        maxCount: 3,
+        rtl: true,
+    });
     const getProjectList = () => {
         Instancercv({
             method: "get",

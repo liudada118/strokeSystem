@@ -276,7 +276,6 @@ const Bottom = forwardRef((props: bottomProps, refs: any) => {
               method: "get",
               params: { phone: phone, }
             }).then((e) => {
-
               if (e.data.code == 0) {
                 setRead(false)
               }
@@ -310,13 +309,15 @@ const Bottom = forwardRef((props: bottomProps, refs: any) => {
           <div className="bottomName" onClick={(index) => onMessage(index)}>{a.name}</div>
         </div>)}
       </div>
-      <div className={`bottomAdd ${!isMobile ? 'bottomItem' : ''}`} onClick={showModal}>
+      {
+        // 扫码功能暂时取消
+      }
+      {/* <div className={`bottomAdd ${!isMobile ? 'bottomItem' : ''}`} onClick={showModal}>
         <div className="bottomAddContentbg"></div>
         <div className='bottomAddContent'>
           <img className='setImg' src={isMobile ? addwithe : addBlue} alt="" />
         </div>
-
-      </div>
+      </div> */}
     </div >
   )
 })

@@ -63,6 +63,7 @@ export default function TurnReport(props: PropsType) {
         sensorName: '',
     }) as any
     const isMobile = useGetWindowSize()
+    console.log(data, '................datadatadatadata');
 
     const { logid, id } = isMobile ? location.state : props
     const [timeId, setTimeId] = useState()
@@ -265,7 +266,7 @@ export default function TurnReport(props: PropsType) {
                                 <div>{sleepArr[data.sleepPos]}</div>
                             </div>
 
-                            {!data.sleepPosImg ? <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '1rem' }}>
+                            {data.sleepPosImg ? <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '1rem' }}>
 
                                 <div>在床照片</div>
                                 <div><img src={data.sleepPosImg} style={{ height: '6rem' }} alt="" /></div>

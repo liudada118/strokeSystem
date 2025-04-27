@@ -30,8 +30,8 @@ function NurseAdd(props: any) {
     }
     message.config({
         top: 100,
-        duration: 1.5,
-        maxCount: 3,
+        duration: 0.5,
+        maxCount: 1,
         rtl: true,
     });
     const handleRecordForm = (values: any) => {

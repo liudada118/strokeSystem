@@ -235,6 +235,7 @@ export default function NurseConfEdit(props: any) {
           <Input
             placeholder="请输入所添加的护理任务的名称"
             className="h-10 bg-[#F5F8FA]"
+            maxLength={10}
             onChange={(e) => {
               setNurseName(e.target.value);
             }}

@@ -250,10 +250,10 @@ function NurseCharts(props: nurseChartsProps) {
                     <div className='nurseAndOnbedContent'>
                         {isMobile ?
                             <div className="seleteRateOrHeart">
-                                <div className="nurseSeleteHeart seleteRateOrHeartItem">
-                                    {/* <div className="seleteRateOrHeartValue"
+                                {/* <div className="nurseSeleteHeart seleteRateOrHeartItem">
+                                    <div className="seleteRateOrHeartValue"
                                         style={{ color: showNurseOrOnbed == 'nurse' ? '#0072EF' : '#929EAB', backgroundColor: showNurseOrOnbed == 'nurse' ? '#fff' : 'unset', }}
-                                        onClick={() => { setShowNurseOrOnbed('nurse') }}>护理统计</div> */}
+                                        onClick={() => { setShowNurseOrOnbed('nurse') }}>护理统计</div>
                                 </div>
                                 <div style={{ padding: '0 0.68rem', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                                     <div style={{ width: '1px', height: '80%', backgroundColor: '#eee' }}></div>
@@ -262,7 +262,7 @@ function NurseCharts(props: nurseChartsProps) {
                                     <div className="seleteRateOrRateValue"
                                         style={{ color: showNurseOrOnbed == 'onbed' ? '#0072EF' : '#929EAB', backgroundColor: showNurseOrOnbed == 'onbed' ? '#fff' : 'unset', }}
                                         onClick={() => { setShowNurseOrOnbed('onbed') }}>在/离床统计</div>
-                                </div>
+                                </div> */}
                             </div> : ''}
                         {
                             !isMobile ? <div className="w-[40rem] h-[50rem] bg-[#FFFFFF]">

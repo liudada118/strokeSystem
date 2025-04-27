@@ -282,7 +282,6 @@ const addUseModla = forwardRef((props: addUseModlaProps, ref) => {
         show({
             multiple,
             onOk: (code: any, close) => {
-
                 if (!code.includes('{')) {
                     // alert('obj')
                     const did = code

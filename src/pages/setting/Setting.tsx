@@ -1971,7 +1971,7 @@ export default function Setting() {
 
           <div className='setTitle' onClick={() => {
             navigate('/productInfo')
-          }}><div className="setTitleInfo flex"><img className='setTitleImg' src={setItem} alt="" /> 产品功能介绍</div> <img src={goRight} alt="" /></div>
+          }}><div className="setTitleInfo flex"><img className='setTitleImg' src={setItem} alt="" /> 产品铺设、配网、绑定</div> <img src={goRight} alt="" /></div>
 
           {/* <div className='setTitle' onClick={() => {
             navigate('/nurseSetting')

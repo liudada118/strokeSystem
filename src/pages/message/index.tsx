@@ -640,15 +640,12 @@ export default function Message() {
   const prevYearButton = <img style={{ width: "1.6rem", height: "1.6rem", marginLeft: "0.3rem" }} src={nian} onClick={handlePrevYear} alt="" />;
   const nextMonthButton = <img style={{ width: "1.6rem", height: "1.6rem", transform: 'rotate(180deg)', }} src={yue} onClick={handleNextMonth} alt="" />;
   const nextYearButton = <img style={{ width: "1.5rem", height: "1.5rem", transform: "rotate(180deg)", marginRight: "0.3rem" }} src={nian} onClick={handleNextYear} alt="" />;
-  // useEffect(() => {
-  //   const cells: any = document.querySelectorAll('.adm-calendar-cells');
-  //   cells.forEach((cell: any) => {
-  //     cell.style.whiteSpace = 'nowrap';
-  //     cell.style.overflow = 'hidden';
-  //     cell.style.textOverflow = 'ellipsis';
-  //   });
-  // }, []);
+  const selectRef = useRef(null);
 
+  const handleFocus = (e: any) => {
+    e.preventDefault(); // 阻止默认聚焦行为
+
+  };
   return (
     <>
       {!WindowSize ? (
@@ -820,6 +817,8 @@ export default function Message() {
             />
             <div className="MessageYiDongDivInput">
               <Select
+                showSearch={false}
+                onClick={handleFocus}
                 className="MessageYiDOngTitlesearchSelect"
                 defaultValue={selectType}
                 style={{ width: 80 }}
@@ -1221,9 +1220,11 @@ export default function Message() {
                   }
                 />
               </div>
-              <div className="flex justify-center pb-[1rem]">
+              <div className="flex justify-center items-center pb-[1rem]">
                 <Select
-                  showSearch
+                  onClick={handleFocus}
+                  showSearch={false}
+                  filterOption={false}
                   style={{
                     width: "5.9rem",
                     height: "2.9rem",
@@ -1271,9 +1272,12 @@ export default function Message() {
                       </div>
                     </Select.Option>
                   ))}
-                </Select>{" "}—{" "}
+                </Select>{" "}:{" "}
                 <Select
-                  showSearch
+                  showSearch={false}
+                  filterOption={false}
+                  onClick={handleFocus}
+
                   style={{
                     width: "5.9rem",
                     height: "2.9rem",
@@ -1319,9 +1323,9 @@ export default function Message() {
                 </Select>
               </div>
             </div>
-          </Popup>
-          {<Bottom />}
-        </div>
+          </Popup >
+          {< Bottom />}
+        </div >
       )}
     </>
   );

@@ -23,11 +23,11 @@ export function onBedStateText(item: equip) {
 
   // 小床垫 只有 在床时间和离床时间两种状态
   // if (item.type != 'large') {
-    if (item.onBed) {
-      return '在床时间'
-    } else if (!item.onBed) {
-      return '离床时间'
-    }
+  if (item.onBed) {
+    return '在床时间'
+  } else if (!item.onBed) {
+    return '离床时间'
+  }
   // }
   // 大床垫 只有护理相关跟 离床时间 四种状态
   // else {
@@ -51,24 +51,24 @@ export function onBedStateText(item: equip) {
 export function onBedStateTime(item: equip) {
   // 小床
   // if (item.type != 'large') {
-    // 离床的显示
-    if (item.onBed == 0) {
-      if (item.outbedTime) {
-        return secToHourstamp(item.outbedTime)
-      } else {
-        return '-'
-      }
+  // 离床的显示
+  if (item.onBed == 0) {
+    if (item.outbedTime) {
+      return secToHourstamp(item.outbedTime)
+    } else {
+      return '-'
     }
-    // 在床的显示
-    else {
-      if (item.onbedTime) {
-        return secToHourstamp(item.onbedTime)
-      } else {
-        return '-'
-      }
+  }
+  // 在床的显示
+  else {
+    if (item.onbedTime) {
+      return secToHourstamp(item.onbedTime)
+    } else {
+      return '-'
     }
+  }
   // }
-  
+
   // else {
   //   // 离床的显示
   //   if (!item.onBed) {
@@ -126,7 +126,9 @@ export const stateToObj = {
     class: 'outBedState'
   },
   [WIDE_STATE]: {
-    text: '清醒',
+    text: '在床',
+    //清醒暂时改成在床版本稳定了在改回来
+    // text: '清醒',
     img: newWide,
     class: 'wideState'
   },
@@ -136,7 +138,9 @@ export const stateToObj = {
     class: 'sitState'
   },
   [SLEEP_STATE]: {
-    text: '入睡',
+    text: '在床',
+    //入睡暂时改成在床版本稳定了在改回来
+    // text: '入睡',
     img: newSleep,
     class: 'sleepState'
   }

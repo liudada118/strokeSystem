@@ -7,24 +7,19 @@ import setItem from "../../assets/icon/setItem.svg";
 import './set.scss'
 import { Drawer, Menu, type DrawerProps, MenuProps, Table, Modal, Input, Breadcrumb, Select, message, Button, Radio, } from 'antd';
 import { useNavigate } from 'react-router-dom';
-
 import img101 from '../../assets/info/1.1/1.工作台.png'
 import img102 from '../../assets/info/1.1/2.设备管理.png'
 import img103 from '../../assets/info/1.1/3.修改信息.png'
 import img104 from '../../assets/info/1.1/4.护理项.png'
-
 import img105 from '../../assets/info/1.2/1.二维码.jpg'
 import img106 from '../../assets/info/1.2/2.登陆.png'
 import img107 from '../../assets/info/1.2/3.监测垫.png'
-
 import img201 from '../../assets/info/2.1/1.铺设位置.png'
 import img202 from '../../assets/info/2.1/2.铺设位置.png'
 import img203 from '../../assets/info/2.2/1.进入配网.png'
 import img204 from '../../assets/info/2.2/2.按键.png'
 import img205 from '../../assets/info/2.2/3.配置wifi.png'
 import img206 from '../../assets/info/2.2/4.连接成功.png'
-
-
 import img207 from '../../assets/info/2.3/1.账号登录.png'
 import img208 from '../../assets/info/2.3/2.扫码.png'
 // import User from '../user/User';
@@ -53,7 +48,6 @@ import { equipLoginOut } from '@/redux/equip/equipSlice';
 import { tokenLoginout } from '@/redux/token/tokenSlice';
 import { mqttLoginout } from '@/redux/mqtt/mqttSlice';
 import axios from 'axios';
-
 const sysIntroObj = {
   title: {
     name: '1系统简介',
@@ -96,7 +90,6 @@ const sysIntroObj = {
     }
   ]
 }
-
 const product = {
   title: {
     name: '2.产品铺设、配网、绑定',
@@ -1957,38 +1950,37 @@ export default function Setting() {
         <p>Some contents...</p>
         <p>Some contents...</p>
       </Drawer>
-
-
+      {/* Product Introduction */}
       <div className='setContent pf'>
         <Title />
         {isMobile ? <div className='setBox'>
-
-
-
           <div className='setTitle' onClick={() => {
-            navigate('/userInfo')
-          }}><div className="setTitleInfo flex"><img className='setTitleImg' src={setItem} alt="" /> 产品介绍</div> <img src={goRight} alt="" /></div>
-
+            navigate('/productIntroduction', {
+              state: {
+                isFalse: false
+              }
+            })
+          }}><div className="setTitleInfo flex"><img className='setTitleImg' src={setItem} alt="" /> 产品简介</div> <img src={goRight} alt="" /></div>
           <div className='setTitle' onClick={() => {
-            navigate('/productInfo')
+            navigate('/productIntroduction', {
+              state: {
+                isFalse: true
+              }
+            })
           }}><div className="setTitleInfo flex"><img className='setTitleImg' src={setItem} alt="" /> 产品铺设、配网、绑定</div> <img src={goRight} alt="" /></div>
-
           {/* <div className='setTitle' onClick={() => {
             navigate('/nurseSetting')
           }}><div className="setTitleInfo"><img className='setTitleImg' src={setItem} alt="" /> 护理选项</div> <img src={goRight} alt="" /></div> */}
-
           {
             phone == 'admin' ? <div onClick={() => {
               navigate('/nurseSetting')
             }} className='setTitle'><div className="setTitleInfo"><img className='setTitleImg' src={problem} alt="" /> 项目管理</div> <img src={goRight} alt="" /></div>
               : ''}
-
           {
             phone == 'admin' || phone == 'factoryAdmin' ? <div onClick={() => {
               navigate('/delete')
             }} className='setTitle'><div className="setTitleInfo"><img className='setTitleImg' src={problem} alt="" /> 删除设备信息</div> <img src={goRight} alt="" /></div>
               : ''}
-
           {
             phone == 'factoryAdmin' ? <div></div> : ''
           }

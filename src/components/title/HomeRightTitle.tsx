@@ -10,7 +10,7 @@ import useWindowSize from '../../hooks//useWindowSize'
 const homeSelect = [
     { value: 'patientName', label: '姓名' },
     { value: 'roomNum', label: '床号' },
-    { value: 'chargeMan', label: '护理员' },
+    // { value: 'chargeMan', label: '护理员' },
     { value: 'deviceId', label: 'mac' },
 ]
 

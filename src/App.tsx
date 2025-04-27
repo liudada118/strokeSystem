@@ -13,6 +13,7 @@ import { Dialog } from "antd-mobile";
 import '@/pages/equipDetail/mobileEdit/nursingPlan/nurseList/index.scss'
 import AddNurseConfList from "./pages/equipDetail/mobileEdit/nursingPlan/addNurseConfList/index";
 import NurseEditPage from "./pages/equipDetail/mobileEdit/nursingPlan/nurseEdit/index";
+import ProductIntroduction from "./pages/setting/productIntroduction/productIntroduction";
 
 const getHashPriorty = () => {
   let ua: any = UAParser(navigator.userAgent);
@@ -39,6 +40,7 @@ const UserInfoCard = React.lazy(
 const TurnReport = React.lazy(() => import("./pages/turnReport/TurnReport"));
 const EditingUser = React.lazy(() => import("./pages/equipDetail/EditingUser"));
 const RecordForm = React.lazy(() => import("./pages/equipDetail/RecordForm"));
+
 const NursingOpen = React.lazy(
   () => import("./pages/equipDetail/nurseprocess/nursingOpen/nursingOpen")
 );
@@ -165,6 +167,15 @@ function App() {
                 </RequirAuthRoute>
               }
             />
+            <Route
+              path="/productIntroduction"
+              element={
+                <RequirAuthRoute>
+                  <ProductIntroduction />
+                </RequirAuthRoute>
+              }
+            />
+
           </Routes>
         </Suspense>
       </StyleProvider>

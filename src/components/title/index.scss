@@ -48,7 +48,7 @@
   height: 2.67rem;
   border: #efefef solid 1px;
   border-radius: 1rem;
-  padding-left: 7.8rem !important;
+  padding-left: 4.8rem !important;
 }
 
 .searchInput img {
@@ -194,14 +194,13 @@
     }
   }
 }
-
 .searchSelect {
   position: absolute !important;
-  left: 0.2rem;
+  left: 0.3rem;
   .ant-select-selector {
     border: 0 !important;
   }
-  width: 6.2rem !important;
+  width: 5.2rem !important;
   .ant-select-selector {
     padding: 0 0.6rem !important;
     background-color: unset !important;

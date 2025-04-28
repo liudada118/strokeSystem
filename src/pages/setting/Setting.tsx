@@ -1162,7 +1162,7 @@ export default function Setting() {
         organizeId: id,
       }
     }).then((res) => {
-      console.log(res, res.data.data.map((a: any) => { return { value: a.username, label: a.username } }))
+      
       let data = res.data.data
       data.map((a: any, index: any) => {
         a.id = index + 1

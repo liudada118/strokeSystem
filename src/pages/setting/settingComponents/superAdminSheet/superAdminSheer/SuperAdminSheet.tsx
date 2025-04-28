@@ -137,7 +137,7 @@ export default function SuperAdminSheet(props: superAdminUserNameProps) {
                 organizeId: id,
             }
         }).then((res) => {
-            console.log(res, res.data.data.map((a: any) => { return { value: a.username, label: a.username } }))
+      
             let data = res.data.data
             data.map((a: any, index: any) => {
                 a.id = index + 1

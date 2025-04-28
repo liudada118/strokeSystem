@@ -29,7 +29,7 @@ export default function PCNurseList(props: any) {
             dataIndex: "del",
         },
     ];
-    console.log(extParams, '.......11111......extParamsextParams');
+    console.log(JSON.stringify(props.list), '...............444444444.............propslist');
 
     return (
         <div className="nurse_scroll">

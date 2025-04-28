@@ -53,7 +53,6 @@ export default function NurseConfEdit(props: any) {
     //     console.log('Timeout callback executed.');
     //   }, 3000)
     window.location.href = window.location.href;
-    console.log(1122222222);
   }, [nurseList]);
 
   const items = [
@@ -178,6 +177,8 @@ export default function NurseConfEdit(props: any) {
   };
 
   const getPersonTemplate = (type?: any) => {
+    console.log(type, '................1111.....type');
+
     Instancercv({
       method: "get",
       url: "/nursing/getNurseTemplateData",
@@ -196,6 +197,8 @@ export default function NurseConfEdit(props: any) {
           (res.data.data || []).find((item: any) => item.type === type) || {};
         try {
           const templateList = templateToData(targetTemp?.template);
+          console.log(setTempList, '.....99999..............................setTempListsetTempList');
+
           setTempList(templateList);
         } catch (error) {
           console.error("获取默认模版报错了：", error);
@@ -372,14 +375,13 @@ export default function NurseConfEdit(props: any) {
               清空
             </span>
           </div>
-
           <div className="bg-[#F5F8FA] flex items-center mx-[1rem] pl-[0.5rem]">
             <img
               className="w-[15px] h-[15px]  bg-[#F5F8FA] mr-[5px]"
               src={greyNotice}
               alt=""
             />
-            <div className="text-[0.8rem] flex-1 text-[#929EAB] pr-[5px] py-[3px]">
+            <div className="text-[0.8rem] flex-1 text-[#929EAB] pr-[20px] py-[3px]">
               当前内容仅作为效果预览，不可作为实际页面使用
             </div>
           </div>

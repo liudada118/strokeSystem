@@ -436,7 +436,7 @@ const addUseModla = forwardRef((props: addUseModlaProps, ref) => {
                         />
 
 
-                        <img style={{ height: '1.6rem', marginLeft: '0.5rem' }} src={photo} onClick={() => { handleScan(false) }} alt="" />
+                        {/* <img style={{ height: '1.6rem', marginLeft: '0.5rem' }} src={photo} onClick={() => { handleScan(false) }} alt="" /> */}
                     </div>
                 </div>
 

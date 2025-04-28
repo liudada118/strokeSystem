@@ -316,7 +316,7 @@ export default function TurnReport(props: PropsType) {
                                 < div className='h-[10rem] w-[8.3rem] mt-[0.6rem]  bg-[#fff] rounded-md'>
                                     <div className='text-[#000000] text-[0.9rem] font-bold pt-[1rem]  pl-[1.1rem]' style={{ fontFamily: 'Source Han Sans' }}>睡姿记录</div>
                                     <div className='pt-[0.5rem] pl-[1.1rem]'>{sleepArr[data.sleepPos]}</div>
-                                    <img className='pt-[0.5rem] pl-[1.1rem]' style={{ width: "6.6rem", height: "auto", }} src={data.sleepPosImg ? data.sleepPosImg : nullImg} alt="" />
+                                    <img className='pt-[0.5rem] pl-[1.1rem]' style={{ width: "6.6rem", height: "5.6rem", }} src={data.sleepPosImg ? data.sleepPosImg : nullImg} alt="" />
                                     {/* <img src={data.headImg} style={{ height: '6rem' }} alt="" /> */}
                                 </div> : ""
                             }

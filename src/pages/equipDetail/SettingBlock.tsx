@@ -1117,15 +1117,15 @@ const SettingMoDal = (props: any) => {
   const navigate = useNavigate();
   const openOnCkick = () => {
     if (!(roleId == 1 || roleId == 2 || roleId == 0)) return message.info("暂无权限");
-
-    let regex: any = /\/1\//;
-    const match = location.pathname.match(regex);
-    if (!match) {
-      dispatch(setIsGotoNursePage());
-    } else {
-      setOpen(true);
-      dispatch(nurseOpen({ nurseOpen: open }));
-    }
+    setOpen(true);
+    dispatch(nurseOpen({ nurseOpen: true }));
+    // let regex: any = /\/1\//;
+    // const match = location.pathname.match(regex);
+    // if (!match) {
+    //   dispatch(setIsGotoNursePage());
+    // } else {
+    //   setOpen(true);
+    // }
   };
   return (
     <>

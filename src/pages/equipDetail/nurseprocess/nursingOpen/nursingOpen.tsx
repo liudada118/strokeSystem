@@ -668,7 +668,7 @@ function NursingOpen(props: propsType) {
                           transform: "translateY(-0.2rem)",
                         }}
                       >
-                        {defaultTempInfo.label}3333333
+                        {defaultTempInfo.label}
                         <img
                           style={{ width: "0.5rem", height: "0.5rem" }}
                           src={shan}

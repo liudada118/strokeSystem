@@ -96,47 +96,14 @@ const Nurse: React.FC = () => {
     // console.log(openNurse, 'openNurse........')
     return (
         <ConfigProvider theme={ThemeTable} renderEmpty={renderEmpty}>
-            {
-                openNurse ? <NursingStencil /> :
-                    <div className={`flex w-full h-full`}>
-                        {/* {openNurse} */}
-                        {
-                            // openNurse ?
-                            //     !isModifyNurse && (nursePersonTemplate || []).length > 0 ? <div className="w-full h-full flex justify-between bg-[#fff]" > <div className="h-full w-full">
-                            //         <NursingStencil sensorName={sensorName} nursePersonTemplate={nursePersonTemplate} statue={1} />
-                            //         {/* <NurseTable type={'project'} sensorName={sensorName} getNurseTemplate={getNurseTemplate} templateId={templateId} data={nurseTemplate || []} /> */}
-                            //         <Button onClick={modifyNurseTemplate}
-                            //             className="h-[2rem] w-[10rem]" type='primary' style={{ position: 'absolute', bottom: '2rem', right: '2rem', }}>
-                            //             修改当前模版
-                            //         </Button >
-                            //     </div></div>
-                            //         :
-                            //         !isOpen ?
-                            //             < div className={`w-full h-full  bg-[${openNurse ? '#fff' : ''}]    flex items-center justify-center`}>
-                            //                 <div className=" w-[15.5] h-[4rem] " style={{ textAlign: "center" }}>
-                            //                     <p style={{ width: "15.5", display: ' flex', justifyContent: 'space-evenly' }}>
-                            //                         <img style={{ width: "4.2rem", height: "5.2rem" }} src={img} alt="" />
-                            //                     </p>
-                            //                     <p className="mb-[1rem] text-[1.15rem] text-[#A4B0BC]">
-                            //                         当前无护理计划
-                            //                     </p>
-                            //                     <Button onClick={() => onOpen()} type="primary" className="h-[3rem] w-[15.5rem] text-[1rem]"><PlusCircleOutlined />创建护理项</Button>
-                            //                 </div>
-                            //             </div> : <NursingOpen saveNurseTemplate={saveNurseTemplate} setIsOpen={setIsOpen} setIsModifyNurse={setIsModifyNurse} nursePersonTemplate={nursePersonTemplate || []} />
-                            //     : 
-
-                            <>
-                                <div className='w-[70%] mr-[10px]'>
-                                    <span className='inline-block text-lg text-[#32373E] font-semibold mb-[10px]'>翻身</span>
-                                    <TurnPlan />
-                                    <TurnCardTable />
-                                </div>
-                                <NurseRecord />
-                            </>
-                        }
-
-                    </div>
-            }
+            <div className="flex">
+                <div className=' w-[70%]  mr-[10px]'>
+                    <span className='inline-block text-lg text-[#32373E] font-semibold mb-[10px]'>翻身</span>
+                    <TurnPlan />
+                    <TurnCardTable />
+                </div>
+                <NurseRecord />
+            </div>
         </ConfigProvider >
     )
 }

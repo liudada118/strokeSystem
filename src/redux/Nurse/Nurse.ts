@@ -18,6 +18,7 @@ const mqttSlice = createSlice({
   reducers: {
     nurseOpen(state, action) {
       state.open = action.payload;
+      console.log(state.open,'..........open........2222222222222');
     },
     nurseDataList(state, action) {
       state.dataList = action.payload;
@@ -43,7 +44,6 @@ const mqttSlice = createSlice({
   },
   showDataLIst(state, action) {
     console.log(state.isDataList, action.payload,'........3333............isDataList');
-    
     state.isDataList = action.payload
 },
   },

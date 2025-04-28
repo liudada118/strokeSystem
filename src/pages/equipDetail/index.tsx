@@ -15,11 +15,12 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { instance, Instancercv, netUrl } from "@/api/api";
 import { useDispatch, useSelector } from "react-redux";
 import { tokenSelect } from "@/redux/token/tokenSlice";
-import { nurseOpen, resetNuserpage } from '../../redux/Nurse/Nurse'
+import { resetNuserpage } from '../../redux/Nurse/Nurse'
 import axios from "axios";
 import { selectEquipBySensorname } from "@/redux/equip/equipSlice";
 import { getNurseConfist } from "@/utils/getNursingConfig"
-
+import NursingStencil from '@/pages/equipDetail/nurseprocess/nursingOpen/nursingStencil'
+import { NavBar } from "antd-mobile";
 
 const TabTheme = {
     components: {
@@ -164,6 +165,9 @@ const EquipDetail = () => {
         handleTabChange1('nurse')
         handleTabChange('nurse')
     }, [isGotoNursePage])
+    const nurseOpen = useSelector((state: any) => state.nurse.open)
+
+
     if (isMobile) {
         return (
             <MenuLayouts isMobile={isMobile}>
@@ -174,18 +178,37 @@ const EquipDetail = () => {
                 >
                     {/* <CommonNavBar title='801' onBack={() => { }} /> */}
                     <Title />
-                    <NoEquipLoading> <UserInfoCard outer isMobile />
+                    <NoEquipLoading>
+                        <UserInfoCard outer isMobile />
+                        {
+                            nurseOpen ? <div className='w-[calc(76%-130px)] pt-[1rem] h-[40rem]'>
+                                <NursingStencil></NursingStencil>
+                            </div>
+                                : ''
+                            //  <div className='w-[calc(76%-30px)] pt-[1rem] h-full'>
+                            //     <Tabs
+                            //         className={styles.tabContent}
+                            //         defaultActiveKey={activeKey}
+                            //         activeKey={activeKey}
+                            //         centered
+                            //         items={tabList}
+                            //         onChange={(e: any) => handleTabChange1(e)}
+                            //     />
+                            // </div>
+                        }
+
                         <div className="relative">
                             <Tabs
                                 className={[styles.mobileTabContent, styles.tabContent].join(' ')}
-                                // defaultActiveKey={activeKey}
+
                                 activeKey={activeKey}
                                 centered
                                 items={tabList}
                                 onChange={(e: any) => handleTabChange1(e)}
                             />
-                            {/* <img src={back} alt="" /> */}
+
                         </div>
+
                         {/* <TabsMobile>
                             {
                                 tabList.map((item) => {
@@ -218,24 +241,27 @@ const EquipDetail = () => {
                     <div className='w-[24%] pt-[1rem] mr-[15px]'>
                         <UserInfoCard />
                     </div>
-                    <div className='w-[calc(76%-30px)] pt-[1rem] h-full'>
-                        <Tabs
-                            className={styles.tabContent}
-                            defaultActiveKey={activeKey}
-                            activeKey={activeKey}
-                            centered
-                            items={tabList}
-                            onChange={(e: any) => handleTabChange1(e)}
-                        />
-                    </div>
+                    {
+                        nurseOpen ? <div className='w-full h-[92%]  pr-[6.4rem]  pt-[1rem] h-full'>
+                            <NursingStencil></NursingStencil>
+                        </div>
+                            : <div className='w-[calc(76%-30px)] pt-[1rem] h-full'>
+                                <Tabs
+                                    className={styles.tabContent}
+                                    defaultActiveKey={activeKey}
+                                    activeKey={activeKey}
+                                    centered
+                                    items={tabList}
+                                    onChange={(e: any) => handleTabChange1(e)}
+                                />
+                            </div>
+                    }
                 </div>
             </ConfigProvider>
         </MenuLayouts>
     )
 }
-
 // export default EquipDetail
-
 enum TurnPlanStatus {
     DONE = '已完成',
     TIME_OUT_DONE = '超时完成',

@@ -312,12 +312,12 @@ const Bottom = forwardRef((props: bottomProps, refs: any) => {
       {
         // 扫码功能暂时取消
       }
-      {/* <div className={`bottomAdd ${!isMobile ? 'bottomItem' : ''}`} onClick={showModal}>
+      <div className={`bottomAdd ${!isMobile ? 'bottomItem' : ''}`} onClick={showModal}>
         <div className="bottomAddContentbg"></div>
         <div className='bottomAddContent'>
           <img className='setImg' src={isMobile ? addwithe : addBlue} alt="" />
         </div>
-      </div> */}
+      </div>
     </div >
   )
 })

@@ -64,7 +64,7 @@ export const HomeRightTitle = () => {
                 e.stopPropagation()
                 dispatch(showTabsTabs(false))
             }
-
+            
         }}>
             <Input
                 style={{ fontSize: "1.4rem" }}

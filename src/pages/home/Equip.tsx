@@ -1,6 +1,6 @@
 import { useGetWindowSize } from '@/hooks/hook'
 import { alarmSelect, deleteAlarm, equipPcPlaySelect, equipPcSelect, equipPlaySelect, equipSelect, fetchEquips } from '@/redux/equip/equipSlice'
-import { Carousel, Empty, message, Popover, Skeleton, Spin } from 'antd'
+import { Button, Carousel, Empty, message, Popover, Skeleton, Spin } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 // import { equip } from './Home'
@@ -24,6 +24,7 @@ import AddUseModla from '../../components/Modal/addUseModla'
 import addImg from '../../assets/image/add.jpg'
 import { initEquipPc } from "@/redux/equip/equipUtil";
 import { setHomeSelectValue, setHomeSelectType } from '../../redux/home/home'
+import HomeImg from '@/assets/image/hoemAdd.png'
 // import { setHomeSelectValue } from '../../redux/home/home'
 
 export default function Equip() {
@@ -39,8 +40,6 @@ export default function Equip() {
     }
     const dispatch: any = useDispatch()
     const [fals, setFals] = useState(false)
-
-
     const phone = localStorage.getItem('phone') || ''
     const token = localStorage.getItem('token') || ''
     const [equipPc1, setequipPc] = useState()
@@ -48,7 +47,6 @@ export default function Equip() {
     const [datalistOld, setDataListOld] = useState([])
     const [isFalse, setFasle] = useState(false)
     const location = useLocation();
-
     useEffect(() => {
         dispatch(setHomeSelectValue(''))
         dispatch(setHomeSelectType('patientName'))
@@ -57,27 +55,23 @@ export default function Equip() {
         if (!homeSelectValue && equipPc.length > 0 && JSON.stringify(datalistOld) !== JSON.stringify(equipPc)) {
             setDataListOld(equipPc)
             const datalist = JSON.parse(JSON.stringify(equipPc))
-            datalist[datalist.length - 1].push({ type: 'add' })
+            // datalist[datalist.length - 1].push({ type: 'add' })
             setDataList(datalist)
             setFasle(true)
         }
     }, [equipPc, homeSelectValue])
-
     useEffect(() => {
-        console.log(homeSelectValue, homeSelectType, equip, '√homeSelectValuehomeSelectValue..........')
         if (homeSelectValue) {
             const res = equip.filter((equip: any) => {
                 return equip[homeSelectType] && equip[homeSelectType].toString().includes(homeSelectValue)
             })
+            // res.unshift({ type: 'add' })
             const list = initEquipPc(res)
             const datalist = JSON.parse(JSON.stringify(list))
-            if (datalist.length > 0) {
-                datalist[datalist.length - 1].push({ type: 'add' })
-            }
+
             setDataList(datalist)
         }
     }, [homeSelectValue])
-
     const [i, setI] = useState()
     const data = () => {
         instance({
@@ -94,8 +88,6 @@ export default function Equip() {
         }).then((res: any) => {
             setequipPc(res.data.data.records)
         });
-
-
     }
     useEffect(() => {
         data()
@@ -140,7 +132,6 @@ export default function Equip() {
         setOpen(true)
         setFals(true)
     }
-
     return (
         <div className="main">
             {
@@ -149,6 +140,7 @@ export default function Equip() {
             {
                 datalist.length == 0 ? <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="暂无数据" /> : ''
             }
+
             {!isMobile ? <Carousel
                 // afterChange={onChange}
                 dots={datalist.length > 1}
@@ -161,8 +153,9 @@ export default function Equip() {
                                     return a.sensorName == item.sensorName
                                 })
                                 if (item.type === 'add') {
-                                    return <div style={{ width: "13.2rem", height: "14.5rem", borderColor: "#F5F8FA", boxShadow: "0px 0px 10px 0px rgba(164, 176, 188, 0.4)", borderRadius: "0.63rem", marginBottom: "1rem", border: "1px #ccc solid", position: "relative", display: "flex", alignItems: "center", justifyContent: "center" }} key={index}>
-                                        <img onClick={() => onOPen()} src={addImg} alt="" />
+                                    return <div style={{ width: "13.2rem", height: "14.5rem", borderColor: "#F5F8FA", boxShadow: "0px 0px 10px 0px rgba(164, 176, 188, 0.4)", borderRadius: "0.63rem", marginBottom: "1rem", border: "1px #ccc solid", position: "relative", display: "flex", alignItems: "center", justifyContent: "center", flexDirection: 'column' }} key={index}>
+                                        <img className='w-[7rem] h-[7rem] mb-[1rem]' onClick={() => onOPen()} src={HomeImg} alt="" />
+                                        <Button onClick={() => onOPen()} color="primary" ghost style={{ color: "#fff", borderRadius: "3rem", background: "#fff !important", border: "solid 1px " }}>添加设备</Button>
                                     </div>
                                 }
                                 return (

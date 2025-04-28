@@ -259,7 +259,7 @@ export default function NurseConfEdit(props: any) {
           </h3>
           <div className="pc_use_nurse_form">
             <div className="form_item">
-              <span className="form_title  w-[6rem]">应用护理模版：</span>
+              <span className="form_title  w-[7rem]">应用护理模版：</span>
               <div className="use_nurse_template">
                 {[
                   { value: 1, label: "否" },
@@ -286,7 +286,7 @@ export default function NurseConfEdit(props: any) {
             </div>
 
             <div className="form_item">
-              <span className="form_title  w-[4rem]">护理任务：</span>
+              <span className="form_title  w-[5rem]">护理任务：</span>
               <Input
                 placeholder="请输入所添加的护理任务的名称"
                 className="h-[2.5rem]"
@@ -298,7 +298,7 @@ export default function NurseConfEdit(props: any) {
             </div>
 
             <div className="form_item">
-              <span className="form_title w-[4rem]">护理时间：</span>
+              <span className="form_title w-[5rem]">护理时间：</span>
               <div className="time_item h-10">
                 <div>
                   <Select
@@ -350,7 +350,7 @@ export default function NurseConfEdit(props: any) {
             <Button
               type="primary"
               htmlType="submit"
-              style={{ width: "28rem", height: "2.5rem" }}
+              style={{ width: "29rem", height: "2.5rem" }}
               onClick={onFinish}
             >
               添加护理任务
@@ -391,23 +391,23 @@ export default function NurseConfEdit(props: any) {
               extParams={{ className: "modify" }}
             />
           </div>
-          {nurseList.length > 0 && (
-            <Button
-              type="primary"
-              htmlType="submit"
-              style={{
-                width: "calc(100% - 2rem)",
-                margin: "0 1rem",
-                height: "3rem",
-              }}
-              onClick={() => {
-                setConfirmType("save");
-                setConfirmSave(true);
-              }}
-            >
-              保存护理计划
-            </Button>
-          )}
+          {/* {nurseList.length > 0 && ( */}
+          <Button
+            type="primary"
+            htmlType="submit"
+            style={{
+              width: "calc(100% - 2rem)",
+              margin: "0 1rem",
+              height: "2.7rem",
+            }}
+            onClick={() => {
+              setConfirmType("save");
+              setConfirmSave(true);
+            }}
+          >
+            保存护理计划
+          </Button>
+          {/* )} */}
         </div>
       </div>
       {isShowChooseTemp && (

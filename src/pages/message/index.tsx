@@ -6,7 +6,6 @@ import { instance } from "@/api/api";
 import Title from "@/components/title/Title";
 import Bottom from "@/components/bottom/Bottom";
 import type { TableProps, GetProps } from "antd";
-
 import {
   DatePicker,
   Pagination,
@@ -43,8 +42,7 @@ import type {
 import { useNavigate } from "react-router-dom";
 import nian from '@/assets/image/nian.png'
 import yue from '@/assets/image/yue.png'
-import { render } from "@testing-library/react";
-// import type { SelectRef } from 'antd/lib/select';
+
 dayjs.extend(isBetween);
 
 const { Option } = Select;
@@ -641,17 +639,7 @@ export default function Message() {
   const prevYearButton = <img style={{ width: "1.6rem", height: "1.6rem", marginLeft: "0.3rem" }} src={nian} onClick={handlePrevYear} alt="" />;
   const nextMonthButton = <img style={{ width: "1.6rem", height: "1.6rem", transform: 'rotate(180deg)', }} src={yue} onClick={handleNextMonth} alt="" />;
   const nextYearButton = <img style={{ width: "1.5rem", height: "1.5rem", transform: "rotate(180deg)", marginRight: "0.3rem" }} src={nian} onClick={handleNextYear} alt="" />;
-  const selectRef = useRef<any>(null);
-  // 阻止聚焦和键盘事件
-  const handleFocus = (e: any) => {
-    e.stopPropagation();
-    e.preventDefault(); // 阻止默认聚焦行为
-    selectRef.current?.blur(); // 立即失焦
-  };
-  const handleKeyDown = (e: any) => {
-    e.stopPropagation();
-    e.preventDefault(); // 阻止所有键盘输入
-  };
+
   return (
     <>
       {!WindowSize ? (
@@ -824,7 +812,6 @@ export default function Message() {
             <div className="MessageYiDongDivInput">
               <Select
                 showSearch={false}
-                onClick={handleFocus}
                 className="MessageYiDOngTitlesearchSelect"
                 defaultValue={selectType}
                 style={{ width: 80 }}
@@ -1228,12 +1215,7 @@ export default function Message() {
               </div>
               <div className="flex justify-center items-center pb-[1rem]">
                 <Select
-                  ref={selectRef}
-                  onFocus={handleFocus}
-                  onKeyDown={handleKeyDown}
-                  // onTouchStart={handleFocus} // 移动端触摸事件
-                  showSearch={false} // 隐藏搜索框
-                  filterOption={false} // 禁用选项过滤
+                  showSearch={false}
                   style={{
                     width: "5.9rem",
                     height: "2.9rem",
@@ -1283,13 +1265,7 @@ export default function Message() {
                   ))}
                 </Select>{" "}:{" "}
                 <Select
-                  ref={selectRef}
-                  onFocus={handleFocus}
-                  onKeyDown={handleKeyDown}
-                  // onTouchStart={handleFocus} // 移动端触摸事件
-                  showSearch={false} // 隐藏搜索框
-                  filterOption={false} // 禁用选项过滤
-
+                  showSearch={false}
                   style={{
                     width: "5.9rem",
                     height: "2.9rem",

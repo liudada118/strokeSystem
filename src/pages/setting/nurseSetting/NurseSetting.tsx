@@ -15,7 +15,6 @@ import NurseTitle from "../../equipDetail/nurseprocess/nursingOpen/NurseTitle";
 import lanse from "../../../assets/images/蓝色.png";
 import { useNavigate } from "react-router-dom";
 import { getQueryParams } from "@/utils/getQueryParam";
-import { log } from "node:console";
 const { confirm } = Modal;
 /**
  *

@@ -470,22 +470,45 @@ export function neatEquips({ equipArr }: neatEquipsProps): neatReturn {
  * @param equips 传入设备列表
  * @returns 返回电脑端 渲染列表数据
  */
-export function initEquipPc(equips: any) {
+export function initEquipPc(res: any) {
+  const equips = JSON.parse(JSON.stringify(res));
   const total = equips.length;
   const newEquip: any = [];
 
-  for (let i = 0; i < Math.ceil(total / 18); i++) {
+  // 计算需要的页数（第一页17项，其余每页18项）
+  const pages = total > 0 ? Math.ceil((total - 17) / 18) + 1 : 0;
+
+  for (let i = 0; i < pages; i++) {
     newEquip[i] = [];
-    for (let j = 0; j < 18; j++) {
-      if (i * 18 + j == total) {
-        break;
-      }
-      newEquip[i].push(equips[i * 18 + j]);
+    
+    // 计算当前页的起始和结束索引
+    let startIdx, endIdx;
+    
+    if (i === 0) {
+      // 第一页：只取17个原始数据（剩下1个位置给type: 'add'）
+      startIdx = 0;
+      endIdx = Math.min(17, total);
+    } else {
+      // 后续页：取18个原始数据
+      startIdx = 17 + (i - 1) * 18;
+      endIdx = Math.min(startIdx + 18, total);
+    }
+    
+    // 添加原始数据项
+    for (let j = startIdx; j < endIdx; j++) {
+      newEquip[i].push(equips[j]);
+    }
+    
+    // 只在第一个子数组的末尾添加{type: 'add'}
+    if (i === 0) {
+      newEquip[i].push({ type: 'add' });
     }
   }
+  
+  console.log(newEquip, '..............newEquip');
+  
   return newEquip;
 }
-
 type AlarmMap = {
   [key in string]: string;
 };

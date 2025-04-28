@@ -71,8 +71,12 @@ export class voiceArr {
     }
 }
 
-const AK = 'g6IInEnzfZb0vj7yztgjo48S'
-const SK = 'aD31t2M8C0LXTRaeSEZCWIjG7qlnorVb'
+// const AK = 'g6IInEnzfZb0vj7yztgjo48S'
+// const SK = 'aD31t2M8C0LXTRaeSEZCWIjG7qlnorVb'
+
+
+const AK = '2OQZgEK7HSJuxoHBtB5sfsH6'
+const SK = '8bxoNNQIYsyZktTCER1CYF4miSI3xnA1'
 
 function getAccessToken() {
     let options = {

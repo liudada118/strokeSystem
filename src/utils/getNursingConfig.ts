@@ -35,16 +35,23 @@ export const getNurseConfist = (res: any) => {
 };
 
 export const templateToData = (str: string) => {
+  console.log(str,'...............33333333.........................typetype');
+  
   const arr: any = [];
   const splitArr = str?.replace("{", "").replace("}", "").split(",");
   console.log(splitArr);
   splitArr?.forEach((splitItem, index) => {
-    if (!splitItem.includes(":")) {
+    if (!splitItem.includes(":")&&!splitItem.includes("：")) {
       return;
     }
-    const key = splitItem.split(":")[0];
-    let value = splitItem.split(":")[1];
+    let key :any= splitItem.split(":")[0]||splitItem.split("：")[0];
+    console.log(key, '.......................................................',splitItem.split(":")[0]||splitItem.split("：")[0],'..........................222222..................typetype');
+
+    let value:any = splitItem.split(":")[1]||splitItem.split("：")[1];
     value = value.replace(new RegExp('"', "g"), "");
+    if (key.match(/-?\d+/)) {
+      key = key.match(/-?\d+/)[0]
+  }
     console.log(key, value, new Date().toLocaleDateString(), key);
     arr.push({
       title: value,
@@ -55,5 +62,7 @@ export const templateToData = (str: string) => {
       status: "todo",
     });
   });
+  console.log(arr,'............11111.............typetype');
+  
   return arr;
 };

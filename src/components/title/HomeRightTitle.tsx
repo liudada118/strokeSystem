@@ -64,10 +64,9 @@ export const HomeRightTitle = () => {
                 e.stopPropagation()
                 dispatch(showTabsTabs(false))
             }
-            
         }}>
             <Input
-                style={{ fontSize: "1.4rem" }}
+                // style={{ fontSize: "1.4rem" }}
                 type="text"
                 // value={searchValue}
                 onChange={(e) =>

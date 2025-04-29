@@ -51,17 +51,17 @@ function NursingOpen(props: propsType) {
   const items = [
     {
       key: "1",
-      label: "自理老人护理模版",
+      label: "自理老人照护方案",
       value: "意识清醒，行动自如，需生活辅助",
     },
     {
       key: "2",
-      label: "半自理老人护理模版",
+      label: "半自理老人照护方案",
       value: "部分活动受限，需助行/如厕协助",
     },
     {
       key: "3",
-      label: "失能老人护理模版",
+      label: "完全失能老人照护方案",
       value: "卧床为主，需全护理",
     },
   ];

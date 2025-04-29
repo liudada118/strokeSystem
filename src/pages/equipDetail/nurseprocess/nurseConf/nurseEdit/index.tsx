@@ -153,7 +153,7 @@ export default function NurseConfEdit(props: any) {
   const onFinish = () => {
     if (!nurseName) return message.warning("请填写护理名称！");
     if (!hours || !minutes) return message.warning("请填写护理时间！");
-    if (nurseName.length > 10) return message.warning("名称不能超过10个字符");
+    if (nurseName.length > 20) return message.warning("名称不能超过20个字符");
     const hoursVal = parseFloat(hours);
     const minutesVal = parseFloat(minutes);
     const hoursFormat = hoursVal < 10 ? `0${hoursVal}` : hoursVal;
@@ -175,10 +175,7 @@ export default function NurseConfEdit(props: any) {
       },
     ]);
   };
-
   const getPersonTemplate = (type?: any) => {
-    console.log(type, '................1111.....type');
-
     Instancercv({
       method: "get",
       url: "/nursing/getNurseTemplateData",
@@ -190,6 +187,7 @@ export default function NurseConfEdit(props: any) {
         deviceId: props.sensorName,
         // 这个type展示献先写死 到时候要换成 这个里面的 iditems
         organizeId: "common",
+        // type: type,
       },
     }).then((res: any) => {
       if (res.data.code === 0) {
@@ -197,8 +195,8 @@ export default function NurseConfEdit(props: any) {
           (res.data.data || []).find((item: any) => item.type === type) || {};
         try {
           const templateList = templateToData(targetTemp?.template);
+          console.log(targetTemp, templateList, '.......................targetTemptargetTemp');
           console.log(setTempList, '.....99999..............................setTempListsetTempList');
-
           setTempList(templateList);
         } catch (error) {
           console.error("获取默认模版报错了：", error);
@@ -206,7 +204,6 @@ export default function NurseConfEdit(props: any) {
       }
     });
   };
-
   const handleDropdownClick = async (e: any) => {
     const info: any = items.find((item) => item.key === e.key);
     setDefaultTempInfo(info);

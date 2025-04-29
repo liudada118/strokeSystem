@@ -100,11 +100,6 @@ interface curveIndex {
 }
 
 export function Charts(props: circleData) {
-  console.log(
-    props.xdata,
-    "................................................................propsxdata"
-  );
-
   useEffect(() => {
     const chart1 = document.getElementById(`chart${props.index}`);
     var myChart: any;
@@ -200,6 +195,7 @@ export function CurveChart(props: curveIndex) {
       mark,
       fontsize,
     } = props;
+    console.log(ydata, '.............................ydataydataydataydata');
 
     let yarr = [];
 
@@ -408,6 +404,7 @@ interface handleChart {
 }
 
 export const RealChart = React.forwardRef((props: RealIndex, refs) => {
+  console.log(props.xdata, props.tipFormat, props.ymax, refs, '................................999999999');
   var myChart: any;
   const handChangeChart = ({ ydata }: handleChart) => {
     const chart1 = document.getElementById(`chart${props.index}`);
@@ -511,14 +508,12 @@ export const RealChart = React.forwardRef((props: RealIndex, refs) => {
         nameTextStyle: {
           color: "#000",
         },
-
         axisLine: {
           lineStyle: {
             color: "#b4b4b4",
             width: 1, //这里是为了突出显示加上的
           },
         },
-
         axisLabel: {
           show: true,
           formatter: yFormat ? yFormat : "{value}", //刻度标签的内容格式器，支持字符串模板和回调函数两种形式，按照自己需求设置
@@ -584,7 +579,6 @@ export const RealChart = React.forwardRef((props: RealIndex, refs) => {
     };
     props.myChart.setOption(option);
   };
-
   useImperativeHandle(refs, () => ({
     handChangeChart,
   }));

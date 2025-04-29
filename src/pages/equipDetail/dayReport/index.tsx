@@ -778,7 +778,7 @@ export default function DayReport() {
 
       </div>
       <div className="dayContent">
-        {!dayReport ? <div className="reprotMask">
+        {!dayReport ? <div className={`${!windowSize.isMobile ? 'reprotMask' : 'reprotMask1'}`}>
           <div className="reprotMaskdiv ">
             暂无报告,睡一晚再来看看吧
           </div>

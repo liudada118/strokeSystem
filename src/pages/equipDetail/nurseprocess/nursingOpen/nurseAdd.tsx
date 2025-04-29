@@ -13,6 +13,8 @@ import dayjs from 'dayjs';
 import Item from 'antd/es/list/Item';
 function NurseAdd(props: any) {
     const { type, sensorName, onClose } = props
+    console.log(type, '...................typetype');
+
     const [notes, setNotes] = useState<any>('')
     const [uploadImage, setUploadImage] = useState<any>([])
     const [nurseProject, setNurseProject] = useState<any>(props.currentNurse?.title || '')
@@ -103,7 +105,10 @@ function NurseAdd(props: any) {
                             取消
                         </div>
                         <div style={{ fontWeight: "500", fontSize: "1.2rem" }}>
-                            用药提醒
+                            {
+                                props.type === '记录护理项目' ? '用药提醒' : ''
+                            }
+
                         </div>
                         <div className="text-[#0072EF] text-base" onClick={handleRecordForm}>
                             保存

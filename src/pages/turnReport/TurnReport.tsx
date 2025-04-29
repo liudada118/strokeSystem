@@ -6,7 +6,7 @@ import returnPng from "@/assets/image/return.png";
 import dayjs from 'dayjs';
 import Heatmap from "@/components/heatmap/Heatmap";
 import HeatmapR from "@/components/heatmap/HeatmapModal";
-import { secToHourstamp } from '@/utils/timeConvert';
+import { secToHourstamp, secToHourstamp1 } from '@/utils/timeConvert';
 import { useGetWindowSize } from '@/hooks/hook';
 import Card, { CardContainTitle, CardText } from './Card';
 import { instance, Instancercv } from '@/api/api';
@@ -65,7 +65,7 @@ export default function TurnReport(props: PropsType) {
     const isMobile = useGetWindowSize()
     console.log(data, '................datadatadatadata');
 
-    const { logid, id } = isMobile ? location.state : props
+    const { logid, id, dataListName } = isMobile ? location.state : props
     const [timeId, setTimeId] = useState()
     const token = useSelector(tokenSelect)
     const leftRef = useRef<any>(null)
@@ -73,8 +73,10 @@ export default function TurnReport(props: PropsType) {
     // const [useNameList, setUseNameList] = useState([])
     // const paramsName: any = window.location.href.split('/')[4] || ''
     const [dataList, setDataList] = useState<any>([])
-    console.log(timeId, '..............timeIdtimeIdtimeId');
 
+    const timeName = data.id && data.id.substring(0, 10);
+    const timeMills = logid.split(' ')[0]
+    const timeMills1 = logid.split(' ')[1]
     useEffect(() => {
         instance({
             method: "get",
@@ -93,11 +95,21 @@ export default function TurnReport(props: PropsType) {
         }).then((res) => {
             const record = res.data.page.records//.map((item :any )=> item.posture)
             let timeId: any = ''
+
             if (record.length) {
                 record.forEach((item: any) => {
-                    timeId = item.id
+                    const id = item.id.split(' ')[1]
+
+                    console.log(id, timeMills1, '............1111.......timeIdtimeIdtimeId');
+
+                    if (id === timeMills1) {
+                        timeId = item.id
+                    }
+
                 })
             }
+            // console.log(timeId, '....................2222...........timeIdtimeIdtimeId');
+
             instance({
                 method: "get",
                 url: "/sleep/nurse/getFliplog",
@@ -109,7 +121,6 @@ export default function TurnReport(props: PropsType) {
                     logid: timeId
                 }
             }).then((res) => {
-                // console.log(res.data.data, '999999997777777')
                 const data = res.data.data
                 const { startMatrix, endMatrix, posture, extra, did, remark, timeMillsEnd, timeMills, id } = data
                 console.log(data, extra, 'dat1111a...1111..')
@@ -166,11 +177,11 @@ export default function TurnReport(props: PropsType) {
     // if (leftRef.current) leftRef.current.bthClickHandle(data.startMatrix || [])
     // if (rightRef.current) rightRef.current.bthClickHandle(data.endMatrix || [])
     // }, [leftRef, rightRef, data.endMatrix,])
-    console.log(dataList, '........................dataList');
+
     // charge_man
-    const timeName = data.id && data.id.substring(0, 10);
-    const timeMills = logid.split(' ')[0]
-    console.log(data, timeMills, '.................onBedTimeonBedTimeonBedTimeonBedTime');
+
+    console.log(timeMills1, '....................2222222222...........timeIdtimeIdtimeId');
+
 
     return (
         <>
@@ -266,7 +277,7 @@ export default function TurnReport(props: PropsType) {
                                 <div>{sleepArr[data.sleepPos]}</div>
                             </div>
 
-                            {data.sleepPosImg ? <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '1rem' }}>
+                            {data.sleepPosImg !== 'extraData' ? <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '1rem' }}>
 
                                 <div>在床照片</div>
                                 <div><img src={data.sleepPosImg} style={{ height: '6rem' }} alt="" /></div>
@@ -306,20 +317,25 @@ export default function TurnReport(props: PropsType) {
                         <div className='mr-[0.6rem]'>
                             <div className='w-[8.3rem] h-[5.4rem] bg-[#fff] rounded-md' style={{}}>
                                 <div className='text-[#000000] text-[0.9rem] font-bold pt-[1rem]  pl-[1.1rem]' style={{ fontFamily: 'Source Han Sans' }}>在床时间</div>
-                                <div style={{ fontWeight: "800" }} className=' pt-[1rem] pl-[1.1rem]'>{dayjs((data.timeMills)).format('HH:mm')}分钟</div>
+                                <div style={{ fontWeight: "800" }} className=' pt-[1rem] pl-[1.1rem]'>
+                                    {secToHourstamp1(parseInt(data.onBedTime))}
+                                    {/* {dayjs((data.timeMills)).format('HH:mm')} */}
+                                </div>
                             </div>
                             <div className='w-[8.3rem]  mt-[0.6rem] h-[5.4rem] bg-[#fff] rounded-md' style={{}}>
-                                <div className='text-[#000000] text-[0.9rem] font-bold pt-[1rem]  pl-[1.1rem]' style={{ fontFamily: 'Source Han Sans' }}>护理时间段</div>
+                                <div className='text-[#000000] text-[0.9rem] font-bold pt-[1rem]  pl-[1.1rem]' style={{ fontFamily: 'Source Han Sans' }}>翻身时间</div>
                                 <div style={{ fontWeight: "800" }} className=' pt-[1rem] pl-[1.1rem]'>{dayjs((data.timeMills)).format('HH:mm')}</div>
                             </div>
-                            {data.sleepPosImg ?
-                                < div className='h-[10rem] w-[8.3rem] mt-[0.6rem]  bg-[#fff] rounded-md'>
-                                    <div className='text-[#000000] text-[0.9rem] font-bold pt-[1rem]  pl-[1.1rem]' style={{ fontFamily: 'Source Han Sans' }}>睡姿记录</div>
-                                    <div className='pt-[0.5rem] pl-[1.1rem]'>{sleepArr[data.sleepPos]}</div>
+
+                            < div className='h-[10rem] w-[8.3rem] mt-[0.6rem]  bg-[#fff] rounded-md'>
+                                <div className='text-[#000000] text-[0.9rem] font-bold pt-[1rem]  pl-[1.1rem]' style={{ fontFamily: 'Source Han Sans' }}>睡姿记录</div>
+
+                                <div className='pt-[0.5rem] pl-[1.1rem]'>{sleepArr[data.sleepPos]}</div>
+                                {data.sleepPosImg !== 'extraData' ?
                                     <img className='pt-[0.5rem] pl-[1.1rem]' style={{ width: "6.6rem", height: "5.6rem", }} src={data.sleepPosImg ? data.sleepPosImg : nullImg} alt="" />
-                                    {/* <img src={data.headImg} style={{ height: '6rem' }} alt="" /> */}
-                                </div> : ""
-                            }
+                                    : '  '}
+                                {/* <img src={data.headImg} style={{ height: '6rem' }} alt="" /> */}
+                            </div>
 
                         </div>
                         <div className='flex-1 h-[22rem]'>

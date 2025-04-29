@@ -459,12 +459,12 @@ export default function NurseProcesst(props: nurseProcessProps) {
                   </ol>
                   <div
                     className="nurseButton"
-                    onClick={() => {
+
+                  >
+                    <span onClick={() => {
                       // changePos()
                       onClose();
-                    }}
-                  >
-                    我已知晓，开始护理
+                    }}>  我已知晓，开始护理</span>
                   </div>
                 </div>
               </Drawer>

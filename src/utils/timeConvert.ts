@@ -34,6 +34,11 @@ export function secToHourstamp(seconds: number): string {
   const minute = Math.floor((seconds % 3600) / 60).toString().padStart(2, '0');
   return `${hour}:${minute}`;
 }
+export function secToHourstamp1(seconds: number): string {
+  const hour = Math.floor(seconds / 3600).toString().padStart(2, '0');
+  const minute = Math.floor((seconds % 3600) / 60).toString().padStart(2, '0');
+  return `${hour} 时 ${minute} 分`;
+}
 /**
  * 
  * @param num 一个单位为秒的时间

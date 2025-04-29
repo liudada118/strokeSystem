@@ -184,6 +184,7 @@ const TurnPlan: (props: TurnPlanProps) => React.JSX.Element = (props) => {
     const [logid, setDataList] = useState('');
     const WindowSize = useGetWindowSize()
     const renderButton = (data: any) => {
+
         const inactive = inactivePlan(data.status);
         return [TurnPlanStatus.DONE, TurnPlanStatus.TIME_OUT_DONE].includes(data.status) ? (
             <div onClick={() => {
@@ -192,7 +193,7 @@ const TurnPlan: (props: TurnPlanProps) => React.JSX.Element = (props) => {
             }} className="relative" >
                 <Button variant="filled"
                     onClick={() => {
-                        isMobile && navigate('/turnReport', { state: { logid: data.logid, id: id } })
+                        isMobile && navigate('/turnReport', { state: { logid: data.logid, id: id, dataListName: data } })
                     }
                     }
                     className='w-[6rem] h-[2.4rem] text-sm bg-[#ECF0F4] border-none text-[#3E444C] font-medium'>查看报告</Button>
@@ -234,7 +235,22 @@ const TurnPlan: (props: TurnPlanProps) => React.JSX.Element = (props) => {
                 ))}
             </div>
             {
-                isModalOpen ? <Modal className="nurse_report_info" closeIcon={false} width={"37rem"} height={'auto'} style={{ background: "#F7F8FD" }} open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+                isModalOpen ? <Modal className="nurse_report_info"
+                    closeIcon={false} width={"37rem"} height={'auto'}
+                    style={{ background: "#F7F8FD" }} open={isModalOpen}
+                    onOk={handleOk} onCancel={handleCancel}
+                    footer={[
+                        // 自定义页脚，只包含确认按钮
+                        <Button
+                            key="ok"
+                            type="primary"
+                            style={{ padding: "0 1rem", height: "2rem", marginTop: "1.2rem" }}
+                            onClick={handleOk}
+                        >
+                            关闭
+                        </Button>,
+                    ]}
+                >
                     <TurnReport id={id} logid={logid} ></TurnReport>
                 </Modal> : null
             }

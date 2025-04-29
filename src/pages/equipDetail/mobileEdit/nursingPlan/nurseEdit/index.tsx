@@ -56,17 +56,17 @@ export default function NurseConfEdit(props: any) {
   const items = [
     {
       key: "1",
-      label: "自理老人护理模版",
+      label: "自理老人照护方案",
       value: "意识清醒，行动自如，需生活辅助",
     },
     {
       key: "2",
-      label: "半自理老人护理模版",
+      label: "半自理老人照护方案",
       value: "部分活动受限，需助行/如厕协助",
     },
     {
       key: "3",
-      label: "失能老人护理模版",
+      label: "完全失能老人照护方案",
       value: "卧床为主，需全护理",
     },
   ];
@@ -80,7 +80,7 @@ export default function NurseConfEdit(props: any) {
     if (!nurseName) return message.warning("请填写护理名称！");
     if (!value.hours || !value.minutes)
       return message.warning("请填写护理时间！");
-    if (nurseName.length > 10) return message.warning("名称不能超过10个字符");
+    if (nurseName.length > 20) return message.warning("名称不能超过20个字符");
     const tempNurseList = localStorage.getItem("tempList") || "[]";
     const list = JSON.parse(tempNurseList);
     const hoursVal = parseFloat(value.hours);
@@ -154,11 +154,14 @@ export default function NurseConfEdit(props: any) {
   };
 
   const handleDropdownClick = async (e: any) => {
+
+
     const info: any = items.find((item) => item.key === e.key);
     console.log(info, e, ".........info");
 
     setDefaultTempInfo(info);
     getPersonTemplate(+info.key);
+    console.log(e, info, '...............9999..........setTempListsetTempList');
   };
 
   return (
@@ -235,7 +238,7 @@ export default function NurseConfEdit(props: any) {
           <Input
             placeholder="请输入所添加的护理任务的名称"
             className="h-10 bg-[#F5F8FA]"
-            maxLength={10}
+            maxLength={20}
             onChange={(e) => {
               setNurseName(e.target.value);
             }}

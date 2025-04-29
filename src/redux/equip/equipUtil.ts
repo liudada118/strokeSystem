@@ -464,67 +464,17 @@ export function neatEquips({ equipArr }: neatEquipsProps): neatReturn {
     cloudCatchAlarmArr,
   };
 }
-
 /**
  *
  * @param equips 传入设备列表
  * @returns 返回电脑端 渲染列表数据
  */
-// export function initEquipPc(res: any) {
-//   const equips = JSON.parse(JSON.stringify(res));
-//   const total = equips.length;
-//   const newEquip: any = [];
-// console.log(equips, '........111111......equips');
-
-//   // 计算需要的页数（第一页17项，其余每页18项）
-//   const pages = total > 0 ? Math.ceil((total - 17) / 18) + 1 : 0; 
-
-//   for (let i = 0; i < pages; i++) {
-//     newEquip[i] = [];
-    
-//     // 计算当前页的起始和结束索引
-//     let startIdx, endIdx;
-    
-//     if (i === 0) {
-//       // 第一页：只取17个原始数据（剩下1个位置给type: 'add'）
-//       startIdx = 0;
-//       endIdx = Math.min(17, total);
-//     } else {
-//       // 后续页：取18个原始数据
-//       startIdx = 17 + (i - 1) * 18;
-//       endIdx = Math.min(startIdx + 18, total);
-//     }
-    
-//     // 添加原始数据项
-//     for (let j = startIdx; j < endIdx; j++) {
-//       newEquip[i].push(equips[j]);
-//     }
-    
-//     // 只在第一个子数组的末尾添加{type: 'add'}
-//     if (i === 0) {
-//       newEquip[i].push({ type: 'add' });
-//     }
-//   }
-  
-//   console.log(newEquip, '..............newEquip');
-  
-//   return newEquip;
-// }
 export function initEquipPc(res: any) {
   const equips = JSON.parse(JSON.stringify(res));
   const total = equips.length;
   const newEquip: any = [];
-  
-  // 筛选出所有 onBed 为 1 的元素
-  const onBedItems = equips.filter((item:any) => item.status === 'online');
-  
-  // 剩余的普通元素
-  const normalItems = equips.filter((item:any) => item.onBed !== 1);
-  
-  console.log(equips, '........111111......equips');
-
   // 计算需要的页数（第一页17项，其余每页18项）
-  const pages = normalItems.length > 0 ? Math.ceil((normalItems.length - 17) / 18) + 1 : 0; 
+  const pages = total > 0 ? Math.ceil((total - 17) / 18) + 1 : 0; 
 
   for (let i = 0; i < pages; i++) {
     newEquip[i] = [];
@@ -533,28 +483,23 @@ export function initEquipPc(res: any) {
     let startIdx, endIdx;
     
     if (i === 0) {
-      // 第一页：先添加 onBed 为 1 的元素
-      newEquip[i].push(...onBedItems);
-      
-      // 再计算普通元素的起始和结束位置
+      // 第一页：只取17个原始数据（剩下1个位置给type: 'add'）
       startIdx = 0;
-      endIdx = Math.min(17 - onBedItems.length, normalItems.length);
-      
-      // 添加普通元素
-      for (let j = startIdx; j < endIdx; j++) {
-        newEquip[i].push(normalItems[j]);
-      }
-      
-      // 最后添加 type: 'add'
-      newEquip[i].push({ type: 'add' });
+      endIdx = Math.min(17, total);
     } else {
-      // 后续页：从剩余普通元素中取18个
-      startIdx = Math.max(0, 17 - onBedItems.length) + (i - 1) * 18;
-      endIdx = Math.min(startIdx + 18, normalItems.length);
-      
-      for (let j = startIdx; j < endIdx; j++) {
-        newEquip[i].push(normalItems[j]);
-      }
+      // 后续页：取18个原始数据
+      startIdx = 17 + (i - 1) * 18;
+      endIdx = Math.min(startIdx + 18, total);
+    }
+    
+    // 添加原始数据项
+    for (let j = startIdx; j < endIdx; j++) {
+      newEquip[i].push(equips[j]);
+    }
+    
+    // 只在第一个子数组的末尾添加{type: 'add'}
+    if (i === 0) {
+      newEquip[i].push({ type: 'add' });
     }
   }
   
@@ -562,6 +507,58 @@ export function initEquipPc(res: any) {
   
   return newEquip;
 }
+// export function initEquipPc(res: any) {
+//   const equips = JSON.parse(JSON.stringify(res));
+//   const total = equips.length;
+//   const newEquip: any = [];
+  
+//   // 筛选出所有 onBed 为 1 的元素
+//   const onBedItems = equips.filter((item:any) => item.status === 'online');
+  
+//   // 剩余的普通元素
+//   const normalItems = equips.filter((item:any) => item.onBed !== 1);
+  
+//   console.log(equips, '........111111......equips');
+
+//   // 计算需要的页数（第一页17项，其余每页18项）
+//   const pages = normalItems.length > 0 ? Math.ceil((normalItems.length - 17) / 18) + 1 : 0; 
+
+//   for (let i = 0; i < pages; i++) {
+//     newEquip[i] = [];
+    
+//     // 计算当前页的起始和结束索引
+//     let startIdx, endIdx;
+    
+//     if (i === 0) {
+//       // 第一页：先添加 onBed 为 1 的元素
+//       newEquip[i].push(...onBedItems);
+      
+//       // 再计算普通元素的起始和结束位置
+//       startIdx = 0;
+//       endIdx = Math.min(17 - onBedItems.length, normalItems.length);
+      
+//       // 添加普通元素
+//       for (let j = startIdx; j < endIdx; j++) {
+//         newEquip[i].push(normalItems[j]);
+//       }
+      
+//       // 最后添加 type: 'add'
+//       newEquip[i].push({ type: 'add' });
+//     } else {
+//       // 后续页：从剩余普通元素中取18个
+//       startIdx = Math.max(0, 17 - onBedItems.length) + (i - 1) * 18;
+//       endIdx = Math.min(startIdx + 18, normalItems.length);
+      
+//       for (let j = startIdx; j < endIdx; j++) {
+//         newEquip[i].push(normalItems[j]);
+//       }
+//     }
+//   }
+  
+//   console.log(newEquip, '..............newEquip');
+  
+//   return newEquip;
+// }
 type AlarmMap = {
   [key in string]: string;
 };

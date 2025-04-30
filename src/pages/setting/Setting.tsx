@@ -1162,7 +1162,7 @@ export default function Setting() {
         organizeId: id,
       }
     }).then((res) => {
-      
+
       let data = res.data.data
       data.map((a: any, index: any) => {
         a.id = index + 1
@@ -1994,6 +1994,7 @@ export default function Setting() {
               <Menu defaultOpenKeys={[items[0].key]} onClick={onClick} selectedKeys={[current]} mode="inline" items={items} />
               <div className='loginOut' onClick={showDrawer}>
                 <div className="loginOutButton">退出登录</div>
+                <div className="loginOutButton mt-2">版本号 2.0 1</div>
               </div>
             </div>
             <div className="contentBox">

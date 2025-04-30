@@ -10,7 +10,7 @@ import { useGetWindowSize } from '@/hooks/hook'
 import PCNurseList from '@/pages/equipDetail/nurseprocess/nurseConf/nurseList/index'
 import PCNurseConfList from '@/pages/equipDetail/nurseprocess/nurseConf/nurseList/conf_list'
 // import MobileNurseList from '@/pages/equipDetail/nurseprocess/'
-import { instance, voiceUrl } from '@/api/api'
+import { instance, voiceUrl, Instancercv, netUrl } from '@/api/api'
 interface nurseChartsProps {
     dataSource: any
     onbed: any
@@ -81,39 +81,7 @@ function NurseCharts(props: nurseChartsProps) {
     const [onBedValueArr, setOnBedValueArr] = useState<any>([])
     const [onBedTimeArr, setOnBedTimeArr] = useState<any>([])
     const [nurseConfigList, setNurseConfigList] = useState([])
-    useEffect(() => {
-        const currentDate = new Date();
-        const yesterday = new Date(currentDate);
-        yesterday.setDate(currentDate.getDate() - 1);
-        const startOfYesterday = new Date(yesterday);
-        startOfYesterday.setHours(0, 0, 0, 0);
-        const endOfYesterday = new Date(yesterday);
-        endOfYesterday.setHours(23, 59, 59, 999);
-        const timestampStart = startOfYesterday.getTime();
-        const timestampEnd = endOfYesterday.getTime();
-        try {
-            instance({
-                url: voiceUrl + '/sleep/nurse/getDayNurseData',
-                method: 'get',
-                headers: {
-                    'content-type': 'application/json',
-                    'token': localStorage.getItem('token')
-                },
-                params: {
-                    did: props.sensorName,
-                    startTimeMillis: '1745337832000',
-                    endTimeMillis: '1745424232000'
-                }
-            }).then((res: any) => {
-                setNurseConfigList(res.data.data)
-                console.log(res, '.............................QueryQuery');
-            }).catch(() => {
-                console.log('error');
-            })
-        } catch (error) {
-            // console.log(error);
-        }
-    }, [])
+
     useEffect(() => {
         const objArr: any = []
         const arr = props.pageRecords
@@ -268,12 +236,13 @@ function NurseCharts(props: nurseChartsProps) {
                             !isMobile ? <div className="w-[40rem] h-[50rem] bg-[#FFFFFF]">
                                 <div className='text-[#000000] text-[1.2rem] pl-[1rem] pb-[1rem]' style={{ fontFamily: 'PingFang SC', fontWeight: "600" }}>护理记录</div>
                                 <div className=' px-[3%]  h-full'>
-                                    <PCNurseList list={nurseConfigList || []} extParams={{ isShowTime: false, className: 'daEeport' }} />
+                                    {/* <PCNurseList list={nurseConfigList || []} extParams={{ isShowTime: false, className: 'daEeport' }} /> */}
+                                    <PCNurseConfList type='daEeport' sensorName={props.sensorName} />
                                 </div>
                             </div> : <div className="h-[50rem] bg-[#FFFFFF]" style={{ width: '100%' }}>
                                 <div className='text-[#000000] text-[1.2rem] pl-[1rem] py-[1rem]' style={{ fontFamily: 'PingFang SC', fontWeight: "600" }}>护理记录</div>
                                 <div className=' px-[3%]  h-full'>
-                                    <PCNurseList list={nurseConfigList || []} extParams={{ isShowTime: false, className: 'daEeport' }} />
+                                    <PCNurseConfList type='daEeport' sensorName={props.sensorName} />
                                 </div>
                             </div>
                         }

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Select } from "antd";
 import { TextArea, Picker, Popup, Input } from "antd-mobile";
 import xaingjing from '@/assets/image/xaingjing.png'
@@ -13,13 +13,13 @@ import dayjs from 'dayjs';
 import Item from 'antd/es/list/Item';
 function NurseAdd(props: any) {
     const { type, sensorName, onClose } = props
-    console.log(type, '...................typetype');
+    console.log(type, props, '...................typetype');
 
     const [notes, setNotes] = useState<any>('')
     const [uploadImage, setUploadImage] = useState<any>([])
     const [nurseProject, setNurseProject] = useState<any>(props.currentNurse?.title || '')
     const [timeVisible, setTimeVisible] = useState<any>(false)
-    const [completionTime, setCompletionTime] = useState<any>(props.currentNurse?.completionTime || new Date().getTime()) as any
+    const [completionTime, setCompletionTime] = useState<any>(new Date().getTime()) as any
     const getCloumn = (number: number) => {
         const list = [...Array(number)].map((_: any, index: number) => {
             const item = index
@@ -80,6 +80,12 @@ function NurseAdd(props: any) {
             })
         }
     }
+    useEffect(() => {
+        if (!props.visible) {
+            setNurseProject('')
+            setCompletionTime(new Date().getTime())
+        }
+    }, [props.visible])
     return (
         <Popup
             style={{

@@ -92,3 +92,22 @@
 .nurse_edit_dropdown.ant-btn {
   padding: 0;
 }
+
+.murse_temp_modal > div {
+  height: 100%;
+}
+
+.murse_temp_modal > div .ant-modal-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+.murse_temp_modal > div .ant-modal-content .ant-modal-body {
+  height: calc(100% - 3rem);
+}
+
+.murse_temp_modal > div .ant-modal-content .ant-modal-body .default-popup {
+  height: 100%;
+}

@@ -44,9 +44,7 @@ let objKeyToCloud: modelUserInfo = {
  * @returns 提醒修改
  */
 export function RemindEdit() {
-
     const dispatch: any = useDispatch()
-
     const [pickerInfo, setPickerInfo] = useState<any>({
         visible: false,
         title: '',
@@ -54,7 +52,6 @@ export function RemindEdit() {
         key: '',
         value: ''
     })
-    console.log(pickerInfo.visible, '................................pickerInfopickerInfopickerInfo');
     const location = useLocation()
     const sensorName = location.state.sensorName
     const phone = useSelector(phoneSelect)
@@ -188,14 +185,14 @@ export function RemindEdit() {
         let obj = formatSetting(newValue)
         obj.userName = phone
         obj.deviceName = sensorName
-        console.log(obj, '..............................44444444...............yyyyds');
+
         // obj
         // 暂时不要删除，目前看这句代码没有实际意义
         try {
             // dispatch(changeEquipInfo(obj))
             dispatch(changePersonalEquipAlarmInfo(obj))
         } catch (error) {
-            console.log(error, '.........222222.....................44444444...............yyyyds');
+
         }
     }
     const formatSetting = (formValue: any) => {
@@ -205,14 +202,14 @@ export function RemindEdit() {
             timeIntervalB: formValue.timeIntervalB === '实时提醒' ? 0 : formValue.timeIntervalB,
         }
         const keyArr = Object.keys(newValue)
-        console.log(newValue, '..............................44444444...............yyyyds....yyyyds');
+
         // let realObj: any = { ...userInfo }
         let realObj: any = {}
         keyArr.forEach((item: string) => {
 
 
             const realValue = newValue[item]
-            console.log('.....................44444444...............yyyyds.........................yyyyds');
+
             try {
                 if (typeof newValue[item] == 'string') {
                     //    提醒时间段
@@ -225,8 +222,6 @@ export function RemindEdit() {
                         const startMin = start.split(':')[1]
                         const endHour = end.split(':')[0]
                         const endMin = end.split(':')[1]
-
-
                         if (start) realObj[objKeyToCloud[item].start] = startHour * 60 * 60 * 1000 + startMin * 60 * 1000
                         if (end) realObj[objKeyToCloud[item].end] = endHour * 60 * 60 * 1000 + endMin * 60 * 1000
                     }

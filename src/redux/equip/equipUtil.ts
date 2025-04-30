@@ -481,9 +481,11 @@ export function initEquipPc(res: any) {
     if (i === 0) {
       newEquip[i].push({ type: 'add' });
     }
+
+    const numm=i==0 ? 17 : 18
   
-    const startIdx = i * 17;
-    const endIdx = Math.min(startIdx + 17, total);
+    const startIdx = i * numm;
+    const endIdx = Math.min(startIdx + numm, total);
     
   
     for (let j = startIdx; j < endIdx; j++) {

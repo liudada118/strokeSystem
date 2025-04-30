@@ -662,7 +662,6 @@ export const RenderListItem = ({
                 />
               }
             </>
-
           }
         >
           {label}
@@ -679,14 +678,12 @@ export const RenderListItem = ({
               ? "实时提醒"
               : formValue[key]
           }
-
           onClick={() => {
-            if (!(roleId == 1 || roleId == 2 || roleId == 0)) {
-              message.error("您没有权限修改该信息");
+            if (roleId !== "1" && roleId !== "2" && roleId !== "0") {
+              message.error("您没有权限修改");
             } else {
               handleClickListItem(type, title, key);
             }
-
           }}
         >
           {label}
@@ -696,5 +693,4 @@ export const RenderListItem = ({
       return null;
   }
 };
-
 export default EditingUser;

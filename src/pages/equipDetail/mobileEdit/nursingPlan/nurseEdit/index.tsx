@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 // import "./index.css";
 import "../nurseEdit/nurseEditList.scss";
 import { selectEquipBySensorname } from "@/redux/equip/equipSlice";
@@ -9,14 +9,14 @@ import {
   Form,
   Input,
   Select,
-  Dropdown,
+  // Dropdown,
   Space,
   message,
   Modal
 } from "antd";
 import { useLocation, useParams, useNavigate } from "react-router-dom";
 import shan from "../../../../../assets/images/shanjiao.png";
-import { Picker, Popup, Empty } from "antd-mobile";
+import { Picker, Popup, Empty, Dropdown } from "antd-mobile";
 import NurseList from "../nurseList/index";
 import { Instancercv } from "@/api/api";
 import loog from '../../../../../assets/images/logo.png'
@@ -31,9 +31,12 @@ import dayjs from "dayjs";
 import { getNurseConfist, templateToData } from "@/utils/getNursingConfig";
 import CommonNavBar from "@/components/CommonNavBar";
 import handleSettingPop from "@/utils/handleSettingPop";
+import { DropdownRef } from 'antd-mobile/es/components/dropdown'
 
 const { confirm } = Modal;
 export default function NurseConfEdit(props: any) {
+  const dropdownRef = useRef<DropdownRef>(null)
+  const dropdownContainerRef = useRef<any>(null);
   const location = useLocation();
   const { isEmpty } = location.state;
   const sensorName = props.sensorName || location.state.sensorName;
@@ -155,12 +158,12 @@ export default function NurseConfEdit(props: any) {
 
   const handleDropdownClick = async (e: any) => {
 
-
     const info: any = items.find((item) => item.key === e.key);
     console.log(info, e, ".........info");
 
     setDefaultTempInfo(info);
     getPersonTemplate(+info.key);
+    dropdownRef.current?.close()
     console.log(e, info, '...............9999..........setTempListsetTempList');
   };
 
@@ -350,7 +353,7 @@ export default function NurseConfEdit(props: any) {
               </div>
 
               <Space direction="vertical" style={{ margin: "0 auto" }}>
-                <Dropdown
+                {/* <Dropdown
                   menu={{ items, onClick: handleDropdownClick }}
                   placement="bottom"
                 >
@@ -370,9 +373,38 @@ export default function NurseConfEdit(props: any) {
                       alt=""
                     />
                   </Button>
+                </Dropdown> */}
+                <Dropdown ref={dropdownRef} className="nurse-temp-type-dropdown" getContainer={() => dropdownContainerRef.current}>
+                  <Dropdown.Item key='bizop' title={
+                    <span style={{ color: '#3D3D3D', fontWeight: '600', fontSize: '1.2rem' }}>
+                      {defaultTempInfo.label}
+                      {/* <img
+                        style={{ width: "0.5rem", height: "0.5rem" }}
+                        src={shan}
+                        alt=""
+                      /> */}
+                    </span>}
+                  >
+                    <div style={{ padding: 12 }}>
+                      {
+                        items.map((item) => (
+                          <p
+                            key={item.key}
+                            onClick={() => handleDropdownClick(item)}
+                            style={{ padding: 12, cursor: 'pointer' }}
+                          >
+                            {item.label}
+                          </p>
+                        ))
+                      }
+                    </div>
+                  </Dropdown.Item>
                 </Dropdown>
               </Space>
+
+              <div className="nurse-temp-type-dropdown-popup" ref={dropdownContainerRef}></div>
             </div>
+
             <NurseList list={tempList}></NurseList>
 
             <Button

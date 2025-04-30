@@ -194,9 +194,7 @@ export default function NurseConfEdit(props: any) {
         const targetTemp =
           (res.data.data || []).find((item: any) => item.type === type) || {};
         try {
-          const templateList = templateToData(targetTemp?.template);
-          console.log(targetTemp, templateList, '.......................targetTemptargetTemp');
-          console.log(setTempList, '.....99999..............................setTempListsetTempList');
+          const templateList = templateToData(targetTemp?.template, type ? 'isTemp' : '');
           setTempList(templateList);
         } catch (error) {
           console.error("获取默认模版报错了：", error);
@@ -413,7 +411,7 @@ export default function NurseConfEdit(props: any) {
         <Modal
           style={{
             borderRadius: "1rem",
-            height: "31rem",
+            height: "80%",
           }}
           open={isUseDefault === 2}
           onCancel={() => {
@@ -424,13 +422,14 @@ export default function NurseConfEdit(props: any) {
             <Button
               key="ok"
               type="primary"
-              style={{ padding: "0 1rem", height: "2rem", marginTop: "1.2rem" }}
+              style={{ padding: "0 1rem", height: "2rem" }}
               onClick={chooseTemp}
             >
               选择此模版
             </Button>,
           ]}
           width={"40.45rem"}
+          className="murse_temp_modal"
         >
           <div className="default-popup">
             <div className="w-full items-center ">

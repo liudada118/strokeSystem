@@ -312,7 +312,7 @@ const NurseRecord: (props: NurseRecordProps) => React.JSX.Element = (props) => {
                     <span className='cursor-pointer text-[#0072EF] text-sm font-medium'
                         onClick={() => {
                             console.log(isDataList, '.............................isDataListisDataList');
-
+                            setCurrentNurse({})
                             if (tempList.length === 0) {
                                 if (roleId !== 1 || roleId !== 2 || roleId !== 0) {
                                     message.info(`${roleId == (1 || 2 || 0) ? '请先添加护理计划！' : "请先联系管理员添加护理计划！"}`)
@@ -356,6 +356,7 @@ const NurseRecord: (props: NurseRecordProps) => React.JSX.Element = (props) => {
                     {isMobile && <span
                         style={{ display: 'flex', alignItems: 'center' }}
                         onClick={() => {
+                            setCurrentNurse({})
                             if (tempList.length === 0) {
                                 if (roleId !== 1 || roleId !== 2 || roleId !== 0) {
                                     message.info(`${roleId == (1 || 2 || 0) ? '请先添加护理计划！' : "请先联系管理员添加护理计划！"}`)
@@ -369,7 +370,7 @@ const NurseRecord: (props: NurseRecordProps) => React.JSX.Element = (props) => {
                         <img style={{ width: "1.5rem", height: "1.5rem" }} src={jiaHao} alt="" />新增一次
                     </span>}
                 </div>
-                <div className="flex-1" style={{ overflow: 'auto', padding: '0 1rem' }}>
+                <div className="flex-1 flex flex-col" style={{ overflow: 'auto', padding: '0 1rem' }}>
                     <PCNurseConfList list={nurseConfigList || []} sensorName={sensorName} getTempList={(list: any) => setTempList(list)} gotoFinshNurse={(item: any) => {
                         setCurrentNurse(item)
                         setOperNurseTitle('记录护理项目')

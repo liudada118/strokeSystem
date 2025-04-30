@@ -547,6 +547,7 @@ export default function Message() {
   const startOfMonth = currentMonth1.startOf('month').toDate();
   const endOfMonth = currentMonth1.endOf('month').toDate();
   const renderDate = (date: any) => {
+    console.log(new Date(currentCalendarValue).toLocaleDateString(), 'new Date(currentCalendarValue)')
     const { firstDay, lastDay } = getCurrentMonthFirstAndLastDay(currentCalendarValue);
     const firstDate = firstDay.date.getTime()
     const lastDate = lastDay.date.getTime()
@@ -595,6 +596,7 @@ export default function Message() {
 
     // 一个月后的今天（自然月）
     const nextMonth = new Date(now);
+    nextMonth.setDate(1)
     if (type === 'month') {
       nextMonth.setMonth(nextMonth.getMonth() + 1);
     } else {
@@ -602,7 +604,8 @@ export default function Message() {
     }
 
     // 前一个月的今天（自然月）
-    const prevMonth = new Date(now);
+    let prevMonth = new Date(now);
+    prevMonth.setDate(1)
     if (type === 'month') {
       prevMonth.setMonth(prevMonth.getMonth() - 1);
     } else {
@@ -620,20 +623,20 @@ export default function Message() {
     };
   }
   const handlePrevMonth = () => {
-    setCurrentMonth(currentMonth1.subtract(1, 'month'));
     currentCalendarValue = getNaturalMonthOffsetDates(currentCalendarValue, 'month').prevMonth.date
+    setCurrentMonth(currentMonth1.subtract(1, 'month'));
   };
   const handlePrevYear = () => {
-    setCurrentMonth(currentMonth1.subtract(1, 'year'));
     currentCalendarValue = new Date(currentMonth1.subtract(1, 'year').valueOf())
+    setCurrentMonth(currentMonth1.subtract(1, 'year'));
   };
   const handleNextMonth = () => {
-    setCurrentMonth(currentMonth1.add(1, 'month'));
     currentCalendarValue = getNaturalMonthOffsetDates(currentCalendarValue, 'month').nextMonth.date
+    setCurrentMonth(currentMonth1.add(1, 'month'));
   };
   const handleNextYear = () => {
-    setCurrentMonth(currentMonth1.add(1, 'year'));
     currentCalendarValue = new Date(currentMonth1.add(1, 'year').valueOf())
+    setCurrentMonth(currentMonth1.add(1, 'year'));
   };
   const prevMonthButton = <img style={{ width: "1.5rem", height: "1.5rem", }} src={yue} onClick={handlePrevMonth} alt="" />;
   const prevYearButton = <img style={{ width: "1.6rem", height: "1.6rem", marginLeft: "0.3rem" }} src={nian} onClick={handlePrevYear} alt="" />;

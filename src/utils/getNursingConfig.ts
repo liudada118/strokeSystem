@@ -34,8 +34,7 @@ export const getNurseConfist = (res: any) => {
   return Array.isArray(nursingConfig) ? nursingConfig : [];
 };
 
-export const templateToData = (str: string) => {
-  console.log(str,'...............33333333.........................typetype');
+export const templateToData = (str: string, type?: string | undefined) => {
   
   const arr: any = [];
   const splitArr = str?.replace("{", "").replace("}", "").split(",");
@@ -45,7 +44,6 @@ export const templateToData = (str: string) => {
       return;
     }
     let key :any= splitItem.split(":")[0]||splitItem.split("：")[0];
-    console.log(key, '.......................................................',splitItem.split(":")[0]||splitItem.split("：")[0],'..........................222222..................typetype');
 
     let value:any = splitItem.split(":")[1]||splitItem.split("：")[1];
     value = value.replace(new RegExp('"', "g"), "");
@@ -55,14 +53,13 @@ export const templateToData = (str: string) => {
     console.log(key, value, new Date().toLocaleDateString(), key);
     arr.push({
       title: value,
-      time: dayjs(
+      time: type === 'isTemp' ? dayjs(new Date(Number(key))).format("HH:mm") : dayjs(
         new Date(new Date().toLocaleDateString()).getTime() + Number(key)
       ).format("HH:mm"),
       key: key,
       status: "todo",
     });
   });
-  console.log(arr,'............11111.............typetype');
   
   return arr;
 };

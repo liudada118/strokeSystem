@@ -38,7 +38,47 @@
   .default-popup {
     display: flex;
     flex-direction: column;
-    height: 30rem;
+    height: 100%;
+    .nurse-temp-type-dropdown.adm-dropdown {
+      .adm-dropdown-nav {
+        border-bottom: 0px;
+      }
+      .adm-dropdown-item-title-arrow {
+        color: #1677ff;
+        font-size: 0.8rem;
+      }
+    }
+    .nurse-temp-type-dropdown-popup {
+      position: absolute;
+      top: 3rem;
+      left: 50%;
+      height: auto;
+      width: 70%;
+      border-radius: 1rem;
+      transform: translateX(-50%);
+      z-index: 3;
+      .adm-dropdown-popup {
+        position: unset;
+        .adm-popup-body.adm-dropdown-popup-body.adm-popup-body-position-top {
+          box-shadow: 0 6px 16px 0 rgba(0, 0, 0, 0.08),
+          0 3px 6px -4px rgba(0, 0, 0, 0.12),
+          0 9px 28px 8px rgba(0, 0, 0, 0.05);
+          border-radius: 0.5rem;
+        }
+        .adm-popup-body-position-top {
+          transform: translate(0px, 0%) !important;
+          .adm-dropdown-item-content {
+            border-radius: 0.5rem;
+            & > div {
+              p {
+                text-align: center;
+                font-size: 1rem;
+              }
+            }
+          }
+        }
+      }
+    }
   }
   .use_nurse_form.ant-form.ant-form-vertical {
     padding: 1rem;

@@ -179,7 +179,7 @@ export default function NursingPlan() {
                 navigate(`/edit_user_nurse`, { state: { sensorName, isEmpty: true } });
               }}
               style={{}}
-              className="mx-[1rem] h-[4rem]"
+              className="mx-[1rem] h-[3rem]"
             >
               创建护理计划
             </Button>

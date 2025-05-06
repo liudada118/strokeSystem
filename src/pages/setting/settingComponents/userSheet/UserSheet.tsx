@@ -39,11 +39,11 @@ export default function UserSheet(props: userSheetProps) {
             },
             data: {
                 superManager: obj.man,
-                nurseUser: obj.user,
+                organizeId: localStorage.getItem('organizeId'),
             }
         }).then((res) => {
 
-            if (res.data.msg == "success") {
+            if (res.data.msg == "data update success") {
                 message.success('同步成功')
             }
         })

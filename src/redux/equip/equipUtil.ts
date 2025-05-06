@@ -469,12 +469,38 @@ export function neatEquips({ equipArr }: neatEquipsProps): neatReturn {
  * @param equips 传入设备列表
  * @returns 返回电脑端 渲染列表数据
  */
+// export function initEquipPc(res: any) {
+//   const equips = JSON.parse(JSON.stringify(res));
+//   const total = equips.length;
+//   const newEquip: any = [];
+ 
+//   const pages = Math.ceil(total / 17); 
+//   for (let i = 0; i < pages; i++) {
+//     newEquip[i] = [];
+
+//     if (i === 0) {
+//       newEquip[i].push({ type: 'add' });
+//     }
+
+//     const numm=i==0 ? 17 : 18
+  
+//     const startIdx = i * numm;
+//     const endIdx = Math.min(startIdx + numm, total);
+    
+  
+//     for (let j = startIdx; j < endIdx; j++) {
+//       newEquip[i].push(equips[j]);
+//     }
+//   }
+//   return newEquip;
+// }
 export function initEquipPc(res: any) {
   const equips = JSON.parse(JSON.stringify(res));
   const total = equips.length;
   const newEquip: any = [];
  
   const pages = Math.ceil(total / 17); 
+  
   for (let i = 0; i < pages; i++) {
     newEquip[i] = [];
 
@@ -482,19 +508,33 @@ export function initEquipPc(res: any) {
       newEquip[i].push({ type: 'add' });
     }
 
-    const numm=i==0 ? 17 : 18
-  
+    const numm = i === 0 ? 17 : 18;
     const startIdx = i * numm;
     const endIdx = Math.min(startIdx + numm, total);
     
-  
+    // 当前页的元素集合
+    const pageItems = [];
     for (let j = startIdx; j < endIdx; j++) {
-      newEquip[i].push(equips[j]);
+      pageItems.push(equips[j]);
     }
+    
+    // 对当前页的元素进行排序，online 状态的元素排在最前面
+    const sortedItems = pageItems.sort((a, b) => {
+      if (a.status === 'online' && b.status !== 'online') {
+        return -1; // a 排在 b 前面
+      } else if (a.status !== 'online' && b.status === 'online') {
+        return 1; // a 排在 b 后面
+      } else {
+        return 0; // 保持原有顺序
+      }
+    });
+    
+    // 将排序后的元素添加到当前页
+    newEquip[i].push(...sortedItems);
   }
+  
   return newEquip;
 }
-
 type AlarmMap = {
   [key in string]: string;
 };

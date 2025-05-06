@@ -25,6 +25,7 @@ import addImg from '../../assets/image/add.jpg'
 import { initEquipPc } from "@/redux/equip/equipUtil";
 import { setHomeSelectValue, setHomeSelectType } from '../../redux/home/home'
 import HomeImg from '@/assets/image/hoemAdd.png'
+import { nurseOpen } from "@/redux/Nurse/Nurse";
 // import { setHomeSelectValue } from '../../redux/home/home'
 
 export default function Equip() {
@@ -79,7 +80,7 @@ export default function Equip() {
             url: netUrl + "/device/selectDeviceWithPatient",
             params: {
                 phoneNum: phone,
-                pageSize: 999,
+                pageSize: 500,
             },
             headers: {
                 "content-type": "application/x-www-form-urlencoded",
@@ -231,18 +232,22 @@ export default function Equip() {
                   `}
                                             onClick={() => {
                                                 if (item.type == 'large') {
+
                                                     navigate(`/report/0/${item.sensorName}`, {
                                                         state: {
                                                             person: item
                                                         },
                                                     });
+                                                        dispatch(nurseOpen(false))
                                                 }
                                                 else {
+
                                                     navigate(`/report/0/${item.sensorName}`, {
                                                         state: {
                                                             person: item
                                                         },
                                                     });
+                                                        dispatch(nurseOpen(false))
                                                 }
                                             }}
                                         >
@@ -321,11 +326,13 @@ export default function Equip() {
                             return (
                                 <div className={`equip`} key={item.sensorName}
                                     onClick={(e) => {
+
                                         navigate(`/report/0/${item.sensorName}`, {
                                             state: {
                                                 person: item
                                             },
                                         });
+                                        dispatch(nurseOpen(false))
                                     }}
                                 >
                                     {alarmInfo.length ?
@@ -381,18 +388,23 @@ export default function Equip() {
                                         className={`equipItem  ${stateToObj[onBedState(item)].class}`}
                                         onClick={() => {
                                             if (item.type == 'large') {
+
                                                 navigate(`/report/0/${item.sensorName}`, {
                                                     state: {
                                                         person: item
                                                     },
                                                 });
+                                                 dispatch(nurseOpen(false))
                                             }
                                             else {
+
                                                 navigate(`/report/0/${item.sensorName}`, {
                                                     state: {
                                                         person: item
                                                     },
                                                 });
+                                                  dispatch(nurseOpen(false))
+                                              
                                             }
                                         }}
                                     >

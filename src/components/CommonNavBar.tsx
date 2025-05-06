@@ -12,7 +12,7 @@ const CommonNavBar: (props: NavProps) => React.JSX.Element = (props) => {
 
         <>
             {/* <img src={img} style={{ width: "20px", height: "20px" }} alt="" /> */}
-            <NavBar className='fixed z-[99] w-full h-[3rem] bg-[#fff] text-base font-semibold top-0'  onBack={() => onBack()} style={{...props.style}}>{title}</NavBar>
+            <NavBar className='fixed z-[99] w-full h-[3rem] bg-[#fff] text-base font-semibold top-0' onBack={() => onBack()} style={{ ...props.style }}>{title}111</NavBar>
         </>
     )
 }

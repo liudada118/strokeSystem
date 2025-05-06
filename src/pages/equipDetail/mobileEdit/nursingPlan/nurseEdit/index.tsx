@@ -167,6 +167,11 @@ export default function NurseConfEdit(props: any) {
     console.log(e, info, '...............9999..........setTempListsetTempList');
   };
 
+  useEffect(() => {
+    const html = document.getElementsByTagName("html");
+    html[0].style.fontSize = '16px'
+  }, []);
+
   return (
 
     <div
@@ -270,7 +275,7 @@ export default function NurseConfEdit(props: any) {
                 ))}
               </Select> */}
               <Select
-                showSearch
+                showSearch={false}
                 placeholder="时"
                 optionFilterProp="children"
                 className="h-[2.5rem] flex justify-center"
@@ -297,7 +302,7 @@ export default function NurseConfEdit(props: any) {
               rules={[{ required: false, message: "请选择!" }]}
             >
               <Select
-                showSearch
+                showSearch={false}
                 placeholder="分"
                 optionFilterProp="children"
                 className="h-[2.5rem] flex justify-center"

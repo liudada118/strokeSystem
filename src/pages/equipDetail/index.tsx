@@ -166,7 +166,7 @@ const EquipDetail = () => {
         handleTabChange('nurse')
     }, [isGotoNursePage])
     const nurseOpen = useSelector((state: any) => state.nurse.open)
-
+    console.log(nurseOpen, '.........................nurseOpen');
 
     if (isMobile) {
         return (

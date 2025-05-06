@@ -551,12 +551,12 @@ export const PersonalContentInfo = (props: personalInfoParam) => {
   );
 };
 
-const hourArr = [3, 5, 10, 0];
+const hourArr = [...Array(61)];
 
 const timeIntervalColumns = [
-  hourArr.map((item) => ({
-    label: item === 0 ? "实时提醒" : `${item}分钟`,
-    value: item === 0 ? item : `${item}分钟`,
+  hourArr.map((item, index) => ({
+    label: index === 0 ? "实时提醒" : `${index}分钟后提醒`,
+    value: index === 0 ? index : `${index}分钟后提醒`,
   })),
 ];
 

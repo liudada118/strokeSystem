@@ -784,7 +784,7 @@ export default function DayReport() {
           </div>
 
         </div> : ''}
-        <div className="dayPc">
+        <div className="dayPc" style={{ ...(!dayReport ? { height: '40px' } : {}) }}>
           {/* {<div className="dayLeft">
             <LeftContent users={users} props={equipInfo} />
           </div>} */}

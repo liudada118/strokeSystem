@@ -72,7 +72,7 @@ export function RemindEdit() {
 
     let [formValue, setFormValue] = useState({
         timeRangeB: `${timePeriodInitFormat({ timeStamp: leaveBedStart || '', type: 'start' })} - ${timePeriodInitFormat({ timeStamp: leaveBedEnd, type: 'end' })} `,
-        timeIntervalB: leaveBedPeriod === 0 ? '实时提醒' : `${leaveBedPeriod}分钟`,
+        timeIntervalB: leaveBedPeriod === 0 ? '实时提醒' : `${leaveBedPeriod}分钟后提醒`,
         timeRangeC: `${timePeriodInitFormat({ timeStamp: situpStart, type: 'start' })} - ${timePeriodInitFormat({ timeStamp: situpEnd, type: 'end' })} `,
         timeRangeD: `${timePeriodInitFormat({ timeStamp: fallbedStart, type: 'start' })} - ${timePeriodInitFormat({ timeStamp: fallbedEnd, type: 'end' })} `,
         timeRangeE: `${timePeriodInitFormat({ timeStamp: sosStart, type: 'start' })} - ${timePeriodInitFormat({ timeStamp: sosEnd, type: 'end' })} `,
@@ -163,7 +163,7 @@ export function RemindEdit() {
             } = res.data.data
             setFormValue({
                 timeRangeB: `${timePeriodInitFormat({ timeStamp: leaveBedStart, type: 'start' })} - ${timePeriodInitFormat({ timeStamp: leaveBedEnd, type: 'end' })} `,
-                timeIntervalB: leaveBedPeriod === 0 ? '实时提醒' : `${leaveBedPeriod}分钟`,
+                timeIntervalB: leaveBedPeriod === 0 ? '实时提醒' : `${leaveBedPeriod}分钟后提醒`,
                 timeRangeC: `${timePeriodInitFormat({ timeStamp: situpStart, type: 'start' })} - ${timePeriodInitFormat({ timeStamp: situpEnd, type: 'end' })} `,
                 timeRangeD: `${timePeriodInitFormat({ timeStamp: fallbedStart, type: 'start' })} - ${timePeriodInitFormat({ timeStamp: fallbedEnd, type: 'end' })} `,
                 timeRangeE: `${timePeriodInitFormat({ timeStamp: sosStart, type: 'start' })} - ${timePeriodInitFormat({ timeStamp: sosEnd, type: 'end' })} `,

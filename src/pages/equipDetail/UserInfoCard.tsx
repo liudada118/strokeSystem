@@ -206,7 +206,7 @@ const UserInfoCard: (props: UserInfoCardProps) => React.JSX.Element = (props) =>
             mobileLabel: '年龄',
             key: 'age',
             // TODO
-            value: isMobile ? userInfo.age : userInfo.xxxxxx,
+            value: isMobile ? userInfo.age : userInfo.age,
             type: isMobile ? FormType.INPUT : FormType.INPUT_NUMBER,
             mobileType: isMobile ? FormType.INPUT : FormType.INPUT_NUMBER,
             placeholder: '请输入年龄',
@@ -450,8 +450,8 @@ const UserInfoCard: (props: UserInfoCardProps) => React.JSX.Element = (props) =>
                     </div>
                     {/* <img src={arrow} alt="" className='w-[8px] h-[12px] mb-[10px]'/> */}
                     <p style={{ fontSize: "20px" }} onClick={() => navigate(`/equipInfo/${sensorName}`)} >
-                            设置
-                        </p >
+                        设置
+                    </p >
                     {/* {
                         roleId == 1 && 2 ? <p style={{ fontSize: "20px" }} onClick={() => navigate(`/equipInfo/${sensorName}`)} >
                             设置
@@ -498,7 +498,7 @@ const UserInfoCard: (props: UserInfoCardProps) => React.JSX.Element = (props) =>
                     <div className='flex'>
                         <img src={userInfo.headImg ? userInfo.headImg : nullImg} alt="" className='w-[4rem] mr-[1.2rem] rounded-[6px]' />
                         <div className='flex flex-col justify-around md:justify-between'>
-                            <span className='text-sm font-semibold'>{userInfo.patientName}</span>
+                            <span className='text-sm font-semibold' >{userInfo.patientName}</span>
                             <span className='flex flex-wrap w-full'>
                                 {personalInfo.map(item => (
                                     <span key={item.id} className='text-sm w-[45%]'>

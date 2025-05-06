@@ -29,6 +29,11 @@ export default function NurseList(props: any) {
     },
   ];
 
+  useEffect(() => {
+    const html = document.getElementsByTagName("html");
+    html[0].style.fontSize = '16px'
+  }, []);
+
   return (
     <div className={'nurse_scroll'}>
       <div className={'nurse_list'}>

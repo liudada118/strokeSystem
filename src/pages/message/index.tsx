@@ -47,7 +47,25 @@ dayjs.extend(isBetween);
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;
-let currentCalendarValue = new Date();
+const getfirstOrLastDayOfMonth = (date: any, type: any) => {
+  let now = new Date(date);
+  if (type === 'first') {
+    now.setDate(1)
+  } else {
+    // 创建下个月第一天的日期对象
+    now = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+    if (new Date().getTime() < now.getTime()) {
+      now = new Date();
+    } else {
+      // 减去1天得到本月最后一天
+      now.setDate(now.getDate() - 1);
+    }
+  }
+
+
+  return now;
+}
+let currentCalendarValue = new Date()
 // const { Option } = Select;
 type RangePickerProps = GetProps<typeof DatePicker.RangePicker>;
 export interface message {
@@ -591,27 +609,40 @@ export default function Message() {
       }
     };
   }
-  const getNaturalMonthOffsetDates = (date: any, type?: any) => {
+  const getNaturalMonthOffsetDates = (date: any, type?: any, year?: any) => {
     const now = date;
 
     // 一个月后的今天（自然月）
     const nextMonth = new Date(now);
     nextMonth.setDate(1)
-    if (type === 'month') {
+    if (type === 'nextmonth') {
       nextMonth.setMonth(nextMonth.getMonth() + 1);
-    } else {
-      nextMonth.setFullYear(nextMonth.getFullYear() + 1);
     }
 
     // 前一个月的今天（自然月）
     let prevMonth = new Date(now);
     prevMonth.setDate(1)
-    if (type === 'month') {
+    if (type === 'premonth') {
       prevMonth.setMonth(prevMonth.getMonth() - 1);
-    } else {
-      prevMonth.setFullYear(prevMonth.getFullYear() + 1);
     }
+
+    let newYear = new Date(now);
+    newYear.setDate(1)
+    if (type === 'year') {
+      newYear.setFullYear(year);
+    }
+
+    // 前一个月的今天（自然月）
+    let nowMonth = new Date(now);
+    if (type === 'nowmonth') {
+      nowMonth.setDate(1)
+    }
+    console.log(newYear, '...........newYear..dataRange................................newYear.......')
     return {
+      year: {
+        date: newYear,
+        formatted: newYear.toLocaleDateString()
+      },
       nextMonth: {
         date: nextMonth,
         formatted: nextMonth.toLocaleDateString()
@@ -619,23 +650,30 @@ export default function Message() {
       prevMonth: {
         date: prevMonth,
         formatted: prevMonth.toLocaleDateString()
+      },
+      nowMonth: {
+        date: nowMonth,
+        formatted: nowMonth.toLocaleDateString()
       }
     };
   }
+
   const handlePrevMonth = () => {
-    currentCalendarValue = getNaturalMonthOffsetDates(currentCalendarValue, 'month').prevMonth.date
+    currentCalendarValue = getNaturalMonthOffsetDates(currentCalendarValue, 'premonth').prevMonth.date
     setCurrentMonth(currentMonth1.subtract(1, 'month'));
   };
   const handlePrevYear = () => {
-    currentCalendarValue = new Date(currentMonth1.subtract(1, 'year').valueOf())
+    // currentCalendarValue = getNaturalMonthOffsetDates(currentCalendarValue, 'preyear').prevMonth.date
+    console.log(currentCalendarValue, '...........currentCalendarValue.......prepreprepre...')
     setCurrentMonth(currentMonth1.subtract(1, 'year'));
   };
   const handleNextMonth = () => {
-    currentCalendarValue = getNaturalMonthOffsetDates(currentCalendarValue, 'month').nextMonth.date
+    currentCalendarValue = getNaturalMonthOffsetDates(currentCalendarValue, 'nextmonth').nextMonth.date
     setCurrentMonth(currentMonth1.add(1, 'month'));
   };
   const handleNextYear = () => {
-    currentCalendarValue = new Date(currentMonth1.add(1, 'year').valueOf())
+    // currentCalendarValue = getNaturalMonthOffsetDates(currentCalendarValue, 'nextyear').nextMonth.date
+    console.log(currentCalendarValue, '...........currentCalendarValue.......nextnextnextnext...........')
     setCurrentMonth(currentMonth1.add(1, 'year'));
   };
   const prevMonthButton = <img style={{ width: "1.5rem", height: "1.5rem", }} src={yue} onClick={handlePrevMonth} alt="" />;
@@ -1184,19 +1222,28 @@ export default function Message() {
               <div className="customStyle">
                 <Calendar
                   defaultValue={new Date()}
-                  renderDate={renderDate}
+                  // renderDate={renderDate}
                   className={`calendar-set-box`}
                   selectionMode="single"
                   allowClear
                   max={new Date()}
                   min={new Date(1900, 0, 1)}
-                  prevMonthButton={prevMonthButton}
-                  prevYearButton={prevYearButton}
-                  nextMonthButton={nextMonthButton}
-                  nextYearButton={nextYearButton}
+                  // max={getfirstOrLastDayOfMonth(currentCalendarValue, 'last')}
+                  // min={getfirstOrLastDayOfMonth(currentCalendarValue, 'first')}
+                  // prevMonthButton={prevMonthButton}
+                  // prevYearButton={prevYearButton}
+                  // nextMonthButton={nextMonthButton}
+                  // nextYearButton={nextYearButton}
+                  // onPageChange={(dataRange: any) => {
+                  //   console.log('dataRange...........................', dataRange)
+                  //   currentCalendarValue = getNaturalMonthOffsetDates(currentCalendarValue, 'year', dataRange).year.date
+                  // }}
                   onChange={(dataRange: any) => {
+                    if (!dataRange) return
                     const date = new Date(dataRange)
                     const dateStr = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`
+
+                    currentCalendarValue = getNaturalMonthOffsetDates(dataRange, 'nowmonth').nowMonth.date
                     if (chooseTimeType === 'start') {
                       const hourse = dayjs(timeList[0]).format('HH:mm')
                       const date = `${dateStr} ${hourse}`

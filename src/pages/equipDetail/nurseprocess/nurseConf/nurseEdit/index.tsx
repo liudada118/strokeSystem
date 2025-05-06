@@ -300,7 +300,8 @@ export default function NurseConfEdit(props: any) {
               <div className="time_item h-10">
                 <div>
                   <Select
-                    showSearch
+
+                    showSearch={false}
                     placeholder="时"
                     optionFilterProp="children"
                     className="h-[2.5rem] flex justify-center"
@@ -323,7 +324,7 @@ export default function NurseConfEdit(props: any) {
                 <span className="split"> : </span>
                 <div>
                   <Select
-                    showSearch
+                    showSearch={false}
                     placeholder="分"
                     optionFilterProp="children"
                     className="h-[2.5rem] flex justify-center"

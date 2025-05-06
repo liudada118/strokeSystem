@@ -1996,7 +1996,7 @@ export default function Setting() {
                 <div className="loginOutButton">退出登录</div>
 
               </div>
-              <Button type='primary' disabled className='w-[244px] h-[41px] mt-2 bg-[#46B9FF]'>版本号 2.0 1</Button>
+              <Button type='primary' disabled className='w-[244px] h-[41px] mt-2 bg-[#46B9FF]'>版本号 2.0 2</Button>
             </div>
             <div className="contentBox">
               {

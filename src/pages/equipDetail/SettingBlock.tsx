@@ -22,7 +22,7 @@ import { Instancercv, netUrl, instance } from "@/api/api";
 import axios from "axios";
 import { DataContext } from ".";
 import { unbindHheDevice } from "../../api/index";
-import { nurseOpen } from "../../redux/Nurse/Nurse";
+import { nurseOpen, nurseHomeOnChlick } from "../../redux/Nurse/Nurse";
 import { setIsGotoNursePage } from "../../redux/Nurse/Nurse";
 import { fetchEquips } from '../../redux/equip//equipSlice'
 
@@ -436,32 +436,38 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
                   label: "设置提醒时间",
                   key: "timeIntervalB",
                   value: leaveBedPeriod,
-                  type: FormType.RADIO,
+                  type: FormType.RADIO_CASCADE,
                   children: [
-                    {
-                      id: "3min",
-                      value: 3,
-                      label: "3分钟",
-                    },
-                    {
-                      id: "5min",
-                      value: 5,
-                      label: "5分钟",
-                    },
-                    {
-                      id: "10min",
-                      value: 10,
-                      label: "10分钟",
-                    },
+                    // {
+                    //   id: "3min",
+                    //   value: 3,
+                    //   label: "3分钟",
+                    // },
+                    // {
+                    //   id: "5min",
+                    //   value: 5,
+                    //   label: "5分钟",
+                    // },
+                    // {
+                    //   id: "10min",
+                    //   value: 10,
+                    //   label: "10分钟",
+                    // },
                     {
                       id: "实时提醒",
                       value: 0,
                       label: "实时提醒",
                     },
+                    {
+                      id: "定期提醒",
+                      value: userInfo.leaveBedPeriod === 0 ? 999 : userInfo.leaveBedPeriod,
+                      label: "定期提醒",
+                    },
                   ],
                 },
               ]}
               onFinish={(values) => {
+                console.log('999999999999', values)
                 // setTimeIntervalB(values.timeIntervalB)
                 changeValueToUserInfo(values);
                 setAlarmParamChange(true);
@@ -684,6 +690,8 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
   };
 
   const handleSettingCompleted = () => {
+    console.log('.................................handleSettingCompleted');
+
     // nurseParam?: NurseParam
     // leaveParam?: leaveParam
     // alarmParam?: alarmParam
@@ -859,13 +867,15 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
     message.info("取消成功");
   };
   const [switchOpen, setSwitchOpen] = useState(false);
-  const [switchOpenValue, setSwitchOpenValue] = useState(0);
+  const [switchOpenValue, setSwitchOpenValue] = useState<any>(0);
   const isOpen = () => {
     setSwitchOpen(true);
   };
   // const roleId: any = localStorage.getItem('roleId')
   const onBlurShezhi = () => {
-    if (!switchOpenValue) return message.info("离床参数不能为空不能为空");
+
+    if (switchOpenValue.length > 4) return message.info("只能1到199数字");
+    if (!/^(0|[1-9]\d?|1\d{2}|200)$/.test(switchOpenValue)) return message.info("离床参数只能是数字，1到199,");
     if (switchOpenValue) {
       try {
         Instancercv({
@@ -971,14 +981,25 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
             className="text-base text-[#32373E] ml-[0.4rem]"
             style={{ fontWeight: "600" }}
           >
-            离床参数 <span className="mr-[3rem]">{switchOpenValue}</span>
+            离床参数 <span className="mr-[3rem] " style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{switchOpenValue}</span>
           </span>
           {switchOpen ? (
             <Input
+              maxLength={5}
               value={switchOpenValue}
               placeholder="请输入"
               onBlur={onBlurShezhi}
-              onChange={(val: any) => setSwitchOpenValue(val.target.value)}
+              onChange={(val: any) => {
+                const inputValue: any = val.target.value;
+
+
+
+                if (!/^[^\u4e00-\u9fa5]{1,10}$/g.test(inputValue)) {
+                  setSwitchOpenValue('')
+                  return message.info("请输入数字");
+                }
+                setSwitchOpenValue(inputValue)
+              }}
               className="w-[4rem] mr-[2rem]"
             ></Input>
           ) : (
@@ -993,7 +1014,8 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
         </div>
       ) : (
         ""
-      )}
+      )
+      }
       {/* {renderFooterBtn()} */}
       <CommonTitle name={"健康配置"} type="square" />
       {/* <div className='bg-[#fff] mb-[10px] p-[10px] px-[0.8rem] flex justify-between items-center'>
@@ -1081,7 +1103,7 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
           ))}
         </div>
       </div>
-    </div>
+    </div >
   );
 };
 
@@ -1117,8 +1139,9 @@ const SettingMoDal = (props: any) => {
   const navigate = useNavigate();
   const openOnCkick = () => {
     if (!(roleId == 1 || roleId == 2 || roleId == 0)) return message.info("暂无权限");
-    setOpen(true);
+    // setOpen(true);
     dispatch(nurseOpen({ nurseOpen: true }));
+    // dispatch(nurseOpen({ nurseHomeOnChlick: true })); 
     // let regex: any = /\/1\//;
     // const match = location.pathname.match(regex);
     // if (!match) {

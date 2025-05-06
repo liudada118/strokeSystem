@@ -127,7 +127,7 @@ function Recording(props: proprsType) {
                         <TimePicker disabled={props.type === '记录护理项目'} popupClassName="time_picker_box" placeholder='请输入时间' format={format} />
                     </Form.Item>
                     <Form.Item name="uploadImage" label="上传图片:" labelCol={{ style: { fontWeight: "600", fontSize: "0.8rem", marginRight: "1rem" } }}
-                        rules={[{ required: true, message: '请上传图片!' }]}
+                    // rules={[{ required: true, message: '请上传图片!' }]}
                     >
                         <div
                             className="img"

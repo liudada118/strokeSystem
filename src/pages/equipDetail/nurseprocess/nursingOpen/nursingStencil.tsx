@@ -104,7 +104,7 @@ function NursingStencil(props: propsType) {
             <Modal title="返回项目" okText='不保存' open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
                 <div className='flex justify-center items-center flex-col'>
                     <p className='text-[#3D3D3D] text-[0.85rem] mb-[0.1rem]'>该模版尚未保存</p>
-                    <p className='text-[#8794A1]'>返回清空护理计划</p>
+                    <p className='text-[#8794A1]'>返回将不保存此次编辑的内容</p>
                 </div>
             </Modal>
             <div className='w-full mb-[1rem] '>

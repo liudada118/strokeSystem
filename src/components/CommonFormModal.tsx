@@ -26,7 +26,8 @@ export enum FormType {
     PHONE = 'PHONE',
     ADDRESS = 'ADDRESS',
     SICKNESS = 'SICKNESS',
-    INPUT_NUMBER = 'INPUT_NUMBER'
+    INPUT_NUMBER = 'INPUT_NUMBER',
+    RADIO_CASCADE = 'RADIO_CASCADE'
 }
 type CommonFormItem = {
     label: string;
@@ -48,10 +49,13 @@ interface CommonFormModalProps {
     updateName?: Boolean
 }
 const CommonFormModal: (props: CommonFormModalProps) => React.JSX.Element = (props) => {
+    const [form] = Form.useForm();
+
     const { open, close, formList, title, onFinish, imgChange, sensorName, updateName } = props
     const [timeStart, setTimeStart] = useState<number>(0)
     const [timeEnd, setTimeEnd] = useState<number>(0)
     const [spinning, setSpinning] = React.useState<boolean>(false);
+    const [leaveType, setLeaveType] = React.useState<any>(-1);
 
 
     const [year, setYear] = useState(2023);
@@ -62,16 +66,35 @@ const CommonFormModal: (props: CommonFormModalProps) => React.JSX.Element = (pro
     const checkFutureDate = (yearValue: any, monthValue: any, dayValue: any) => {
         const selectedDate = new Date(yearValue, monthValue - 1, dayValue);
         const today = new Date();
-        console.log(selectedDate, today, '...............................selectedDateselectedDateselectedDate');
-
         if (selectedDate > today) {
             return message.info('所选日期不能大于当前日期'); // 提示用户  
         }
     };
     const handleFinish = (values: any) => {
+        console.log(values, '...............roomNum');
+        // return
         if (updateName) {
-            if (!(values.patientName && values.roomNum && values.sex && values.telephone && values.address)) {
-                return message.info('请完善信息')
+            if (values.patientName == '' && values.age == '') {
+                console.log('...........qwer');
+                return message.info('姓名和年龄不能为空')
+            }
+            if (values.patientName.length > 20 && values.patientName) {
+                return message.info('姓名不能超过20个字符')
+            }
+            if (values.roomNum && values.roomNum.length > 20) {
+                return message.info('床号不能超过20个字符')
+            }
+            if (values.age && !/^(0|[1-9]\d?|1\d{2}|200)$/.test(values.age)) {
+                return message.info('请检查年龄不能大于200岁,必须是数字不能有其他字符')
+            }
+            if (values.address && values.address.length >= 20) {
+                return message.info('联系地址不能超过20个字符');
+            }
+            if (values.medicalHistory && values.medicalHistory.length >= 100) {
+                return message.info('既往病例不能100个字符')
+            }
+            if (values.telephone && values.telephone > 11 && !/^1[3456789]\d{9}$/.test(values.telephone)) {
+                return message.info('检查手机号是否正确，手机号不能超过11位')
             }
             let age = values.age
             const today = new Date();
@@ -80,17 +103,13 @@ const CommonFormModal: (props: CommonFormModalProps) => React.JSX.Element = (pro
                 age = new Date(age);
                 age = age.getFullYear() - 1970
             }
-            console.log(age, '.......age..........selectedDateselectedDateselectedDate');
             const selectedDate = new Date(year, month - 1, day);
             if (today < selectedDate) {
                 return message.info('所选日期不能大于当前日期');
             }
-
-
             axios({
                 method: "post",
                 url: netUrl + "/device/update",
-
                 headers: {
                     "content-type": "application/x-www-form-urlencoded",
                     "token": localStorage.getItem('token')
@@ -99,12 +118,13 @@ const CommonFormModal: (props: CommonFormModalProps) => React.JSX.Element = (pro
                     deviceId: sensorName,
                     "headImg": headImg ? headImg : values.headImg,
                     "patientName": values.patientName,
-                    "age": age === 0 && -1 ? 1 : age, // '2025-3-1'
+                    // "age": age === 0 && -1 ? 1 : age, // '2025-3-1'
+                    "age": values.age ? values.age : '',
                     "roomNum": values.roomNum,
-                    "sex": values.sex,
+                    "sex": values.sex == 1 ? 1 : 0,
                     "telephone": values.telephone,
                     "address": values.address,
-                    "medicalHistory": values.medicalHistory,
+                    "medicalHistory": values.medicalHistory ? values.medicalHistory : '',
                 },
             }).then((res) => {
                 if (res.data.msg == 'update success') {
@@ -113,14 +133,15 @@ const CommonFormModal: (props: CommonFormModalProps) => React.JSX.Element = (pro
                 }
             });
         }
-
-
         const _values = { ...values }
         formList.forEach((item) => {
             if (item.type === 'TIME_RANGE') {
                 _values[item.key] = `${timeStart}-${timeEnd}`
             } else if (item.type === 'TIME_SINGLE_TIME') {
                 _values[item.key] = `${timeStart}`
+            } else if (item.type === 'RADIO_CASCADE') {
+                _values[item.key] = values.timeIntervalB !== 0 ? values.timeIntervalB_copy || values.timeIntervalB : 0
+                delete _values.timeIntervalB_copy
             }
         })
         close()
@@ -163,12 +184,12 @@ const CommonFormModal: (props: CommonFormModalProps) => React.JSX.Element = (pro
         })
         setInitialValues(initialValues)
     }, [formList])
-
     const renderFormItem = (list: CommonFormItem[] | ComplexForm[],) => {
         return (
             <Fragment>
                 <Spin className="spin" spinning={spinning} fullscreen />
                 {list.map((item) => {
+                    console.log(item, '................gggggggghhhhhh');
 
                     switch (item.type) {
                         case 'SELECT':
@@ -193,7 +214,9 @@ const CommonFormModal: (props: CommonFormModalProps) => React.JSX.Element = (pro
                             return <></>
                         case 'INPUT':
                             return (
-                                <Form.Item label={item.label} name={item.key} key={item.key}>
+                                <Form.Item label={item.label} name={item.key} key={item.key}
+                                    rules={[{ required: item.key == 'patientName' ? true : false, message: item.key == 'patientName' ? '请输入姓名' : '' }]}
+                                >
                                     <Input value={item.value} placeholder={(item as InputForm).placeholder} />
                                 </Form.Item>
                             )
@@ -206,6 +229,26 @@ const CommonFormModal: (props: CommonFormModalProps) => React.JSX.Element = (pro
                                         ))}
                                     </Radio.Group>
                                 </Form.Item>
+                            )
+                        case 'RADIO_CASCADE':
+                            // setLeaveType(item.value)
+                            return (
+                                <div className="radio_cascade" style={{ display: 'flex', alignItems: 'center' }}>
+                                    <Form.Item label={item.label} name={item.key} key={item.key} className="w-[16rem]" style={{ transform: 'translateY(-17px)' }}>
+                                        <Radio.Group value={item.value} className='flex flex-wrap w-[100]' onChange={(e: any) => setLeaveType(e.target.value)}>
+                                            {(item as ComplexForm).children.map((_item) => (
+                                                <Radio className='w-[9rem] mt-[0.4rem]' key={_item.id} value={_item.value}>{_item.label}</Radio>
+                                            ))}
+                                        </Radio.Group>
+                                    </Form.Item>
+                                    {
+                                        <div style={{ display: 'flex', alignItems: 'center' }}>
+                                            <Form.Item name={'timeIntervalB_copy'} key={item.key} className='mr-[0.5rem]'>
+                                                <InputNumber min={0} max={60} defaultValue={item.value} style={{ width: 80 }} disabled={((leaveType === -1 && item.value === 0) || leaveType === 0)} />
+                                            </Form.Item>分钟后提醒
+                                        </div>
+                                    }
+                                </div>
                             )
                         case 'TIME_RANGE':
                             const valueTime = (item.value as string)?.split('-')
@@ -221,77 +264,90 @@ const CommonFormModal: (props: CommonFormModalProps) => React.JSX.Element = (pro
 
                         case 'INPUT_NUMBER':
                             return (
-                                <Form.Item label={item.label} name={item.key} key={item.key} className='flex items-center input_number_reset'>
-                                    {/* <InputNumber min={1900} max={2025} controls={true} style={{ marginRight: '10px' }} />年
-                                    <InputNumber min={1} max={12} defaultValue={1} style={{ margin: '0 10px' }} controls />月
-                                    <InputNumber min={1} max={30} defaultValue={1} style={{ margin: '0 10px' }} controls />日 */}
-                                    <div className="date-input-item">
-                                        <InputNumber
-                                            value={year}
-                                            onChange={(e) => {
-                                                setYear(e as number)
-                                                checkFutureDate(e, month, day);
-                                            }}
-                                            min={1900}
-                                            max={2100}
-                                            controls={false}
-                                            disabled
-
-                                        />
-                                        <div className="btn-box">
-                                            <span onClick={() => setYear((prevMonth) => Math.min(2025, prevMonth + 1))}>▲</span>
-                                            <span onClick={() => setYear((prevMonth) => Math.max(1900, prevMonth - 1))}>▼</span>
-                                            {/* <span onClick={() => setYear(year + 1)}>▲</span>
-                                            <span onClick={() => setYear(year - 1)}>▼</span> */}
-                                        </div>
-                                    </div>
-                                    年
-                                    <div className="date-input-item">
-                                        <InputNumber
-                                            value={month}
-                                            onChange={(e) => {
-                                                setMonth(e as number)
-                                                checkFutureDate(year, e, day)
-                                            }}
-                                            min={1}
-                                            max={12}
-                                            controls={false}
-                                            disabled
-                                        />
-                                        <div className="btn-box">
-                                            <span onClick={() => {
-                                                console.log("Increasing month from", month);
-                                                setMonth((prevMonth) => Math.min(12, prevMonth + 1));
-                                            }}>▲</span>
-                                            <span onClick={() => {
-                                                console.log("Decreasing month from", month);
-                                                setMonth((prevMonth) => Math.max(1, prevMonth - 1));
-                                            }}>▼</span>
-                                        </div>
-                                    </div>
-                                    月
-                                    <div className="date-input-item">
-                                        <InputNumber
-                                            value={day}
-                                            onChange={(e) => {
-                                                setDay(e as number)
-                                                checkFutureDate(year, month, e)
-                                            }}
-                                            min={1}
-                                            max={31} // 可以根据月份变化调整  
-                                            controls={false}
-                                            disabled
-
-                                        />
-                                        <div className="btn-box">
-                                            <span onClick={() => setDay((prevMonth) => Math.min(31, prevMonth + 1))}>▲</span>
-                                            <span onClick={() => setDay((prevMonth) => Math.max(1, prevMonth - 1))}>▼</span>
-
-                                        </div>
-                                    </div>
-                                    日
+                                <Form.Item label={item.label} name={item.key} key={item.key} className=''
+                                    rules={[{ required: true, message: '请输入年龄' }]}
+                                >
+                                    <Input value={item.value} placeholder={(item as InputForm).placeholder} />
                                 </Form.Item>
                             )
+                        // return (
+                        //     <Form.Item label={item.label} name={item.key} key={item.key} className='flex items-center input_number_reset'>
+                        //         {/* <InputNumber min={1900} max={2025} controls={true} style={{ marginRight: '10px' }} />年
+                        //         <InputNumber min={1} max={12} defaultValue={1} style={{ margin: '0 10px' }} controls />月
+                        //         <InputNumber min={1} max={30} defaultValue={1} style={{ margin: '0 10px' }} controls />日 */}
+                        //      <div>
+                        //      <div className="date-input-item">
+                        //             <InputNumber
+                        //                 className="InputNumbernameUser"
+                        //                 value={year}
+                        //                 onChange={(e) => {
+                        //                     setYear(e as number)
+                        //                     checkFutureDate(e, month, day);
+                        //                 }}
+                        //                 min={1900}
+                        //                 max={2100}
+                        //                 controls={false}
+                        //                 disabled
+
+                        //             />
+                        //             <div className="btn-box">
+                        //                 <span onClick={() => setYear((prevMonth) => Math.min(2025, prevMonth + 1))}>▲</span>
+                        //                 <span onClick={() => setYear((prevMonth) => Math.max(1900, prevMonth - 1))}>▼</span>
+                        //                 {/* <span onClick={() => setYear(year + 1)}>▲</span>
+                        //                 <span onClick={() => setYear(year - 1)}>▼</span> */}
+                        //             </div>
+                        //         </div>
+                        //         年
+                        //         <div className="date-input-item">
+                        //             <InputNumber
+                        //                 className="InputNumbernameUser"
+                        //                 value={month}
+                        //                 onChange={(e) => {
+                        //                     setMonth(e as number)
+                        //                     checkFutureDate(year, e, day)
+                        //                 }}
+                        //                 min={1}
+                        //                 max={12}
+                        //                 controls={false}
+                        //                 disabled
+                        //             />
+                        //             <div className="btn-box">
+                        //                 <span onClick={() => {
+                        //                     console.log("Increasing month from", month);
+                        //                     setMonth((prevMonth) => Math.min(12, prevMonth + 1));
+                        //                 }}>▲</span>
+                        //                 <span onClick={() => {
+                        //                     console.log("Decreasing month from", month);
+                        //                     setMonth((prevMonth) => Math.max(1, prevMonth - 1));
+                        //                 }}>▼</span>
+                        //             </div>
+                        //         </div>
+                        //         月
+                        //         <div className="date-input-item">
+                        //             <InputNumber
+                        //                 className="InputNumbernameUser"
+                        //                 value={day}
+                        //                 onChange={(e) => {
+                        //                     setDay(e as number)
+                        //                     checkFutureDate(year, month, e)
+                        //                 }}
+                        //                 min={1}
+                        //                 max={31} // 可以根据月份变化调整  
+                        //                 controls={false}
+                        //                 disabled
+
+                        //             />
+                        //             <div className="btn-box">
+                        //                 <span onClick={() => setDay((prevMonth) => Math.min(31, prevMonth + 1))}>▲</span>
+                        //                 <span onClick={() => setDay((prevMonth) => Math.max(1, prevMonth - 1))}>▼</span>
+
+                        //             </div>
+                        //         </div>
+                        //         日
+                        //      </div>
+                        //     </Form.Item>
+                        // )
+
                         // case 'TIME_RANGE':
                         //     // console.log(item.value?.split('-')[0], 'item')
                         //     return (
@@ -320,14 +376,11 @@ const CommonFormModal: (props: CommonFormModalProps) => React.JSX.Element = (pro
                                             <div className="img" style={{
                                                 background: `url(${headImg ? headImg : item.value ? item.value : nullImg
                                                     })  center center / cover no-repeat`, cursor: 'pointer'
-
                                             }}></div>
-
                                             {/* <div style={{ color: '#3662EC', fontSize: '0.9rem', marginLeft: '0.5rem', }}>修改头像</div> */}
                                             {/* <img src={showUserinfo.img} alt="" /> */}
-
                                             <input type="file" name="img" style={{ opacity: 0, position: 'absolute', width: '100%', height: '100%', left: 0 }} id="img" onChange={(e) => {
-                                                setSpinning(true);     
+                                                setSpinning(true);
                                                 if (e.target.files) {
                                                     // res.then((e) => {})
                                                     // setImgFile(e.target.files[0])
@@ -369,7 +422,7 @@ const CommonFormModal: (props: CommonFormModalProps) => React.JSX.Element = (pro
                             return null;
                     }
                 })}
-            </Fragment>
+            </Fragment >
         )
     }
     return (

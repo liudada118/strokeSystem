@@ -1,6 +1,6 @@
 
 import mqtt from 'mqtt/dist/mqtt';
-import { exChangeText, HOST, PORT } from './constant';
+import { exChangeText, HOST, PORT, reloadWebview } from './constant';
 import { createTimer, mqttConnect } from '../mqtt/mqttSlice';
 // import { alarmJudge, ALARMTYPE } from './alarmUtil';
 import { findAlarmSwitch, findAlarmToCatch, initEquipPc, neatEquips, returnRealAlarm, alarmJudge, ALARMTYPE } from '../equip/equipUtil';
@@ -65,8 +65,8 @@ const MqttMiddleware = (storeApi: any) => (next: any) => (action: any) => {
             connectTimeout: 5 * 1000,
             rejectUnauthorized: false,
             clientId: phone + new Date().getTime(),
-            username : 'web',
-            password : 'public'
+            username: 'web',
+            password: 'public'
         };
 
         const client = mqtt.connect(`wss://${HOST}:${PORT}/mqtt`, options);
@@ -96,13 +96,17 @@ const MqttMiddleware = (storeApi: any) => (next: any) => (action: any) => {
         client.on("offline", (errr: any) => {
             // console.log("Offline");
             // if(Andriod as any) Andriod.reloadwebview()
-            console.log('mqttOffline')
-            const u = window.navigator.userAgent
-            if (u.indexOf('Android') > -1 || u.indexOf('Adr') > -1) {
-                eval(`Android.reloadWebView();`)
-            }
+            // console.log('mqttOffline')
+            // const u = window.navigator.userAgent
+            // if (u.indexOf('Android') > -1 || u.indexOf('Adr') > -1) {
+            //     eval(`Android.reloadWebView();`)
+            // }
+            reloadWebview()
         });
-        client.on("close", function () { });
+        client.on("close", function () {
+            console.log("mqttClose")
+            reloadWebview()
+        });
         client.on("disconnect", function (packet: any) { });
 
         let timer = setInterval(() => {
@@ -287,7 +291,7 @@ function message({ payload, storeApi, data }: any) {
                             type: ALARMTYPE.sitBed.type,// 'sitBed',
                             voiceText: ALARMTYPE.sitBed.text,// '坐起提醒'
                         },
-                        
+
                         {
                             flag: nurse,
                             type: ALARMTYPE.nurse.type,// 'sitBed',

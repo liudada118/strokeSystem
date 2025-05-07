@@ -20,7 +20,6 @@ const textMap: { [key: string]: string } = {
 export function exChangeText(str : string){
     
     let strArr = str.split('').map((a : string) => {
-        console.log(a)
         if(Object.keys(textMap).includes(a)){
             return textMap[a]
         }else{
@@ -29,4 +28,15 @@ export function exChangeText(str : string){
     })
 
     return strArr.join('')
+}
+
+export function reloadWebview(){
+    try {
+        const u = window.navigator.userAgent
+        if (u.indexOf('Android') > -1 || u.indexOf('Adr') > -1) {
+            eval(`Android.reloadWebView();`)
+        }
+    } catch (err) {
+        console.log(err)
+    }
 }

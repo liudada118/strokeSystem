@@ -1,6 +1,6 @@
 
 import mqtt from 'mqtt/dist/mqtt';
-import { HOST, PORT } from './constant';
+import { exChangeText, HOST, PORT } from './constant';
 import { createTimer, mqttConnect } from '../mqtt/mqttSlice';
 // import { alarmJudge, ALARMTYPE } from './alarmUtil';
 import { findAlarmSwitch, findAlarmToCatch, initEquipPc, neatEquips, returnRealAlarm, alarmJudge, ALARMTYPE } from '../equip/equipUtil';
@@ -323,7 +323,12 @@ function message({ payload, storeApi, data }: any) {
 
                                 // console.log(first)
 
-                                newVoiceExample.voicePush(`${item.roomNum}号床${alarmRule.voiceText}`, `${item.roomNum}号床${alarmRule.voiceText}`)
+                                const voiceText = exChangeText(`${item.roomNum}号床${alarmRule.voiceText}`)
+
+
+                                newVoiceExample.voicePush(voiceText, voiceText)
+
+                                // newVoiceExample.voicePush(`${item.roomNum}号床${alarmRule.voiceText}`, `${item.roomNum}号床${alarmRule.voiceText}`)
                             }
                         }
 
@@ -358,7 +363,10 @@ function message({ payload, storeApi, data }: any) {
 
                                     // console.log(first)
 
-                                    newVoiceExample.voicePush(`${item.roomNum}号床${alarmRule.voiceText}`, `${item.roomNum}号床${alarmRule.voiceText}`)
+                                    const voiceText = exChangeText(`${item.roomNum}号床${alarmRule.voiceText}`)
+
+
+                                    newVoiceExample.voicePush(voiceText, voiceText)
                                     // sosArrOver = arr
                                     // setSosArr(arr)
                                     riskArr[alarmRule.type].push(item.sensorName)

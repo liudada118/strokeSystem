@@ -195,6 +195,8 @@ export function RemindEdit() {
 
         }
     }
+    console.log(pickerInfo.columns, '..................pickerInfocolumns');
+
     const formatSetting = (formValue: any) => {
         let obj = {}
         const newValue = {
@@ -306,6 +308,8 @@ export function RemindEdit() {
                 title={pickerInfo.title}
                 value={pickerInfo.value}
                 onConfirm={v => {
+                    console.log(v, '.....................zxczxc');
+
                     const result = v.length > 1 ? `${v[0]}:${v[1]} - ${v[2]}:${v[3]}` : v[0]
                     console.log(v)
                     submitCloud({

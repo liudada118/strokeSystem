@@ -68,7 +68,6 @@ interface alarmType {
   cloudAlarmName: string;
   cloudSwitchName: string;
 }
-
 // 所有告警类型
 export type alarmtype = "sitBed" | "dropBed" | "onBed" | "sos" | "nurse";
 export type alarmSwitchType =
@@ -87,18 +86,15 @@ interface onBedType {
   getFlag: boolean;
   alarm: any;
 }
-
 interface alarmJudge extends onBedType {
   onBedValue: number;
   alarmArrName: any;
   type: string;
 }
-
 interface alarmBase {
   item: equip;
   type: string;
 }
-
 /**
  * 判断服务器缓存是否需要报警提醒
  * 开关没打开不报警
@@ -107,7 +103,6 @@ interface alarmBase {
  * @param param0
  * @returns
  */
-
 /**
  *
  * @param param0 start 开始时间戳， end 结束时间戳
@@ -169,7 +164,6 @@ export function alarmJudgeBase({ item, type }: alarmBase) {
   }
   return true;
 }
-
 /**
  * 判断实时状态是否需要报警提醒
  * @param param0 item 设备信息 ,getFlag 服务器报警请求成功flag, alarm 报警开关数组,onBedValue 该报警对应的item.onbed值是什么类型,alarmArrName报警数组

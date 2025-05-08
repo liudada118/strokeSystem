@@ -460,7 +460,7 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
                     },
                     {
                       id: "定期提醒",
-                      value: userInfo.leaveBedPeriod === 0 ? 999 : userInfo.leaveBedPeriod,
+                      value: userInfo.leaveBedPeriod === 0 ? 0 : userInfo.leaveBedPeriod,
                       label: "定期提醒",
                     },
                   ],
@@ -625,7 +625,7 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
               onFinish={(values) => {
                 console.log(
                   values,
-                  "................................9999999999999.......changeValueToUserInfo"
+
                 );
                 // setTimeRangeD(values.timeRangeD)
                 changeValueToUserInfo(values);
@@ -688,10 +688,7 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
     setEditing(true);
     onModify(true);
   };
-
   const handleSettingCompleted = () => {
-    console.log('.................................handleSettingCompleted');
-
     // nurseParam?: NurseParam
     // leaveParam?: leaveParam
     // alarmParam?: alarmParam
@@ -707,14 +704,12 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
       };
       // obj.phone = phone
     }
-
     // if (userNurseChange) {
     //     obj.nurseParam = {
     //         nurseStart, nurseEnd, nursePeriod, injuryAlarm,
     //         deviceId: sensorName
     //     }
     // }
-
     if (userAlarmParamChange) {
       obj.alarmParam = {
         fallbedStart,
@@ -741,7 +736,6 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
         deviceId: sensorName,
       };
     }
-
     if (
       props.userInfoChange ||
       userAlarmParamChange ||
@@ -750,7 +744,6 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
       console.log("dispatch");
       dispatch(changeEquipAllInfo(obj));
     }
-
     if (userNurseChange) {
       console.log(nurseformValue, "34444444");
       submitCloud({
@@ -758,7 +751,6 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
         switchA: !!injuryAlarm,
       });
     }
-
     setNurseChange(false);
     setAlarmParamChange(false);
     setLeaveBedParamChange(false);
@@ -874,8 +866,8 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
   // const roleId: any = localStorage.getItem('roleId')
   const onBlurShezhi = () => {
 
-    if (switchOpenValue.length > 4) return message.info("只能1到199数字");
-    if (!/^(0|[1-9]\d?|1\d{2}|200)$/.test(switchOpenValue)) return message.info("离床参数只能是数字，1到199,");
+    if (switchOpenValue.length > 4) return message.info("只能0到99数字");
+    if (!/^(0|[1-9]\d?|1\d{2}|99)$/.test(switchOpenValue)) return message.info("离床参数只能是数字，0到99");
     if (switchOpenValue) {
       try {
         Instancercv({
@@ -906,7 +898,7 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
         <CommonTitle name={"提醒设置"} type="square" />
         {roleId == (1 || 2) ? (
           <div
-            className="text-base text-sm leading-7 mr-[10px] text-[#0072EF]"
+            className="text-base text-sm leading-7 mr-[10px] text-[#0072EF] cursor-pointer"
             onClick={handleAlarmSettingClick}
           >
             {isSettingClick ? "保存" : "设置"}
@@ -991,21 +983,22 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
               onBlur={onBlurShezhi}
               onChange={(val: any) => {
                 const inputValue: any = val.target.value;
-
-
-
-                if (!/^[^\u4e00-\u9fa5]{1,10}$/g.test(inputValue)) {
+                if (inputValue.length > 2) {
+                  setSwitchOpenValue('')
+                  return message.info("不能大于99");
+                }
+                if (!/^[^\u4e00-\u9fa5]{0,10}$/g.test(inputValue)) {
                   setSwitchOpenValue('')
                   return message.info("请输入数字");
                 }
                 setSwitchOpenValue(inputValue)
               }}
-              className="w-[4rem] mr-[2rem]"
+              className="input_leave_setupInput"
             ></Input>
           ) : (
             <span
               onClick={isOpen}
-              className="mr-[2rem] "
+              className="mr-[2rem]"
               style={{ cursor: "pointer" }}
             >
               设置
@@ -1069,7 +1062,7 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
                   </Popconfirm>
                 ) : (
                   <span
-                    className="text-[#0072EF] ml-[1rem] "
+                    className="text-[#0072EF] ml-[1rem]"
                     style={{ cursor: "pointer" }}
                     onClick={() => {
                       const textarea = document.createElement("textarea");
@@ -1154,11 +1147,12 @@ const SettingMoDal = (props: any) => {
     <>
       <div
         onClick={() => openOnCkick()}
-        className="bg-[#fff] mb-[10px] p-[10px] px-[0.8rem] flex justify-between items-center"
+        style={{ fontWeight: "600" }}
+        className="bg-[#fff] text-[1rem]  mb-[10px] p-[10px] px-[0.8rem] flex justify-between items-center"
       >
         <div>护理配置</div>
         <div>
-          <img className="w-[6.5px]" src={rigthLogo} alt="" />
+          <img className="w-[6.5px] cursor-pointer" src={rigthLogo} alt="" />
         </div>
       </div>
     </>

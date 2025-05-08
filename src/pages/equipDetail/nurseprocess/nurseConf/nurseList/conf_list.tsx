@@ -135,7 +135,7 @@ export default function PCNurseList(props: any) {
     const [visible, setVisible] = useState(false);
     const [imgData, setImgData] = useState<any>([]);
     return (
-        <div className="nurse_scroll">
+        <div className="nurse_scroll1">
             <div className="pc_nurse_conf_list">
                 <div className={`list_item`}>
                     <p>时间</p>
@@ -221,10 +221,10 @@ export default function PCNurseList(props: any) {
                 )}
 
                 {listData.length === 0 && (
-                    <div className="empty_nurse_box h-[10rem]">
+                    <div className={`${props?.type === 'daEeport' ? 'empty_nurse_box_daEeport' : 'empty_nurse_box h-[10rem]'}`}>
                         <Empty
                             image={Empty.PRESENTED_IMAGE_SIMPLE}
-                            description="暂无护理计划，请添加"
+                            description={`${props?.type === 'daEeport' ? '暂无报告' : "暂无护理计划，请添加"}`}
                         />
                     </div>
                 )}

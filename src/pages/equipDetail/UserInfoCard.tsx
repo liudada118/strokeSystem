@@ -75,7 +75,7 @@ const machineType = [{
     label: 'MAC地址',
     value: '1A2C3E4D'
 }, {
-    label: '设备校准1111',
+    label: '设备校准',
     value: ''
 }]
 const createTimeNumber: (val: number) => { label: string; value: string }[] = (number) => {
@@ -248,19 +248,21 @@ const UserInfoCard: (props: UserInfoCardProps) => React.JSX.Element = (props) =>
         }
     ]
 
-    const personalInfo = [{
-        label: '床号',
-        id: 'roomNum',
-        value: userInfo.roomNum
-    }, {
-        label: '性别',
-        id: 'sex',
-        value: sexFormat(userInfo.sex)
-    }, {
-        label: '年龄',
-        id: 'age',
-        value: userInfo.age
-    }
+    const personalInfo = [
+        {
+            label: '性别',
+            id: 'sex',
+            value: sexFormat(userInfo.sex)
+        }, {
+            label: '年龄',
+            id: 'age',
+            value: userInfo.age
+        },
+        {
+            label: '床号',
+            id: 'roomNum',
+            value: userInfo.roomNum
+        }
     ]
     const changeUserInfo = (obj: any) => {
         // setUserInfo({ ...userInfo, ...obj })
@@ -435,7 +437,7 @@ const UserInfoCard: (props: UserInfoCardProps) => React.JSX.Element = (props) =>
                     <img src={arrow} alt="" style={{ transform: "rotate(180deg)" }} className='w-[8px] h-[12px] mb-[10px] mr-[20px]'
                         onClick={() => navigate(`/`)} />
                     {/* <LeftOutlined className='w-[8px] h-[12px] mb-[10px] mr-[20px]'  style={{fontSize:"300px",display:'flex'}} onClick={() => navigate(`/`)} /> */}
-                    <img src={userInfo.headImg || nullImg} alt="" className='w-[4rem] mr-[1.2rem] rounded-[6px]' />
+                    <img src={userInfo.headImg || nullImg} alt="" className='w-[4rem] h-[4rem] mr-[1.2rem] rounded-[6px]' />
                     <div className='flex flex-col justify-center grow'>
                         <span className='text-sm font-semibold h-[2.4rem]'>{userInfo.patientName}</span>
                         {/* 不要删除后期要上线，暂时注销了 */}
@@ -488,20 +490,18 @@ const UserInfoCard: (props: UserInfoCardProps) => React.JSX.Element = (props) =>
                                         handleClickUserEdit()
                                         setUpdate(true)
                                     }}>
-
                                     修改
                                 </span>
                                 : ''
                         }
-
                     </div>
                     <div className='flex'>
-                        <img src={userInfo.headImg ? userInfo.headImg : nullImg} alt="" className='w-[4rem] mr-[1.2rem] rounded-[6px]' />
+                        <img src={userInfo.headImg ? userInfo.headImg : nullImg} alt="" className='w-[4rem] h-[4rem]  mr-[1.2rem] rounded-[6px]' />
                         <div className='flex flex-col justify-around md:justify-between'>
                             <span className='text-sm font-semibold' >{userInfo.patientName}</span>
                             <span className='flex flex-wrap w-full'>
                                 {personalInfo.map(item => (
-                                    <span key={item.id} className='text-sm w-[45%]'>
+                                    <span key={item.id} className={`text - sm ${item.label == '床号' ? 'w-[100%]' : "w-[45%]"}`}>
                                         <span className='text-[#929EAB]'>{`${item.label}:`}</span>
                                         <span className='ml-[10px]'>{item.id == 'sex' ? sexFormat(userInfo[item.id]) : userInfo[item.id]}</span>
                                     </span>
@@ -533,7 +533,7 @@ const UserInfoCard: (props: UserInfoCardProps) => React.JSX.Element = (props) =>
                     updateName={update}
                 />
             </div>
-        </Fragment>
+        </Fragment >
     )
 }
 

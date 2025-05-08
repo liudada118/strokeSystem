@@ -303,7 +303,7 @@ function FirstItem(props: firstItemProps) {
 
                             </div> : ''
                     }
-                    <div className="strokeTitle nurseTitleName"> <div className="">特殊体动风险监测</div>  <div className="learnMore" onClick={() => { setStrokeFlag(true) }}>了解更多</div> </div>
+                    <div className="strokeTitle nurseTitleName cursor-pointer"> <div className="">特殊体动风险监测</div>  <div className="learnMore" onClick={() => { setStrokeFlag(true) }}>了解更多</div> </div>
 
                     <div className="nurseRiskContent">风险等级: {props.stroke ?
                         props.stroke.length > 720 ? <><span style={{ color: '#4ad75c' }}>高风险</span>:建议咨询医生。</>
@@ -351,7 +351,8 @@ function FirstItem(props: firstItemProps) {
                                         tipFormat={storkeTip}
                                     />
 
-                                ) : ''}</div>
+                                ) : ''}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -371,7 +372,7 @@ function FirstItem(props: firstItemProps) {
                             <p>心率：安静状态下的成人心率通常在每分钟 60 到 100 次之间。老年人的心率可能会略有降低</p>
                         </div> : ''
                     }
-                    <div className="strokeTitle nurseTitleName"> <div className="">健康体征</div>  <div className="learnMore" onClick={() => { setHealthyFlag(true) }}>了解更多</div> </div>
+                    <div className="strokeTitle nurseTitleName cursor-pointer"> <div className="">健康体征</div>  <div className="learnMore" onClick={() => { setHealthyFlag(true) }}>了解更多</div> </div>
                     <div className="nurseRiskContent">心率和呼吸可以帮助人们评估身体健康情况</div>
                     <div className="nurseValueItems">
                         <div className="nurseValueItem">

@@ -600,8 +600,8 @@ export default function Setting() {
   // ]
 
   const deleteUserByOrganizeIdAndUsername = ({ user, id, type }: any) => {
-    console.log(user, id, type, '...........................deleteUserByOrganizeIdAndUsername');
 
+    
     axios({
       method: "get",
       url: netUrl + "/organize/deleteUserByOrganizeIdAndUsername",
@@ -1015,14 +1015,10 @@ export default function Setting() {
       message.error('用户名长度需要大于5')
     }
   }
-
   const handleManCancel = () => {
     setIsModalManOpen(false)
   }
-
   const handleDeleteOk = () => {
-    console.log('00000000.....................');
-
     Instancercv({
       method: "post",
       url: "/organize/deleteOrganization",
@@ -1042,15 +1038,12 @@ export default function Setting() {
 
     })
   }
-
   const handleDeleteCancel = () => {
     setIsModalDeleteOpen(false)
   }
-
   const handleCancel = () => {
     setIsModalOpen(false)
   }
-
   const getItemManage = (id: any) => {
     Instancercv({
       method: "get",
@@ -1064,19 +1057,14 @@ export default function Setting() {
         roleIds: `${roleId == 0 ? [1, 2] : [3]}`
       }
     }).then((res) => {
-
-
       let data = [...res.data.data]
       data = data.map((a: any, index: any) => {
         a.id = index + 1
         return a
       })
-
-
       setManageSource(res.data.data)
     })
   }
-
   const getItemPerson = (id: any) => {
     Instancercv({
       method: "get",
@@ -1090,21 +1078,15 @@ export default function Setting() {
         roleIds: `${[4]}`
       }
     }).then((res) => {
-
-
       let data = [...res.data.data]
       data = data.map((a: any, index: any) => {
         a.id = index + 1
         return a
       })
-
-
       setPersonSource(res.data.data)
     })
   }
-
   const getProjectManage = ({ id, user }: any) => {
-
     axios({
       method: "get",
       url: netUrl + "/organize/getManagerListByOrganizeId",
@@ -1125,7 +1107,7 @@ export default function Setting() {
       })
       let data = [...res.data.data]
       data = data.map((a: any, index: any) => {
-        a.id = index + 2
+        a.id = index + 1
         a.user = a.username
         a.level = '管理员'
         return a
@@ -1142,14 +1124,10 @@ export default function Setting() {
     })
   }
   const organizeIdq = useSelector((state: any) => state.premission.organizeId)
-
-
   useEffect(() => {
     getItemDevice(organizeIdq)
   }, [])
-
   const getItemDevice = (id: any) => {
-
     //318
     Instancercv({
       method: "get",
@@ -1168,15 +1146,11 @@ export default function Setting() {
         a.id = index + 1
         return a
       })
-
       // message.info('添加成功')
       console.log(res.data.data, '................................添加成功.');
-
-
       setDeviceSource(res.data.data)
     })
   }
-
   const [projectName, setProjectName] = useState('')
   const [projectNum, setProjectNum] = useState('')
   const [projectAddress, setProjectAddress] = useState('')
@@ -1233,7 +1207,6 @@ export default function Setting() {
   const [projectUser, setProjectUser] = useState<any>({ organizeType: 2 })
   const [nurseUser, setnurseUser] = useState<any>({})
   const [manUser, setmanUser] = useState<any>({})
-
   const handleNurseOk = () => {
     if (nurseUser.user.length > 5) {
       try {

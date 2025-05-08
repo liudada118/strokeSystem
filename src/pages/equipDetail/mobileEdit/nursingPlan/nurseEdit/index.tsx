@@ -80,7 +80,7 @@ export default function NurseConfEdit(props: any) {
   const [nurseName, setNurseName] = useState("");
   const navigate = useNavigate();
   const onFinish = (value: any) => {
-    if (!nurseName) return message.warning("请填写护理名称！");
+    if (!nurseName) return message.info("请填写护理名称");
     if (!value.hours || !value.minutes)
       return message.warning("请填写护理时间！");
     if (nurseName.length > 20) return message.warning("名称不能超过20个字符");
@@ -242,7 +242,7 @@ export default function NurseConfEdit(props: any) {
           name="title"
           rules={[{ required: false, message: "请填写护理名称!" }]}
         >
-          <span className="bg-[#F5F8FA]">护理任务：</span>
+          <span className="">护理任务：</span>
           <Input
             placeholder="请输入所添加的护理任务的名称"
             className="h-10 bg-[#F5F8FA]"

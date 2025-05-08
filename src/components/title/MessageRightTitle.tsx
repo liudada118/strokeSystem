@@ -101,41 +101,45 @@ export const MessageRightTitle = (props: messageParam) => {
     return (
         <>
             {
-                !windowSize ? <div className="messageTitlediv2">
-                    <><Space style={{ width: "50rem", height: "2.07rem", marginLeft: "0.7rem" }} direction="vertical" size={12}>
-                        <ConfigProvider locale={zhCN}>
-                            <RangePicker
-                                placeholder={['开始时间', '结束时间']}
-                                showNow={true}
-                                onChange={(dates, dateStrings) => handleDateChange(dates, dateStrings)}
-                                style={{ width: "20rem", height: "2.07rem", marginLeft: "0.7rem" }}
-                                showTime />
-                        </ConfigProvider>
-                    </Space><div className="messageTitlediv2_you">
-                            <Select
-                                className="MessageYiDOngTitlesearchSelect"
-                                defaultValue={selectType}
-                                style={{ width: 80, height: "1.5rem", border: 'none', }}
-                                onChange={(e) => { setSelectType(e) }}
-                                options={homeSelect}
-                            />
-                            <Input className="messageTitlediv2_you_inp"
-                                allowClear
-                                value={patientNameRoomNum}
-                                // onBlur={((e: any) => {
-                                //     setpatientName(e.target.value)
-                                //     titleChangeGetMessage({
-                                //         patientName: selectType === 'patientName' ? patientNameRoomNum : "",
-                                //         roomNum: selectType === 'roomNum' ? patientNameRoomNum : ""
-                                //     })
-                                // })}
-                                onChange={(e: any) => handleInputChange(e.target.value)}
-                                placeholder="请输入姓名/床号" />
-                            {/* <img style={{ width: "1rem", height: "1rem", marginRight: "20px" }} src={fang} alt="" /> */}
-                        </div></>
-                </div> : <div className="homeTitle  messageTitledivTitle" style={{ display: "flex", justifyContent: 'normal', fontWeight: "900", }}>
-                    {loog}
-                </div>
+                !windowSize ?
+                    <div className="messageTitlediv2">
+                        <><Space style={{ width: "50rem", height: "2.07rem", marginLeft: "0.7rem" }} direction="vertical" size={12}>
+                            <ConfigProvider locale={zhCN}>
+                                <RangePicker
+                                    placeholder={['开始时间', '结束时间']}
+                                    showNow={true}
+                                    onChange={(dates, dateStrings) => handleDateChange(dates, dateStrings)}
+                                    style={{ width: "20rem", height: "2.07rem", marginLeft: "0.7rem" }}
+                                    showTime />
+                            </ConfigProvider>
+                        </Space>
+                            <div className="messageTitlediv2_you">
+                                <Select
+                                    className="MessageYiDOngTitlesearchSelect"
+                                    defaultValue={selectType}
+                                    style={{ width: 80, height: "1.5rem", border: 'none important', }}
+                                    onChange={(e) => { setSelectType(e) }}
+                                    options={homeSelect}
+                                />
+                                <Input className="messageTitlediv2_you_inp"
+                                    allowClear
+                                    value={patientNameRoomNum}
+                                    // onBlur={((e: any) => {
+                                    //     setpatientName(e.target.value)
+                                    //     titleChangeGetMessage({
+                                    //         patientName: selectType === 'patientName' ? patientNameRoomNum : "",
+                                    //         roomNum: selectType === 'roomNum' ? patientNameRoomNum : ""
+                                    //     })
+                                    // })}
+                                    onChange={(e: any) => handleInputChange(e.target.value)}
+                                    placeholder="请输入姓名/床号" />
+                                {/* <img style={{ width: "1rem", height: "1rem", marginRight: "20px" }} src={fang} alt="" /> */}
+                            </div></>
+                    </div>
+                    :
+                    <div className="homeTitle  messageTitledivTitle" style={{ display: "flex", justifyContent: 'normal', fontWeight: "900", }}>
+                        {loog}
+                    </div>
             }
         </>
     )

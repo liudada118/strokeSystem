@@ -1,4 +1,4 @@
-.nurse_scroll {
+.nurse_scroll1 {
   flex: 1;
   overflow: auto;
   margin-top: 1rem;
@@ -173,5 +173,16 @@
 }
 
 .pc_nurse_conf_list .empty_nurse_box .ant-empty-image {
+  height: 6rem;
+}
+
+.pc_nurse_conf_list .empty_nurse_box_daEeport {
+  height: calc(100% - 21rem);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.pc_nurse_conf_list .empty_nurse_box_daEeport .ant-empty-image {
   height: 6rem;
 }

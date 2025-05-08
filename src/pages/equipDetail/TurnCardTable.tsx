@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import CommonTitle from '../../components/CommonTitle'
-import { Table } from "antd";
+import { Spin, Table } from "antd";
 import './message.module.scss'
 import { instance } from "@/api/api";
 import { useParams } from "react-router-dom";
@@ -105,7 +105,6 @@ const TurnCardTable: (props: TurnCardTableProps) => React.JSX.Element = (props) 
         });
     }
     console.log(flipbodyData, '.............................flipbodyDataflipbodyDataflipbodyData');
-
     const turnAroundCard: CardItem[] = [{
         label: '翻身次数',
         value: `${dataList.flipBodyCount}`,
@@ -125,8 +124,9 @@ const TurnCardTable: (props: TurnCardTableProps) => React.JSX.Element = (props) 
         dataIndex: 'plan',
         key: 'plan',
         width: 10,
-    }, {
-        title: '右侧卧',
+    },
+    {
+        title: '左侧卧',
         dataIndex: 'left',
         key: 'left',
         width: 70,
@@ -137,7 +137,8 @@ const TurnCardTable: (props: TurnCardTableProps) => React.JSX.Element = (props) 
                 return <span className={['bg-[#fff] border border-[#D1D9E1]', commonClass].join(' ')} />
             }
         }
-    }, {
+    },
+    {
         title: '仰卧',
         dataIndex: 'top',
         key: 'top',
@@ -149,8 +150,9 @@ const TurnCardTable: (props: TurnCardTableProps) => React.JSX.Element = (props) 
                 return <span className={['bg-[#fff] border border-[#D1D9E1]', commonClass].join(' ')} />
             }
         }
-    }, {
-        title: '左侧卧',
+    },
+    {
+        title: '右侧卧',
         dataIndex: 'right',
         key: 'right',
         width: 70,
@@ -169,9 +171,6 @@ const TurnCardTable: (props: TurnCardTableProps) => React.JSX.Element = (props) 
         render: (text: string) => <span className='whitespace-nowrap'>{text}</span>
     }]
     const columnWidth = turnTableColumns.map(item => item.width).reduce((total, item) => total + item)
-
-
-
     useEffect(() => {
         getNurse()
         instance({
@@ -219,13 +218,14 @@ const TurnCardTable: (props: TurnCardTableProps) => React.JSX.Element = (props) 
                 newArr.push(obj)
             })
             setTurnTableDatasource(newArr)
+            console.log(newArr, '............................newArr');
+
         }).catch((err) => [
             console.log(err)
         ])
     }, [])
 
     return (
-
         <div className='bg-[#fff] md:w-[94%] md:rounded-[10px] md:my-[10px] md:mx-auto p-[25px] md:p-[1rem]'>
             <CommonTitle name='翻身卡' type={isMobile ? 'rect' : 'square'} />
             <div className='flex px-[30px] pb-[30px] md:pb-[1rem] md:px-[1rem] w-full justify-between'>
@@ -236,7 +236,7 @@ const TurnCardTable: (props: TurnCardTableProps) => React.JSX.Element = (props) 
                         <div className='flex flex-col'>
                             <span className='text-[#929EAB] md:text-[#3E444C] text-sm font-medium'>{item.label}</span>
                             <span>
-                                <span className='text-[#32373E] font-semibold text-2xl'>{item.value}</span>
+                                <span className='text-[#32373E] font-semibold text-2xl'>{item.value == 'undefined' ? <Spin /> : item.value}</span>
                                 <span className='text-sm text-[#929EAB] md:text-[#6C7784] ml-[2px]'>{item.unit}</span>
                             </span>
                         </div>
@@ -257,9 +257,9 @@ const TurnCardTable: (props: TurnCardTableProps) => React.JSX.Element = (props) 
                 dataSource={turnTableDatasource}
                 pagination={false}
                 rowClassName='darkRow'
-                scroll={!isMobile ? { y: 385 } : { x: columnWidth }} />
+            // scroll={!isMobile ? { y: 385 } : { x: columnWidth }}
+            />
         </div>
     )
 }
-
 export default TurnCardTable;

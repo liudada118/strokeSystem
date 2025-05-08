@@ -47,7 +47,7 @@ export default function AddNurseConfList() {
                         }}
                     >
                         该模版尚未保存
-                        <span style={{ display: 'flex', textAlign: 'center', color: '#8794A1', marginTop: '0.5rem' }}>返回将清空护理计划</span>
+                        <span style={{ display: 'flex', textAlign: 'center', color: '#8794A1', marginTop: '0.5rem' }}>返回将不保存此次编辑的内容</span>
                     </div>
                 );
             },

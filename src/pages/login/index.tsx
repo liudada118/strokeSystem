@@ -185,65 +185,28 @@ export default function Login() {
     }, ms);
   }
   const windowSize = useWindowSize()
-  console.log(windowSize, '..................windowSizewindowSize');
-
   return (
-    <div className="loginContainer sy">
+    <div className="loginContainer">
       <div className="loginContent">
-        <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
-          {/* <img style={{ width: '70%' }} src={company == '/XBX' ? xbxLogo : company == '/JQ' ? logo : xnLogo} alt="" /> */}
-          <img style={{ width: '70%' }} src={logo} alt="" />
-        </div>
-        <div style={{ width: '100%' }}>
+        <div style={{ width: '100%', display: 'flex', justifyContent: 'center', flexDirection: 'column' }}>
+          <img style={{ width: '70%', marginLeft: "15%", marginRight: "15%" }} src={logo} alt="" />
           <div className="loginTypes">
-            {loginType.map((item, index) => {
-              return (
-                <div className="w-full">
-                  <div
-                    onClick={() => {
-                      // setNowType(index);
-                    }}
-                    style={{ color: index == nowType ? "#0033A1" : "#000", fontWeight: 'bold', width: "100%", textAlign: "center", marginBottom: "2rem" }}
-                  >
-                    {item}
-                  </div>
-                  {index == nowType ? (
-                    <div className="loginTypeBorderContent">
-                      <div className="loginTypeBorder"></div>
-                    </div>
-                  ) : null}
-                </div>
-              );
-            })}
+            账号登录
           </div>
         </div>
-        <Input.Group className="phoneInput" compact>
-          {/* <Select defaultValue="Zhejiang">
-            <Option value="Zhejiang">Zhejiang</Option>
-            <Option value="Jiangsu">Jiangsu</Option>
-          </Select> */}
-          <Input
-            style={{ width: "50%" }}
-            // defaultValue="Xihu District, Hangzhou"
-            value={phone}
-            onChange={(e) => { setPhone(e.target.value) }}
-            placeholder={!nowType ? "请输入手机号" : "请输入管理员账号"}
-          />
-        </Input.Group>
-        <div className="verifi">
-          {!nowType ? <Input className="verifiValue" placeholder={!nowType ? "请输入验证码" : "请输入密码"}
-            value={verCode}
-            onChange={(e) => { setVerCode(e.target.value) }}
-          /> : <Input.Password className="verifiValue py-[0.35rem] flex items-center" placeholder={"请输入密码"} value={verCode}
-            onChange={(e) => { setVerCode(e.target.value) }} />}
-          {/* <div className="verifiText" onClick={() => { getVerCode() }}>获取短信验证码</div> */}
-          {!nowType ? <VerCode phone={phone} /> : ''}
-        </div>
+        <Input
+          className="verifiValue py-[0.35rem] mb-[1rem] rounded-3xl"
+          value={phone}
+          onChange={(e) => { setPhone(e.target.value) }}
+          placeholder={"请输入账号"}
+        />
+        <Input.Password className="verifiValue py-[0.35rem] rounded-3xl flex items-center" placeholder={"请输入密码"} value={verCode}
+          onChange={(e) => { setVerCode(e.target.value) }} />
         <Button
           shape="round"
           className="loginButton"
-          // color="#0033A1"
-          style={{ color: "#0033A1" }}
+          // style={{ color: "#0033A1" }}
+          style={{ color: '#fff' }}
           block
           type="primary"
           onClick={() => { debounce(login, 1000) }}

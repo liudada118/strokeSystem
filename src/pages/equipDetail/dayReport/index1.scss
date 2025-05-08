@@ -635,8 +635,18 @@
 
 .dataSelectPicker {
     width: 12rem;
+    display: flex;justify-content: center;
 }
-
+.custom-datepicker-popupPc {
+    transform: translateX(0) !important; /* 重置 translateX */
+    left: 50% !important; /* 结合 left 和 transform 实现居中 */
+    transform: translateX(-25%) !important;
+  }
+  .custom-datepicker-popup {
+    transform: translateX(0) !important; /* 重置 translateX */
+    left: 50% !important; /* 结合 left 和 transform 实现居中 */
+    transform: translateX(-50%) !important;
+  }
 @media screen and (min-width: $phoneWidth) and (max-width: $PadWidth) {
     .firstItem {
         flex-direction: column;
@@ -769,8 +779,14 @@
         .dataSelectPicker {
             position: absolute;
             opacity: 0;
+            //    margin-left: ;
+            // .parent {
+            //     display: flex;
+            //     justify-content: center;
+            //   }
+        // display: flex;
+        // justify-content: center;
         }
-
     }
 
     .fixDataSelectContent {
@@ -818,7 +834,7 @@
     }
 
     // .ant-picker-panel-container {
-    //     transform: translateX(-22%) !important;
+    //     transform: translateX(0) !important;
     // }
 
 

@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux'
 // import { equip } from './Home'
 import { alarmStampToTime, alarmtype, ALARMTYPE } from '@/redux/equip/equipUtil'
 
-
+// import { fetchEquips } from '../../redux/equip/equipSlice'
 import newAlarmBgc from "@/assets/image/newAlarmBgc.png";
 import top from "../../assets/image/top.png";
 import setTop from "../../assets/image/settop.png";
@@ -107,7 +107,6 @@ export default function Equip() {
             message.success(res.data.msg)
             setFals(true)
             dispatch(fetchEquips())
-
             setI(index)
         });
     };
@@ -141,7 +140,6 @@ export default function Equip() {
             {
                 datalist.length == 0 ? <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="暂无数据" /> : ''
             }
-
             {!isMobile ? <Carousel
                 // afterChange={onChange}
                 dots={datalist.length > 1}
@@ -149,7 +147,7 @@ export default function Equip() {
                 {datalist.length ? datalist.map((equips: Array<equip>, indexs: any) => {
                     return <div className="equipsContent" key={indexs}>
                         <div className={`equips`}>
-                            {equips?.map((item, index) => {
+                            {equips?.map((item, index) => {                           
                                 const alarmInfo = alarm.filter((a: any) => {
                                     return a.sensorName == item.sensorName
                                 })
@@ -195,7 +193,6 @@ export default function Equip() {
                                                     }}
                                                 >我已知晓</div>
                                             </div>
-
                                         </>
                                         }
                                         {/* {
@@ -232,22 +229,22 @@ export default function Equip() {
                   `}
                                             onClick={() => {
                                                 if (item.type == 'large') {
-
+                                             
                                                     navigate(`/report/0/${item.sensorName}`, {
                                                         state: {
                                                             person: item
                                                         },
                                                     });
-                                                        dispatch(nurseOpen(false))
+                                                    dispatch(nurseOpen(false))
                                                 }
                                                 else {
-
+                                                   
                                                     navigate(`/report/0/${item.sensorName}`, {
                                                         state: {
                                                             person: item
                                                         },
                                                     });
-                                                        dispatch(nurseOpen(false))
+                                                    dispatch(nurseOpen(false))
                                                 }
                                             }}
                                         >
@@ -326,7 +323,7 @@ export default function Equip() {
                             return (
                                 <div className={`equip`} key={item.sensorName}
                                     onClick={(e) => {
-
+                                
                                         navigate(`/report/0/${item.sensorName}`, {
                                             state: {
                                                 person: item
@@ -388,23 +385,23 @@ export default function Equip() {
                                         className={`equipItem  ${stateToObj[onBedState(item)].class}`}
                                         onClick={() => {
                                             if (item.type == 'large') {
-
+                                             
                                                 navigate(`/report/0/${item.sensorName}`, {
                                                     state: {
                                                         person: item
                                                     },
                                                 });
-                                                 dispatch(nurseOpen(false))
+                                                dispatch(nurseOpen(false))
                                             }
                                             else {
-
+                                             
                                                 navigate(`/report/0/${item.sensorName}`, {
                                                     state: {
                                                         person: item
                                                     },
                                                 });
-                                                  dispatch(nurseOpen(false))
-                                              
+                                                dispatch(nurseOpen(false))
+
                                             }
                                         }}
                                     >

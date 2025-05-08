@@ -233,13 +233,13 @@ function NurseCharts(props: nurseChartsProps) {
                                 </div> */}
                             </div> : ''}
                         {
-                            !isMobile ? <div className="w-[40rem] h-[50rem] bg-[#FFFFFF]">
+                            !isMobile ? <div className="w-[40rem] h-[100%] bg-[#FFFFFF]">
                                 <div className='text-[#000000] text-[1.2rem] pl-[1rem] pb-[1rem]' style={{ fontFamily: 'PingFang SC', fontWeight: "600" }}>护理记录</div>
                                 <div className=' px-[3%]  h-full'>
                                     {/* <PCNurseList list={nurseConfigList || []} extParams={{ isShowTime: false, className: 'daEeport' }} /> */}
                                     <PCNurseConfList type='daEeport' sensorName={props.sensorName} />
                                 </div>
-                            </div> : <div className="h-[50rem] bg-[#FFFFFF]" style={{ width: '100%' }}>
+                            </div> : <div className="h-[100%] bg-[#FFFFFF]" style={{ width: '100%' }}>
                                 <div className='text-[#000000] text-[1.2rem] pl-[1rem] py-[1rem]' style={{ fontFamily: 'PingFang SC', fontWeight: "600" }}>护理记录</div>
                                 <div className=' px-[3%]  h-full'>
                                     <PCNurseConfList type='daEeport' sensorName={props.sensorName} />
@@ -301,12 +301,8 @@ function NurseCharts(props: nurseChartsProps) {
                                 </div>
                             </div>
                             : ''}
-
                     </div>
-
                 </div>
-
-
             </div > :
             <div className="nurseItemContent nurseContent">
                 <div className="nurseTitleName" style={{ marginBottom: '1.9rem' }}>在离床统计</div>

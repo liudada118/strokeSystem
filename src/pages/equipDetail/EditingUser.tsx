@@ -65,7 +65,12 @@ const PersonalInfo = (props: any) => {
   const { sensorName, type, userModal } = location.state || props;
   const [userInfo, setUserInfo] = useState<any>({});
   const [headImg, setHeadImg] = useState<any>("");
-
+  message.config({
+    top: 100,
+    duration: 0.8,
+    maxCount: 2,
+    rtl: false,
+  });
   useEffect(() => {
     const listData = {} as any;
     userModal.forEach((item: any, index: any) => {
@@ -291,6 +296,7 @@ const PersonalInfo = (props: any) => {
 
   const getuserInfo = () => {
     if (sensorName) {
+
       Instancercv({
         method: "get",
         url: "/device/selectSinglePatient",
@@ -304,6 +310,7 @@ const PersonalInfo = (props: any) => {
         },
       }).then((res: any) => {
         if (res && res.data.code == 0) {
+
           const info = res.data?.data || {};
           setUserInfo({
             headImg: info.headImg,
@@ -334,10 +341,43 @@ const PersonalInfo = (props: any) => {
   }, [sensorName]);
 
   const modifyUserInfo = (params: any) => {
+    console.log(params, '........................paramsparams');
+    if (params.patientName === '') {
+      message.info('姓名不能为空');
+      return;
+    }
+    if (params.patientName && params.patientName.length > 20) {
+      message.info('姓名不能超过20个字符');
+      return;
+    }
+    if (params.age === '') {
+      message.info('年龄不能为空');
+      return;
+    }
+    if (params.age && !/^(0|[1-9]\d?|1\d{2}|200)$/.test(params.age)) {
+      message.info('请检查年龄不能大于200岁,必须是数字不能有其他字符');
+      return;
+    }
+    if (params.roomNum && params.roomNum.length > 20) {
+      message.info('床号不能超过20个字符');
+      return;
+    }
+
+    if (params.address && params.address.length >= 20) {
+      message.info('联系地址不能超过20个字符');
+      return;
+    }
+    if (params.medicalHistory && params.medicalHistory.length >= 100) {
+      message.info('既往病例不能100个字符');
+      return;
+    }
+    if (params.telephone && params.telephone > 11 && !/^1[3456789]\d{9}$/.test(params.telephone)) {
+      message.info('检查手机号是否正确，手机号不能超过11位');
+      return;
+    }
     axios({
       method: "post",
       url: netUrl + "/device/update",
-
       headers: {
         "content-type": "application/x-www-form-urlencoded",
         token: localStorage.getItem("token"),
@@ -349,11 +389,16 @@ const PersonalInfo = (props: any) => {
       },
     }).then((res) => {
       if (res.data.msg == "update success") {
+        setEditingInputInfo({
+          show: false,
+          key: "",
+          label: "",
+          value: "",
+        });
         getuserInfo();
       }
     });
   };
-
   if (editingInputInfo.show) {
     const handleCancel = () => {
       setEditingInputInfo({
@@ -363,6 +408,46 @@ const PersonalInfo = (props: any) => {
         value: "",
       });
     };
+    // const handleConfirm = () => {
+    //   console.log(userInfo, '...........................123123');
+    //   if (userInfo.patientName == '') {
+    //     return message.info('姓名不能为空')
+    //   }
+    //   if (userInfo.patientName == '') {
+    //     return message.info('年龄不能为空')
+    //   }
+    //   if (userInfo.patientName.length > 20 && userInfo.patientName) {
+    //     return message.info('姓名不能超过20个字符')
+    //   }
+    //   if (userInfo.roomNum && userInfo.roomNum.length > 20) {
+    //     return message.info('床号不能超过20个字符')
+    //   }
+    //   if (userInfo.age && !/^(0|[1-9]\d?|1\d{2}|200)$/.test(userInfo.age)) {
+    //     return message.info('请检查年龄不能大于200岁,必须是数字不能有其他字符')
+    //   }
+    //   if (userInfo.address && userInfo.address.length >= 20) {
+    //     return message.info('联系地址不能超过20个字符');
+    //   }
+    //   if (userInfo.medicalHistory && userInfo.medicalHistory.length >= 100) {
+    //     return message.info('既往病例不能100个字符')
+    //   }
+    //   if (userInfo.telephone && userInfo.telephone > 11 && !/^1[3456789]\d{9}$/.test(userInfo.telephone)) {
+    //     return message.info('检查手机号是否正确，手机号不能超过11位')
+    //   }
+    //   setUserInfo({
+    //     ...userInfo,
+    //     [editingInputInfo.key]: editingInputInfo.value,
+    //   });
+    //   modifyUserInfo({
+    //     [editingInputInfo.key]: editingInputInfo.value,
+    //   });
+    //   setEditingInputInfo({
+    //     show: false,
+    //     key: "",
+    //     label: "",
+    //     value: "",
+    //   });
+    // };
     const handleConfirm = () => {
       setUserInfo({
         ...userInfo,
@@ -371,14 +456,7 @@ const PersonalInfo = (props: any) => {
       modifyUserInfo({
         [editingInputInfo.key]: editingInputInfo.value,
       });
-      setEditingInputInfo({
-        show: false,
-        key: "",
-        label: "",
-        value: "",
-      });
     };
-
     return (
       <Fragment>
         <div className="flex justify-between items-center mb-[12px] py-[8px] px-[15px] bg-[#fff] ">
@@ -621,7 +699,6 @@ export const RenderListItem = ({
   const timeMinutes = createTimeNumber(60);
   const timeRangeColumns = [timeHour, timeMinutes, timeHour, timeMinutes];
   const roleId: any = localStorage.getItem('roleId')
-
   const handleClickListItem = (type: FormType, title: string, key: string) => {
     if (type === FormType.TIME_RANGE) {
       setPickerInfo({

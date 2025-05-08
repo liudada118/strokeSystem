@@ -74,7 +74,7 @@ function NurseAdd(props: any) {
                 data: dataList
             }).then((res) => {
                 if (res.data.msg == 'insert success') {
-                    message.info('添加成功')
+                    message.info('已完成')
                     onClose(true)
                 }
             })

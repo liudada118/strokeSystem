@@ -404,13 +404,13 @@ interface handleChart {
 }
 
 export const RealChart = React.forwardRef((props: RealIndex, refs) => {
-
+  console.log(props.xdata, props.tipFormat, props.ymax, '................................999999999');
   var myChart: any;
   const handChangeChart = ({ ydata }: handleChart) => {
     const chart1 = document.getElementById(`chart${props.index}`);
     if (chart1 && !myChart) myChart = echarts.init(chart1);
     initCharts({ myChart: myChart, ...props, ydata: ydata });
-  };
+  }
 
   useEffect(() => {
     const chart1 = document.getElementById(`chart${props.index}`);
@@ -425,8 +425,10 @@ export const RealChart = React.forwardRef((props: RealIndex, refs) => {
       myChart.resize();
     });
   }, []);
+  const online1 = localStorage.getItem("status")
+
   const initCharts = (props: curveChartData) => {
-    const {
+    let {
       xdata,
       ydata,
       text,
@@ -438,11 +440,16 @@ export const RealChart = React.forwardRef((props: RealIndex, refs) => {
       tipFormat,
       yFormat,
       smooth,
-      step,
+      step
     } = props;
-    xdata.pop();
-    xdata.pop();
-    // let newData =
+    const ydata_copy = ydata.find(item => item > 0)
+    if (!ydata_copy) {
+      ydata = []
+    }
+    console.log(color, ydata, 'ydataydataydataydata........ydata..........');
+    xdata.pop()
+    xdata.pop()
+    // let newData = 
     const option = {
       tooltip: {
         trigger: "axis",
@@ -456,12 +463,12 @@ export const RealChart = React.forwardRef((props: RealIndex, refs) => {
         x: 30,
         x2: 10,
         y: 10,
-        y2: 30,
+        y2: 30
       },
       color: ["#006EFF", "#67E0E3", "#9FE6B8"],
       xAxis: {
         type: "category",
-        data: ["48s前", ...xdata, "现在"],
+        data: ['十分钟前', ...xdata, '现在'],
         axisLabel: {
           // formatter: function (value: any) {
           //   if (interval != undefined) {
@@ -482,8 +489,7 @@ export const RealChart = React.forwardRef((props: RealIndex, refs) => {
           // },
           color: "#b4b4b4",
           show: true,
-          interval:
-            interval != undefined ? (interval >= 0 ? interval : 2000) : 2000, //x轴间隔多少显示刻度
+          interval: interval != undefined ? interval >= 0 ? interval : 2000 : 2000, //x轴间隔多少显示刻度
           showMinLabel: true,
           showMaxLabel: true,
           textStyle: {
@@ -493,10 +499,11 @@ export const RealChart = React.forwardRef((props: RealIndex, refs) => {
         },
         axisLine: {
           lineStyle: {
-            color: "#b4b4b4",
-            width: 1, //这里是为了突出显示加上的
-          },
-        },
+            color: '#b4b4b4',
+            width: 1,//这里是为了突出显示加上的
+          }
+        }
+
       },
       yAxis: {
         type: "value",
@@ -504,16 +511,18 @@ export const RealChart = React.forwardRef((props: RealIndex, refs) => {
         // min: 0,
         // minInterval: 1,
         max: findMax(ydata),
-        name: text ? text : "次数(次)",
+        name: text ? text : '次数(次)',
         nameTextStyle: {
           color: "#000",
         },
+
         axisLine: {
           lineStyle: {
-            color: "#b4b4b4",
-            width: 1, //这里是为了突出显示加上的
-          },
+            color: '#b4b4b4',
+            width: 1,//这里是为了突出显示加上的
+          }
         },
+
         axisLabel: {
           show: true,
           formatter: yFormat ? yFormat : "{value}", //刻度标签的内容格式器，支持字符串模板和回调函数两种形式，按照自己需求设置
@@ -538,8 +547,8 @@ export const RealChart = React.forwardRef((props: RealIndex, refs) => {
         {
           type: type ? type : "line",
           smooth: smooth == undefined ? true : smooth,
-          step: step == undefined ? "" : step,
-          // data : [1,2,3,4,5,6,7],
+          step: step == undefined ? '' : step,
+          // data: [1, 2, 3, 4, 5, 6, 7],
           data: color ? color : ydata, //y轴上的数据也是动态的，也作为参数传进来
           symbol: "none",
           itemStyle: {
@@ -555,7 +564,7 @@ export const RealChart = React.forwardRef((props: RealIndex, refs) => {
           areaStyle: {
             normal: {
               color: {
-                type: "linear",
+                type: 'linear',
                 x: 0,
                 y: 0,
                 x2: 0,
@@ -563,28 +572,29 @@ export const RealChart = React.forwardRef((props: RealIndex, refs) => {
                 colorStops: [
                   {
                     offset: 0,
-                    color: "rgba(14,156,255,0.4)", // 0% 处的颜色
+                    color: 'rgba(14,156,255,0.4)' // 0% 处的颜色
                   },
                   {
                     offset: 1,
-                    color: "rgba(14,156,255,0)", // 100% 处的颜色
-                  },
+                    color: 'rgba(14,156,255,0)' // 100% 处的颜色
+                  }
                 ],
-                global: false, // 缺省为 false
-              },
-            },
-          },
+                global: false // 缺省为 false
+              }
+            }
+          }
         },
       ],
     };
     props.myChart.setOption(option);
   };
+
   useImperativeHandle(refs, () => ({
-    handChangeChart,
+    handChangeChart
   }));
 
   return <div id={`chart${props.index}`} style={{ height: "100%" }}></div>;
-});
+})
 
 interface sleepTime {
   max: number;

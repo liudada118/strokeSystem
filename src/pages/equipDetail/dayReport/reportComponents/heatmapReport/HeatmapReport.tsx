@@ -249,11 +249,11 @@ function HeatmapReport(props: heatmapProps) {
                     <div className="pressProgressIndex" style={{ left: 0 }}></div>
                 </div> : ''}
                 <div className="progressButtonContent">
-                    <div className="progressLeftButton  text-[#006cfd]" onClick={() => oneHourBefore()} > <img style={{ height: '0.8rem', marginRight: '0.2rem', }} src={last} alt="" /> 前一小时</div>
+                    <div className="progressLeftButton  text-[#006cfd] cursor-pointer" onClick={() => oneHourBefore()} > <img style={{ height: '0.8rem', marginRight: '0.2rem', }} src={last} alt="" /> 前一小时</div>
                     <div className="progressTime">
                         {dayjs(new Date(props.dayDate).setHours(0, 0, 0, 0) + onbedDate).format('HH:mm')}-{dayjs(new Date(props.dayDate).setHours(0, 0, 0, 0) + onbedDate + 1 * 59 * 60 * 1000).format('HH:mm')}
                     </div>
-                    <div className="progressRightButton text-[#006cfd]" onClick={() => afterAnHour()}>后一小时  <img style={{ height: '0.8rem', marginLeft: '0.2rem' }} src={next} alt="" /></div>
+                    <div className="progressRightButton text-[#006cfd] cursor-pointer" onClick={() => afterAnHour()}>后一小时  <img style={{ height: '0.8rem', marginLeft: '0.2rem' }} src={next} alt="" /></div>
                 </div>
             </div>
         </CardWithoutTitle >

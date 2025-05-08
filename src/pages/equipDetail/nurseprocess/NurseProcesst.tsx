@@ -433,10 +433,12 @@ export default function NurseProcesst(props: nurseProcessProps) {
                 // header={<div className="ant-drawer-header-title">自定义抽屉标题</div>}
                 placement={"bottom"}
                 closable={false}
+
                 onClose={onClose}
                 open={open && isModalOpenSend && index == 1}
                 key={"bottom"}
                 className="noticeDrawer"
+                maskClosable={false}
               >
                 <div
                   className="pfBold"
@@ -461,9 +463,11 @@ export default function NurseProcesst(props: nurseProcessProps) {
                     className="nurseButton"
 
                   >
-                    <span onClick={() => {
+                    <span onClick={(e) => {
+
                       // changePos()
                       onClose();
+
                     }}>  我已知晓，开始护理</span>
                   </div>
                 </div>
@@ -472,10 +476,12 @@ export default function NurseProcesst(props: nurseProcessProps) {
               <Drawer
                 title=""
                 placement={"bottom"}
-                closable={true}
+
                 onClose={finishClose}
                 open={nurseFinish}
                 key={"bottom"}
+                maskClosable={false}
+                closable={false}
               >
                 <div
                   style={{

@@ -9,3 +9,23 @@
 .custom-modal .ant-modal-content {
   background-color: #F7F8FD !important;
 }
+
+.nurse_report_info.ant-modal {
+  padding-bottom: 0 !important;
+}
+
+.nurse_report_info.ant-modal .ant-modal-content {
+  padding: 0;
+}
+
+.nurse_report_info.ant-modal .ant-modal-footer {
+  width: 95%;
+  margin: 0 auto;
+  padding-bottom: 0.7rem;
+}
+
+.input_leave_setupInput {
+  width: 4rem !important;
+  margin-right: 2rem !important;
+  overflow: hidden;
+}

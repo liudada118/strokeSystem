@@ -40,6 +40,7 @@ import { getMonthStartEndTimestamps, stampToTime } from "@/utils/timeConvert";
 import { selectEquipBySensorname } from "@/redux/equip/equipSlice";
 import { CardWithoutTitle } from "../Monitor/realReport/Card";
 import useWindowSize from '@/hooks/useWindowSize'
+
 const { RangePicker } = DatePicker;
 type RangePickerProps = GetProps<typeof DatePicker.RangePicker>;
 const dateFormat = 'YYYY-MM-DD';
@@ -309,23 +310,23 @@ export default function DayReport() {
     setIsModalExportOpen(false);
   }
 
-  const setDateLocation = () => {
+  // const setDateLocation = () => {
 
-    const dropdown = document.querySelector('.ant-picker-dropdown') as HTMLElement
-    const pickerContainer = document.querySelector('.ant-picker-panel-container') as HTMLElement
+  //   const dropdown = document.querySelector('.ant-picker-dropdown') as HTMLElement
+  //   const pickerContainer = document.querySelector('.ant-picker-panel-container') as HTMLElement
 
-    // .ant-picker-panel-container
-    // console.log( document.querySelector('.ant-picker-dropdown').style)
-    if (dropdown && dropdown.style && dropdown.style.inset) {
-      const splitArr = dropdown.style.inset.split(' ')
-      // alert( splitArr[splitArr.length - 1])
-      if (parseInt(splitArr[splitArr.length - 1]) < 0) {
-        pickerContainer.style.transform = 'translateX(22%)'
-      } else {
-        pickerContainer.style.transform = 'translateX(-22%)'
-      }
-    }
-  }
+  //   // .ant-picker-panel-container
+  //   // console.log( document.querySelector('.ant-picker-dropdown').style)
+  //   if (dropdown && dropdown.style && dropdown.style.inset) {
+  //     const splitArr = dropdown.style.inset.split(' ')
+  //     // alert( splitArr[splitArr.length - 1])
+  //     if (parseInt(splitArr[splitArr.length - 1]) < 0) {
+  //       // pickerContainer.style.transform = 'translateX(22%)'
+  //     } else {
+  //       // pickerContainer.style.transform = 'translateX(-22%)'
+  //     }
+  //   }
+  // }
 
   const [dataSource, setDataSource] = useState([])
   const [pageRecords, setPageRecords] = useState<any>([])
@@ -685,7 +686,6 @@ export default function DayReport() {
           }) : '暂无上传'}
         </div>
       </Modal>
-
       <Modal title="了解脑卒中潜在风险" open={isModalRiskOpen} onOk={handleRiskOk} onCancel={handleRiskCancel}>
         <p>脑卒中(脑梗、中风、脑血栓)目前是我国居民死亡第一位原因，每5位死者中至少有1人死于脑卒中。3分之1的脑卒中病人是夜间发作。</p>
         <p>AI模型:</p>
@@ -696,15 +696,11 @@ export default function DayReport() {
         </p>
         <p><span style={{ fontWeight: 'bold', color: '#86da66' }}><img style={{ height: '1rem', verticalAlign: 'baseline' }} src={low} alt="" /> 低风险：</span>整晚小于60次，无持续时间超过30秒体动，系统判定为一级风险。建议保持关注。
           脑卒中(脑梗、中风、脑血栓)目前是我国居民死亡第一位原因，每5位死者中至少有1人死于脑卒中。3分之1的脑卒中病人是夜间发作。</p>
-
       </Modal>
-
       <Modal title="护理内容" open={isModalContentOpen} onOk={handleContentOk} onCancel={handleContentCancel}>
         <div style={{ display: 'flex', flexDirection: 'column' }}>
-
         </div>
       </Modal>
-
       <div className="fixDataSelectContent pf">
         <div className="dataSelectContent">
           <div className="dataSelect">
@@ -717,35 +713,28 @@ export default function DayReport() {
                 if (dayDate < new Date().setHours(0, 0, 0, 0)) {
                   setDayDate(dayDate + 24 * 60 * 60 * 1000)
                 }
-
               }} style={{ color: dayDate >= new Date().setHours(0, 0, 0, 0) ? '#D8D8D8' : 'unset' }} />
             </div>
-            <DatePicker allowClear={false} placement='bottomLeft' cellRender={cellRender} inputReadOnly
-
+            <DatePicker allowClear={false} placement='bottomRight' cellRender={cellRender} inputReadOnly
               onClick={() => {
-                setDateLocation()
+                // setDateLocation()
               }}
-
-              className="dataSelectPicker"
+              className={`${!windowSize.isMobile ? 'dataSelectPicker' : 'dataSelectPicker'}`}
+              popupClassName={`${!windowSize.isMobile ? 'custom-datepicker-popupPc' : 'custom-datepicker-popup'}`}
               onPanelChange={(value, mode) => {
                 console.log(value.month() + 1, value.year(), mode)
                 const date = `${value.year()}-${value.month() + 1}-5`
                 fetchMouthReport(date)
               }}
-
               onChange={(e, str: any) => {
                 console.log(new Date(dayDate).getMonth() != new Date(str).getMonth())
                 if (new Date(dayDate).getMonth() != new Date(str).getMonth()) {
                   fetchMouthReport(str)
                 }
-
                 setDayDate(new Date(new Date(str).toLocaleDateString()).getTime())
-
               }}
               // value={dayjs(new Date(dayDate))} 
               defaultValue={dayjs(new Date(dayDate))} format={dateFormat} />
-
-
           </div>
           {
             !windowSize.isMobile ? <Button onClick={getBlobPng} className='action'>导出</Button> : ""

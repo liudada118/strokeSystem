@@ -122,6 +122,7 @@ export default function NurseConfEdit(props: any) {
         );
       },
       okFn: () => {
+        setIsUseDefault(1)
         setNurseList(tempList);
       },
     },
@@ -151,9 +152,14 @@ export default function NurseConfEdit(props: any) {
     },
   } as any;
   const onFinish = () => {
-    if (!nurseName) return message.warning("请填写护理名称！");
-    if (!hours || !minutes) return message.warning("请填写护理时间！");
-    if (nurseName.length > 20) return message.warning("名称不能超过20个字符");
+    if (!nurseName) return message.open({
+      content: '请填写护理名称',
+      duration: 1, // 显示时长，单位秒
+      icon: null, // 设置图标为 null 来取消默认图标
+    });
+
+    if (!hours || !minutes) return message.info("请填写护理时间！");
+    if (nurseName.length > 20) return message.info("名称不能超过20个字符");
     const hoursVal = parseFloat(hours);
     const minutesVal = parseFloat(minutes);
     const hoursFormat = hoursVal < 10 ? `0${hoursVal}` : hoursVal;
@@ -164,7 +170,7 @@ export default function NurseConfEdit(props: any) {
     const isHasTemp = nurseList.find((item: any) => {
       return +item.key === +templateTime;
     });
-    if (isHasTemp) return message.warning("该护理时间已存在请重新选择！");
+    if (isHasTemp) return message.info("该护理时间已存在请重新选择！");
     setNurseList([
       ...nurseList,
       {
@@ -362,7 +368,10 @@ export default function NurseConfEdit(props: any) {
               {`预览${props.name}护理项目`}
             </div>
             <span
-              className="text-[#929EAB] w-10"
+              style={{
+                cursor: 'pointer',
+              }}
+              className="text-[#1677ff] w-10 "
               onClick={() => {
                 setConfirmSave(true);
                 setConfirmType("empty");
@@ -492,6 +501,7 @@ export default function NurseConfEdit(props: any) {
         onOk={() => {
           setConfirmSave(false);
           modalContentMap[confirmType] && modalContentMap[confirmType].okFn();
+
         }}
         onCancel={() => setConfirmSave(false)}
       >

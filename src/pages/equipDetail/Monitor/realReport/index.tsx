@@ -97,7 +97,6 @@ interface noRenderProp {
   sensorName?: string;
   name?: string;
   getEquipInfo?: Function
-
 }
 export class NoRender extends React.Component<noRenderProp> {
   constructor(props: noRenderProp) {
@@ -213,6 +212,8 @@ export default forwardRef((props: any, refs: any) => {
         endTimeMills: new Date(new Date().toLocaleDateString()).getTime() + end
       },
     }).then((res) => {
+      console.log(res, '.................handChangeCharthandChangeCharthandChangeChart');
+
       const { wsPointData, timer, resSleep, circleArr } = returnCloudHeatmapData({ res: res.data, sensorName, equipInfo })
       // console.log(first)
       initOnbedOrLeaveBedPage({ wsPointData, timer, resSleep, circleArr })
@@ -419,16 +420,9 @@ export default forwardRef((props: any, refs: any) => {
                 />
               </div>
             </Card>
-
-
-
-
           </div>
         </div>
-
       </ div>
-
-
     </div >
   );
 })

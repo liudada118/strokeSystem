@@ -241,6 +241,9 @@
     border: solid 1px #d9d9d9;
     font-size: 0.7rem;
     margin-left: 1rem;
+    .ant-select-selector{
+      box-shadow:none!important
+  }
     .messageTitlediv2_you_inp {
       width: 14rem;
       height: 1.3rem;
@@ -251,12 +254,14 @@
       box-shadow: none;
       font-size: 0.7rem;
     }
+    .MessageYiDOngTitlesearchSelect .css-dev-only-do-not-override-1v5z42l .ant-select-single .ant-select-show-arrow{
+      border: none !important;
+      border-radius: none!important;
+    }
   }
   // margin-right: 10px;
 }
-
 //消息页头部
-
 @media screen and (min-width: $PadWidth) and (max-width: $phoneWidth) {
   .homeTitle {
     display: flex;
@@ -266,18 +271,26 @@
 }
 
 .MessageYiDOngTitlesearchSelect {
+  .ant-select-selection-item{
+    border: none !important;
+    border-radius: none;
+  }
   .ant-select-selection-wrap {
     border: none !important;
+    border-radius: none;
   }
   .ant-select-selector {
     border: none !important;
+    border-radius: none;
   }
-  .aant-select
-    ant-select-outlined
-    css-dev-only-do-not-override-tjsggz
-    ant-select-single
-    ant-select-show-arrow {
+  .ant-select
+    .ant-select-outlined
+    .css-dev-only-do-not-override-tjsggz
+    .ant-select-single
+    .ant-select-show-arrow {
     border: none !important;
+    border-radius: none;
   }
+
 }
 //

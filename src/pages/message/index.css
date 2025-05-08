@@ -247,6 +247,9 @@
     background: #F5F8FA;
     width: 76%;
   }
+  .MessageYiDongDivInput .ant-select-selector {
+    box-shadow: none !important;
+  }
   .MessageYiDongDivInput .MessageYiDOngTitlesearchSelect {
     cursor: pointer;
     background: #F5F8FA;

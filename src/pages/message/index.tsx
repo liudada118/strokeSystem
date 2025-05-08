@@ -697,6 +697,7 @@ export default function Message() {
                     titleList.map((item: any, index) => {
                       return (
                         <Button
+                          disabled={item.id == 2 ? true : false}
                           style={{ border: "none", fontWeight: "900" }}
                           key={`${item.id}_v1`}
                           className={`btn  ${index + 1 === titleId ? "on" : ""
@@ -906,6 +907,7 @@ export default function Message() {
               titleList.map((item, index) => {
                 return (
                   <Button
+                    disabled={item.id == 2 ? true : false}
                     key={`${item.id}_v3`}
                     className={`btn  ${index + 1 === titleId ? "on" : ""} `}
                     ref={(el: any) => (titleRefs.current[index] = el)}

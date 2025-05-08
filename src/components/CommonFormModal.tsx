@@ -189,7 +189,7 @@ const CommonFormModal: (props: CommonFormModalProps) => React.JSX.Element = (pro
             <Fragment>
                 <Spin className="spin" spinning={spinning} fullscreen />
                 {list.map((item) => {
-                    console.log(item, '................gggggggghhhhhh');
+
 
                     switch (item.type) {
                         case 'SELECT':
@@ -235,16 +235,20 @@ const CommonFormModal: (props: CommonFormModalProps) => React.JSX.Element = (pro
                             return (
                                 <div className="radio_cascade" style={{ display: 'flex', alignItems: 'center' }}>
                                     <Form.Item label={item.label} name={item.key} key={item.key} className="w-[16rem]" style={{ transform: 'translateY(-17px)' }}>
+
+
                                         <Radio.Group value={item.value} className='flex flex-wrap w-[100]' onChange={(e: any) => setLeaveType(e.target.value)}>
                                             {(item as ComplexForm).children.map((_item) => (
                                                 <Radio className='w-[9rem] mt-[0.4rem]' key={_item.id} value={_item.value}>{_item.label}</Radio>
                                             ))}
                                         </Radio.Group>
                                     </Form.Item>
+
                                     {
-                                        <div style={{ display: 'flex', alignItems: 'center' }}>
+
+                                        < div style={{ display: 'flex', alignItems: 'center' }}>
                                             <Form.Item name={'timeIntervalB_copy'} key={item.key} className='mr-[0.5rem]'>
-                                                <InputNumber min={0} max={60} defaultValue={item.value} style={{ width: 80 }} disabled={((leaveType === -1 && item.value === 0) || leaveType === 0)} />
+                                                <InputNumber min={0} max={9999} defaultValue={item.value} style={{ width: 80 }} disabled={((leaveType === -1 && item.value === 0) || leaveType === 0)} />
                                             </Form.Item>分钟后提醒
                                         </div>
                                     }

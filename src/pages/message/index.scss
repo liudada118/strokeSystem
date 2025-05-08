@@ -80,13 +80,13 @@ font-weight: 900;
 display: flex;
 align-items: center;
 justify-content: center;
-
 }
 .btn:nth-child(2){
     width: 1px;
     height: 45px;
    border: 1px solid #A4B0BC;
    padding: 0!important;
+
   }
 .messageMainDatadiv{
     width: 92.5rem;
@@ -250,6 +250,10 @@ padding-top: 2.3rem!important;
     border-radius: 0.4rem;
     background: #F5F8FA;
     width: 76%;
+
+        .ant-select-selector{
+            box-shadow:none!important
+        }
     // 999
     // z-index: 100;
     .MessageYiDOngTitlesearchSelect{
@@ -489,3 +493,6 @@ font-family: 'PingFang SC';
     //     height: auto;
     // }
 }
+
+
+

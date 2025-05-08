@@ -1,6 +1,7 @@
 import { gaussBlur_2, interpSmall, interpSmall1, press, rotate90, zeroLine } from '@/utils/matrix';
 import React, { useEffect, useImperativeHandle, useRef, useState } from 'react'
 import { addSide } from './HeatmapModal copy';
+import { heatmapProp } from '@/utils/constant';
 // import { press, rotate90, rotateMatrix, zeroLine } from '../../assets/util';
 // import ProgressCom from '../progress/Progress';
 // interface Options = {
@@ -100,6 +101,10 @@ const Heatmap = React.forwardRef((props: any, refs) => {
                 return a
             }
         })
+
+        const max = Math.max(...dataToInterpGauss)
+        options.max = max*heatmapProp
+
         data = []
         const count = 64 + 8
         for (let i = 0; i < 64 + 8; i++) {

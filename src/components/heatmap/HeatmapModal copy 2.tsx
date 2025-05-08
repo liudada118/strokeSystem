@@ -1,5 +1,6 @@
 import React, { useEffect, useImperativeHandle, useRef, useState } from 'react'
 import { press, zeroLine } from '@/utils/matrix';
+import { heatmapProp } from '@/utils/constant';
 export function addSide(arr: any, width: any, height: any, wnum: any, hnum: any, sideNum: any) {
     let narr = new Array(height);
     let res = [];
@@ -157,6 +158,10 @@ const Heatmap = React.forwardRef((props: any, refs) => {
                 return a
             }
         })
+
+        const max = Math.max(...dataToInterpGauss)
+        options.max = max * heatmapProp
+
         const data = []
         const count = 64 + 8
         for (let i = 0; i < 64 + 8; i++) {
@@ -383,7 +388,7 @@ const Heatmap = React.forwardRef((props: any, refs) => {
 
 
     function bthClickHandle(arr: any, num: number) {
-        
+
 
         options.size = canvasRef.current.width / 22
         // const dataArr =[0, 0, 1, 1, 1, 3, 2, 0, 0, 1, 0, 0, 0, 2, 7, 4, 1, 0, 1, 1, 0, 0, 0, 0, 0, 4, 0, 0, 0, 1, 4, 19, 0, 1, 2, 1, 0, 4, 2, 1, 0, 11, 1, 0, 2, 3, 5, 6, 1, 0, 0, 0, 1, 2, 1, 0, 0, 3, 0, 0, 0, 1, 1, 0, 0, 1, 1, 2, 2, 5, 9, 9, 2, 1, 1, 0, 1, 3, 4, 9, 3, 2, 0, 2, 1, 0, 0, 0, 1, 3, 0, 1, 0, 0, 0, 0, 1, 0, 2, 3, 5, 19, 14, 5, 8, 4, 1, 2, 3, 6, 13, 7, 15, 4, 2, 2, 4, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 2, 5, 9, 14, 19, 27, 8, 3, 3, 2, 6, 13, 15, 17, 12, 5, 1, 2, 1, 0, 2, 2, 0, 1, 0, 0, 1, 0, 11, 2, 1, 1, 1, 3, 10, 11, 13, 12, 4, 4, 1, 2, 5, 13, 9, 8, 9, 4, 3, 1, 2, 1, 1, 1, 0, 0, 0, 2, 0, 0, 1, 0, 1, 1, 1, 3, 5, 15, 11, 11, 10, 3, 3, 8, 8, 14, 11, 9, 8, 3, 2, 1, 1, 1, 2, 1, 0, 2, 12, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 9, 9, 5, 2, 1, 0, 1, 3, 9, 9, 18, 7, 2, 2, 1, 2, 1, 1, 1, 1, 1, 4, 1, 0, 0, 1, 1, 1, 1, 4, 21, 16, 10, 17, 19, 7, 5, 3, 2, 4, 9, 19, 13, 7, 3, 2, 1, 2, 7, 2, 2, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 2, 1, 2, 1, 4, 4, 3, 13, 8, 11, 5, 4, 4, 5, 1, 1, 0, 1, 1, 3, 1, 4, 2, 1, 1, 2, 8, 2, 1, 1, 0, 1, 1, 2, 6, 4, 7, 8, 4, 1, 0, 1, 4, 5, 15, 12, 3, 1, 0, 1, 0, 0, 1, 8, 2, 2, 0, 1, 1, 2, 17, 40, 5, 2, 2, 2, 4, 5, 6, 9, 8, 4, 2, 2, 7, 13, 20, 13, 6, 6, 2, 1, 0, 7, 2, 1, 2, 1, 2, 2, 1, 2, 41, 7, 1, 2, 3, 5, 14, 14, 11, 10, 8, 4, 3, 5, 8, 14, 9, 18, 21, 22, 7, 9, 3, 7, 3, 4, 1, 1, 0, 0, 0, 0, 2, 1, 2, 2, 18, 7, 9, 18, 15, 9, 10, 8, 5, 3, 5, 12, 9, 20, 14, 22, 12, 3, 4, 6, 2, 2, 2, 1, 0, 0, 1, 1, 3, 22, 7, 2, 4, 10, 10, 21, 14, 11, 8, 9, 4, 7, 10, 14, 16, 13, 22, 17, 15, 9, 14, 6, 5, 4, 2, 1, 0, 1, 0, 2, 1, 1, 0, 1, 5, 18, 21, 23, 19, 16, 13, 8, 12, 16, 19, 19, 16, 12, 20, 18, 27, 28, 8, 5, 4, 3, 2, 2, 1, 1, 1, 1, 1, 3, 1, 3, 14, 38, 38, 16, 16, 16, 28, 31, 21, 30, 26, 20, 26, 21, 17, 35, 31, 37, 38, 18, 14, 8, 12, 2, 1, 1, 1, 1, 2, 2, 2, 2, 13, 30, 26, 16, 17, 22, 25, 24, 34, 27, 30, 24, 26, 23, 35, 34, 36, 20, 28, 10, 14, 47, 63, 1, 0, 1, 1, 0, 3, 3, 2, 4, 18, 30, 21, 21, 31, 19, 22, 34, 41, 42, 45, 30, 26, 28, 23, 28, 26, 22, 12, 8, 21, 29, 6, 2, 2, 1, 1, 2, 2, 2, 0, 0, 11, 15, 15, 21, 15, 17, 26, 27, 23, 34, 32, 26, 22, 17, 16, 15, 15, 12, 14, 10, 63, 39, 13, 1, 1, 0, 0, 1, 2, 1, 1, 2, 4, 15, 19, 13, 14, 18, 22, 20, 22, 16, 15, 19, 14, 15, 22, 24, 22, 11, 8, 5, 21, 6, 4, 2, 0, 0, 0, 1, 0, 1, 0, 0, 4, 6, 14, 14, 14, 13, 14, 16, 24, 24, 16, 11, 17, 14, 12, 10, 10, 13, 6, 15, 4, 4, 2, 0, 0, 1, 1, 5, 0, 2, 0, 0, 6, 3, 4, 7, 12, 14, 16, 10, 22, 13, 13, 13, 15, 12, 14, 8, 4, 4, 5, 24, 5, 4, 3, 0, 1, 2, 4, 17, 1, 1, 0, 0, 2, 3, 4, 7, 10, 15, 17, 12, 15, 24, 20, 15, 12, 13, 7, 5, 3, 3, 3, 2, 3, 2, 1, 0, 0, 3, 1, 2, 1, 0, 1, 7, 1, 2, 5, 10, 13, 17, 15, 11, 18, 15, 14, 11, 8, 12, 9, 4, 5, 5, 15, 4, 4, 2, 1, 0, 1, 1, 1, 1, 0, 0, 0, 2, 3, 4, 9, 8, 12, 19, 25, 20, 24, 17, 17, 14, 12, 14, 17, 16, 13, 22, 10, 8, 4, 5, 15, 1, 0, 1, 1, 1, 2, 0, 1, 0, 5, 9, 19, 20, 25, 23, 22, 22, 24, 20, 17, 14, 14, 12, 16, 16, 17, 27, 32, 40, 29, 11, 5, 19, 8, 18, 43, 63, 29, 26, 24, 32, 24, 21, 16, 18, 16, 18, 20, 9, 13, 19, 23, 13, 16, 15, 15, 13, 7, 6, 6, 7, 5, 4, 3, 4, 0, 1, 1, 3, 3, 4, 6, 11, 44, 38, 43, 28, 18, 23, 25, 18, 24, 20, 11, 15, 14, 16, 18, 22, 33, 13, 18, 8, 7, 5, 3, 8, 1, 2, 2, 1, 3, 4, 2, 6, 23, 20, 21, 24, 24, 21, 25, 24, 20, 14, 26, 27, 14, 17, 15, 24, 16, 19, 11, 6, 5, 5, 3, 2, 0, 2, 0, 1, 0, 1, 0, 0, 3, 6, 13, 11, 11, 13, 15, 12, 13, 22, 19, 14, 12, 13, 13, 11, 16, 5, 4, 3, 3, 3, 6, 3, 2, 3, 0, 2, 3, 1, 1, 5, 22, 4, 2, 2, 1, 3, 2, 4, 4, 6, 4, 4, 2, 2, 4, 4, 15, 5, 4, 3, 8, 3, 3, 170, 85, 3, 153, 0, 0, 0]
@@ -621,7 +626,7 @@ const Heatmap = React.forwardRef((props: any, refs) => {
     }
     useEffect(() => {
 
-        
+
         // canvas = document.getElementById(`heatmapcanvas${props.index || ''}`)
 
         options.size = canvasRef.current.width / 22
@@ -648,7 +653,7 @@ const Heatmap = React.forwardRef((props: any, refs) => {
             }
             console.log(props.circleArr)
             setCircleArr(props.circleArr)
-        }else{
+        } else {
             setCircleArr(props.circleArr)
         }
 
@@ -657,7 +662,7 @@ const Heatmap = React.forwardRef((props: any, refs) => {
         }
 
     }, [props.sensorName]);
-    const [fontSize , setFontSize] = useState(1)
+    const [fontSize, setFontSize] = useState(1)
     return (
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', backgroundColor: '#000', position: 'relative' }}>
 
@@ -672,7 +677,7 @@ const Heatmap = React.forwardRef((props: any, refs) => {
             {
                 circleArr?.map((a, indexs) => {
                     return (
-                        <>{props.less && a.time < props.less ? '' : <div style={{ fontSize:`${fontSize/15}rem`, color: '#fff', position: 'absolute', left: `${((a.x) / 36 * 100)}%`, top: `${((a.y * 2 + 2) / 72 * 100)}%`, transform: 'translate(-50% , -50%)', width: `${(4 * 0.75)}rem`, height: `${(4 * 0.75)}rem`, borderRadius: '50%', backgroundColor: a.time > 30 ? 'rgba(211,0,0,0.5)' : 'rgba(132,133,135,0.7)', textAlign: 'center', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <>{props.less && a.time < props.less ? '' : <div style={{ fontSize: `${fontSize / 15}rem`, color: '#fff', position: 'absolute', left: `${((a.x) / 36 * 100)}%`, top: `${((a.y * 2 + 2) / 72 * 100)}%`, transform: 'translate(-50% , -50%)', width: `${(4 * 0.75)}rem`, height: `${(4 * 0.75)}rem`, borderRadius: '50%', backgroundColor: a.time > 30 ? 'rgba(211,0,0,0.5)' : 'rgba(132,133,135,0.7)', textAlign: 'center', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                             {a.time}min
                         </div>}</>
                     )

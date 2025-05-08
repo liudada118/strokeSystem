@@ -1,5 +1,6 @@
 import React, { useEffect, useImperativeHandle, useRef, useState } from 'react'
 import { press, zeroLine } from '@/utils/matrix';
+import { heatmapProp } from '@/utils/constant';
 export function addSide(arr: any, width: any, height: any, wnum: any, hnum: any, sideNum: any) {
     let narr = new Array(height);
     let res = [];
@@ -33,7 +34,7 @@ export function addSide(arr: any, width: any, height: any, wnum: any, hnum: any,
     ];
 }
 
-var color:any
+var color: any
 
 function gaussBlur_2(scl: any, w: any, h: any, r: any) {
     const tcl = new Array(scl.length).fill(1)
@@ -103,8 +104,8 @@ const sitOrder = 0;
 
 
 const Heatmap = React.forwardRef((props: any, refs) => {
-    
-    const [colorObj , setColorObj] = useState<any>({})
+
+    const [colorObj, setColorObj] = useState<any>({})
     const [circleArr, setCircleArr] = useState<Array<any>>([{}])
     const canvasRef = useRef<any>(null)
     const contextRef = useRef<any>(null)
@@ -112,7 +113,7 @@ const Heatmap = React.forwardRef((props: any, refs) => {
     var options: any = {
         min: 0,
         // max: localStorage.getItem('carValuej') ? JSON.parse(localStorage.getItem('carValuej')) : 900,
-        max: props.sensorName == 'KgvDXUvdEs9M9AEQDcVc' ?  9000 : 14000,
+        max: props.sensorName == 'KgvDXUvdEs9M9AEQDcVc' ? 9000 : 14000,
         size: 4
     }
 
@@ -127,10 +128,10 @@ const Heatmap = React.forwardRef((props: any, refs) => {
     }, [])
     // 生成随机数据
     function generateData(arr: any, num: number) {
-        
+
         let resData = arr
 
-        if(!resData) return
+        if (!resData) return
         const newArr = [...resData].map((a, index) => a > valuef1 ? a : 0)
         let resArr = newArr
         resArr = zeroLine(resArr)
@@ -158,6 +159,10 @@ const Heatmap = React.forwardRef((props: any, refs) => {
                 return a
             }
         })
+
+        const max = Math.max(...dataToInterpGauss)
+        options.max = max * heatmapProp
+
         data = []
         const count = 64 + 8
         for (let i = 0; i < 64 + 8; i++) {
@@ -391,7 +396,7 @@ const Heatmap = React.forwardRef((props: any, refs) => {
         options.size = canvasRef.current.width / 22
         context.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height)
         isShadow = true
-     
+
         draw(context, data)
         isShadow = false
     }
@@ -628,7 +633,7 @@ const Heatmap = React.forwardRef((props: any, refs) => {
         setFontSize(canvasRef.current.width / 22)
         canvasRef.current.height = canvasRef.current.width * 2
 
-   
+
         contextRef.current = canvasRef.current.getContext('2d')
 
         const devicePixelRatio = window.devicePixelRatio || 1;
@@ -639,8 +644,8 @@ const Heatmap = React.forwardRef((props: any, refs) => {
         // const data = new Array(1024).fill(0)
         bthClickHandle(props.data, props.num)
 
-        if(props.index == 12){
-            console.log(props.data , 'refffff')
+        if (props.index == 12) {
+            console.log(props.data, 'refffff')
             bthClickHandle(props.data, props.num)
             if (props.sensorName == 'KgvDXUvdEs9M9AEQDcVc') {
                 let circleArr = [{ x: 12, y: 18, time: 20, radius: 5 }, { x: 24, y: 7, time: 27, radius: 5 }, { x: 30, y: 29, time: 31, radius: 5 }]
@@ -648,19 +653,19 @@ const Heatmap = React.forwardRef((props: any, refs) => {
             }
             console.log(props.circleArr)
             setCircleArr(props.circleArr)
-        }else{
+        } else {
             setCircleArr(props.circleArr)
         }
 
         return () => {
             window.removeEventListener('resize', () => { })
         }
-       
+
     }, []);
-    const [fontSize , setFontSize] = useState(1)
+    const [fontSize, setFontSize] = useState(1)
     return (
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', backgroundColor: '#000', position: 'relative' }}>
-            
+
             {/* <div><textarea onChange={(e) => {
                 // console.log(e.target.value)
                 // console.log(Intensity.prototype.setGradient(e.target.value))
@@ -672,7 +677,7 @@ const Heatmap = React.forwardRef((props: any, refs) => {
             {
                 circleArr?.map((a, indexs) => {
                     return (
-                        <div style={{ fontSize: `${fontSize/15}rem`, color: '#fff', position: 'absolute', left: `${((a.x) / 36 * 100)}%`, top: `${((a.y * 2 + 2) / 72 * 100)}%`, transform: 'translate(-50% , -50%)', width: `${(4 * 0.75)}rem`, height: `${(4 * 0.75)}rem`, borderRadius: '50%', backgroundColor: 'rgba(132,133,135,0.7)', textAlign: 'center', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <div style={{ fontSize: `${fontSize / 15}rem`, color: '#fff', position: 'absolute', left: `${((a.x) / 36 * 100)}%`, top: `${((a.y * 2 + 2) / 72 * 100)}%`, transform: 'translate(-50% , -50%)', width: `${(4 * 0.75)}rem`, height: `${(4 * 0.75)}rem`, borderRadius: '50%', backgroundColor: 'rgba(132,133,135,0.7)', textAlign: 'center', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                             {a.time}min
                         </div>
                     )

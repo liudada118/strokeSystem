@@ -1,5 +1,6 @@
 import React, { useEffect, useImperativeHandle, useRef, useState } from 'react'
 import { press, zeroLine } from '@/utils/matrix';
+import { heatmapProp } from '@/utils/constant';
 export function addSide(arr: any, width: any, height: any, wnum: any, hnum: any, sideNum: any) {
     let narr = new Array(height);
     let res = [];
@@ -157,6 +158,10 @@ const Heatmap = React.forwardRef((props: any, refs) => {
                 return a
             }
         })
+
+        const max = Math.max(...dataToInterpGauss)
+                options.max = max*heatmapProp
+
         data = []
         const count = 64 + 8
         for (let i = 0; i < 64 + 8; i++) {

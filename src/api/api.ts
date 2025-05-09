@@ -4,9 +4,9 @@ import axios from "axios";
 const web = 'juqiao.bodyta.com'
 // const web = 'sensor.bodyta.com'
 
-export const netUrl = `http://${web}:8080/rcv`;
-export const netRepUrl = `http://${web}:8081`;
-export const voiceUrl = `http://${web}`
+// export const netUrl = `http://${web}:8080/rcv`;
+// export const netRepUrl = `http://${web}:8081`;
+// export const voiceUrl = `http://${web}`
 
 export const netUrl = `https://${web}/rcv`;
 export const netRepUrl = `https://${web}`;

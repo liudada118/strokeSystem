@@ -62,7 +62,7 @@ export function TurnEdit() {
 
     const submitCloud = (newValue: any) => {
         setFormValue(newValue)
-        console.log(newValue, '33333333333333')
+     
         const obj = {
             flipbodyCount: parseInt(newValue.timeRangeA),
             flipbodyTime: parseInt(newValue.timeIntervalA) * 60

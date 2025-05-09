@@ -27,26 +27,58 @@ export default function NursingPlan() {
   const [isEdit, setIsEdit] = useState(false);
   const [isDelete, setIsDelete] = useState(false);
   const navigate = useNavigate();
+  // // 定义处理函数
+  // const handleResize = () => {
+  //   const html = document.getElementsByTagName("html");
+  //   html[0].style.fontSize = '14px'
+  // };
+
+
+  // // const visibilitychange = () => {
+  // //   if (document.hidden) { // 当页面被切换至后台时
+  // //     console.log("页面已经切换到了后台");
+
+  // //   } else { // 当页面重新显示在前台时
+  // //     const html = document.getElementsByTagName("html");
+  // //     html[0].style.fontSize = '14px'
+
+  // //     // 这里可以添加相关处理逻辑
+  // //   }
+  // // }
+  // useEffect(() => {
+  //   handleResize();
+  //   visibilitychange()
+  //   // 添加事件监听器
+  //   window.addEventListener('resize', handleResize);
+  //   window.addEventListener('visibilitychange', visibilitychange);
+  //   // 组件卸载时移除监听器
+  //   return () => {
+  //     window.removeEventListener('resize', handleResize);
+  //     window.removeEventListener('visibilitychange', visibilitychange)
+  //   };
+  // }, [handleResize, visibilitychange]);
+  const handleVisibilityChange = () => {
+    const html = document.getElementsByTagName("html")[0];
+    console.log("页面状态变化：", document.hidden);
+
+    if (!document.hidden) {
+      // 当页面重新显示在前台时
+      html.style.fontSize = '14px';
+      // window.location.reload(); // 刷新页面
+    }
+  };
 
   useEffect(() => {
-
-    // 定义处理函数
-    const handleResize = () => {
-      const html = document.getElementsByTagName("html");
-      html[0].style.fontSize = '14px'
-    };
-    handleResize();
-
+    handleVisibilityChange(); // 初始化时执行一次
     // 添加事件监听器
-    window.addEventListener('resize', handleResize);
-
+    window.addEventListener('resize', handleVisibilityChange);
+    window.addEventListener('visibilitychange', handleVisibilityChange);
     // 组件卸载时移除监听器
     return () => {
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener('resize', handleVisibilityChange);
+      window.removeEventListener('visibilitychange', handleVisibilityChange);
     };
   }, []);
-
-
   const editNurseConf = () => {
     // setOperType("add");
     console.log('addNurseConf.........');

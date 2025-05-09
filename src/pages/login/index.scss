@@ -135,15 +135,19 @@
         height: 11rem;
         margin-bottom: 3rem;
     }
+    .loginContentImg{
+        position: relative;
+        top:-30rem
+    }
     .verifiValue{
-        height: 9rem !important;
+        height: 10rem !important;
         font-size: 3.5rem !important;
         margin-bottom: 2rem;
         border-radius: 5.5rem;
     }
     .verifi {
         .verifiValue{
-            height: 9rem;
+            height: 10rem;
             margin-bottom: 2rem;
             border-radius: 5.5rem;
         }
@@ -155,6 +159,7 @@
     .loginButton{
         height: 10rem !important;
         font-size: 3.7rem !important;
+        margin-top: 4rem!important;
     }
 
     // .loginContent img{
@@ -192,8 +197,9 @@
 .footItemsWeb{
     display: flex;
     justify-content: space-around;
-    margin-bottom: 1.42rem;
+    // margin-bottom: 0.42rem;
     color: rgba(0, 0, 0, 0.45);
+    font-size: 2rem;
 }
 .footItems{
     display: flex;
@@ -214,6 +220,6 @@
 }
 .footCompanyWeb{
     color: rgba(0,0,0,0.45);
-    font-size: 3.73rem;
+    font-size: 2.73rem;
     margin-bottom: 1.25rem;
 }

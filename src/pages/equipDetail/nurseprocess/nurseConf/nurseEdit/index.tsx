@@ -25,6 +25,7 @@ import yuanquan from "@/assets/images/yuanquan.png";
 import { nurseOpen } from "@/redux/Nurse/Nurse";
 import { calc } from "antd/es/theme/internal";
 import { setTimeout } from "timers/promises";
+import Alert from "antd/lib/alert/Alert";
 
 const { confirm } = Modal;
 
@@ -54,6 +55,7 @@ export default function NurseConfEdit(props: any) {
     //   }, 3000)
     window.location.href = window.location.href;
   }, [nurseList]);
+
 
   const items = [
     {
@@ -122,7 +124,7 @@ export default function NurseConfEdit(props: any) {
         );
       },
       okFn: () => {
-        setIsUseDefault(1)
+        // setIsUseDefault(1)
         setNurseList(tempList);
       },
     },
@@ -164,6 +166,8 @@ export default function NurseConfEdit(props: any) {
     const minutesVal = parseFloat(minutes);
     const hoursFormat = hoursVal < 10 ? `0${hoursVal}` : hoursVal;
     const minutesFormat = minutesVal < 10 ? `0${minutesVal}` : minutesVal;
+    console.log(hoursFormat, minutesFormat, '...................................minutesFormatminutesFormatminutesFormat');
+
     const templateTime = new Date(
       `1970-01-01 ${hoursFormat}:${minutesFormat}`
     ).getTime();
@@ -223,7 +227,7 @@ export default function NurseConfEdit(props: any) {
         time: dayjs(+item.key).format("HH:mm"),
       };
     });
-
+    console.log(JSON.stringify(list), '..............saveType');
     Instancercv({
       method: "post",
       url: "/nursing/updateNursingConfig",
@@ -425,15 +429,21 @@ export default function NurseConfEdit(props: any) {
           }}
           open={isUseDefault === 2}
           onCancel={() => {
+            setIsUseDefault(1)
             setIsShowChooseTemp(false);
           }}
           footer={[
             // 自定义页脚，只包含确认按钮
             <Button
+
               key="ok"
               type="primary"
               style={{ padding: "0 1rem", height: "2rem" }}
-              onClick={chooseTemp}
+              // onClick={chooseTemp}
+              onClick={() => {
+                setNurseList(tempList);
+                setIsShowChooseTemp(false);
+              }}
             >
               选择此模版
             </Button>,

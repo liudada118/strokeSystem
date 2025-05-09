@@ -446,7 +446,6 @@ export const RealChart = React.forwardRef((props: RealIndex, refs) => {
     if (!ydata_copy) {
       ydata = []
     }
-    console.log(color, ydata, 'ydataydataydataydata........ydata..........');
     xdata.pop()
     xdata.pop()
     // let newData = 

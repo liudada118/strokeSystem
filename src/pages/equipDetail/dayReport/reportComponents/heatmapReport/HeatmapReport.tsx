@@ -65,12 +65,25 @@ function HeatmapReport(props: heatmapProps) {
                 console.log('8888888888888..............')
                 const listData = Array.isArray(res.data?.data[0]?.data) ? res.data?.data[0]?.data : JSON.parse(res.data?.data[0]?.data || '[]')
                 heatMapRef.current.bthClickHandle(listData)
-                setProgressTime(dayjs(res.data.data[0].timeMills).format('HH:mm'))
+
+                setProgressTime(getTimeString(res.data.data[0].timeMills))
             } else {
                 setHeatmapData([{ data: new Array(1024).fill(0) }])
                 if (heatMapRef.current) heatMapRef.current.bthClickHandle([{ data: new Array(1024).fill(0) }])
             }
         })
+    }
+    const getTimeString = (date: any) => {
+        const now = new Date(date);
+        const formatTime = (num: any) => num.toString().padStart(2, '0');
+
+        const timeString = [
+            formatTime(now.getHours()),
+            formatTime(now.getMinutes()),
+            formatTime(now.getSeconds())
+        ].join(':');
+
+        return timeString;
     }
     const changeLeftProgress = (e: any) => {
         // 当帧条被按住调节帧时
@@ -100,7 +113,7 @@ function HeatmapReport(props: heatmapProps) {
 
             const lineleft = parseInt(pressProgressIndex.style.left);
 
-            let value = changePxToValue({ value: lineleft, type: "line", length: 60, progressWidth, lineWidth });
+            let value = changePxToValue({ value: lineleft, type: "line", length: heatmapData.length, progressWidth, lineWidth });
             // setProgressIndex(value)
 
 
@@ -132,7 +145,7 @@ function HeatmapReport(props: heatmapProps) {
 
         const lineleft = parseInt(pressProgressIndex.style.left);
 
-        let value = changePxToValue({ value: lineleft, type: "line", length: 60, progressWidth, lineWidth });
+        let value = changePxToValue({ value: lineleft, type: "line", length: heatmapData.length, progressWidth, lineWidth });
         // if (heatmapData[value] && heatmapData[value].data) {
         //     if (heatMapRef.current) {
         //         heatMapRef.current.bthClickHandle(JSON.parse(heatmapData[value].data))
@@ -151,7 +164,8 @@ function HeatmapReport(props: heatmapProps) {
             if (heatMapRef.current) {
                 const heatmapDataList = Array.isArray(heatmapData[value]?.data) ? heatmapData[value]?.data : JSON.parse(heatmapData[value]?.data)
                 heatMapRef.current.bthClickHandle(heatmapDataList)
-                setProgressTime(dayjs(heatmapData[value].timeMills).format('HH:mm'))
+                console.log(value, '........value..........')
+                setProgressTime(getTimeString(heatmapData[value].timeMills))
             }
         } else {
             if (heatMapRef.current) heatMapRef.current.bthClickHandle(new Array(1024).fill(0))

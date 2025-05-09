@@ -188,31 +188,34 @@ export default function Login() {
   return (
     <div className="loginContainer">
       <div className="loginContent">
-        <div style={{ width: '100%', display: 'flex', justifyContent: 'center', flexDirection: 'column' }}>
+        <div className={`${!windowSize.isMobile ? '' : 'loginContentImg'}`} style={{ width: '100%', display: 'flex', justifyContent: 'center', flexDirection: 'column' }}>
           <img style={{ width: '70%', marginLeft: "15%", marginRight: "15%" }} src={logo} alt="" />
           <div className="loginTypes">
-            账号登录
+            {
+              !windowSize.isMobile ? ' 账号登录' : ''
+            }
           </div>
         </div>
-        <Input
-          className="verifiValue py-[0.35rem] mb-[1rem] rounded-3xl"
-          value={phone}
-          onChange={(e) => { setPhone(e.target.value) }}
-          placeholder={"请输入账号"}
-        />
-        <Input.Password className="verifiValue py-[0.35rem] rounded-3xl flex items-center" placeholder={"请输入密码"} value={verCode}
-          onChange={(e) => { setVerCode(e.target.value) }} />
-        <Button
-          shape="round"
-          className="loginButton"
-          // style={{ color: "#0033A1" }}
-          style={{ color: '#fff' }}
-          block
-          type="primary"
-          onClick={() => { debounce(login, 1000) }}
-        >
-          登录
-        </Button>
+        <div className="">
+          <Input
+            className="verifiValue py-[0.35rem] mb-[1rem] rounded-3xl"
+            value={phone}
+            onChange={(e) => { setPhone(e.target.value) }}
+            placeholder={"请输入账号"}
+          />
+          <Input.Password className="verifiValue py-[0.35rem] rounded-3xl flex items-center" placeholder={"请输入密码"} value={verCode}
+            onChange={(e) => { setVerCode(e.target.value) }} />
+          <Button
+            shape="round"
+            className="loginButton"
+            style={{ color: "#0033A1" }}
+            block
+            type="primary"
+            onClick={() => { debounce(login, 1000) }}
+          >
+            登录
+          </Button>
+        </div>
       </div>
       <div className="foot">
         {/* <div className={`${windowSize.isMobile === false ? 'footCompany' : 'footCompanyWeb'}`}> */}
@@ -228,5 +231,3 @@ export default function Login() {
     </div>
   );
 }
-
-//  connect(null, {})()

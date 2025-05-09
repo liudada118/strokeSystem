@@ -647,41 +647,43 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
       label: "MAC地址",
       value: deviceId,
     },
-    {
-      label: "设备校准",
-      value: leavebedParam,
-      params: [
-        {
-          label: "设备校准",
-          value: leavebedParam,
-          id: "leavebedParam",
-          onChange: () => {
-            setLeaveParamModalOpen(true);
-          },
-          modal: (
-            <CommonFormModal
-              title="设备校准"
-              open={leaveParamModalOpen}
-              close={() => setLeaveParamModalOpen(false)}
-              formList={[
-                {
-                  label: "设备校准",
-                  key: "leavebedParam",
-                  value: leavebedParam,
-                  type: FormType.INPUT,
-                },
-              ]}
-              onFinish={(values) => {
-                // setTimeRangeD(values.timeRangeD)
-                // changeValueToUserInfo(values)
-                setUserInfo({ ...userInfo, ...values });
-                setLeaveBedParamChange(true);
-              }}
-            />
-          ),
-        },
-      ],
-    },
+
+    //  暂时先注释了，后期说不定会添加 ，先别删除
+    // {
+    //   label: "设备校准",
+    //   value: leavebedParam,
+    //   params: [
+    //     {
+    //       label: "设备校准",
+    //       value: leavebedParam,
+    //       id: "leavebedParam",
+    //       onChange: () => {
+    //         setLeaveParamModalOpen(true);
+    //       },
+    //       modal: (
+    //         <CommonFormModal
+    //           title="设备校准"
+    //           open={leaveParamModalOpen}
+    //           close={() => setLeaveParamModalOpen(false)}
+    //           formList={[
+    //             {
+    //               label: "设备校准",
+    //               key: "leavebedParam",
+    //               value: leavebedParam,
+    //               type: FormType.INPUT,
+    //             },
+    //           ]}
+    //           onFinish={(values) => {
+    //             // setTimeRangeD(values.timeRangeD)
+    //             // changeValueToUserInfo(values)
+    //             setUserInfo({ ...userInfo, ...values });
+    //             setLeaveBedParamChange(true);
+    //           }}
+    //         />
+    //       ),
+    //     },
+    //   ],
+    // },
   ];
 
   const handleClickSettingBtn = () => {
@@ -883,6 +885,8 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
             leaveBedParam: switchOpenValue,
           },
         }).then((res: any) => {
+          // fetchEquips()
+          dispatch(fetchEquips())
           message.success("修改成功");
         });
       } catch (error) {
@@ -973,7 +977,7 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
             className="text-base text-[#32373E] ml-[0.4rem]"
             style={{ fontWeight: "600" }}
           >
-            离床参数 <span className="mr-[3rem] " style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{switchOpenValue}</span>
+            离床参数 <span className="mr-[3rem] " style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{leavebedParam}</span>
           </span>
           {switchOpen ? (
             <Input
@@ -1040,6 +1044,7 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
               <div>
                 <span className="mr-[2rem]">{item.label}</span>
                 <span>{item.value}</span>
+
                 {item.label === "MAC地址" ? roleId === (1 || 2) ? (
                   <Popconfirm
                     title="你确定要解除绑定吗？"
@@ -1056,9 +1061,10 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
                       >
                         解绑设备
                       </span>
-                    ) : (
-                      ""
-                    )}
+                    )
+                      : (
+                        ""
+                      )}
                   </Popconfirm>
                 ) : (
                   <span
@@ -1078,8 +1084,11 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
                   </span>
                 ) : ''}
               </div>
-              {item.params &&
+              {/*  暂时先注释了，后期说不定会添加 ，先别删除  */}
+              {/* {item.params &&
                 item.params.map((_item, index) => (
+
+
                   <>
                     {editing && (
                       <span
@@ -1091,7 +1100,7 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
                     )}
                     {_item.modal}
                   </>
-                ))}
+                ))} */}
             </div>
           ))}
         </div>

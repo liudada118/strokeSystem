@@ -12,7 +12,9 @@ import Card, { CardContainTitle, CardText } from './Card';
 import { instance, Instancercv } from '@/api/api';
 import { useSelector } from 'react-redux';
 import { tokenSelect } from '@/redux/token/tokenSlice';
+import { Image } from 'antd';
 import { Spin } from 'antd';
+import { ImageViewer } from 'antd-mobile';
 // import { secToHourstamp } from '../../assets/util';
 const nurseItems = ['助餐', '助浴', '更换床单', '更换衣物', '敷药']
 const skinObj: any = {
@@ -174,6 +176,7 @@ export default function TurnReport(props: PropsType) {
     // if (rightRef.current) rightRef.current.bthClickHandle(data.endMatrix || [])
     // }, [leftRef, rightRef, data.endMatrix,])
     // charge_man
+    const [visible, setVisible] = useState(false)
     return (
         <>
             {/* <div className='flex items-center justify-center w-full h-full bg-[#fff] z-30'>
@@ -276,7 +279,22 @@ export default function TurnReport(props: PropsType) {
                                             {data.sleepPosImg !== 'extraData' ? <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '1rem' }}>
 
                                                 <div>在床照片</div>
-                                                <div><img src={data.sleepPosImg} style={{ height: '6rem' }} alt="" /></div>
+                                                <div>
+                                                    <ImageViewer
+                                                        // classNames={{
+                                                        //     mask: 'customize-mask',
+                                                        //     body: 'customize-body',
+                                                        // }}
+                                                        image={data?.sleepPosImg}
+                                                        visible={visible}
+                                                        onClose={() => {
+                                                            setVisible(false)
+                                                        }}
+                                                    />
+                                                    <img onClick={() => {
+                                                        setVisible(true)
+                                                    }} src={data.sleepPosImg} style={{ height: '6rem' }} alt="" />
+                                                </div>
                                             </div> : ''}
                                         </CardContainTitle>
 
@@ -329,17 +347,25 @@ export default function TurnReport(props: PropsType) {
                                             <div className='text-[#000000] text-[0.9rem] font-bold pt-[1rem]  pl-[1.1rem]' style={{ fontFamily: 'Source Han Sans' }}>翻身时间</div>
                                             <div style={{ fontWeight: "800" }} className=' pt-[1rem] pl-[1.1rem]'>{dayjs((data.timeMills)).format('HH:mm')}</div>
                                         </div>
-
                                         < div className='h-[10rem] w-[8.3rem] mt-[0.6rem]  bg-[#fff] rounded-md'>
                                             <div className='text-[#000000] text-[0.9rem] font-bold pt-[1rem]  pl-[1.1rem]' style={{ fontFamily: 'Source Han Sans' }}>睡姿记录</div>
-
                                             <div className='pt-[0.5rem] pl-[1.1rem]'>{sleepArr[data.sleepPos]}</div>
                                             {data.sleepPosImg !== 'extraData' ?
-                                                <img className='pt-[0.5rem] pl-[1.1rem]' style={{ width: "6.6rem", height: "5.6rem", }} src={data.sleepPosImg ? data.sleepPosImg : nullImg} alt="" />
-                                                : '  '}
+                                                <div
+                                                    className='maskClassName mt-[0.5rem] ml-[1.1rem]  w-[5.4rem] h-[5.4rem] '
+                                                >
+                                                    <Image
+                                                        // className='maskClassName mt-[0.5rem] ml-[1.1rem] w-[5.6rem] h-[5.6rem] '
+                                                        width={'100%'}
+                                                        height={'100%'}
+
+                                                        src={data.sleepPosImg ? data.sleepPosImg : nullImg}
+                                                    />
+                                                </div>
+                                                // <img className='pt-[0.5rem] pl-[1.1rem]' style={{ width: "6.6rem", height: "5.6rem", }} src={data.sleepPosImg ? data.sleepPosImg : nullImg} alt="" />
+                                                : ''}
                                             {/* <img src={data.headImg} style={{ height: '6rem' }} alt="" /> */}
                                         </div>
-
                                     </div>
                                     <div className='flex-1 h-[22rem]'>
                                         <CardContainTitle style={{ color: "#000000", }} title={'护理前后压力对比'}>
@@ -357,7 +383,6 @@ export default function TurnReport(props: PropsType) {
                                                             type={data.type}
                                                             height='17rem'
                                                             sensorName={data.sensorName} />
-
                                                     </div>
                                                 </div>
                                                 <div style={{ flex: 1, height: "3rem" }}>
@@ -374,7 +399,6 @@ export default function TurnReport(props: PropsType) {
                                                             height='100%'
                                                             type={data.type}
                                                             sensorName={data.sensorName} />
-
                                                     </div>
                                                 </div>
                                             </div>
@@ -384,9 +408,7 @@ export default function TurnReport(props: PropsType) {
                             </div >
                         }
                     </div>
-
             }
         </>
-
     )
 }

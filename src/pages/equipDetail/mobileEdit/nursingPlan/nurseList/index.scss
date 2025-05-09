@@ -23,6 +23,7 @@
             flex-shrink: 1;
             &:nth-child(1) {
                 width: 5rem;
+                flex-shrink: 0;
             }
             &:nth-child(2) {
                 flex: 1;
@@ -58,8 +59,14 @@
         &:not(:first-child) {
             p {
                 &:nth-child(1) {
+                    display: flex;
                     span {
+                        &:nth-child(1) {
+                            width: 3rem;
+                            font-weight: 400;
+                        }
                         &:nth-child(2) {
+                            flex-shrink: 0;
                             position: relative;
                             z-index: 2;
                             display: inline-block;
@@ -68,9 +75,9 @@
                             color: #fff;
                             width: 1.5rem;
                             height: 1.5rem;
-                            margin-left: 0.5rem;
                             text-align: center;
                             line-height: 1.5rem;
+                            font-weight: 400;
                         }
                     }
                 }
@@ -78,10 +85,12 @@
                     span {
                         background: #E6EBF0;
                         border-radius: 0.3rem;
+                        font-weight: 400;
                     }
                 }
                 &:nth-child(4) {
                     color: #0072EF;
+                    font-weight: 400;
                 }
             }
         }
@@ -96,7 +105,7 @@
             height: 100%;
             position: absolute;
             top: 1rem;
-            left: 3.65rem;
+            left: 4.15rem;
             background: #E6EBF0;
             z-index: 1;
         }

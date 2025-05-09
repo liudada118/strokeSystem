@@ -698,7 +698,7 @@ export default function Message() {
                       return (
                         <Button
                           disabled={item.id == 2 ? true : false}
-                          style={{ border: "none", fontWeight: "900" }}
+                          style={{ border: "none", fontWeight: "900", cursor: item.id == 2 ? 'default' : '' }}
                           key={`${item.id}_v1`}
                           className={`btn  ${index + 1 === titleId ? "on" : ""
                             } `}
@@ -909,6 +909,7 @@ export default function Message() {
                   <Button
                     disabled={item.id == 2 ? true : false}
                     key={`${item.id}_v3`}
+                    style={{ cursor: item.id == 2 ? 'default' : '' }}
                     className={`btn  ${index + 1 === titleId ? "on" : ""} `}
                     ref={(el: any) => (titleRefs.current[index] = el)}
                     onClick={() => onTitle(item)}

@@ -148,16 +148,13 @@ export default function NurseProcesst(props: nurseProcessProps) {
       ),
     },
   ];
-
   const [obj, setObj] = useState<any>({}) || [];
   function changeData(param: any) {
     setObj({ ...obj, ...param });
   }
-
   const onClose = () => {
     changePos();
   };
-
   // mqtt 事件
   const mqttEvent: any = {
     // 分钟数据
@@ -182,7 +179,6 @@ export default function NurseProcesst(props: nurseProcessProps) {
       setOnBedTime(onBedTime);
     },
   };
-
   // 开始mqtt
   useEffect(() => {
     if (client) {
@@ -195,7 +191,6 @@ export default function NurseProcesst(props: nurseProcessProps) {
       });
     }
   }, [client]);
-
   /**
    * 获取初始矩阵信息
    */
@@ -217,6 +212,7 @@ export default function NurseProcesst(props: nurseProcessProps) {
           returnCloudHeatmapData({ res: res.data, sensorName, equipInfo });
         nowPos = resSleep;
         startMatrix = [...wsPointData];
+        
         if (turnOverRef.current)
           turnOverRef.current.renderHeatmapData({ wsPointData, circleArr });
         console.log("获取初始矩阵成功");
@@ -226,7 +222,6 @@ export default function NurseProcesst(props: nurseProcessProps) {
         // message.error('服务器错误3')
       });
   };
-
   // 获取初始矩阵
   useEffect(() => {
     getFirstMaritx();
@@ -267,7 +262,6 @@ export default function NurseProcesst(props: nurseProcessProps) {
       })
       .catch((err) => [console.log(err)]);
   }, []);
-
   /**
    *
    */
@@ -277,7 +271,6 @@ export default function NurseProcesst(props: nurseProcessProps) {
     matrixList: any;
     realtimeOnbedState: any;
   }
-
   /**
    * 初始化睡姿配置
    */
@@ -349,7 +342,6 @@ export default function NurseProcesst(props: nurseProcessProps) {
    */
   const submitReport = () => {
     const phone = localStorage.getItem("phone");
-    console.log("submitReport");
     const yyds = {
       deviceName: sensorName,
       extra: obj.sleepPosImg || "extraData",
@@ -386,19 +378,10 @@ export default function NurseProcesst(props: nurseProcessProps) {
   const initNurseData = () => {
     setObj({});
   };
-
   const finishClose = () => {
     setNurseFinish(false);
   };
-
   const turnType = useSelector(turnbodyFlagSelect);
-
-  console.log(
-    isModalOpenSend,
-    turnType,
-    isMobile,
-    "......isModalOpenSend........."
-  );
   return (
     <>
       {turnType == 2 && isMobile ? (

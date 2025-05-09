@@ -761,36 +761,27 @@ export default function DayReport() {
 
 
   } */}
-
-
-
-
       </div>
-      <div className="dayContent">
+      <div className="dayContent" style={{ ...(!dayReport ? { height: 'calc(100% - 7rem)', overflow: 'hidden' } : {}) }}>
         {!dayReport ? <div className={`${!windowSize.isMobile ? 'reprotMask' : 'reprotMask1'}`}>
-          <div className="reprotMaskdiv ">
+          <div className="reprotMaskdiv">
             暂无报告,睡一晚再来看看吧
           </div>
-
         </div> : ''}
-        <div className="dayPc" style={{ ...(!dayReport ? { height: '40px' } : {}) }}>
+        <div className="dayPc" style={{ ...(!dayReport ? { height: !windowSize.isMobile ? 'calc(100%)' : '100px', overflow: 'hidden' } : {}) }}>
           {/* {<div className="dayLeft">
             <LeftContent users={users} props={equipInfo} />
           </div>} */}
-
           <div className="dayRight">
-
             {!nurseReportFlag ? <>
               <FirstItem sensorName={sensorName} dayData={dayDate} stroke={storke} posChangeHour={posChangeHour} posChangeDay={posChangeDay} onbedList={onbedList} bodymove={bodymove} data={data} />
               <SecondItem outBed={outoffbed} data={data} alarm={alarm} nurse={nurse} sleepNums={sleepNums} posChangeDay={posChangeDay} posChangeHour={posChangeHour} allTime={allTime} />
               {!location.pathname.includes('small') ?
-
                 <div className="thirdItem">
                   <HeatmapReport dayDate={dayDate} sensorName={sensorName} />
                   <div style={{ flex: '0 0 66%', }}>
                     <TurnReportProps changeFlag={setNueseReportFlag} pageRecords={pageRecords} date={dayDate} sensorName={sensorName} />
                   </div>
-
                 </div> : ''}
               <div className="turnContent">
                 {/* <div style={{width : '66%'}}> */}

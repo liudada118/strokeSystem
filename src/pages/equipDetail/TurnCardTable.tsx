@@ -97,6 +97,7 @@ const TurnCardTable: (props: TurnCardTableProps) => React.JSX.Element = (props) 
             },
         }).then((res) => {
 
+
             const flipbodyData = res.data.flipbodyData
             const dataList: any = Object.values(res.data.flipbodyData).filter((item: any, index) => item.status >= 3).length
             setFlipbodyData(dataList)
@@ -104,15 +105,15 @@ const TurnCardTable: (props: TurnCardTableProps) => React.JSX.Element = (props) 
             // message.error('')
         });
     }
-    console.log(flipbodyData, '.............................flipbodyDataflipbodyDataflipbodyData');
+
     const turnAroundCard: CardItem[] = [{
         label: '翻身次数',
         value: `${dataList.flipBodyCount}`,
-        unit: '次'
+        unit: `次 / 0次`
     }, {
         label: '有效翻身',
         value: `${dataList.effectiveFlipBodyCount}`,
-        unit: '次/分'
+        unit: '次'
     }, {
         label: '翻身超时',
         value: `${dataList.flipBodyTimeoutCount}`,
@@ -188,8 +189,10 @@ const TurnCardTable: (props: TurnCardTableProps) => React.JSX.Element = (props) 
                 "token": token
             },
         }).then((res: any) => {
+            console.log(res, '........setDataListsetDataList');
 
             setDataList({
+                ...dataList,
                 flipBodyCount: res.data.flipBodyCount,
                 effectiveFlipBodyCount: res.data.effectiveFlipBodyCount,
                 flipBodyTimeoutCount: res.data.flipBodyTimeoutCount
@@ -218,8 +221,6 @@ const TurnCardTable: (props: TurnCardTableProps) => React.JSX.Element = (props) 
                 newArr.push(obj)
             })
             setTurnTableDatasource(newArr)
-            console.log(newArr, '............................newArr');
-
         }).catch((err) => [
             console.log(err)
         ])

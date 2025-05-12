@@ -149,50 +149,41 @@ function newBtts(param: any, options: any, audio: any, that: any) {
     data.ctp = 1;
     data.lan = data.lan || 'zh';
     data.aue = data.aue || 3;
-
     // 序列化参数列表
     var fd = [];
     for (var k in data) {
         fd.push(k + '=' + encodeURIComponent(data[k]));
     }
-
     // 用来处理blob数据
     var frd = new FileReader();
     xhr.responseType = 'blob';
     xhr.send(fd.join('&'));
-
     // 用timeout可以更兼容的处理兼容超时
     var timer = setTimeout(function () {
         xhr.abort();
         isFunction(opt.onTimeout) && opt.onTimeout();
     }, timeout);
-
     xhr.onreadystatechange = function () {
         if (xhr.readyState == 4) {
             clearTimeout(timer);
             if (xhr.status == 200) {
                 if (xhr.response.type === 'audio/mp3') {
-
                     // 在body元素下apppend音频控件
                     // document.body.appendChild(audio);
                     // messageAntd.error('请求成功')
                     audio.setAttribute('src', URL.createObjectURL(xhr.response));
-
                     // autoDestory设置则播放完后移除audio的dom对象
                     if (opt.autoDestory) {
                         audio.onended = function () {
                             // 
-
                             that.playFlag = true
                             that.voiceQueue.splice(0, 1)
                             // document.body.removeChild(b[0]);
                             // console.log(document.querySelectorAll('.audio').length)
                         }
                     }
-
                     isFunction(opt.onSuccess) && opt.onSuccess(audio);
                 }
-
                 // 用来处理错误
                 if (xhr.response.type === 'application/json') {
                     getAccessToken()
@@ -209,7 +200,6 @@ function newBtts(param: any, options: any, audio: any, that: any) {
             }
         }
     }
-
     // 判断是否是函数
     function isFunction(obj: any) {
         if (Object.prototype.toString.call(obj) === '[object Function]') {

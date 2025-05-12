@@ -44,6 +44,7 @@ import { useNavigate } from "react-router-dom";
 import nian from '@/assets/image/nian.png'
 import yue from '@/assets/image/yue.png'
 
+
 dayjs.extend(isBetween);
 
 const { Option } = Select;
@@ -118,12 +119,10 @@ export default function Message() {
   const [total, setTotal] = useState(0);
   const [todayAlarmCount, setTodayAlarmCount] = useState(0);
   const messagestart = window.location.href.split('/')[4]
-  useEffect(() => {
-    if (messagestart == 'message') {
-      baseFetch(params)
-    }
-  }, [])
 
+  const now = dayjs();
+  const formattedTime = now.format('YYYY-MM-DD HH:mm:ss');
+  const timestamp = dayjs(formattedTime).valueOf();
   const WindowSize = useGetWindowSize();
   message.config({
     top: 100,
@@ -148,7 +147,7 @@ export default function Message() {
     pageNum: 1,
     pageSize: 10,
     startMills: timeArr[0],
-    endMills: timeArr[1],
+    endMills: timestamp,
     types: "nursing,fallbed,outOffBed,situp,offline,sos",
   });
   const [messages, setMessages] = useState<message[]>([]);
@@ -190,6 +189,14 @@ export default function Message() {
   const [isFalse, setFalse] = useState(true);
   localStorage.setItem("dataList", JSON.stringify(dataList));
   // const [todayAlarmCount, setTodayAlarmCount] = useState(0)
+  useEffect(() => {
+    if (messagestart == 'message') {
+      baseFetch(params)
+      getDataList(dataList)
+    }
+    console.log(timeArr[0], timeArr[1], timestamp, '......................... timeArr');
+
+  }, [])
   // 接口请求
   const baseFetch = async (param: any) => {
     if (!param.patientName) {
@@ -280,10 +287,10 @@ export default function Message() {
       title: "离线提醒",
     },
   ];
-  console.log(WindowSize, '.....................WindowSizeWindowSize');
 
+  let getDataList = (dataList: any) => {
+    console.log(dataList, '.............................dataListdataListdataList');
 
-  const getDataList = (dataList: any) => {
     return dataList.map((item: any, index: number) => {
       return {
         key: item.id,

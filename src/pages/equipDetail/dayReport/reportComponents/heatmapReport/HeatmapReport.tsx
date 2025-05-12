@@ -215,7 +215,6 @@ function HeatmapReport(props: heatmapProps) {
             message.error('不能小于晚间八点')
         }
     }
-
     return (
         <CardWithoutTitle>
             <div className="pressCharts nurseContent">
@@ -238,7 +237,6 @@ function HeatmapReport(props: heatmapProps) {
                                     width
                                 // width={isMobile ? true : false} height={isMobile ?false  : true} 
                                 /> : ''}
-
                             </NoRender></div>
                         {/* <Heatmap ref={heatMapRef} data={heatmapData} type={'large'} sensorName={props.sensorName} /> */}
                     </div></div>
@@ -252,12 +250,10 @@ function HeatmapReport(props: heatmapProps) {
                     onMouseDown={(e) => {
                         setLineFlag(true)
                     }}
-
                     onTouchStart={(e) => {
                         console.log('start')
                         setLineFlag(true)
                     }}
-
                 >
                     <div className="pressProgressLine"></div>
                     <div className="pressProgressIndex" style={{ left: 0 }}></div>
@@ -273,5 +269,4 @@ function HeatmapReport(props: heatmapProps) {
         </CardWithoutTitle >
     )
 }
-
 export default memo(HeatmapReport)

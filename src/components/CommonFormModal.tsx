@@ -214,7 +214,7 @@ const CommonFormModal: (props: CommonFormModalProps) => React.JSX.Element = (pro
                             return <></>
                         case 'INPUT':
                             return (
-                                <Form.Item label={item.label} name={item.key} key={item.key}
+                                <Form.Item required={false} label={item.label} name={item.key} key={item.key}
                                     rules={[{ required: item.key == 'patientName' ? true : false, message: item.key == 'patientName' ? '请输入姓名' : '' }]}
                                 >
                                     <Input value={item.value} placeholder={(item as InputForm).placeholder} />
@@ -222,10 +222,10 @@ const CommonFormModal: (props: CommonFormModalProps) => React.JSX.Element = (pro
                             )
                         case 'RADIO':
                             return (
-                                <Form.Item label={item.label} name={item.key} key={item.key}>
+                                <Form.Item required={false} label={item.label} name={item.key} key={item.key}>
                                     <Radio.Group value={item.value} className='flex flex-wrap w-full'>
                                         {(item as ComplexForm).children.map((_item) => (
-                                            <Radio className='w-[9rem] mt-[0.4rem]' key={_item.id} value={_item.value}>{_item.label}</Radio>
+                                            <Radio className='w-[4rem] mt-[0.4rem] ' key={_item.id} value={_item.value}>{_item.label}</Radio>
                                         ))}
                                     </Radio.Group>
                                 </Form.Item>
@@ -234,7 +234,7 @@ const CommonFormModal: (props: CommonFormModalProps) => React.JSX.Element = (pro
                             // setLeaveType(item.value)
                             return (
                                 <div className="radio_cascade" style={{ display: 'flex', alignItems: 'center' }}>
-                                    <Form.Item label={item.label} name={item.key} key={item.key} className="w-[16rem]" style={{ transform: 'translateY(-17px)' }}>
+                                    <Form.Item required={false} label={item.label} name={item.key} key={item.key} className="w-[16rem]" style={{ transform: 'translateY(-17px)' }}>
 
 
                                         <Radio.Group value={item.value} className='flex flex-wrap w-[100]' onChange={(e: any) => setLeaveType(e.target.value)}>
@@ -259,7 +259,7 @@ const CommonFormModal: (props: CommonFormModalProps) => React.JSX.Element = (pro
                             const start = dayjs(valueTime[0], 'HH:mm')
                             const end = dayjs(valueTime[1], 'HH:mm')
                             return (
-                                <Form.Item label={item.label} name={item.key} key={item.key} className='flex items-center'>
+                                <Form.Item required={false} label={item.label} name={item.key} key={item.key} className='flex items-center'>
                                     <TimePicker placeholder='' onChange={onChangeTimeStart} needConfirm={false} defaultValue={start} className='rounded-[1rem] w-[38%]' format='HH:mm' />
                                     <span className='bg-[#b4c0ca] w-[0.8rem] h-[1px] my-0 mx-[4px]' />
                                     <TimePicker placeholder='' onChange={onChangeTimeEnd} needConfirm={false} defaultValue={end} className='rounded-[1rem] w-[38%]' format='HH:mm' />
@@ -268,7 +268,7 @@ const CommonFormModal: (props: CommonFormModalProps) => React.JSX.Element = (pro
 
                         case 'INPUT_NUMBER':
                             return (
-                                <Form.Item label={item.label} name={item.key} key={item.key} className=''
+                                <Form.Item required={false} label={item.label} name={item.key} key={item.key} className=''
                                     rules={[{ required: true, message: '请输入年龄' }]}
                                 >
                                     <Input value={item.value} placeholder={(item as InputForm).placeholder} />

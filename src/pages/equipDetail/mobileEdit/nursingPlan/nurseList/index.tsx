@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useLocation, useParams, useNavigate } from "react-router-dom";
 import shijian1 from '@/assets/images/shijian.png'
-
+import nurseSelectItemDelete from '@/assets/image/nurseSelectItemDelete.png'
 import { Picker, Popup, Empty } from "antd-mobile";
 // import "./index.css";
 import './index.scss'
@@ -53,7 +53,7 @@ export default function NurseList(props: any) {
 
     if (!document.hidden) {
       // 当页面重新显示在前台时
-      html.style.fontSize = '14px';
+      html.style.fontSize = '16px';
       // window.location.reload(); // 刷新页面
     }
   };
@@ -85,26 +85,30 @@ export default function NurseList(props: any) {
           .map((item: any, index: number) => {
             return (
               <div key={"list_" + index} className="list_item is_line">
-                <p style={{ display: "flex" }}>
-                  <span>{item.time}</span>
+                <p style={{ display: "flex", alignItems: "center", }}>
+                  <span style={{ fontWeight: "500" }}>{item.time}</span>
                   <span>{index + 1}</span>
                 </p>
-                <p className="flex items-center">
-                  <img className='w-[1rem] h-[1rem] mt-[0.3rem] mr-3' src={shijian1} alt="" />{item.title}</p>
-                <p>
-                  <span style={{ color: props.operType === "init" ? "#ffff" : "#929EAB" }}>
+                <p className="flex items-center" style={{ borderBottom: "1px #E6EBF0 solid", fontWeight: "500" }}>
+                  <img className='w-[1rem] h-[1rem]  mr-2' src={shijian1} alt="" />
+                  {item.title}
+                </p>
+                <p style={{ borderBottom: "1px #E6EBF0 solid", }}>
+                  <span style={{ borderBottom: "1px silid #D1D9E1", color: props.operType === "init" ? "#ffff" : "#929EAB" }}>
                     {item.status || item.status === "todo"
                       ? "待完成"
                       : "已完成"}
                   </span>
                 </p>
                 {props.operType === "add" && (
-                  <p onClick={() => props.delTemp(item)}>删除</p>
+                  <p className="flex items-center justify-center flex-col mx-1" style={{ borderBottom: "1px #E6EBF0 solid" }} onClick={() => props.delTemp(item)}>
+                    <img style={{ width: '1rem', height: "1rem" }} src={nurseSelectItemDelete} alt="" />
+                    删除
+                  </p>
                 )}
               </div>
             );
           })}
-
         {
           props.list.length === 0 && <Empty
             style={{ padding: '64px 0' }}

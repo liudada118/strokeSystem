@@ -99,7 +99,7 @@ export default function NurseConfEdit(props: any) {
           <div
             style={{ textAlign: "center", height: "4rem", lineHeight: "4rem" }}
           >
-            确认删除该项任务？
+            确认删除该项护理任务？
           </div>
         );
       },

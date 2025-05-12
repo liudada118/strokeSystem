@@ -613,16 +613,18 @@ interface personalInfoParam {
 export const PersonalContentInfo = (props: personalInfoParam) => {
   const { title, img } = props;
   return (
-    <div className="w-[92%] mx-auto bg-[#fff] flex flex-col items-center pt-[36px] pb-[13px] rounded-[10px] mb-[20px]">
-      <img src={img} className="w-[44px] mb-[6px]" alt="" />
-      <div className="text-lg text-[#3D3D3D] ">{title}</div>
+    <div className="w-[92%] mx-auto bg-[#fff] flex flex-col items-center pt-[50px] pb-[50px] rounded-[10px] mb-[20px]">
+      <img src={img} className="w-[44px] h-[44px] mb-[6px]" alt="" />
+      <div className="text-lg text-[#3D3D3D] " style={{ fontSize: title === '护理配置' ? '1.3rem' : '' }}>{title}</div>
       {title === "推送日报设置" ? (
         ""
       ) : title === "设备类型设置" ? (
         ""
       ) : (
         <div className="text-sm w-[60%] text-[#6C7784] text-center">
-
+          {
+            title === '护理配置' ? <div className="text-[1rem] text-[#A4B0BC] pt-[0.4rem]">设置老人的日常护理计划</div> : ''
+          }
         </div>
       )}
     </div>

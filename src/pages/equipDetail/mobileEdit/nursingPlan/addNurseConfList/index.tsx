@@ -185,10 +185,7 @@ export default function AddNurseConfList() {
                 flexDirection: "column",
             }}
         >
-            <div className="nurse_header_logo">
-                <img onClick={() => handleSettingPop()} style={{ width: "2rem", height: "2rem", marginLeft: "1rem" }} src={loog} alt="" />
-                <p style={{ fontWeight: "600", fontSize: "1rem", marginLeft: "1rem" }}>JQ HEALTHCARE</p>
-            </div>
+
             <CommonNavBar
                 style={{ position: "inherit" }}
                 title={'设置护理计划'}
@@ -231,7 +228,7 @@ export default function AddNurseConfList() {
                     />
                 </div> */}
                 <NurseList list={nurseList} operType="add" delTemp={delTemp} />
-                <div className="bg-[#f4f5f6] w-[full]">
+                <div className="bg-[#fff] w-[full] h-[5.2rem]">
                     <Button
                         type="primary"
                         onClick={() => {
@@ -239,7 +236,7 @@ export default function AddNurseConfList() {
                             setConfirmVisible(true)
                         }}
                         className="mt-[1rem] w-[full]"
-                        style={{ width: "100%", height: "3rem", marginBottom: "0" }}
+                        style={{ width: "94%", height: "3rem", marginBottom: "0", margin: "0 3%" }}
                     >
                         应用护理计划
                     </Button>

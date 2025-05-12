@@ -11,11 +11,17 @@
 .nurse_list .list_item {
   position: relative;
   display: flex;
-  padding: 0.5rem;
+  padding: 0rem 0.5rem;
+  height: 5rem;
 }
 
 .nurse_list .list_item:nth-child(1) {
+  border-radius: 0.4rem;
   background: #F5F8FA;
+  padding: 0rem 0.5rem;
+  height: 2.55rem;
+  display: flex;
+  align-items: center;
 }
 
 .nurse_list .list_item:nth-child(1) p {
@@ -41,14 +47,13 @@
   display: flex;
   align-items: center;
   width: 4.4rem;
-  color: #929EAB;
   justify-content: center;
 }
 
 .nurse_list .list_item p:nth-child(3) span {
   width: 100%;
   text-align: center;
-  padding: 0.2rem;
+  padding: 0.4rem;
   margin-right: 0.2rem;
 }
 
@@ -107,7 +112,7 @@
   width: 0.2rem;
   height: 100%;
   position: absolute;
-  top: 1rem;
+  top: 3rem;
   left: 4.15rem;
   background: #E6EBF0;
   z-index: 1;

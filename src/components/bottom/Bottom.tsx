@@ -260,6 +260,10 @@ const Bottom = forwardRef((props: bottomProps, refs: any) => {
   const onMessage = (val: any) => {
     navigate('/message')
   }
+  const timeArr = [
+    new Date(new Date().toLocaleDateString()).getTime(),
+    new Date().getTime(),
+  ];
   return (
     <div className="bottomContent" style={{ cursor: 'pointer' }}>
       {
@@ -271,6 +275,28 @@ const Bottom = forwardRef((props: bottomProps, refs: any) => {
           navigate(a.route)
           setIndex(index)
           if (index == 1) {
+            try {
+              instance({
+                method: "get",
+                url: "/sleep/log/selectAlarm",
+                params: {
+                  phone: phone,
+                  pageNum: 1,
+                  pageSize: 10,
+                  startMills: timeArr[0],
+                  endMills: timeArr[1],
+                  types: "nursing,fallbed,outOffBed,situp,offline,sos",
+                },
+                headers: {
+                  "content-type": "application/x-www-form-urlencoded",
+                  token: token,
+                },
+              }).then(()=>{
+                
+              })
+
+
+            } catch (err) { }
             instance({
               url: netRepUrl + "/sleep/log/clearUnread",
               method: "get",

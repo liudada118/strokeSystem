@@ -32,7 +32,8 @@ import { getNurseConfist, templateToData } from "@/utils/getNursingConfig";
 import CommonNavBar from "@/components/CommonNavBar";
 import handleSettingPop from "@/utils/handleSettingPop";
 import { DropdownRef } from 'antd-mobile/es/components/dropdown'
-
+import nursexuanxiang from '@/assets/image/nursexuanxiang.png'
+import nursexuanxiang1 from '@/assets/image/nursexuanxaing2.png'
 const { confirm } = Modal;
 export default function NurseConfEdit(props: any) {
   const dropdownRef = useRef<DropdownRef>(null)
@@ -209,15 +210,14 @@ export default function NurseConfEdit(props: any) {
   return (
 
     <div
-      className="bg-[#f4f5f6] flex"
+      className="bg-[#f4f5f6] flex "
       style={{
+        width: "100%",
         height: "100%",
         flexDirection: "column",
       }}
-    ><div className="nurse_header_logo">
-        <img onClick={() => handleSettingPop()} style={{ width: "2rem", height: "2rem", marginLeft: "1rem" }} src={loog} alt="" />
-        <p style={{ fontWeight: "600", fontSize: "1rem", marginLeft: "1rem" }}>JQ HEALTHCARE</p>
-      </div>
+    >
+
       <CommonNavBar
         style={{ position: "inherit" }}
         title={'创建护理计划'}
@@ -236,137 +236,126 @@ export default function NurseConfEdit(props: any) {
         className="use_nurse_form"
         requiredMark={false}
       >
-        {isEmpty && (
-          <Form.Item
-            label=""
-            name="use"
-            rules={[
-              { required: false, message: "Please input your username!" },
-            ]}
-          >
-            <span className="use_nurse_templatespan">应用护理模版：</span>
-            <div className="use_nurse_template">
-              {[
-                { value: 1, label: "否" },
-                { value: 2, label: "是" },
-              ].map((item, index) => {
-                return (
-                  <p
-                    className={isUseDefault === item.value ? "active" : ""}
-                    onClick={async (e) => {
-                      setIsUseDefault(item.value);
-                      if (item.value === 2) {
-                        setIsShowChooseTemp(true);
-                        getPersonTemplate(1);
-                      }
-                    }}
-                    key={index + "_radio"}
-                  >
-                    <span></span>
-                    <span>{item.label}</span>
-                  </p>
-                );
-              })}
-            </div>
-          </Form.Item>
-        )}
-
-        <Form.Item
-          label=""
-          name="title"
-          rules={[{ required: false, message: "请填写护理名称!" }]}
-        >
-          <span className="">护理任务：</span>
-          <Input
-            placeholder="请输入所添加的护理任务的名称"
-            className="h-10 bg-[#F5F8FA]"
-            maxLength={20}
-            onChange={(e) => {
-              setNurseName(e.target.value);
-            }}
-          />
-        </Form.Item>
-
-        <div className="time_box">
-          <span className="form_title">护理时间：</span>
-          <div className="time_item h-10">
+        <div className="w-full h-full px-[1.2rem] pt-[2rem]">
+          {isEmpty && (
             <Form.Item
               label=""
-              name="hours"
-              className="h-10"
-              rules={[{ required: false, message: "请选择!" }]}
+              name="use"
+              rules={[
+                { required: false, message: "Please input your username!" },
+              ]}
             >
-              {/* <Select
-                showSearch
-                placeholder="时"
-                optionFilterProp="children"
-                className="h-10"
-              >
-                {[...Array(24)].map((_, index) => (
-                  <Select.Option key={index} value={(index + 1).toString().padStart(2, '0')}>
-                    {index.toString().padStart(2, '0')}
-                  </Select.Option>
-                ))}
-              </Select> */}
-              <Select
-                showSearch={false}
-                placeholder="时"
-                optionFilterProp="children"
-                className="h-[2.5rem] flex justify-center"
-                style={{ width: "9rem" }}
-              // onChange={(value => setHours(value as string))}
-              >
-                {/* 动态生成分钟选项 */}
-                <Select.Option value={"分"} disabled>
-                  <div className="flex justify-center">时</div>
-                </Select.Option>
-                {[...Array(24)].map((_, index) => (
-                  <Select.Option key={index} value={index.toString()}>
-                    <div className="flex justify-center">
-                      {index.toString().padStart(2, "0")}
-                    </div>
-                  </Select.Option>
-                ))}
-              </Select>
+              <span className="use_nurse_templatespan text-[1.1rem] font-medium">应用护理模版：</span>
+              <div className="use_nurse_template">
+                {[
+                  { value: 1, label: "否" },
+                  { value: 2, label: "是" },
+                ].map((item, index) => {
+                  return (
+                    <p
+                      className={isUseDefault === item.value ? "active" : ""}
+                      onClick={async (e) => {
+                        setIsUseDefault(item.value);
+                        if (item.value === 2) {
+                          setIsShowChooseTemp(true);
+                          getPersonTemplate(1);
+                        }
+                      }}
+                      key={index + "_radio"}
+                    >
+
+                      <img className="w-[1rem] h-[1rem] mr-[1rem]" src={isUseDefault === item.value ? nursexuanxiang : nursexuanxiang1} alt="" />
+                      <span>{item.label}</span>
+                    </p>
+                  );
+                })}
+              </div>
             </Form.Item>
-            <span className="split"> : </span>
+          )}
+
+          <div className="mt-[1.5rem]">
             <Form.Item
               label=""
-              name="minutes"
-              rules={[{ required: false, message: "请选择!" }]}
+              name="title"
+              rules={[{ required: false, message: "请填写护理名称!" }]}
             >
-              <Select
-                showSearch={false}
-                placeholder="分"
-                optionFilterProp="children"
-                className="h-[2.5rem] flex justify-center"
-                style={{ width: "9rem" }}
-              // onChange={(value => setMinutes(value as string))}
-              >
-                {/* 动态生成分钟选项 */}
-                <Select.Option value={"分"} disabled>
-                  <div className="flex justify-center">分</div>
-                </Select.Option>
-                {[...Array(60)].map((_, index) => (
-                  <Select.Option key={index} value={index.toString()}>
-                    <div className="flex justify-center">
-                      {index.toString().padStart(2, "0")}
-                    </div>
-                  </Select.Option>
-                ))}
-              </Select>
+              <span className="text-[1.1rem] font-medium">护理任务：</span>
+              <Input
+                placeholder="请输入所添加的护理任务的名称"
+                className="h-[3rem] bg-[#F5F8FA]"
+                maxLength={20}
+                onChange={(e) => {
+                  setNurseName(e.target.value);
+                }}
+              />
             </Form.Item>
           </div>
-        </div>
-        <Button
-          type="primary"
-          htmlType="submit"
-          style={{ width: "100%", height: "3rem" }}
-        >
-          {isEmpty ? "添加护理任务" : "保存护理任务"}
-        </Button>
-      </Form>
 
+          <div className="time_box">
+            <span className="form_title  ">护理时间：</span>
+            <div className="time_item h-[3rem]">
+              <Form.Item
+                label=""
+                name="hours"
+                className="h-[3rem]"
+                rules={[{ required: false, message: "请选择!" }]}
+              >
+                <Select
+                  showSearch={false}
+                  placeholder="时"
+                  optionFilterProp="children"
+                  className="h-[3rem]  flex justify-center"
+                  style={{ width: "9rem" }}
+                >
+                  <Select.Option value={"分"} disabled>
+                    <div className="flex justify-center">时</div>
+                  </Select.Option>
+                  {[...Array(24)].map((_, index) => (
+                    <Select.Option key={index} value={index.toString()}>
+                      <div className="flex justify-center">
+                        {index.toString().padStart(2, "0")}
+                      </div>
+                    </Select.Option>
+                  ))}
+                </Select>
+              </Form.Item>
+              <span className="split"> : </span>
+              <Form.Item
+                label=""
+                name="minutes"
+                rules={[{ required: false, message: "请选择!" }]}
+              >
+                <Select
+                  showSearch={false}
+                  placeholder="分"
+                  optionFilterProp="children"
+                  className="h-[2.5rem] flex justify-center"
+                  style={{ width: "9rem" }}
+
+                >
+                  <Select.Option value={"分"} disabled>
+                    <div className="flex justify-center">分</div>
+                  </Select.Option>
+                  {[...Array(60)].map((_, index) => (
+                    <Select.Option key={index} value={index.toString()}>
+                      <div className="flex justify-center">
+                        {index.toString().padStart(2, "0")}
+                      </div>
+                    </Select.Option>
+                  ))}
+                </Select>
+              </Form.Item>
+            </div>
+          </div>
+          <Button
+            type="primary"
+            htmlType="submit"
+            style={{ width: "100%", height: "3.6rem", borderRadius: "0.8rem" }}
+          >
+            {isEmpty ? "添加护理任务" : "保存护理任务"}
+          </Button>
+        </div>
+      </Form>
       {isShowChooseTemp && (
         <Popup
           style={{
@@ -390,38 +379,11 @@ export default function NurseConfEdit(props: any) {
               >
                 <LeftOutlined />
               </div>
-
               <Space direction="vertical" style={{ margin: "0 auto" }}>
-                {/* <Dropdown
-                  menu={{ items, onClick: handleDropdownClick }}
-                  placement="bottom"
-                >
-                  <Button
-                    style={{
-                      border: "none",
-                      fontFamily: " PingFang SC",
-                      fontWeight: "600",
-                      fontSize: "1.2rem",
-                      transform: "translateY(-0.2rem)",
-                    }}
-                  >
-                    {defaultTempInfo.label}
-                    <img
-                      style={{ width: "0.5rem", height: "0.5rem" }}
-                      src={shan}
-                      alt=""
-                    />
-                  </Button>
-                </Dropdown> */}
                 <Dropdown ref={dropdownRef} className="nurse-temp-type-dropdown" getContainer={() => dropdownContainerRef.current}>
                   <Dropdown.Item key='bizop' title={
                     <span style={{ color: '#3D3D3D', fontWeight: '600', fontSize: '1.2rem' }}>
                       {defaultTempInfo.label}
-                      {/* <img
-                        style={{ width: "0.5rem", height: "0.5rem" }}
-                        src={shan}
-                        alt=""
-                      /> */}
                     </span>}
                   >
                     <div style={{ padding: 12 }}>
@@ -440,15 +402,11 @@ export default function NurseConfEdit(props: any) {
                   </Dropdown.Item>
                 </Dropdown>
               </Space>
-
               <div className="nurse-temp-type-dropdown-popup" ref={dropdownContainerRef}></div>
             </div>
-
             <NurseList list={tempList}></NurseList>
-
             <Button
               onClick={() => {
-                // props.useDefaultTemp && props.useDefaultTemp(tempList);
                 localStorage.setItem("tempList", JSON.stringify(tempList));
                 navigate(`/add_user_nurse_conf`, { state: { sensorName } });
               }}

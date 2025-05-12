@@ -177,7 +177,7 @@ export default function NursingPlan() {
         <p style={{ fontWeight: "600", fontSize: "1rem", marginLeft: "1rem" }}>JQ HEALTHCARE</p>
       </div>
       <CommonNavBar
-      
+
         style={{ position: "inherit" }}
         title={
           nurseList.length === 0 && !isDelete

@@ -16,6 +16,7 @@ import loog from '../../../../assets/images/logo.png'
 import jiaHao from '../../../../assets/images/image copy 2.png'
 import { getNurseConfist } from "@/utils/getNursingConfig"
 import handleSettingPop from '@/utils/handleSettingPop'
+import { AddCircleOutline } from 'antd-mobile-icons'
 import "./index.css";
 const { confirm } = Modal;
 export default function NursingPlan() {
@@ -162,10 +163,10 @@ export default function NursingPlan() {
 
   return (
     <>
-      <div className="nurse_header_logo">
+      {/* <div className="nurse_header_logo">
         <img onClick={() => handleSettingPop()} style={{ width: "2rem", height: "2rem", marginLeft: "1rem" }} src={loog} alt="" />
         <p style={{ fontWeight: "600", fontSize: "1rem", marginLeft: "1rem" }}>JQ HEALTHCARE</p>
-      </div>
+      </div> */}
       <CommonNavBar
         style={{ position: "inherit" }}
         title={'护理计划'}
@@ -177,7 +178,7 @@ export default function NursingPlan() {
       <div
         className={`${nurseList.length === 0 ? "nurse_box_empty" : ""} nurse_box`}
         style={{
-          marginTop: nurseList.length === 0 ? "1rem" : '0',
+          marginTop: nurseList.length === 0 ? "1rem" : '10px',
         }}
       >
         {(nurseList.length || isDelete) > 0 ? (
@@ -217,17 +218,24 @@ export default function NursingPlan() {
         ) : (
           <>
             <PersonalContentInfo title={"护理配置"} img={mobileNurse} />
+            <div>
+
+            </div>
             <Button
               type="primary"
               onClick={() => {
 
                 navigate(`/edit_user_nurse`, { state: { sensorName, isEmpty: true } });
               }}
-              style={{}}
-              className="mx-[1rem] h-[3rem]"
+
+              className="mx-[1rem] "
+              style={{ height: "3.6rem", borderRadius: "0.8rem" }}
             >
-              创建护理计划
+              <AddCircleOutline /> 创建护理计划
             </Button>
+            <div className="h-[20rem] text-[1.2rem] text-[#C2CDD6] text-center flex items-center justify-center">
+              暂无护理计划
+            </div>
           </>
         )}
       </div >

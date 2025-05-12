@@ -17,6 +17,7 @@ import {
   ConfigProvider,
   Result,
   message,
+  Spin,
 } from "antd";
 import Icon, {
   CaretDownOutlined,
@@ -116,6 +117,13 @@ export default function Message() {
   const token = localStorage.getItem("token") || "";
   const [total, setTotal] = useState(0);
   const [todayAlarmCount, setTodayAlarmCount] = useState(0);
+  const messagestart = window.location.href.split('/')[4]
+  useEffect(() => {
+    if (messagestart == 'message') {
+      baseFetch(params)
+    }
+  }, [])
+
   const WindowSize = useGetWindowSize();
   message.config({
     top: 100,
@@ -123,7 +131,6 @@ export default function Message() {
     maxCount: 3,
     rtl: true,
   });
-
   const [visible, setVisible] = useState(false);
   // 昨天提醒 62 次 前天提醒 26 次
   console.log(total, "......total");
@@ -801,16 +808,23 @@ export default function Message() {
                     </div>
                   </div>
                   <div className="projectContent">
-                    <ConfigProvider locale={zhCN}>
-                      <Table
-                        locale={{
-                          emptyText: <span>暂无数据</span>,
-                        }}
-                        pagination={false}
-                        dataSource={data}
-                        columns={columns}
-                      />
-                    </ConfigProvider>
+                    {isFalse === true ? (
+                      <div className="text-[hsl(203,8%,80%)] text-lg flex items-center justify-center mt-16">
+                        <Spin />
+                      </div>
+                    ) : (
+                      <ConfigProvider locale={zhCN}>
+                        <Table
+                          locale={{
+                            emptyText: <span>暂无数据</span>,
+                          }}
+                          pagination={false}
+                          dataSource={data}
+                          columns={columns}
+                        />
+                      </ConfigProvider>
+                    )}
+
                   </div>
                   <div className="msgToinfoStrPage ">
                     <div className="msgToinfoStrPageDiv">

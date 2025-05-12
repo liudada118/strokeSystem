@@ -10,12 +10,11 @@
         position: relative;
         display: flex;
         padding: 0 0.5rem;
-     
+
         &:not(:last-child) {
             & > p {
                 span {
                     &:nth-child(2) {
-
                         &.index_box:before {
                             display: inline-block;
                             content: " ";
@@ -95,7 +94,7 @@
                         padding: 0.4rem 0.8rem;
                         background: #e6ebef;
                         border-radius: 0.2rem;
-                    text-align: center;
+                        text-align: center;
                     }
                 }
                 &:nth-child(3) {

@@ -75,7 +75,7 @@ export default function NurseList(props: any) {
         <div className="list_item">
           {columsList.map((item, index) => {
             if (props.operType !== "add" && item.title === "删除") return "";
-            return <p key={"title_" + index}>{item.title}</p>;
+            return <p key={"title_" + index} style={{ margin: item.title == '删除' ? '0 0.25rem' : "" }}>{item.title}</p>;
           })}
         </div>
         {props.list
@@ -101,7 +101,7 @@ export default function NurseList(props: any) {
                   </span>
                 </p>
                 {props.operType === "add" && (
-                  <p className="flex items-center justify-center flex-col mx-1" style={{ borderBottom: "1px #E6EBF0 solid" }} onClick={() => props.delTemp(item)}>
+                  <p className="flex items-center justify-center flex-col mx-1 box-border" style={{ borderBottom: "1px #E6EBF0 solid" }} onClick={() => props.delTemp(item)}>
                     <img style={{ width: '1rem', height: "1rem" }} src={nurseSelectItemDelete} alt="" />
                     删除
                   </p>
@@ -117,6 +117,6 @@ export default function NurseList(props: any) {
           />
         }
       </div>
-    </div>
+    </div >
   );
 }

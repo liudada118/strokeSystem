@@ -374,7 +374,10 @@ export default function NurseConfEdit(props: any) {
           <div className="default-popup">
             <div className="w-full h-[2rem] mt-[1.35rem] flex items-center justify-items-center relative">
               <div
-                onClick={() => setIsShowChooseTemp(false)}
+                onClick={() => {
+                  setIsUseDefault(1)
+                  setIsShowChooseTemp(false)
+                }}
                 className="pl-[1.3rem] absolute top-[0.3rem] left-0"
               >
                 <LeftOutlined />

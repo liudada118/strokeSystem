@@ -1,5 +1,5 @@
 import { useGetWindowSize } from '@/hooks/hook'
-import { alarmSelect, deleteAlarm, equipPcPlaySelect, equipPcSelect, equipPlaySelect, equipSelect, fetchEquips } from '@/redux/equip/equipSlice'
+import { alarmSelect, deleteAlarm, equipPcPlaySelect, equipPcSelect, equipPlaySelect, equipSelect, fetchEquips, newVoiceExampleSelect } from '@/redux/equip/equipSlice'
 import { Button, Carousel, Empty, message, Popover, Skeleton, Spin } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -32,6 +32,7 @@ export default function Equip() {
     const navigate = useNavigate()
     const equip = useSelector(equipPlaySelect)
     const equipPc = useSelector(equipPcPlaySelect)
+    const newVoiceExample = useSelector(newVoiceExampleSelect)  
     const alarm = useSelector(alarmSelect)
     const homeSelectValue = useSelector((state: any) => state.home.homeSelectValue)
     const homeSelectType = useSelector((state: any) => state.home.homeSelectType)
@@ -190,6 +191,7 @@ export default function Equip() {
                                                 <div className="newAlarmButton"
                                                     onClick={() => {
                                                         alarmConfirmFunSensorName({ a: alarmInfo[0], sensorName: item.sensorName })
+                                                        newVoiceExample.clickVoice()
                                                     }}
                                                 >我已知晓</div>
                                             </div>

@@ -327,10 +327,10 @@ function message({ payload, storeApi, data }: any) {
 
                                 // console.log(first)
 
-                                const voiceText = exChangeText(`${item.roomNum}号床${alarmRule.voiceText}`)
+                                const voiceText = exChangeText(`${item.roomNum}号床${alarmRule.voiceText} ${item.roomNum}号床${alarmRule.voiceText}`)
 
 
-                                newVoiceExample.voicePush(voiceText, voiceText)
+                                newVoiceExample.voicePush(voiceText)
 
                                 // newVoiceExample.voicePush(`${item.roomNum}号床${alarmRule.voiceText}`, `${item.roomNum}号床${alarmRule.voiceText}`)
                             }
@@ -367,10 +367,11 @@ function message({ payload, storeApi, data }: any) {
 
                                     // console.log(first)
 
-                                    const voiceText = exChangeText(`${item.roomNum}号床${alarmRule.voiceText}`)
+                                    const voiceText = exChangeText(`${item.roomNum}号床${alarmRule.voiceText} 、 ${item.roomNum}号床${alarmRule.voiceText}`)
 
 
-                                    newVoiceExample.voicePush(voiceText, voiceText)
+                                    newVoiceExample.voicePush(voiceText)
+                                    console.log(newVoiceExample.voiceQueue)
                                     // sosArrOver = arr
                                     // setSosArr(arr)
                                     riskArr[alarmRule.type].push(item.sensorName)

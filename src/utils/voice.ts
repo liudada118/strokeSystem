@@ -5,6 +5,7 @@ export class voiceArr {
     voiceQueue: any
     voicePush: Function
     playVoice: Function
+    clickVoice : Function
     tts: Function
     audio: any
     playFlag: boolean
@@ -23,9 +24,14 @@ export class voiceArr {
                 const text = this.voiceQueue[0]
                 // console.log(this.voiceQueue)
                 // messageAntd.error('请求语音')
+                this.voiceQueue.splice(0, 1)
                 await this.tts(text)
                 this.playFlag = false;
             }
+        }
+        this.clickVoice = function(){
+            this.audio.pause()
+            this.playFlag = true
         }
         // this.audio = document.createElement('audio')
         this.audio = document.getElementById('audio')

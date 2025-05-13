@@ -153,7 +153,7 @@ export default forwardRef((props: any, refs: any) => {
   });
 
   const initOnbedOrLeaveBedPage = ({ circleArr, resSleep, timer, wsPointData, type }: any) => {
-    console.log(valueArrRef.current)
+   
     if (valueArrRef.current.onbedState) {
       initPage({ circleArr, resSleep, timer, wsPointData, type })
     } else {
@@ -283,6 +283,7 @@ export default forwardRef((props: any, refs: any) => {
       mqtt.on('message', ((topic: any, payload: any) => {
         const jsonObj = JSON.parse(payload);
         if (sensorName === jsonObj.deviceName) {
+          console.log(JSON.stringify(jsonObj))
           if (mqttEvent[jsonObj.type]) mqttEvent[jsonObj.type]({ jsonObj, sensorName })
         }
 

@@ -338,7 +338,7 @@ export default forwardRef((props: any, refs: any) => {
         <div className="personalChart">
 
 
-          <div className="heatmapInfo md:mb-[0.8rem] md:mt-[10px]">
+          <div className="heatmapInfo md:mb-[0.8rem] md:mt-[20px]">
             <Card>
               <CommonTitle name={'实时压力分布图'} type="square" />
               <div className="heatmapLeft px-[1.9rem] " style={{ position: 'relative', padding: props.sensorName == 'iJ3X0JSttyoiRPafpIka' ? '2.5rem 0' : '' }}>

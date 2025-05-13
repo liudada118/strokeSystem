@@ -112,7 +112,7 @@ function NurseAdd(props: any) {
                         </div>
                         <div style={{ fontWeight: "500", fontSize: "1.2rem" }}>
                             {
-                                props.type === '记录护理项目' ? '用药提醒' : ''
+                                props.type === '记录护理项目' ? '护理记录' : ''
                             }
 
                         </div>

@@ -212,7 +212,7 @@ export default function NurseProcesst(props: nurseProcessProps) {
           returnCloudHeatmapData({ res: res.data, sensorName, equipInfo });
         nowPos = resSleep;
         startMatrix = [...wsPointData];
-        
+
         if (turnOverRef.current)
           turnOverRef.current.renderHeatmapData({ wsPointData, circleArr });
         console.log("获取初始矩阵成功");
@@ -481,7 +481,7 @@ export default function NurseProcesst(props: nurseProcessProps) {
                         alignItems: "center",
                         justifyContent: "center",
                         fontSize: "1.5rem",
-                        margin: "1rem 0",
+                        margin: "8rem 0",
                       }}
                     >
                       <div

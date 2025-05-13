@@ -85,6 +85,7 @@ export const HomeRightTitle = () => {
                 }}
                 options={homeSelect}
             />
+            <span className="HomeRightTitleInputSelect"></span>
         </div>
     )
 

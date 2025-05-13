@@ -420,28 +420,28 @@ const UserInfoCard: (props: UserInfoCardProps) => React.JSX.Element = (props) =>
             data[item.key] = item.value
         })
     }, [userModal])
-    const handleVisibilityChange = () => {
-        const html = document.getElementsByTagName("html")[0];
-        console.log("页面状态变化：", document.hidden);
+    // const handleVisibilityChange = () => {
+    //     const html = document.getElementsByTagName("html")[0];
+    //     console.log("页面状态变化：", document.hidden);
 
-        if (!document.hidden) {
-            // 当页面重新显示在前台时
-            html.style.fontSize = '14px';
-            // window.location.reload(); // 刷新页面
-        }
-    };
+    //     if (!document.hidden) {
+    //         // 当页面重新显示在前台时
+    //         html.style.fontSize = '14px';
+    //         // window.location.reload(); // 刷新页面
+    //     }
+    // };
 
-    useEffect(() => {
-        handleVisibilityChange(); // 初始化时执行一次
-        // 添加事件监听器
-        window.addEventListener('resize', handleVisibilityChange);
-        window.addEventListener('visibilitychange', handleVisibilityChange);
-        // 组件卸载时移除监听器
-        return () => {
-            window.removeEventListener('resize', handleVisibilityChange);
-            window.removeEventListener('visibilitychange', handleVisibilityChange);
-        };
-    }, []);
+    // useEffect(() => {
+    //     handleVisibilityChange(); // 初始化时执行一次
+    //     // 添加事件监听器
+    //     window.addEventListener('resize', handleVisibilityChange);
+    //     window.addEventListener('visibilitychange', handleVisibilityChange);
+    //     // 组件卸载时移除监听器
+    //     return () => {
+    //         window.removeEventListener('resize', handleVisibilityChange);
+    //         window.removeEventListener('visibilitychange', handleVisibilityChange);
+    //     };
+    // }, []);
     const roleId: any = localStorage.getItem('roleId')
     const handleClickUserEdit = () => {
         if (isMobile) {
@@ -451,39 +451,38 @@ const UserInfoCard: (props: UserInfoCardProps) => React.JSX.Element = (props) =>
 
         }
     }
+    console.log(indowSize.isMobile, '....................indowSizeindowSize');
+
     if (outer) {
         return (
             <div
-                className='fixed  top-[2.8rem] z-[90] w-full h-[6rem] bg-[#fff]'>
-                <div className='flex items-end justify-between w-[90%] h-full py-[1.2rem] bg-[#fff] mx-auto border-b border-b-[#DCE3E9]'>
-                    <img src={arrow} alt="" style={{ transform: "rotate(180deg)" }} className='w-[8px] h-[12px] mb-[10px] mr-[20px]'
-                        onClick={() => navigate(`/`)} />
-                    {/* <LeftOutlined className='w-[8px] h-[12px] mb-[10px] mr-[20px]'  style={{fontSize:"300px",display:'flex'}} onClick={() => navigate(`/`)} /> */}
-                    <img src={userInfo.headImg || nullImg} alt="" className='w-[4rem] h-[4rem] mr-[1.2rem] rounded-[6px]' />
-                    <div className='flex flex-col justify-center grow'>
-                        <span className='text-sm font-semibold h-[2.4rem]'>{userInfo.patientName}</span>
-                        {/* 不要删除后期要上线，暂时注销了 */}
-                        {/* <span className='flex w-full'>
-                            {[{ label: 'braden', value: '低风险' }].map(item => (
-                                <span key={item.label} className='text-sm text-[#6C7784]'>
-                                    <span>{`${item.label}:`}</span>
-                                    <span className='ml-[10px]'>{item.value}</span>
+                className={`fixed z-[90] w-full top-[${indowSize.isMobile == true ? '' : '2.8rem'}]w - full h-[${indowSize.isMobile == true ? '9.6rem' : "6rem"}] bg - [#fff]`} >
+                <div className='flex items-end justify-between   h-full py-[1.2rem] bg-[#fff] mx-auto border-b border-b-[#DCE3E9]'>
+                    <div className='w-full h-full'>
+                        <div className="flex items-center justify-center justify-between px-[14px]">
+                            <img src={arrow} alt="" className='w-[12px] h-[18px] mb-[10px] mr-[20px]'
+                                onClick={() => navigate(`/ `)} />
+                            <p style={{ fontSize: "14px", color: "#0072EF", fontWeight: "600" }} onClick={() => navigate(`/equipInfo/${sensorName}`)} >
+                                查看
+                            </p >
+                        </div>
+                        <div className='flex w-full pl-[3rem]'>
+                            <img src={userInfo.headImg ? userInfo.headImg : nullImg} alt="" className='w-[5.3rem] h-[5.3rem]  mr-[1.2rem] rounded-[6px]' />
+                            <div className='flex flex-col justify-around '>
+                                <span className={`text-[${indowSize.isMobile == true ? "1.2rem" : '0.875rem'}] font-semibold`} >{userInfo.patientName}</span>
+                                <span className='flex flex-wrap w-full'>
+                                    {personalInfo.map(item => (
+                                        <span key={item.id} className={`text-[${indowSize.isMobile == true ? "1.1rem" : '0.875rem'}] ${item.label == '床号' ? 'w-[100%]' : "w-[45%]"} `}>
+                                            <span className='text-[#929EAB] '>{`${item.label}: `}</span>
+                                            <span className='ml-[10px]'>{item.id == 'sex' ? sexFormat(userInfo[item.id]) : userInfo[item.id]}</span>
+                                        </span>
+                                    ))}
                                 </span>
-                            ))}
-                        </span> */}
+                            </div>
+                        </div>
                     </div>
-                    {/* <img src={arrow} alt="" className='w-[8px] h-[12px] mb-[10px]'/> */}
-                    <p style={{ fontSize: "20px" }} onClick={() => navigate(`/equipInfo/${sensorName}`)} >
-                        设置
-                    </p >
-                    {/* {
-                        roleId == 1 && 2 ? <p style={{ fontSize: "20px" }} onClick={() => navigate(`/equipInfo/${sensorName}`)} >
-                            设置
-                        </p> : ""
-                    } */}
-
                 </div>
-            </div>
+            </div >
         )
     }
     // 保存设置
@@ -493,12 +492,10 @@ const UserInfoCard: (props: UserInfoCardProps) => React.JSX.Element = (props) =>
             console.log('euqren')
         }
     }
-
     return (
-
         <Fragment>
             {isMobile && (
-                <CommonNavBar title='个人信息及设置' onBack={() => navigate(`/report/0/${sensorName}`)} />
+                <CommonNavBar title='个人信息及设置' onBack={() => navigate(`/report/0/${sensorName} `)} />
             )}
             <div className='md:pt-[4.5rem] h-full'>
                 <div
@@ -523,8 +520,8 @@ const UserInfoCard: (props: UserInfoCardProps) => React.JSX.Element = (props) =>
                             <span className='text-sm font-semibold' >{userInfo.patientName}</span>
                             <span className='flex flex-wrap w-full'>
                                 {personalInfo.map(item => (
-                                    <span key={item.id} className={`text - sm ${item.label == '床号' ? 'w-[100%]' : "w-[45%]"}`}>
-                                        <span className='text-[#929EAB]'>{`${item.label}:`}</span>
+                                    <span key={item.id} className={`text - sm ${item.label == '床号' ? 'w-[100%]' : "w-[45%]"} `}>
+                                        <span className='text-[#929EAB]'>{`${item.label}: `}</span>
                                         <span className='ml-[10px]'>{item.id == 'sex' ? sexFormat(userInfo[item.id]) : userInfo[item.id]}</span>
                                     </span>
                                 ))}

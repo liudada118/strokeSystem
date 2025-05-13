@@ -23,7 +23,8 @@
 }
 
 .dataSelectContent {
-    margin-top: 2.86rem;
+    // margin-top: 2.86rem;
+    margin-top: 20px;
     padding: 0.88rem 0;
     background: #EDF7FF;
     // position: fixed;
@@ -240,7 +241,7 @@
     // padding-top: 3.2rem;
 
     .dataSelectContent {
-        margin-top: 0;
+        // margin-top: 0;
     }
 
     // height: 8rem;
@@ -376,7 +377,7 @@
     height: calc(100% - 7rem)!important;
     position: fixed;
     // left: 0;
-    top: 15.82rem;
+    top: 17.82rem;
     z-index: 1000;
     display: flex;
     align-items: center;

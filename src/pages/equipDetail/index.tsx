@@ -129,7 +129,7 @@ const EquipDetail = () => {
 
     // }
     const { isMobile } = useWindowSize()
-    // const nurse = useSelector((state: any) => state.nurse.open)
+
     const dispale = useDispatch()
     const tabList = [{
         label: '监测',
@@ -161,13 +161,32 @@ const EquipDetail = () => {
     const isGotoNursePage = useSelector((state: any) => state.nurse.isGotoNursePage)
     useEffect(() => {
         if (!isGotoNursePage) return
-        console.log(isGotoNursePage, 'isGotoNursePage...............')
         handleTabChange1('nurse')
         handleTabChange('nurse')
     }, [isGotoNursePage])
     const nurseOpen = useSelector((state: any) => state.nurse.open)
-    console.log(nurseOpen, '.........................nurseOpen');
+    // const handleVisibilityChange = () => {
+    //     const html = document.getElementsByTagName("html")[0];
+    //     console.log("页面状态变化：", document.hidden);
 
+    //     if (!document.hidden) {
+    //         // 当页面重新显示在前台时
+    //         html.style.fontSize = '14px';
+    //         // window.location.reload(); // 刷新页面
+    //     }
+    // };
+
+    // useEffect(() => {
+    //     handleVisibilityChange(); // 初始化时执行一次
+    //     // 添加事件监听器
+    //     window.addEventListener('resize', handleVisibilityChange);
+    //     window.addEventListener('visibilitychange', handleVisibilityChange);
+    //     // 组件卸载时移除监听器
+    //     return () => {
+    //         window.removeEventListener('resize', handleVisibilityChange);
+    //         window.removeEventListener('visibilitychange', handleVisibilityChange);
+    //     };
+    // }, []);
     if (isMobile) {
         return (
             <MenuLayouts isMobile={isMobile}>
@@ -178,6 +197,7 @@ const EquipDetail = () => {
                 >
                     {/* <CommonNavBar title='801' onBack={() => { }} /> */}
                     <Title />
+
                     <NoEquipLoading>
                         <UserInfoCard outer isMobile />
                         {
@@ -196,7 +216,6 @@ const EquipDetail = () => {
                             //     />
                             // </div>
                         }
-
                         <div className="relative">
                             <Tabs
                                 className={[styles.mobileTabContent, styles.tabContent].join(' ')}
@@ -314,8 +333,6 @@ function Provide() {
                 deviceId: id
             }
         }).then((res) => {
-            console.log('typetype................55555');
-
             const flipbodyConfig = JSON.parse(res.data.flipbodyConfig)
             const { flipbodyCount, flipbodyTime } = flipbodyConfig
             if (flipbodyCount) {
@@ -364,7 +381,6 @@ function Provide() {
         }).catch((err) => {
             message.error('修改失败')
         })
-
     }
     /**
    * 请求护理计划

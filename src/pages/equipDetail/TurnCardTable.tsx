@@ -85,6 +85,61 @@ const TurnCardTable: (props: TurnCardTableProps) => React.JSX.Element = (props) 
     const sensorName = param.id
     const token = useSelector(tokenSelect)
     const [flipbodyData, setFlipbodyData] = useState([])
+    const [flipbodyDataList, setFlipbodyDataList] = useState([])
+    console.log(flipbodyDataList, '...............................flipbodyDataList');
+    useEffect(() => {
+        getNurse()
+        instance({
+            method: "get",
+            url: "/sleep/nurse/getRecords",
+            params: {
+                deviceName: sensorName,
+                startTime: new Date(new Date().toLocaleDateString()).getTime(),
+                endTime: new Date(new Date().toLocaleDateString()).getTime() + (24 * 60 - 1) * 60 * 1000,
+                pageNum: 1,
+                pageSize: 99
+            },
+            headers: {
+                "content-type": "application/x-www-form-urlencoded",
+                "token": token
+            },
+        }).then((res: any) => {
+            console.log(res, '........setDataListsetDataList');
+
+            setDataList({
+                ...dataList,
+                flipBodyCount: res.data.flipBodyCount,
+                effectiveFlipBodyCount: res.data.effectiveFlipBodyCount,
+                flipBodyTimeoutCount: res.data.flipBodyTimeoutCount
+            })
+            const record = res.data.page.records//.map((item :any )=> item.posture)
+            let obj = {
+                key: '1',
+                plan: '08:00',
+                actual_exa: '08:01',
+                left: false,
+                top: true,
+                right: false,
+                nurser: '张爱铃',
+            }
+            let newArr: any = []
+            record.forEach((item: any, index: any) => {
+                let obj = {
+                    key: index,
+                    plan: dayjs(item.timeMills).format('HH:mm'),
+                    actual_exa: dayjs(item.timeMillsEnd).format('HH:mm'),
+                    left: posNumToposText(item.posture) == 'left',
+                    top: posNumToposText(item.posture) == 'center',
+                    right: posNumToposText(item.posture) == 'right',
+                    nurser: item.chargeMan,
+                }
+                newArr.push(obj)
+            })
+            setTurnTableDatasource(newArr)
+        }).catch((err) => [
+            console.log(err)
+        ])
+    }, [])
     const getNurse = () => {
         instance({
             method: "post",
@@ -98,7 +153,8 @@ const TurnCardTable: (props: TurnCardTableProps) => React.JSX.Element = (props) 
         }).then((res) => {
 
 
-            const flipbodyData = res.data.flipbodyData
+
+            setFlipbodyDataList(res.data.flipbodyCount)
             const dataList: any = Object.values(res.data.flipbodyData).filter((item: any, index) => item.status >= 3).length
             setFlipbodyData(dataList)
         }).catch((err) => {
@@ -109,7 +165,7 @@ const TurnCardTable: (props: TurnCardTableProps) => React.JSX.Element = (props) 
     const turnAroundCard: CardItem[] = [{
         label: '翻身次数',
         value: `${dataList.flipBodyCount}`,
-        unit: `次 / 0次`
+        unit: `次 / ${flipbodyDataList}次`
     }, {
         label: '有效翻身',
         value: `${dataList.effectiveFlipBodyCount}`,
@@ -172,59 +228,8 @@ const TurnCardTable: (props: TurnCardTableProps) => React.JSX.Element = (props) 
         render: (text: string) => <span className='whitespace-nowrap'>{text}</span>
     }]
     const columnWidth = turnTableColumns.map(item => item.width).reduce((total, item) => total + item)
-    useEffect(() => {
-        getNurse()
-        instance({
-            method: "get",
-            url: "/sleep/nurse/getRecords",
-            params: {
-                deviceName: sensorName,
-                startTime: new Date(new Date().toLocaleDateString()).getTime(),
-                endTime: new Date(new Date().toLocaleDateString()).getTime() + (24 * 60 - 1) * 60 * 1000,
-                pageNum: 1,
-                pageSize: 99
-            },
-            headers: {
-                "content-type": "application/x-www-form-urlencoded",
-                "token": token
-            },
-        }).then((res: any) => {
-            console.log(res, '........setDataListsetDataList');
 
-            setDataList({
-                ...dataList,
-                flipBodyCount: res.data.flipBodyCount,
-                effectiveFlipBodyCount: res.data.effectiveFlipBodyCount,
-                flipBodyTimeoutCount: res.data.flipBodyTimeoutCount
-            })
-            const record = res.data.page.records//.map((item :any )=> item.posture)
-            let obj = {
-                key: '1',
-                plan: '08:00',
-                actual_exa: '08:01',
-                left: false,
-                top: true,
-                right: false,
-                nurser: '张爱铃',
-            }
-            let newArr: any = []
-            record.forEach((item: any, index: any) => {
-                let obj = {
-                    key: index,
-                    plan: dayjs(item.timeMills).format('HH:mm'),
-                    actual_exa: dayjs(item.timeMillsEnd).format('HH:mm'),
-                    left: posNumToposText(item.posture) == 'left',
-                    top: posNumToposText(item.posture) == 'center',
-                    right: posNumToposText(item.posture) == 'right',
-                    nurser: item.chargeMan,
-                }
-                newArr.push(obj)
-            })
-            setTurnTableDatasource(newArr)
-        }).catch((err) => [
-            console.log(err)
-        ])
-    }, [])
+
 
     return (
         <div className='bg-[#fff] md:w-[94%] md:rounded-[10px] md:my-[10px] md:mx-auto p-[25px] md:p-[1rem]'>

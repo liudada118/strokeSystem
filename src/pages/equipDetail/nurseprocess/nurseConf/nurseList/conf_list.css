@@ -68,7 +68,7 @@
 
 .pc_nurse_conf_list .list_item p:nth-child(1) {
   display: flex;
-  width: 6rem;
+  width: 7rem;
 }
 
 .pc_nurse_conf_list .list_item p:nth-child(2) {
@@ -82,11 +82,11 @@
 .pc_nurse_conf_list .list_item p:nth-child(2) span:nth-child(1) {
   font-size: 0.8rem;
   font-weight: 600;
-  color: #32373E;
+  color: #32373E !important;
 }
 
 .pc_nurse_conf_list .list_item p:nth-child(2) span:nth-child(2) {
-  color: #32373E;
+  color: #32373E !important;
   font-size: 0.8rem;
 }
 
@@ -96,9 +96,11 @@
 }
 
 .pc_nurse_conf_list .list_item p:nth-child(2) span:nth-child(3) img {
-  width: 5rem;
-  height: auto;
+  width: 2rem;
+  height: 2rem;
   margin: 0 0.5rem 0.5rem 0;
+  border-radius: 3px;
+  margin-top: 5px;
 }
 
 .pc_nurse_conf_list .list_item p:nth-child(2) span:nth-child(3).pc_nurse_conf_list_img:nth-child(3) img {

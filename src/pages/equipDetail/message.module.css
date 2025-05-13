@@ -8,6 +8,21 @@
   font-size: 0.875rem;
 }
 
+.tabContent :global .ant-tabs-content-holder,
+.mobileTabContent :global .ant-tabs-content-holder {
+  overflow-y: auto;
+}
+
+.tabContent :global .ant-tabs-content-holder .ant-tabs-content,
+.mobileTabContent :global .ant-tabs-content-holder .ant-tabs-content {
+  height: 100%;
+}
+
+.tabContent :global .ant-tabs-content-holder .ant-tabs-content .ant-tabs-tabpane,
+.mobileTabContent :global .ant-tabs-content-holder .ant-tabs-content .ant-tabs-tabpane {
+  height: 100%;
+}
+
 .tabContent :global .ant-tabs-nav,
 .mobileTabContent :global .ant-tabs-nav {
   background-color: #fff;
@@ -69,7 +84,7 @@
 
 .mobileTabContent :global .ant-tabs-nav {
   position: fixed !important;
-  top: 8.8rem;
+  top: 9.8rem;
   z-index: 9;
   width: 100%;
 }

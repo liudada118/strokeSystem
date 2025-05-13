@@ -702,7 +702,7 @@ export default function DayReport() {
         </div>
       </Modal>
       <div className="fixDataSelectContent pf">
-        <div className="dataSelectContent">
+        <div className="dataSelectContent ">
           <div className="dataSelect">
             <div className="clickSelectDate">
               <CaretLeftOutlined onClick={() => {

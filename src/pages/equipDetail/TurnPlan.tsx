@@ -212,10 +212,10 @@ const TurnPlan: (props: TurnPlanProps) => React.JSX.Element = (props) => {
             >去记录</Button>
     }
     return (
-        <div className='bg-[#fff] w-full md:w-[94%] md:rounded-[10px] md:my-[10px] md:mx-auto border-b border-b-[#ECF0F4] md:border-0 pt-[25px] pl-[25px] md:pt-[1rem] md:pl-[1rem] pb-[10px]'>
+        <div className='bg-[#fff] w-full mt-[20px] md:w-[94%] md:rounded-[10px]  md:mx-auto border-b border-b-[#ECF0F4] md:border-0 pt-[25px] pl-[25px] md:pt-[1rem] md:pl-[1rem] pb-[10px]'>
             <NurseProcesst isModalOpenSend={recordModal} setIsModalOpenSend={setRecordModal} getNurse={getNurse} />
             <CommonTitle name='翻身计划' type={isMobile ? 'rect' : 'square'} />
-            <div className='w-full'>
+            <div className='w-full '>
                 {turnAroundPlan.map((item: any, index: any) => (
                     <div key={index} className={`flex items-center w-full ${inactivePlan(item.status) ? 'disabledPlan' : ''}`}>
                         <img src={renderImagIcon(item)}

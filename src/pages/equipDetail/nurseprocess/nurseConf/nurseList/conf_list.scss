@@ -70,7 +70,7 @@
             }
             &:nth-child(1) {
                 display: flex;
-                width: 6rem;
+                width: 7rem;
             }
             &:nth-child(2) {
                 display: flex;
@@ -78,23 +78,35 @@
                 flex: 1;
                 flex-wrap: wrap;
                 word-break: break-all;
+                // span:nth-child(1)::before {
+                //     content: '';
+                //     background: url('@/assets/images/shijian.png');
+                //     background-color: #F5F8FA; /* 添加背景色 */
+                //     width: 20px;
+                //     height: 20px;
+                //     display: inline-block;
+                // }
                 span {
                     &:nth-child(1) {
                         font-size: 0.8rem;
                         font-weight: 600;
-                        color: #32373E;
+                        color: #32373E!important;
+
                     }
+
                     &:nth-child(2) {
-                        color: #32373E;
+                        color: #32373E!important;
                         font-size: 0.8rem;
                     }
                     &:nth-child(3) {
                         display: flex;
                         flex-wrap: wrap;
                         img {
-                            width: 5rem;
-                            height: auto;
+                            width: 2rem;
+                            height: 2rem;
                             margin: 0 0.5rem 0.5rem 0;
+                            border-radius: 3px;
+                            margin-top: 5px;
                         }
                         &.pc_nurse_conf_list_img:nth-child(3) {
                             img {

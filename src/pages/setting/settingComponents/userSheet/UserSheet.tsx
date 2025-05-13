@@ -23,7 +23,7 @@ export default function UserSheet(props: userSheetProps) {
     const [manPassword, setmanPassword] = useState('')
     message.config({
         top: 100,
-        duration: 1.5,
+        duration: 1.7,
         maxCount: 3,
         rtl: true,
     });
@@ -49,23 +49,22 @@ export default function UserSheet(props: userSheetProps) {
         })
     }
 
-    const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]{8,16}$/;
+    const passwordRegex = /^[A-Za-z0-9]{6,16}$/;
     const handleNurseOk = () => {
         if (!nurseUser.user || !nurseUser.password || !nurseUser.name) {
             message.info('请填写完整信息');
             return;
         }
         if (nurseUser.user === nurseUser.password) {
-            message.info('密码不能与用户名重复！');
+            message.info('密码不能与用户名重复');
             return;
         }
         if (nurseUser.name === nurseUser.password) {
-            message.info('密码不能与护工名重复！');
+            message.info('密码不能与护工名重复');
             return;
         }
-
         // 正则表达式匹配密码规则
-        if (!passwordRegex.test(nurseUser.password)) return message.info("密码应为8-16位字符，仅支持数字与英文大小写字母。");
+        if (!passwordRegex.test(nurseUser.password)) return message.info("密码应为6-16位字符，仅支持数字与英文大小写字母");
         if (nurseUser.user.length > 5) {
             Instancercv({
                 method: "post",
@@ -83,7 +82,6 @@ export default function UserSheet(props: userSheetProps) {
                 },
             }).then((res) => {
                 getItemManage(deleteObj.id)
-
                 if (res.data.code == 500) {
                     message.error('该用户已绑定过其他的项目')
                 } else {

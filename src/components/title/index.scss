@@ -44,11 +44,12 @@
 }
 
 .searchInput input {
-  width: 13.46rem;
+  width: 12.46rem;
   height: 2.67rem;
-  border: #efefef solid 1px;
-  border-radius: 1rem;
-  padding-left: 4.8rem !important;
+  border: #D1D9E1 solid 1px;
+  border-radius: 0.4rem;
+  padding-left: 5.8rem !important;
+  font-weight: 500;
 }
 
 .searchInput img {
@@ -58,6 +59,10 @@
   left: 7rem;
 }
 
+// .searchInput .HomeRightTitleInputSelect{
+//   position: absolute;
+//   width: 1px ;
+// }
 .titleRight {
   display: flex;
   align-items: center;
@@ -197,6 +202,7 @@
 .searchSelect {
   position: absolute !important;
   left: 0.3rem;
+  // border-right: 2px #ccc solid;
   .ant-select-selector {
     border: 0 !important;
   }
@@ -207,7 +213,16 @@
     box-shadow: unset !important;
   }
 }
-
+.searchSelect::after{
+  content: '';
+  display: flex;
+  align-items: center;
+  width: 1px;
+  height: 70%;
+  line-height: 12.46rem;
+margin-top: 4%;
+  background: #929EAB;
+}
 .deviceTitle {
   width: 6rem;
 }

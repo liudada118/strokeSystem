@@ -9,8 +9,9 @@ import {
   changeEquipAllInfo,
   changePersonalEquipAlarmInfo,
   selectEquipBySensorname,
-  statusSelect,
+  statusSelect, fetchEquips,
 } from "@/redux/equip/equipSlice";
+import { onOverSettings } from '@/redux/Nurse/Nurse'
 import { equipInfoFormatUtil, minToHourText } from "@/utils/dataToFormat";
 import { phoneSelect, tokenSelect } from "@/redux/token/tokenSlice";
 import { isManage, roleIdSelect } from "@/redux/premission/premission";
@@ -24,7 +25,7 @@ import { DataContext } from ".";
 import { unbindHheDevice } from "../../api/index";
 import { nurseOpen, nurseHomeOnChlick } from "../../redux/Nurse/Nurse";
 import { setIsGotoNursePage } from "../../redux/Nurse/Nurse";
-import { fetchEquips } from '../../redux/equip//equipSlice'
+
 
 interface SettingBlockProps {
   onModify: (value: boolean) => void;
@@ -202,17 +203,12 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
     }
   };
 
-  console.log(userInfo, "................................userInfo");
+
 
   const changeValueToUserInfo = (values: modelUserInfo) => {
     const realValue: string = Object.values(values)[0];
     const realKey: string = Object.keys(values)[0];
-    console.log(
-      values,
-      realValue,
-      realKey,
-      "。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。values"
-    );
+
     if (realKey == "timeRangeA") {
       setNurseFormValue({
         ...nurseformValue,
@@ -409,7 +405,7 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
                 },
               ]}
               onFinish={(values) => {
-                console.log(values, "............valuessssss");
+
 
                 // setTimeRangeB(values.timeRangeB)
                 changeValueToUserInfo(values);
@@ -687,10 +683,16 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
   ];
 
   const handleClickSettingBtn = () => {
+    // 更新翻身卡次数
+    dispatch(onOverSettings(false))
     setEditing(true);
     onModify(true);
   };
+
+  //overSettings
   const handleSettingCompleted = () => {
+
+    dispatch(onOverSettings(true))
     // nurseParam?: NurseParam
     // leaveParam?: leaveParam
     // alarmParam?: alarmParam
@@ -747,7 +749,7 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
       dispatch(changeEquipAllInfo(obj));
     }
     if (userNurseChange) {
-      console.log(nurseformValue, "34444444");
+
       submitCloud({
         ...nurseformValue,
         switchA: !!injuryAlarm,
@@ -826,10 +828,10 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
     const flag = !isSettingClick;
     setIsSettingClick(flag);
     if (flag) {
-      console.log("999999999");
+
       handleClickSettingBtn();
     } else {
-      console.log("888888888");
+
       handleSettingCompleted();
     }
   };
@@ -842,7 +844,7 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
       message.success("解绑成功");
       dispatch(fetchEquips())
       fetchEquips()
-      console.log('..............11111..........................943CC6F6797C943CC6F6797C');
+
       // navigator.
       navigate("/", {
         replace: true,

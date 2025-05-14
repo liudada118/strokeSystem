@@ -61,7 +61,7 @@ export default function TurnReport(props: PropsType) {
         sensorName: '',
     }) as any
     const isMobile = useGetWindowSize()
-    console.log(data, '................datadatadatadata');
+
 
     const { logid, id, dataListName } = isMobile ? location.state : props
     const [timeId, setTimeId] = useState()

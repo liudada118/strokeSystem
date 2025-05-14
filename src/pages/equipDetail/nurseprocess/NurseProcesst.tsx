@@ -96,6 +96,8 @@ let startPosture: any;
 export default function NurseProcesst(props: nurseProcessProps) {
   const { isModalOpenSend, setIsModalOpenSend, getNurse } = props;
 
+
+
   const param = useParams();
   const sensorName = param.id || "";
   const client = useSelector(mqttSelect);
@@ -120,8 +122,6 @@ export default function NurseProcesst(props: nurseProcessProps) {
   const [remark, setRemark] = useState<any>();
   const windowSize = useWindowSize();
   const turnOverRef = useRef<any>(null);
-
-
   const nurseStepArr = [
     {
       title: "第一步：为护理对象翻身",
@@ -616,7 +616,7 @@ const OneClickCare = (props: oneClickCareParam) => {
     setIsModalOpenSend(false);
   };
 
-  console.log(windowSize, "windowSize..1111....");
+
 
   return windowSize.isMobile ? (
     <Popup

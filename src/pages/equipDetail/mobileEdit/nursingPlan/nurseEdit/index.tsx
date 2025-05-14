@@ -160,12 +160,12 @@ export default function NurseConfEdit(props: any) {
   const handleDropdownClick = async (e: any) => {
 
     const info: any = items.find((item) => item.key === e.key);
-    console.log(info, e, ".........info");
+   
 
     setDefaultTempInfo(info);
     getPersonTemplate(+info.key);
     dropdownRef.current?.close()
-    console.log(e, info, '...............9999..........setTempListsetTempList');
+   
   };
 
   // useEffect(() => {

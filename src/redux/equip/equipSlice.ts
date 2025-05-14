@@ -17,6 +17,7 @@ interface equipState {
     realAlarmArr: any
     newVoiceExample: any
     equipConstant: any
+
 }
 
 const initialState: equipState = {
@@ -31,7 +32,8 @@ const initialState: equipState = {
     newVoiceExample: null,
     status: 'idle',
     error: null,
-    equipConstant: []
+    equipConstant: [],
+   
 }
 
 const equipSlice = createSlice({
@@ -42,6 +44,7 @@ const equipSlice = createSlice({
             const alarmArr = [...state.alarmArr]
             state.alarmArr = alarmArr.filter((a) => a.sensorName != action.payload)
         },
+      
         initData(state, action) {
             // console.log(action.payload)
             const { equips, equipPc, riskArr, switchArr, realAlarmArr, newVoiceExample, equipConstant, equipsPlay, equipPcPlay } = action.payload
@@ -207,6 +210,7 @@ export const newVoiceExampleSelect = (state: any) => state.equip.newVoiceExample
 
 export const equipPlaySelect = (state: any) => state.equip.equipsPlay
 export const equipPcPlaySelect = (state: any) => state.equip.equipPcPlay
+
 
 export default equipSlice.reducer
 

@@ -10,7 +10,8 @@ const initialState: any = {
   isRestNuserpage: 0,
   showTabs: true, 
   isDataList:true,
-  nurseHome:false
+  nurseHome:false,
+  overSettings:false
 };
 
 const mqttSlice = createSlice({
@@ -19,8 +20,11 @@ const mqttSlice = createSlice({
   reducers: {
     nurseOpen(state, action) {
       state.open = action.payload;
-      console.log(state.open,'..........open........2222222222222');
+    
     },
+      onOverSettings(state,action){
+            state.overSettings=action.payload
+        },
     nurseDataList(state, action) {
       state.dataList = action.payload;
     },
@@ -51,7 +55,7 @@ nurseHomeOnChlick(state, action) {
 },
   },
 });
-export const { nurseOpen, nurseDataList, nurseIsOpenAdd, resetNuserpage, nurseSensorName, setNurseListData,setIsGotoNursePage,showTabsTabs,showDataLIst ,nurseHomeOnChlick} =
+export const { nurseOpen, nurseDataList, nurseIsOpenAdd, resetNuserpage, nurseSensorName, setNurseListData,setIsGotoNursePage,showTabsTabs,showDataLIst ,nurseHomeOnChlick,onOverSettings} =
   mqttSlice.actions;
 export const mqttSelect = (state: any) => state.mqtt.client;
 

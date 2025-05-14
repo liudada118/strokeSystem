@@ -62,10 +62,9 @@ const includesObj = ({ str, arr }: any) => {
 }
 
 function NurseCharts(props: nurseChartsProps) {
-    console.log(props, '....0000000.......propspropspropsprops');
-
+ 
     const isMobile = useGetWindowSize()
-    console.log(isMobile, '√√√..isMobileisMobileisMobile.....')
+
 
     function onbedTip(params: any) {
         let tip = '';

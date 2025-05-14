@@ -453,8 +453,6 @@ const UserInfoCard: (props: UserInfoCardProps) => React.JSX.Element = (props) =>
 
         }
     }
-    console.log(indowSize.isMobile, '....................indowSizeindowSize');
-
     if (outer) {
         return (
             <div

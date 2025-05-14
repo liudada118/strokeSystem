@@ -13,7 +13,7 @@ export default function PCNurseList(props: any) {
     const [listData, setDataList] = useState<any>([]);
     const windowSize = useWindowSize()
     const isMobile = windowSize.isMobile;
-    console.log(isMobile, '......................isMobile');
+   
 
     const dispatch = useDispatch();
     const getDataList = async () => {

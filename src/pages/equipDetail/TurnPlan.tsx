@@ -160,7 +160,7 @@ const TurnPlan: (props: TurnPlanProps) => React.JSX.Element = (props) => {
     }
     const handleRecord = () => {
         setRecordModal(true)
-        console.log(isMobile, '......isMobile........')
+
         if (isMobile) {
             setRecordModal(true)
         } else {

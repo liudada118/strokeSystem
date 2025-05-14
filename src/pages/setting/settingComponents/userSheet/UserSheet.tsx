@@ -232,6 +232,7 @@ export default function UserSheet(props: userSheetProps) {
 
 
     const handleChangePasswordOk = () => {
+
         console.log(deleteObj)
         if (!passwordRegex.test(manPassword)) {
             return message.info("密码应为6-16位字符，仅支持数字与英文大小写字母");
@@ -290,7 +291,7 @@ export default function UserSheet(props: userSheetProps) {
                 return (
                     <div style={{ display: 'flex', justifyContent: "center", color: '#0256FF', justifyItems: 'center', cursor: "pointer" }}>
                         <div className='edit' style={{ marginRight: '1rem' }} onClick={() => {
-
+                            setmanPassword('')
                             setIsModalChangePasswordOpen(true)
                         }}>重置密码 </div>
                         <div className='delete' style={{ marginRight: '1rem' }}
@@ -313,7 +314,7 @@ export default function UserSheet(props: userSheetProps) {
     return (
         <>
             <Modal title="请输入新的密码" open={isModalChangePasswordOpen} onOk={handleChangePasswordOk} onCancel={handleChangePasswordCancel}>
-                <Input onChange={(e) => {
+                <Input value={manPassword} onChange={(e) => {
                     setmanPassword(e.target.value)
                 }} />
             </Modal>

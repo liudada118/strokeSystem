@@ -229,7 +229,7 @@ export default forwardRef((props: any, refs: any) => {
       //   return value
       // })
     }).catch((err) => {
-      message.error('当前设备已离线')
+      // message.error('当前设备已离线')
     });
   }
 

@@ -49,7 +49,7 @@ function NurseAdd(props: any) {
                 uploadImage: JSON.stringify(uploadImage),
                 notes
             }
-           
+
 
             if (values.nurseProject.length > 20) return message.info('护理项目不能超过20个字符')
             if (values.notes.length > 20) return message.info('备注不能超过20个字符')
@@ -113,9 +113,10 @@ function NurseAdd(props: any) {
                             取消
                         </div>
                         <div style={{ fontWeight: "500", fontSize: "1.2rem" }}>
-                            {
-                                props.type === '记录护理项目' ? '护理记录' : ''
-                            }
+                            {/* {
+                                props.type === '记录护理项目' ? nurseProject : '护理记录'
+                            } */}
+                            护理记录
 
                         </div>
                         <div className="text-[#0072EF] text-base" onClick={handleRecordForm}>

@@ -185,6 +185,8 @@ function message({ payload, storeApi, data }: any) {
     equipsPlayArr = JSON.parse(JSON.stringify(equipsPlay))
     const jsonObj = JSON.parse(payload);
 
+    // console.log(jsonObj)
+
     if (jsonObj.type === 'alarm') {
         // let message = [...overMessage]
         if (jsonObj.alarmMsg.includes('offline')) {

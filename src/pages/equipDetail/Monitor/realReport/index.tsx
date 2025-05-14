@@ -283,7 +283,7 @@ export default forwardRef((props: any, refs: any) => {
       mqtt.on('message', ((topic: any, payload: any) => {
         const jsonObj = JSON.parse(payload);
         if (sensorName === jsonObj.deviceName) {
-          console.log(JSON.stringify(jsonObj))
+          // console.log(JSON.stringify(jsonObj) ,sensorName, jsonObj.deviceName)
           if (mqttEvent[jsonObj.type]) mqttEvent[jsonObj.type]({ jsonObj, sensorName })
         }
 

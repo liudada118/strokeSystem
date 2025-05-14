@@ -103,8 +103,8 @@ const Heatmap = React.forwardRef((props: any, refs) => {
         })
 
         const max = Math.max(...dataToInterpGauss)
-        options.max = max*heatmapProp
-
+        options.max = max * heatmapProp
+        console.log(max,options)
         data = []
         const count = 64 + 8
         for (let i = 0; i < 64 + 8; i++) {
@@ -352,7 +352,7 @@ const Heatmap = React.forwardRef((props: any, refs) => {
         if (props.sensorName !== 'iJ3X0JSttyoiRPafpIka') {
             options.size = canvas.width / 22
             generateData(arr, num)
-            options.max = bedMax
+            // options.max = bedMax
         } else {
             canvas.height = canvas.width
             options.size = canvas.width / sitWidth

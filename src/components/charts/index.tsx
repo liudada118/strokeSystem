@@ -404,7 +404,7 @@ interface handleChart {
 }
 
 export const RealChart = React.forwardRef((props: RealIndex, refs) => {
-  console.log(props.xdata, props.tipFormat, props.ymax, '................................999999999');
+ 
   var myChart: any;
   const handChangeChart = ({ ydata }: handleChart) => {
     const chart1 = document.getElementById(`chart${props.index}`);

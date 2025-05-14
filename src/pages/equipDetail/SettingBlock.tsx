@@ -202,7 +202,7 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
     }
   };
 
-  console.log(userInfo, "................................userInfo");
+ 
 
   const changeValueToUserInfo = (values: modelUserInfo) => {
     const realValue: string = Object.values(values)[0];

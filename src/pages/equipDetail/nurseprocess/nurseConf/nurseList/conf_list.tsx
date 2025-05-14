@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Empty, message } from "antd";
+import { Empty, message, Image } from "antd";
 import "./conf_list.scss";
 import dayjs from "dayjs";
 import instance from "@/api/api";
@@ -13,6 +13,8 @@ export default function PCNurseList(props: any) {
     const [listData, setDataList] = useState<any>([]);
     const windowSize = useWindowSize()
     const isMobile = windowSize.isMobile;
+    console.log(isMobile, '......................isMobile');
+
     const dispatch = useDispatch();
     const getDataList = async () => {
         let res = null;
@@ -116,7 +118,7 @@ export default function PCNurseList(props: any) {
                     status: props.type == 'daEeport' ? true : item.status
                 };
             });
-            console.log(list, "listlistlistlistlistlistlist......");
+       
             setDataList(list);
             props.getTempList && props.getTempList(list);
         }
@@ -172,13 +174,18 @@ export default function PCNurseList(props: any) {
                                         <span>{item.notes}</span>
                                         <span
                                             onClick={() => {
-                                                setImgData(item.uploadImage);
-                                                setVisible(true);
+                                                if (isMobile) {
+                                                    setImgData(item.uploadImage);
+                                                    setVisible(true);
+                                                }
                                             }}
                                             className={`${!isMobile ? 'pc_nurse_conf_list_img' : ''}`}
                                         >
                                             {item.uploadImage.map((item: any) => {
-                                                return <img key={item} src={item} alt="" />;
+                                                return isMobile ? <img key={item} src={item} alt="" /> : <Image
+
+                                                    src={item}
+                                                />
                                             })}
                                         </span>
                                     </p>
@@ -188,7 +195,6 @@ export default function PCNurseList(props: any) {
                                                 color:
                                                     props.operType === "init" ? "#ffff" : "#929EAB",
                                                 cursor: !item.status ? "pointer" : "",
-
                                             }}
                                             onClick={() => {
                                                 !item.status && props.gotoFinshNurse && props.gotoFinshNurse(item);

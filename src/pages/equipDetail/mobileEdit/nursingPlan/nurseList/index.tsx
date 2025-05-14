@@ -29,24 +29,7 @@ export default function NurseList(props: any) {
     },
   ];
 
-  // useEffect(() => {
 
-  //   // 定义处理函数
-  //   const handleResize = () => {
-  //     const html = document.getElementsByTagName("html");
-  //     html[0].style.fontSize = '14px'
-  //   };
-
-  //   handleResize();
-
-  //   // 添加事件监听器
-  //   window.addEventListener('resize', handleResize);
-
-  //   // 组件卸载时移除监听器
-  //   return () => {
-  //     window.removeEventListener('resize', handleResize);
-  //   };
-  // }, []);
   const handleVisibilityChange = () => {
     const html = document.getElementsByTagName("html")[0];
     console.log("页面状态变化：", document.hidden);

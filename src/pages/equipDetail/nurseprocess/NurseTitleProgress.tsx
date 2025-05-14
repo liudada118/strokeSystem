@@ -1,4 +1,4 @@
-import React, { useImperativeHandle, useRef, useState } from 'react'
+import React, { useImperativeHandle, useRef, useState, useEffect } from 'react'
 import { message, Spin, Tooltip } from 'antd'
 import HeatmapR1 from "@/components/heatmap/HeatmapModal copy";
 import notice from "@/assets/image/notice.png";
@@ -84,7 +84,29 @@ export const TurnOver = React.forwardRef((props: turnOverParam, refs) => {
     useImperativeHandle(refs, () => ({
         renderHeatmapData
     }));
+    const handleVisibilityChange = () => {
+        const html = document.getElementsByTagName("html")[0];
+        console.log("页面状态变化：", document.hidden);
 
+        if (!document.hidden) {
+            // 当页面重新显示在前台时
+            html.style.fontSize = '16px';
+            // window.location.reload(); // 刷新页面
+        }
+    };
+
+    useEffect(() => {
+        handleVisibilityChange(); // 初始化时执行一次
+        // 添加事件监听器
+        window.addEventListener('resize', handleVisibilityChange);
+        window.addEventListener('visibilitychange', handleVisibilityChange);
+        // 组件卸载时移除监听器
+        return () => {
+            window.removeEventListener('resize', handleVisibilityChange);
+            window.removeEventListener('visibilitychange', handleVisibilityChange);
+        };
+        // 添加123
+    }, []);
     return (
         <div className="pfBold" style={{ backgroundColor: '#F7F8FD', width: '100%', padding: '1rem', flex: 1 }}> <div style={{ flex: 1, width: '100%', backgroundColor: '#000', borderRadius: '5px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column' }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#fff', margin: '2rem 1rem 0 1rem', borderRadius: '5px', padding: '1rem', textAlign: 'center', width: '90%', fontSize: '1.2rem' }}>

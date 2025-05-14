@@ -157,7 +157,7 @@ export default function AddNurseConfList() {
     useEffect(() => {
         const tempList = localStorage.getItem("tempList");
         if (tempList) {
-            console.log(tempList, '√≥......√≥...tempList.........')
+
             setNurseList(JSON.parse(tempList));
         }
         Instancercv({

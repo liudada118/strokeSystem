@@ -33,6 +33,8 @@ function Recording(props: proprsType) {
     const [form] = Form.useForm();
     const token = localStorage.getItem('token')
     const format = 'HH:mm';
+    
+    
     /**
      * 添加护理报告
      */
@@ -42,6 +44,8 @@ function Recording(props: proprsType) {
             values.completionTime = time
             values.uploadImage = JSON.stringify(uploadImage)
             if (time > new Date().getTime()) return message.info('时间不能大于当前时间')
+
+            if (values.nurseProject.length > 20) return message.info('护理项目不能超过20个字符')
             const dataList = type === '新增一次' ?
                 {
                     did: sensorName,

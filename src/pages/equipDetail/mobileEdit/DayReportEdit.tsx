@@ -1,5 +1,5 @@
 import { Switch } from 'antd'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 export default function DayReportEdit() {
 
@@ -42,13 +42,35 @@ export default function DayReportEdit() {
     ]
 
     const [config, setConfig] = useState<any>({})
+    const handleVisibilityChange = () => {
+        const html = document.getElementsByTagName("html")[0];
+        console.log("页面状态变化：", document.hidden);
 
+        if (!document.hidden) {
+            // 当页面重新显示在前台时
+            html.style.fontSize = '16px';
+            // window.location.reload(); // 刷新页面
+        }
+    };
+
+    useEffect(() => {
+        handleVisibilityChange(); // 初始化时执行一次
+        // 添加事件监听器
+        window.addEventListener('resize', handleVisibilityChange);
+        window.addEventListener('visibilitychange', handleVisibilityChange);
+        // 组件卸载时移除监听器
+        return () => {
+            window.removeEventListener('resize', handleVisibilityChange);
+            window.removeEventListener('visibilitychange', handleVisibilityChange);
+        };
+        // 添加123
+    }, []);
     return (
         <div className='w-[92%] mx-auto'>
             <div className='text-lg font-semibold mb-[12px] pl-[8px]'>健康日报</div>
             <div className='bg-[#fff] px-[13px] py-[6px] rounded-[10px]'>
                 {
-                    healthy.map((item ,index) => {
+                    healthy.map((item, index) => {
                         const { text, query } = item
                         return (
                             <div className={`py-[10px] flex justify-between items-center text-base ${index === healthy.length - 1 ? '' : 'border-b'}`}>
@@ -65,7 +87,7 @@ export default function DayReportEdit() {
             <div className='text-lg font-semibold mb-[12px] mt-[20px] pl-[8px]'>护理日报</div>
             <div className='bg-[#fff]  px-[13px] py-[6px] rounded-[10px]'>
                 {
-                    nurse.map((item ,index) => {
+                    nurse.map((item, index) => {
                         const { text, query } = item
                         return (
                             <div className={`py-[10px] flex justify-between items-center text-base ${index === healthy.length - 1 ? '' : 'border-b'}`}>

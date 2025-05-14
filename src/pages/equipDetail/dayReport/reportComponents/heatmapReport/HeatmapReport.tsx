@@ -24,18 +24,13 @@ function HeatmapReport(props: heatmapProps) {
     const [onbedDate, setOnBedDate] = useState(20 * 60 * 60 * 1000)
     const [heatmapData, setHeatmapData] = useState<Array<any>>([{ data: new Array(1024).fill(0) }])
     const [progressTime, setProgressTime] = useState('')
-
     const isMobile = useGetWindowSize()
-
     useEffect(() => {
         getDayPressData(onbedDate)
     }, [props.dayDate])
-
     const changeLeftProgressFalse = () => {
-
         setLineFlag(false)
     }
-
     const getDayPressData = (date: any) => {
         const currentDay = (new Date(props.dayDate).setHours(0, 0, 0, 0))
         console.log(currentDay)
@@ -52,17 +47,13 @@ function HeatmapReport(props: heatmapProps) {
                 "token": token
             },
         }).then((res) => {
-            console.log(res.data.data, '.......11........setHeatmapDatasetHeatmapDatasetHeatmapDatasetHeatmapDatasetHeatmapData');
             const ewe = res.data.data.map((item: any) => {
                 return {
                     sjian: dayjs(item.timeMills).format('HH:mm')
                 }
             })
-            console.log(ewe, '.......................222............setHeatmapDatasetHeatmapDatasetHeatmapDatasetHeatmapDatasetHeatmapData');
-
             if (heatMapRef.current && res.data.data.length) {
                 setHeatmapData((res.data.data))
-                console.log('8888888888888..............')
                 const listData = Array.isArray(res.data?.data[0]?.data) ? res.data?.data[0]?.data : JSON.parse(res.data?.data[0]?.data || '[]')
                 heatMapRef.current.bthClickHandle(listData)
 
@@ -97,11 +88,8 @@ function HeatmapReport(props: heatmapProps) {
             // const lineleft = parseInt(document.querySelector(".progressLine").style.left);
 
             // let value = changePxToValue({ value: lineleft, type: "line", length: props.length });
-
-
             const progressWidth = 3
             const pressProgressIndex = document.querySelector(".pressProgressIndex") as HTMLElement
-
             const left = Number(document.querySelector('.pressProgressLine')?.getBoundingClientRect().left);
             const lineWidth = Number(document.querySelector('.pressProgressLine')?.getBoundingClientRect().width)
             // // 让表示进度帧的竖线定位到点击的位置
@@ -215,6 +203,8 @@ function HeatmapReport(props: heatmapProps) {
             message.error('不能小于晚间八点')
         }
     }
+
+
     return (
         <CardWithoutTitle>
             <div className="pressCharts nurseContent">
@@ -242,7 +232,7 @@ function HeatmapReport(props: heatmapProps) {
                     </div></div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.1rem' }}>
                     <span className='sleepDataUtil'>{dayjs(new Date(props.dayDate).setHours(0, 0, 0, 0) + onbedDate).format('HH:mm')}</span>
-                    <span className='sleepDataUtil'>{progressTime}</span>
+                    <span className='sleepDataUtil'>{progressTime == 'NaN:NaN:NaN' ? '' : progressTime.slice(0, 5)}</span>
                     <span className='sleepDataUtil'>{dayjs(new Date(props.dayDate).setHours(0, 0, 0, 0) + onbedDate + 1 * 59 * 60 * 1000).format('HH:mm')}</span>
                 </div>
                 {heatmapData[0].data ? <div className="pressProgress"

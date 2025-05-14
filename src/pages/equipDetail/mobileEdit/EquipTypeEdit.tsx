@@ -18,11 +18,29 @@ export default function EquipTypeEdit(props?: any) {
   );
   const [equipTypeInfo, setEquipTypeInfo] = useState({}) as any;
   const dispale = useDispatch();
-  console.log(
-    equipInfo,
-    sensorName,
-    "........................SettingMobileSettingMobileSettingMobileSettingMobile"
-  );
+  const handleVisibilityChange = () => {
+    const html = document.getElementsByTagName("html")[0];
+    console.log("页面状态变化：", document.hidden);
+
+    if (!document.hidden) {
+      // 当页面重新显示在前台时
+      html.style.fontSize = '16px';
+      // window.location.reload(); // 刷新页面
+    }
+  };
+
+  useEffect(() => {
+    handleVisibilityChange(); // 初始化时执行一次
+    // 添加事件监听器
+    window.addEventListener('resize', handleVisibilityChange);
+    window.addEventListener('visibilitychange', handleVisibilityChange);
+    // 组件卸载时移除监听器
+    return () => {
+      window.removeEventListener('resize', handleVisibilityChange);
+      window.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+    // 添加123
+  }, []);
   const equipType: any = [
     {
       text: "床垫类型",
@@ -105,7 +123,7 @@ export default function EquipTypeEdit(props?: any) {
             >
               <span className="w-[7rem]">{item.text}</span>
               <div className="flex  w-full">
-                <span>{equipTypeInfo[item.query]}</span>
+                <span>{equipTypeInfo[item.query] == 'large' ? '智护' : equipTypeInfo[item.query] == 'small' ? '安护' : equipTypeInfo[item.query]}</span>
                 {item.query === "deviceId" ? (
                   <div
                     onClick={() => handleCopy(equipTypeInfo[item.query])}

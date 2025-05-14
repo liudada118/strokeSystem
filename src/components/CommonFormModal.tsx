@@ -191,6 +191,7 @@ const CommonFormModal: (props: CommonFormModalProps) => React.JSX.Element = (pro
                 {list.map((item) => {
 
 
+
                     switch (item.type) {
                         case 'SELECT':
                             return (
@@ -225,6 +226,7 @@ const CommonFormModal: (props: CommonFormModalProps) => React.JSX.Element = (pro
                                 <Form.Item required={false} label={item.label} name={item.key} key={item.key}>
                                     <Radio.Group value={item.value} className='flex flex-wrap w-full'>
                                         {(item as ComplexForm).children.map((_item) => (
+
                                             <Radio className='w-[4rem] mt-[0.4rem] ' key={_item.id} value={_item.value}>{_item.label}</Radio>
                                         ))}
                                     </Radio.Group>
@@ -235,8 +237,6 @@ const CommonFormModal: (props: CommonFormModalProps) => React.JSX.Element = (pro
                             return (
                                 <div className="radio_cascade" style={{ display: 'flex', alignItems: 'center' }}>
                                     <Form.Item required={false} label={item.label} name={item.key} key={item.key} className="w-[16rem]" style={{ transform: 'translateY(-17px)' }}>
-
-
                                         <Radio.Group value={item.value} className='flex flex-wrap w-[100]' onChange={(e: any) => setLeaveType(e.target.value)}>
                                             {(item as ComplexForm).children.map((_item) => (
                                                 <Radio className='w-[9rem] mt-[0.4rem]' key={_item.id} value={_item.value}>{_item.label}</Radio>
@@ -265,7 +265,6 @@ const CommonFormModal: (props: CommonFormModalProps) => React.JSX.Element = (pro
                                     <TimePicker placeholder='' onChange={onChangeTimeEnd} needConfirm={false} defaultValue={end} className='rounded-[1rem] w-[38%]' format='HH:mm' />
                                 </Form.Item>
                             )
-
                         case 'INPUT_NUMBER':
                             return (
                                 <Form.Item required={false} label={item.label} name={item.key} key={item.key} className=''

@@ -49,7 +49,9 @@ function NurseAdd(props: any) {
                 uploadImage: JSON.stringify(uploadImage),
                 notes
             }
-            if (values.nurseProject.length > 10) return message.info('护理项目不能超过10个字符')
+           
+
+            if (values.nurseProject.length > 20) return message.info('护理项目不能超过20个字符')
             if (values.notes.length > 20) return message.info('备注不能超过20个字符')
             const dataList = type === '新增一次' ?
                 {

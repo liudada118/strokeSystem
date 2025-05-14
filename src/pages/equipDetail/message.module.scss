@@ -39,7 +39,6 @@
     .nurseTableRow {
       vertical-align: top !important;
     }
-
   }
 }
 :global {
@@ -51,7 +50,6 @@
   }
 }
 .pcCheckoutValue {
-
   :global {
     .ant-checkbox-wrapper {
       margin-top: 1rem;
@@ -64,22 +62,20 @@
     }
   }
 }
-
 .mobileTabContent {
   :global {
     .ant-tabs-nav {
       position: fixed!important;
-      top: 9.8rem;
+      top: 9.7rem;
       z-index: 9;
       width: 100%;
     }
     .ant-tabs-content-holder {
       padding-top: 12.5rem;
     }
-
     .ant-table-wrapper .ant-table-cell,
     .ant-table-wrapper .ant-table-thead>tr>th{
-      padding: 16px 8px !important;
+    padding: 16px 8px !important;
     }
   }
 }
@@ -90,7 +86,6 @@
 .rowItem + .rowItem{
   border-top: 1px solid #DCE3E9;
 }
-
 .mobileSettingContent {
   :global {
     .adm-list-header {

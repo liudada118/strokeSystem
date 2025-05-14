@@ -28,40 +28,10 @@ export default function NursingPlan() {
   const [isEdit, setIsEdit] = useState(false);
   const [isDelete, setIsDelete] = useState(false);
   const navigate = useNavigate();
-  // // 定义处理函数
-  // const handleResize = () => {
-  //   const html = document.getElementsByTagName("html");
-  //   html[0].style.fontSize = '14px'
-  // };
 
-
-  // // const visibilitychange = () => {
-  // //   if (document.hidden) { // 当页面被切换至后台时
-  // //     console.log("页面已经切换到了后台");
-
-  // //   } else { // 当页面重新显示在前台时
-  // //     const html = document.getElementsByTagName("html");
-  // //     html[0].style.fontSize = '14px'
-
-  // //     // 这里可以添加相关处理逻辑
-  // //   }
-  // // }
-  // useEffect(() => {
-  //   handleResize();
-  //   visibilitychange()
-  //   // 添加事件监听器
-  //   window.addEventListener('resize', handleResize);
-  //   window.addEventListener('visibilitychange', visibilitychange);
-  //   // 组件卸载时移除监听器
-  //   return () => {
-  //     window.removeEventListener('resize', handleResize);
-  //     window.removeEventListener('visibilitychange', visibilitychange)
-  //   };
-  // }, [handleResize, visibilitychange]);
   const handleVisibilityChange = () => {
     const html = document.getElementsByTagName("html")[0];
     console.log("页面状态变化：", document.hidden);
-
     if (!document.hidden) {
       // 当页面重新显示在前台时
       html.style.fontSize = '14px';
@@ -141,14 +111,14 @@ export default function NursingPlan() {
 
   const [ready, setReady] = useState(false);
 
-  useEffect(() => {
-    const waitFontSize = () => {
-      const fontSize = parseFloat(getComputedStyle(document.documentElement).fontSize);
-      if (fontSize > 16) setReady(true);
-      else setTimeout(waitFontSize, 16);
-    };
-    waitFontSize();
-  }, []);
+  // useEffect(() => {
+  //   const waitFontSize = () => {
+  //     const fontSize = parseFloat(getComputedStyle(document.documentElement).fontSize);
+  //     if (fontSize > 16) setReady(true);
+  //     else setTimeout(waitFontSize, 16);
+  //   };
+  //   waitFontSize();
+  // }, []);
   const [isModalChangePasswordOpen, setIsModalChangePasswordOpen] = useState(false)
   const [selectValue, setSelectValue] = useState(1)
 

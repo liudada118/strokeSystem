@@ -63,7 +63,7 @@ export default function NursingPlan() {
     }).then((res: any) => {
       if (res.data.code === 0) {
         let nursingConfig = getNurseConfist(res)
-        console.log('.....1111........typetype');
+       
 
         // if (res.data.templateEffectiveFlag == 1) {
         //   nursingConfig = JSON.parse(res.data.nursingConfig || '[]')
@@ -94,10 +94,10 @@ export default function NursingPlan() {
 
 
       setSensorName(res.data.data.patientName)
-      console.log(res.data.data.patientName, '......................qweqweqwe');
+   
     })
   }, []);
-  console.log(sensorNameUser, '....................sensorNameUsersensorNameUsersensorNameUser');
+ 
 
   const [isModalChangePasswordOpen, setIsModalChangePasswordOpen] = useState(false)
   const [selectValue, setSelectValue] = useState(1)

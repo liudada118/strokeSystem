@@ -66,7 +66,7 @@ export class voiceArr {
                 },
                 onError: function (text: any) {
                     // alert(text)
-                    console.log(text)
+                 
                     getAccessToken()
                 },
                 onTimeout: function () {

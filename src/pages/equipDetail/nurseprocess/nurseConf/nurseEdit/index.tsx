@@ -166,7 +166,7 @@ export default function NurseConfEdit(props: any) {
     const minutesVal = parseFloat(minutes);
     const hoursFormat = hoursVal < 10 ? `0${hoursVal}` : hoursVal;
     const minutesFormat = minutesVal < 10 ? `0${minutesVal}` : minutesVal;
-    console.log(hoursFormat, minutesFormat, '...................................minutesFormatminutesFormatminutesFormat');
+  
 
     const templateTime = new Date(
       `1970-01-01 ${hoursFormat}:${minutesFormat}`
@@ -227,7 +227,7 @@ export default function NurseConfEdit(props: any) {
         time: dayjs(+item.key).format("HH:mm"),
       };
     });
-    console.log(JSON.stringify(list), '..............saveType');
+  
     Instancercv({
       method: "post",
       url: "/nursing/updateNursingConfig",

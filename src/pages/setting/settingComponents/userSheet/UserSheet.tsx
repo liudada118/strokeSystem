@@ -152,7 +152,7 @@ export default function UserSheet(props: userSheetProps) {
 
                 return a
             })
-            console.log(deleteObj)
+
             let data1 = [{
                 id: 1,
                 user: user,
@@ -228,13 +228,13 @@ export default function UserSheet(props: userSheetProps) {
         setIsModalDeviceUserOpen(false)
     }
     // 密码 8-16位，至少1个大写字母，1个小写字母，1个数字和1个特殊字符
-    const checkPassword = /^(?=.*[a-z])[\w$@$!%*?.&-]{8,16}/;
+
 
 
     const handleChangePasswordOk = () => {
         console.log(deleteObj)
-        if (!checkPassword.test(manPassword)) {
-            return message.info('密码为 8-16位，至少1个大写字母，1个小写字母，1个数字和1个特殊字符')
+        if (!passwordRegex.test(manPassword)) {
+            return message.info("密码应为6-16位字符，仅支持数字与英文大小写字母");
         }
         setIsModalChangePasswordOpen(false)
         Instancercv({

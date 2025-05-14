@@ -112,7 +112,7 @@
     }
 
     .personalName {
-        margin-bottom: 2rem;
+    
         font-size: 1.36rem;
         font-weight: bold;
     }
@@ -120,7 +120,7 @@
     .itemContent {
         display: flex;
         font-size: 1rem;
-        justify-content: space-around;
+      
         align-items: center;
         width: 100%;
         margin-top: 0.48rem;
@@ -139,13 +139,14 @@
             font-size: 1.04rem;
             color: #222222;
             // font-family: sy;
+            font-weight: 500;
+            margin-left: 10px;
         }
     }
 
     .itemTitle {
         color: #888888;
-        margin-right: 10px;
-        flex: 3;
+     
         font-size: 1.04rem;
         // display: inline-block;
     }

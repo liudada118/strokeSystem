@@ -2,15 +2,13 @@ import React, { memo, useEffect, useState } from 'react'
 import { strToObj } from '../../nurseRecord/NurseRecord'
 import { CategoryChart, CurveChart } from '@/components/charts'
 import './index.scss'
-// import { numToTime, secToHourstamp, stampToTime } from '../../../assets/util'
 import dayjs from 'dayjs'
 import { objToTidyChartsData, positionArr } from '../../dayReportComponent/rightContent/firstItem/FirstItem'
 import { numToTime, stampToTime } from '@/utils/timeConvert'
 import { useGetWindowSize } from '@/hooks/hook'
 import PCNurseList from '@/pages/equipDetail/nurseprocess/nurseConf/nurseList/index'
 import PCNurseConfList from '@/pages/equipDetail/nurseprocess/nurseConf/nurseList/conf_list'
-// import MobileNurseList from '@/pages/equipDetail/nurseprocess/'
-import { instance, voiceUrl, Instancercv, netUrl } from '@/api/api'
+import lanse from '@/assets/images/蓝色.png'
 interface nurseChartsProps {
     dataSource: any
     onbed: any
@@ -62,7 +60,7 @@ const includesObj = ({ str, arr }: any) => {
 }
 
 function NurseCharts(props: nurseChartsProps) {
- 
+
     const isMobile = useGetWindowSize()
 
 
@@ -176,7 +174,7 @@ function NurseCharts(props: nurseChartsProps) {
     return (
         <>{!props.user ?
             <div>
-                <div className="nurseItemContent nurseContent">
+                <div className="nurseItemContent nurseContent" style={{}}>
                     {/* <div className="nurseTitleName" style={{ marginBottom: '1.9rem' }}>护理记录 </div> */}
                     {/* <div className="nurseValueItems">
                 <div className="nurseValueItem">
@@ -213,54 +211,33 @@ function NurseCharts(props: nurseChartsProps) {
                     </>}</div>
                 </div>
             </div> */}
+                    {
+                        isMobile ? <div className="h-[100%] bg-[#FFFFFF]" style={{ width: '100%' }}>
+                            <div className='text-[#000000] text-[1.2rem] pl-[1rem] flex items-center' style={{ fontFamily: 'PingFang SC', fontWeight: "600" }}>
 
+                                <img style={{ width: "4px", height: "14px", marginRight: "0.4rem" }} src={lanse} alt="" />
+                                <span>护理记录</span>
+                            </div>
+                            <div className=' px-[3%]  h-full'>
+                                <PCNurseConfList type='daEeport' sensorName={props.sensorName} />
+                            </div>
+                        </div> : ""
+                    }
                     <div className='nurseAndOnbedContent'>
-                        {isMobile ?
-                            <div className="seleteRateOrHeart">
-                                {/* <div className="nurseSeleteHeart seleteRateOrHeartItem">
-                                    <div className="seleteRateOrHeartValue"
-                                        style={{ color: showNurseOrOnbed == 'nurse' ? '#0072EF' : '#929EAB', backgroundColor: showNurseOrOnbed == 'nurse' ? '#fff' : 'unset', }}
-                                        onClick={() => { setShowNurseOrOnbed('nurse') }}>护理统计</div>
-                                </div>
-                                <div style={{ padding: '0 0.68rem', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                                    <div style={{ width: '1px', height: '80%', backgroundColor: '#eee' }}></div>
-                                </div>
-                                <div className="nurseSeleteRate seleteRateOrHeartItem">
-                                    <div className="seleteRateOrRateValue"
-                                        style={{ color: showNurseOrOnbed == 'onbed' ? '#0072EF' : '#929EAB', backgroundColor: showNurseOrOnbed == 'onbed' ? '#fff' : 'unset', }}
-                                        onClick={() => { setShowNurseOrOnbed('onbed') }}>在/离床统计</div>
-                                </div> */}
-                            </div> : ''}
+
                         {
-                            !isMobile ? <div className="w-[40rem] h-[100%] bg-[#FFFFFF]">
-                                <div className='text-[#000000] text-[1.2rem] pl-[1rem] pb-[1rem]' style={{ fontFamily: 'PingFang SC', fontWeight: "600" }}>护理记录</div>
-                                <div className=' px-[3%]  h-full'>
-                                    {/* <PCNurseList list={nurseConfigList || []} extParams={{ isShowTime: false, className: 'daEeport' }} /> */}
-                                    <PCNurseConfList type='daEeport' sensorName={props.sensorName} />
+                            !isMobile ? <div className="h-[100%] bg-[#FFFFFF]" style={{ width: '100%' }}>
+                                <div className='text-[#000000] text-[1.2rem] pl-[1rem] flex items-center' style={{ fontFamily: 'PingFang SC', fontWeight: "600" }}>
+
+                                    <img style={{ width: "0.25rem", height: "1.2rem", marginRight: "0.6rem" }} src={lanse} alt="" />
+                                    <span>护理记录</span>
                                 </div>
-                            </div> : <div className="h-[100%] bg-[#FFFFFF]" style={{ width: '100%' }}>
-                                <div className='text-[#000000] text-[1.2rem] pl-[1rem] py-[1rem]' style={{ fontFamily: 'PingFang SC', fontWeight: "600" }}>护理记录</div>
                                 <div className=' px-[3%]  h-full'>
                                     <PCNurseConfList type='daEeport' sensorName={props.sensorName} />
                                 </div>
-                            </div>
+                            </div> : ''
                         }
-                        {/* {(isMobile && showNurseOrOnbed == 'nurse') || !isMobile ? <div className="nurseStatis nurseChartsContent" style={{ flex: '0 0 calc(50% - 0.45rem)', marginRight: isMobile ? '0' : '0.9rem' }}>
-                            <div className="nurseChartTitleName">护理统计</div>
-                            <div className="daySleepInfo">
-                                <div className="daySleepItem">
-                                    <span className="sleepDataNum">{nurseTotal}<span className="sleepDataUtil">次</span></span>
-                                    <div className="sleepDataUtil">护理次数</div>
-                                </div>
-                                <div className="daySleepItem">
-                                    <span className="sleepDataNum">{nurseProjectTotal}<span className="sleepDataUtil">个</span></span>
-                                    <div className="sleepDataUtil">护理项目</div>
-                                </div>
-                            </div>
-                            <div className="nursecharts">
-                                {<CategoryChart barWidth={15} padding={positionArr} formatter={true} xdata={Object.keys(nurseChartsData)} ydata={Object.values(nurseChartsData)} index={30} />}
-                            </div>
-                        </div> : ''} */}
+
                         {(isMobile && showNurseOrOnbed == 'onbed') || !isMobile ?
                             <div className="nurseStatis nurseChartsContent" style={{ flex: '0 0 calc(50% - 0.45rem)' }}>
                                 <div className="nurseChartTitleName">在离床统计</div>

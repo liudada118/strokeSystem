@@ -8,6 +8,8 @@ import nullImg from "@/assets/image/null.png";
 import axios from 'axios';
 import { compressionFile } from '@/utils/imgCompressUtil';
 import { CloseOutlined } from '@ant-design/icons';
+import camera from "@/assets/images/camera.png";
+import camera1 from "@/assets/images/camera1.png";
 dayjs.extend(tuc)
 interface proprsType {
     nurseConfigList: any,
@@ -33,8 +35,8 @@ function Recording(props: proprsType) {
     const [form] = Form.useForm();
     const token = localStorage.getItem('token')
     const format = 'HH:mm';
-    
-    
+
+
     /**
      * 添加护理报告
      */
@@ -133,64 +135,6 @@ function Recording(props: proprsType) {
                     // rules={[{ required: true, message: '请上传图片!' }]}
                     >
                         <div className='w-full h-[auto] flex flex-wrap break-words'>
-                            <div
-                                className="img"
-                                style={{
-                                    position: "relative",
-                                    background: `url(${nullImg})  center center / cover no-repeat`,
-                                    cursor: "pointer",
-                                    height: "5.5rem",
-                                    width: "5.5rem",
-                                }}
-                            >
-                                <input
-                                    type="file"
-                                    name="img"
-                                    style={{
-                                        opacity: 0,
-                                        position: "absolute",
-                                        width: "100%",
-                                        height: "100%",
-                                        left: '0',
-                                    }}
-                                    id="img"
-                                    onChange={(e) => {
-                                        if (uploadImage.length > 3) return message.info('只能上传4张图片')
-                                        if (e.target.files) {
-                                            let res = compressionFile(e.target.files[0]);
-                                            res.then((e: any) => {
-                                                console.log(e, "compressionFile");
-                                                const token = localStorage.getItem("token");
-                                                axios({
-                                                    method: "post",
-                                                    url: netUrl + "/file/fileUpload",
-                                                    headers: {
-                                                        "content-type": "multipart/form-data",
-                                                        token: token,
-                                                    },
-                                                    data: {
-                                                        file: e,
-                                                    },
-                                                })
-                                                    .then((res) => {
-                                                        const img = res.data.data.src;
-                                                        message.success("上传成功");
-                                                        setUploadImage([
-                                                            ...uploadImage,
-                                                            img
-                                                        ])
-                                                        setImgVal(img)
-                                                        e.target.value = ''
-                                                    })
-                                                    .catch((err) => {
-                                                        // message.error(err.error)
-                                                        // setSpinning(false);
-                                                    });
-                                            });
-                                        }
-                                    }}
-                                />
-                            </div>
                             {
                                 uploadImage.map((item: any) => {
                                     return <i style={{ position: "relative", width: "5.5rem", height: "5.5rem", margin: "0 0.5rem 0.5rem 0" }}>
@@ -213,6 +157,69 @@ function Recording(props: proprsType) {
 
                                 })
                             }
+                            {
+                                uploadImage.length == 4 ? '' : <div
+                                    className="img"
+                                    style={{
+                                        position: "relative",
+                                        background: `url(${uploadImage.length == 0 ? camera : camera1
+                                            })  center center / cover no-repeat`,
+                                        cursor: "pointer",
+                                        height: "5.5rem",
+                                        width: "5.5rem",
+                                    }}
+                                >
+                                    <input
+                                        type="file"
+                                        name="img"
+                                        style={{
+                                            opacity: 0,
+                                            position: "absolute",
+                                            width: "100%",
+                                            height: "100%",
+                                            left: '0',
+                                        }}
+                                        id="img"
+                                        onChange={(e) => {
+                                            if (uploadImage.length > 3) return message.info('只能上传4张图片')
+                                            if (e.target.files) {
+                                                let res = compressionFile(e.target.files[0]);
+                                                res.then((e: any) => {
+                                                    console.log(e, "compressionFile");
+                                                    const token = localStorage.getItem("token");
+                                                    axios({
+                                                        method: "post",
+                                                        url: netUrl + "/file/fileUpload",
+                                                        headers: {
+                                                            "content-type": "multipart/form-data",
+                                                            token: token,
+                                                        },
+                                                        data: {
+                                                            file: e,
+                                                        },
+                                                    })
+                                                        .then((res) => {
+                                                            const img = res.data.data.src;
+                                                            message.success("上传成功");
+                                                            setUploadImage([
+                                                                ...uploadImage,
+                                                                img
+                                                            ])
+                                                            setImgVal(img)
+                                                            e.target.value = ''
+                                                        })
+                                                        .catch((err) => {
+                                                            // message.error(err.error)
+                                                            // setSpinning(false);
+                                                        });
+                                                });
+                                            }
+                                        }}
+                                    />
+                                </div>
+                            }
+
+
                         </div>
                     </Form.Item>
                     <Form.Item name="notes" label="填写备注:" labelCol={{ style: { fontWeight: "600", fontSize: "0.8rem", marginRight: "1rem" } }} wrapperCol={{ style: { width: "calc(100%-100px)", backgroundColor: "#F5F8FA" } }}>
@@ -233,7 +240,7 @@ function Recording(props: proprsType) {
                     </Form.Item>
                 </Form>
             </Drawer>
-        </div>
+        </div >
     )
 }
 export default Recording

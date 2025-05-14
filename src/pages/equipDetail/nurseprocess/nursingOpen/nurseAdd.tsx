@@ -3,7 +3,8 @@ import { Select } from "antd";
 import { TextArea, Picker, Popup, Input } from "antd-mobile";
 import xaingjing from '@/assets/image/xaingjing.png'
 import { CloseOutline, RightOutline } from 'antd-mobile-icons'
-import nullImg from "@/assets/image/null.png";
+import camera from "@/assets/images/camera.png";
+import camera1 from "@/assets/images/camera1.png";
 import { compressionFile } from "@/utils/imgCompressUtil";
 import axios from "axios";
 import instance, { Instancercv, netUrl } from "@/api/api";
@@ -182,70 +183,9 @@ function NurseAdd(props: any) {
                         </div>
                         <div className="mt-[2rem] rounded-[0.4rem] bg-[#F5F8FA] mb-[0.75rem] pb-[0.5rem]">
                             <div className="text-[#32373E] text-[1.25rem] py-[0.8rem] ml-[1rem] ">
-
                                 上传照片
                             </div>
-
                             <div style={{ display: 'flex', flexWrap: 'wrap', height: "auto", width: "auto", padding: "0 0 0.5rem 1rem" }}>
-
-                                <div
-                                    className="img"
-                                    style={{
-                                        position: "relative",
-                                        background: `url(${nullImg})  center center / cover no-repeat`,
-                                        cursor: "pointer",
-                                        height: "6rem",
-                                        width: "6rem",
-                                    }}
-                                >
-                                    <input
-                                        type="file"
-                                        name="img"
-                                        style={{
-                                            opacity: 0,
-                                            position: "absolute",
-                                            width: "100%",
-                                            height: "100%",
-                                            left: '0',
-                                        }}
-                                        id="img"
-                                        onChange={(e: any) => {
-                                            if (uploadImage.length > 3) return message.info('只能上传4张图片')
-                                            if (e.target.files) {
-                                                let res = compressionFile(e.target.files[0]);
-                                                e.target.value = ''
-                                                res.then((e) => {
-                                                    console.log(e, "compressionFile");
-                                                    const token = localStorage.getItem("token");
-                                                    axios({
-                                                        method: "post",
-                                                        url: netUrl + "/file/fileUpload",
-                                                        headers: {
-                                                            "content-type": "multipart/form-data",
-                                                            token: token,
-                                                        },
-                                                        data: {
-                                                            file: e,
-                                                        },
-                                                    })
-                                                        .then((res) => {
-                                                            const img = res.data.data.src;
-                                                            message.success("上传成功");
-                                                            setUploadImage([
-                                                                ...uploadImage,
-                                                                img
-                                                            ])
-                                                        })
-                                                        .catch((err) => {
-                                                            // message.error(err.error)
-                                                            // setSpinning(false);
-                                                        });
-                                                });
-                                            }
-                                        }}
-                                    />
-
-                                </div>
                                 {
                                     uploadImage.map((item: any) => {
                                         return <i style={{ position: "relative", width: "6rem", height: "6rem", margin: "0 0.5rem 0.5rem 0" }}>
@@ -264,6 +204,68 @@ function NurseAdd(props: any) {
 
                                     })
                                 }
+                                {
+                                    uploadImage.length == 4 ? '' : <div
+                                        className="img"
+                                        style={{
+                                            position: "relative",
+                                            background: `url(${uploadImage.length == 0 ? camera : camera1})  center center / cover no-repeat`,
+                                            cursor: "pointer",
+                                            height: "6rem",
+                                            width: "6rem",
+                                        }}
+                                    >
+                                        <input
+                                            type="file"
+                                            name="img"
+                                            style={{
+                                                opacity: 0,
+                                                position: "absolute",
+                                                width: "100%",
+                                                height: "100%",
+                                                left: '0',
+                                            }}
+                                            id="img"
+                                            onChange={(e: any) => {
+                                                if (uploadImage.length > 3) return message.info('只能上传4张图片')
+                                                if (e.target.files) {
+                                                    let res = compressionFile(e.target.files[0]);
+                                                    e.target.value = ''
+                                                    res.then((e) => {
+                                                        console.log(e, "compressionFile");
+                                                        const token = localStorage.getItem("token");
+                                                        axios({
+                                                            method: "post",
+                                                            url: netUrl + "/file/fileUpload",
+                                                            headers: {
+                                                                "content-type": "multipart/form-data",
+                                                                token: token,
+                                                            },
+                                                            data: {
+                                                                file: e,
+                                                            },
+                                                        })
+                                                            .then((res) => {
+                                                                const img = res.data.data.src;
+                                                                message.success("上传成功");
+                                                                setUploadImage([
+                                                                    ...uploadImage,
+                                                                    img
+                                                                ])
+                                                            })
+                                                            .catch((err) => {
+                                                                // message.error(err.error)
+                                                                // setSpinning(false);
+                                                            });
+                                                    });
+                                                }
+                                            }}
+                                        />
+
+                                    </div>
+
+                                }
+
                             </div>
                         </div>
                         <div>
@@ -285,7 +287,7 @@ function NurseAdd(props: any) {
                     </div>
                 </div>
             </div>
-        </Popup>
+        </Popup >
 
 
     )

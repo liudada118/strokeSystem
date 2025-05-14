@@ -13,7 +13,7 @@ export default function PCNurseList(props: any) {
     const [listData, setDataList] = useState<any>([]);
     const windowSize = useWindowSize()
     const isMobile = windowSize.isMobile;
-   
+
 
     const dispatch = useDispatch();
     const getDataList = async () => {
@@ -118,7 +118,7 @@ export default function PCNurseList(props: any) {
                     status: props.type == 'daEeport' ? true : item.status
                 };
             });
-       
+
             setDataList(list);
             props.getTempList && props.getTempList(list);
         }

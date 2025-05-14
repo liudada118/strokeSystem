@@ -120,29 +120,8 @@ export default function NurseProcesst(props: nurseProcessProps) {
   const [remark, setRemark] = useState<any>();
   const windowSize = useWindowSize();
   const turnOverRef = useRef<any>(null);
-  const handleVisibilityChange = () => {
-    const html = document.getElementsByTagName("html")[0];
-    console.log("页面状态变化：", document.hidden);
 
-    if (!document.hidden) {
-      // 当页面重新显示在前台时
-      html.style.fontSize = '14.2667px';
-      // window.location.reload(); // 刷新页面
-    }
-  };
 
-  useEffect(() => {
-    handleVisibilityChange(); // 初始化时执行一次
-    // 添加事件监听器
-    window.addEventListener('resize', handleVisibilityChange);
-    window.addEventListener('visibilitychange', handleVisibilityChange);
-    // 组件卸载时移除监听器
-    return () => {
-      window.removeEventListener('resize', handleVisibilityChange);
-      window.removeEventListener('visibilitychange', handleVisibilityChange);
-    };
-    // 添加123
-  }, []);
   const nurseStepArr = [
     {
       title: "第一步：为护理对象翻身",

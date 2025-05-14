@@ -1,6 +1,5 @@
 export function findMax(arr: any) {
-  console.log(arr,'.............findMaxfindMaxfindMax');
-  
+ 
   let max = 0;
   arr.forEach((item: any) => {
     max = max > item ? max : item;

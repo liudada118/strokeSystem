@@ -76,6 +76,7 @@ export const TurnOver = React.forwardRef((props: turnOverParam, refs) => {
     const { newPos, nextPos, open, type, sensorName } = props
     // const [open, setOpen] = useState(true);
 
+
     const renderHeatmapData = ({ wsPointData, circleArr }: any) => {
         if (heatMapRef2.current) heatMapRef2.current.bthClickHandle(wsPointData)
         if (heatMapRef2.current) heatMapRef2.current.setCircleArr(circleArr)
@@ -90,7 +91,7 @@ export const TurnOver = React.forwardRef((props: turnOverParam, refs) => {
 
         if (!document.hidden) {
             // 当页面重新显示在前台时
-            html.style.fontSize = '16px';
+            html.style.fontSize = '14.2667px';
             // window.location.reload(); // 刷新页面
         }
     };

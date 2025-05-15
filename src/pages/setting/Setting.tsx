@@ -1959,9 +1959,10 @@ export default function Setting() {
               <Menu defaultOpenKeys={[items[0].key]} onClick={onClick} selectedKeys={[current]} mode="inline" items={items} />
               <div className='loginOut' onClick={showDrawer}>
                 <div className="loginOutButton">退出登录</div>
-
               </div>
-              <Button type='primary' disabled className='w-[244px] h-[41px] mt-2 bg-[#46B9FF]'>版本号 2.0 9</Button>
+              {
+                localStorage.getItem('phone') === 'JQadmin' ? <p className='w-[244px] h-[41px] mt-2'>版本号 2.0 9</p> : ""
+              }
             </div>
             <div className="contentBox">
               {

@@ -303,7 +303,11 @@ export default function TurnReport(props: PropsType) {
                                     </div>
                                     <div className='mt-[0.8rem] flex' style={{ width: '95%', margin: '0.8rem auto 0', }}>
                                         <div className="">
-                                            <img style={{ width: "4rem", height: "4rem" }} src={dataList.headImg ? dataList.headImg : nullImg} alt="" />
+                                            {/* <img style={{ width: "4rem", height: "4rem" }} src={dataList.headImg ? dataList.headImg : nullImg} alt="" /> */}
+                                            <div className="w-[4rem] h-[4rem]  rounded-[6px]" style={{
+                                                background: `url(${dataList.headImg ? dataList.headImg : nullImg
+                                                    })  center center / cover no-repeat`,
+                                            }}></div>
                                         </div>
                                         <div className="ml-[1.35rem]">
                                             <div className="w-[5.7rem] h-[1.3rem] text-[#3D3D3D]  font-bold" style={{ fontFamily: 'Source Han Sans' }}>{dataList.patientName}</div>

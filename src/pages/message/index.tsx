@@ -487,8 +487,8 @@ export default function Message() {
   // 标题切换
   const titleRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const [dataRange, setDataRange] = useState<any>(null); //日期
-  const [hours, setHours] = useState<string>("0"); // 小时
-  const [minutes, setMinutes] = useState<string>("0"); // 分钟
+  const [hours, setHours] = useState<string>("1"); // 小时
+  const [minutes, setMinutes] = useState<string>("1"); // 分钟
   const [chooseTimeType, setChooseTimeType] = useState<any>('start');
   const [timeList, setTimeList] = useState<any>(timeArr);
 
@@ -551,7 +551,6 @@ export default function Message() {
     if (chooseTimeType === 'start') {
       const start = new Date(value).getTime();
       const end = new Date(timeList[1]).getTime();
-
       if (start > currentTime) {
         return message.info("开始时间不能大于当前时间");
       }
@@ -567,6 +566,8 @@ export default function Message() {
       }
       if (start < end) {
         return message.info("结束时间不能小于开始时间");
+      } if (start == end) {
+        return message.info("开始时间不能等于结束时间");
       }
     }
     return false;
@@ -1323,6 +1324,18 @@ export default function Message() {
                   <Select.Option value={"时"} disabled>
                     <div className="flex justify-center">时</div>
                   </Select.Option>
+                  {[...Array(60)].map((_, index) => (
+                    <Select.Option
+                      key={`${index}_v5`}
+                      value={index.toString()}
+                      disabled={index === 0} // 仅当 index 为 0 时禁用
+                    >
+                      <div className="flex justify-center">
+                        {index.toString().padStart(2, "0")}
+                      </div>
+                    </Select.Option>
+                  ))}
+                  {/*                   
                   {[...Array(24)].map((_, index) => (
                     <Select.Option
                       key={`${index}_v4`}
@@ -1332,7 +1345,7 @@ export default function Message() {
                         {index.toString().padStart(2, "0")}
                       </div>
                     </Select.Option>
-                  ))}
+                  ))} */}
                 </Select>{" "}:{" "}
                 <Select
                   showSearch={false}
@@ -1372,7 +1385,9 @@ export default function Message() {
                     <div className="flex justify-center">分</div>
                   </Select.Option>
                   {[...Array(60)].map((_, index) => (
-                    <Select.Option key={`${index}_v5`} value={index.toString()}>
+                    <Select.Option key={`${index}_v5`} value={index.toString()}
+                      disabled={index === 0} // 仅当 index 为 0 时禁用
+                    >
                       <div className="flex justify-center">
                         {index.toString().padStart(2, "0")}
                       </div>

@@ -16,7 +16,6 @@ interface cardParam {
     borderBottom?: boolean
     type: string
     // onClick: Function
-
 }
 function Card(props: cardParam) {
     const { img, title, margin, border, borderBottom, type } = props
@@ -26,11 +25,7 @@ function Card(props: cardParam) {
     const location = useLocation()
     const sensorName = param.id || location.state.sensorName
     const navigate = useNavigate()
-
-
-
     const setClick = (type: string) => {
-
         navigate('/userInfo_editing', { state: { sensorName, type } })
         // window.location.reload()
     }
@@ -40,7 +35,7 @@ function Card(props: cardParam) {
                 return message.error("您没有权限修改该信息");
             }
             setClick(type)
-        }} className={` px-[8px] flex items-center justify-between bg-[#fff] md:mx-auto md:w-[96%] ${border ? '' : 'rounded-[10px]'} ${margin ? '' : 'mb-[15px]'} mt-[14px]`}>
+        }} className={` px-[8px] flex items-center justify-between bg-[#fff] md:mx-auto md:w-[96%] ${border ? '' : 'rounded-[10px]'} ${margin ? '' : 'mb-[15px]'} mt-[10px]`}>
             <div className={`flex py-[14px]  px-[7px] w-full items-center ${borderBottom ? 'border-b' : ''}`}>
                 <div className='flex basis-full'>
                     <div className='bg-[#0072EF] rounded-[3px] items-center mr-[12px]'>
@@ -54,11 +49,7 @@ function Card(props: cardParam) {
         </div>
     )
 }
-
-
-
 export default function SettingMobile() {
-
     return (
         <div className='pb-[15px] mt-4' >
             <Card title='提醒设置' img={mobileRemind} type='remind' />

@@ -153,7 +153,7 @@ export default function PCNurseList(props: any) {
                             return (
                                 <div
                                     key={"list_" + index}
-                                    className={`list_item is_line ${item.status ? "finsh" : ""
+                                    className={`list_item ${isMobile ? 'list_item_width' : 'list_item_widthPc'} is_line ${item.status ? "finsh" : ""
                                         }`}
                                 >
                                     <p>

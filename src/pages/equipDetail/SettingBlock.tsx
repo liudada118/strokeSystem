@@ -203,7 +203,7 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
     }
   };
 
- 
+
 
   const changeValueToUserInfo = (values: modelUserInfo) => {
     const realValue: string = Object.values(values)[0];
@@ -456,16 +456,19 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
                     },
                     {
                       id: "定期提醒",
-                      value: userInfo.leaveBedPeriod === 0 ? 0 : userInfo.leaveBedPeriod,
-                      label: "定期提醒",
+                      value: leaveBedPeriod === 0 ? 999999 : leaveBedPeriod,
+                      label: "定期提醒"
                     },
                   ],
                 },
               ]}
               onFinish={(values) => {
                 console.log('999999999999', values)
+                const val = values.timeIntervalB === 999999 ? 0 : values.timeIntervalB;
                 // setTimeIntervalB(values.timeIntervalB)
-                changeValueToUserInfo(values);
+                changeValueToUserInfo({
+                  timeIntervalB: val
+                });
                 setAlarmParamChange(true);
               }}
             />

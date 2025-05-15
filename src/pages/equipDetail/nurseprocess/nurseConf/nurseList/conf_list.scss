@@ -5,10 +5,29 @@
 }
 .pc_nurse_conf_list {
     height: 100%;
+//     .list_item_width{
+//         height: 6rem;
+//         // display: flex;
+//         // align-items: center;
+//      p:nth-child(2)span:nth-child(1)::before {
+//     content: '';
+//     background: url('../../../../../assets/images/shijian.png') no-repeat center center; // 禁止平铺并居中
+//     background-size: contain; // 确保图片完整显示
+//     width: 15px;
+//     height: 15px;
+//     display: inline-block;
+   
+// }
+//     }
+//        .list_item_widthPc{
+//         height: 4rem;
+//     }
+    
     .list_item {
         position: relative;
         display: flex;
         padding: 0 0.5rem;
+        // align-items: center;
         &:nth-child(1) {
             background: #F5F8FA;
             p {

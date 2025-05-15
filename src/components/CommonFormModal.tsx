@@ -49,13 +49,14 @@ interface CommonFormModalProps {
     updateName?: Boolean
 }
 const CommonFormModal: (props: CommonFormModalProps) => React.JSX.Element = (props) => {
-    const [form] = Form.useForm();
+    const [form] = Form.useForm() as any;
 
     const { open, close, formList, title, onFinish, imgChange, sensorName, updateName } = props
     const [timeStart, setTimeStart] = useState<number>(0)
     const [timeEnd, setTimeEnd] = useState<number>(0)
     const [spinning, setSpinning] = React.useState<boolean>(false);
     const [leaveType, setLeaveType] = React.useState<any>(-1);
+    const [visible, setVisible] = React.useState<boolean>(open);
 
 
     const [year, setYear] = useState(2023);
@@ -63,6 +64,10 @@ const CommonFormModal: (props: CommonFormModalProps) => React.JSX.Element = (pro
     const [day, setDay] = useState(1);
     const [headImg, setHeadImg] = useState('');
     const isPhone = useWindowSize().isMobile
+
+    useEffect(() => {
+        setVisible(open)
+    }, [open])
     const checkFutureDate = (yearValue: any, monthValue: any, dayValue: any) => {
         const selectedDate = new Date(yearValue, monthValue - 1, dayValue);
         const today = new Date();
@@ -147,6 +152,7 @@ const CommonFormModal: (props: CommonFormModalProps) => React.JSX.Element = (pro
         close()
         console.log(values, formList, `${timeStart} - ${timeEnd}`, _values)
         onFinish && onFinish(_values)
+        form.resetFields()
     }
     const onChangeTimeEnd = (date: Dayjs, dateString: string | string[]) => {
         const stamp = date.hour() * 60 * 60 * 1000 + date.minute() * 60 * 1000
@@ -174,6 +180,10 @@ const CommonFormModal: (props: CommonFormModalProps) => React.JSX.Element = (pro
         const initialValues = {} as any
         formList.forEach((item) => {
             initialValues[item.key] = item.value
+            if (item.key === 'timeIntervalB') {
+                initialValues['timeIntervalB'] = item.value
+                initialValues['timeIntervalB_copy'] = item.value
+            }
             // TODO
             if (item.key === 'xxxxxxx') {
                 const userAge = (item.value as string)?.split('-') || []
@@ -248,7 +258,7 @@ const CommonFormModal: (props: CommonFormModalProps) => React.JSX.Element = (pro
 
                                         < div style={{ display: 'flex', alignItems: 'center' }}>
                                             <Form.Item name={'timeIntervalB_copy'} key={item.key} className='mr-[0.5rem]'>
-                                                <InputNumber min={0} max={9999} defaultValue={item.value} style={{ width: 80 }} disabled={((leaveType === -1 && item.value === 0) || leaveType === 0)} />
+                                                <InputNumber min={0} max={9999} defaultValue={item.value} style={{ width: 80 }} disabled={(leaveType === 99999 || (leaveType === -1 && item.value === 0) || leaveType === 0)} />
                                             </Form.Item>分钟后提醒
                                         </div>
                                     }
@@ -429,25 +439,33 @@ const CommonFormModal: (props: CommonFormModalProps) => React.JSX.Element = (pro
         )
     }
     return (
-
-        <Modal
+        <>{visible && <Modal
             zIndex={100000000}
             title={title}
             centered
-            open={open}
+            open={visible}
             footer={() => null}
-            onOk={() => close()}
-            onCancel={() => close()}
+            onOk={() => {
+                setVisible(false)
+                close()
+            }}
+            onCancel={() => {
+                setVisible(false)
+                close()
+            }}
             width={500}
         >
-            <Form onFinish={handleFinish} initialValues={initialValues} className='pt-[25px] px-[15px]'>
+            {visible && <Form onFinish={handleFinish} initialValues={initialValues} className='pt-[25px] px-[15px]'>
                 {renderFormItem(formList)}
                 <Form.Item className='flex justify-end'>
-                    <Button color="primary" variant="outlined" className='mr-[10px]' onClick={() => close()}>取消</Button>
+                    <Button color="primary" variant="outlined" className='mr-[10px]' onClick={() => {
+                        setVisible(false)
+                        close()
+                    }}>取消</Button>
                     <Button type="primary" htmlType="submit" className='w-[6rem]'>保存</Button>
                 </Form.Item>
-            </Form>
-        </Modal>
+            </Form>}
+        </Modal>}</>
     )
 }
 

@@ -866,7 +866,7 @@ export default function Message() {
         </>
       ) : (
         <div className="message_phone_box">
-          <Title titleChangeGetMessage={(item: any) => getSearchValue(item)} ></Title>
+          {/* <Title titleChangeGetMessage={(item: any) => getSearchValue(item)} ></Title> */}
           <div className="MessageYiDong">
             <LeftOutlined
               onClick={() => navigator("/")}

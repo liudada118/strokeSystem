@@ -191,7 +191,10 @@ export default function Equip() {
                                                 <div className="newAlarmButton"
                                                     onClick={() => {
                                                         alarmConfirmFunSensorName({ a: alarmInfo[0], sensorName: item.sensorName })
-                                                        newVoiceExample.clickVoice()
+                                                        // console.log(alarmInfo[0].roomNum ,'roomNum')
+                                                        // alert(alarmInfo[0].roomNum)
+
+                                                        newVoiceExample.clickVoice(alarmInfo[0].roomNum)
                                                     }}
                                                 >我已知晓</div>
                                             </div>
@@ -353,6 +356,7 @@ export default function Equip() {
                                                 onClick={(e) => {
 
                                                     e.stopPropagation();
+                                                    newVoiceExample.clickVoice(alarmInfo[0].roomNum)
                                                     alarmConfirmFunSensorName({ a: alarmInfo[0], sensorName: item.sensorName })
                                                 }}
                                             >我已知晓</div>

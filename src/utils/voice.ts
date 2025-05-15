@@ -1,11 +1,42 @@
 import { voiceUrl } from "@/api/api"
+import { exChangeText } from "@/redux/Middleware/constant";
+import { message } from "antd"
 import axios from "axios"
+
+function findTextIndex(arr:Array<string> , target : string) {
+    const indexes:Array<number> = [];
+    arr.forEach((val, idx) => {
+        if (val === target) {
+            indexes.push(idx);
+        }
+    });
+    return indexes
+}
+
+function arr2ClickRoom({ textArr, room }: any) {
+    const roomArr = [...textArr].map((a) => {
+        const roomText = a.split('号床')[0]
+        return roomText
+    })
+
+    const indexArr =  findTextIndex(roomArr , exChangeText(room));
+    console.log(indexArr , 'indexArr')
+    let newArr = [...textArr]
+
+    // indexArr.forEach((a) => {
+    //     newArr.splice(a,1)
+    // })
+    // const result = arr.filter((_, idx) => !indexesToRemove.includes(idx));
+    const res = newArr.filter((_, idx) => !indexArr.includes(idx));
+    console.log(res ,'res')
+    return {res : res , indexArr : indexArr}
+}
 
 export class voiceArr {
     voiceQueue: any
     voicePush: Function
     playVoice: Function
-    clickVoice : Function
+    clickVoice: Function
     tts: Function
     audio: any
     playFlag: boolean
@@ -24,14 +55,27 @@ export class voiceArr {
                 const text = this.voiceQueue[0]
                 // console.log(this.voiceQueue)
                 // messageAntd.error('请求语音')
-                this.voiceQueue.splice(0, 1)
+                // this.voiceQueue.splice(0, 1)
                 await this.tts(text)
                 this.playFlag = false;
             }
         }
-        this.clickVoice = function(){
-            this.audio.pause()
-            this.playFlag = true
+        this.clickVoice = function (room: string) {
+            // message.info(room , this.voiceQueue)
+            // console.log(room)
+
+            // this.voiceQueue = 
+            const {res , indexArr} = arr2ClickRoom({textArr : this.voiceQueue , room : room})
+            console.log(this.voiceQueue  , 'this.voiceQueue')
+            this.voiceQueue = res
+            if(indexArr.includes(0)){
+                this.audio.pause()
+                this.playFlag = true
+            }else{
+                // this.voiceQueue.splice(0, 1)
+            }
+            
+            
         }
         // this.audio = document.createElement('audio')
         this.audio = document.getElementById('audio')
@@ -66,7 +110,7 @@ export class voiceArr {
                 },
                 onError: function (text: any) {
                     // alert(text)
-                 
+
                     getAccessToken()
                 },
                 onTimeout: function () {
@@ -90,14 +134,14 @@ function getAccessToken() {
         'url': voiceUrl + '/oauth/2.0/token?grant_type=client_credentials&client_id=' + AK + '&client_secret=' + SK,
     }
     return new Promise((resolve, reject) => {
-      axios(options)
-          .then(res => {
-              resolve(res.data.access_token)
-              localStorage.setItem("access_token", res.data.access_token);
-          })
-          .catch(error => {
-              reject(error)
-          })
+        axios(options)
+            .then(res => {
+                resolve(res.data.access_token)
+                localStorage.setItem("access_token", res.data.access_token);
+            })
+            .catch(error => {
+                reject(error)
+            })
     })
 
 }
@@ -182,6 +226,7 @@ function newBtts(param: any, options: any, audio: any, that: any) {
                     if (opt.autoDestory) {
                         audio.onended = function () {
                             // 
+                            console.log('end')
                             that.playFlag = true
                             that.voiceQueue.splice(0, 1)
                             // document.body.removeChild(b[0]);

@@ -178,7 +178,6 @@ export default function Message() {
     if (param.pageNum === 1) {
       setHasMore(true);
     }
-    // initMessagesPage(res);
   };
   /**
    *
@@ -188,14 +187,11 @@ export default function Message() {
   const [dataList, setDataLIst] = useState([]);
   const [isFalse, setFalse] = useState(true);
   localStorage.setItem("dataList", JSON.stringify(dataList));
-  // const [todayAlarmCount, setTodayAlarmCount] = useState(0)
   useEffect(() => {
     if (messagestart == 'message') {
       baseFetch(params)
       getDataList(dataList)
     }
-    console.log(timeArr[0], timeArr[1], timestamp, '......................... timeArr');
-
   }, [])
   // 接口请求
   const baseFetch = async (param: any) => {

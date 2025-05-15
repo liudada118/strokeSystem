@@ -147,6 +147,7 @@ export default forwardRef((props: any, refs: any) => {
   };
 
   useEffect(() => {
+            window.scrollTo(0, 0);
     handleVisibilityChange(); // 初始化时执行一次
     // 添加事件监听器
     window.addEventListener('resize', handleVisibilityChange);

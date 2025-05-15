@@ -37,6 +37,7 @@ const Nurse: React.FC = () => {
     };
 
     useEffect(() => {
+                window.scrollTo(0, 0);
         handleVisibilityChange(); // 初始化时执行一次
         // 添加事件监听器
         window.addEventListener('resize', handleVisibilityChange);
@@ -46,6 +47,7 @@ const Nurse: React.FC = () => {
             window.removeEventListener('resize', handleVisibilityChange);
             window.removeEventListener('visibilitychange', handleVisibilityChange);
         };
+      
         // 添加111
     }, []);
     const { isMobile } = useWindowSize()

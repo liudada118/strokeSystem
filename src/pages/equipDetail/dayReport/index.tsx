@@ -226,6 +226,7 @@ export default function DayReport() {
   };
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     handleVisibilityChange(); // 初始化时执行一次
     // 添加事件监听器
     window.addEventListener('resize', handleVisibilityChange);
@@ -623,23 +624,27 @@ export default function DayReport() {
 
   function fetchMouthReport(date: any) {
     const dateObj = getMonthStartEndTimestamps(date)
-    instance({
-      method: "get",
-      url: "/sleep/getWhetherGenerate",
-      params: {
-        deviceName: sensorName,
-        startTimestamp: dateObj.startOfMonthTimestamp,
-        endTimestamp: dateObj.endOfMonthTimestamp,
-      },
-      headers: {
-        "content-type": "application/x-www-form-urlencoded",
-        "token": token
-      },
-    }).then((e) => {
+    try {
+      instance({
+        method: "get",
+        url: "/sleep/getWhetherGenerate",
+        params: {
+          deviceName: sensorName,
+          startTimestamp: dateObj.startOfMonthTimestamp,
+          endTimestamp: dateObj.endOfMonthTimestamp,
+        },
+        headers: {
+          "content-type": "application/x-www-form-urlencoded",
+          "token": token
+        },
+      }).then((e) => {
 
-      const dateArr = e.data.data.map((a: any) => a.today)
-      setDateArr(dateArr)
-    })
+        const dateArr = e.data.data.map((a: any) => a.today)
+        setDateArr(dateArr)
+      })
+    } catch (error) {
+
+    }
   }
 
   const disabledDate: RangePickerProps['disabledDate'] = (current) => {

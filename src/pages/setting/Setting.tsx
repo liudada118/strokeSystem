@@ -1,6 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react'
-// import Bottom from '../../phoneComponents/bottom/Bottom'
-// import Title from '../../phoneComponents/title/Title'
 import goRight from "../../assets/image/goRight.png";
 import problem from "../../assets/icon/problem.svg";
 import setItem from "../../assets/icon/setItem.svg";
@@ -22,18 +20,10 @@ import img205 from '../../assets/info/2.2/3.配置wifi.png'
 import img206 from '../../assets/info/2.2/4.连接成功.png'
 import img207 from '../../assets/info/2.3/1.账号登录.png'
 import img208 from '../../assets/info/2.3/2.扫码.png'
-// import User from '../user/User';
-// import UserInfo from '../../phoneComponents/user/UserInfo';
-// import DeviceSheet from '../../phoneComponents/settingComponents/deivceSheet/DeviceSheet';
-// import UserSheet from '../../phoneComponents/settingComponents/userSheet/UserSheet';
-// import FamilySheet from '../../phoneComponents/settingComponents/familySheet/FamilySheet';
-// import SeeUser from '../../phoneComponents/settingComponents/seeUser/SeeUser';
-// import CustomOption from '../../phoneComponents/settingComponents/customOption/CustomOption';
 import { useGetWindowSize } from '../../hooks/hook';
 import { instance, Instancercv, netUrl } from '@/api/api';
 import SeeUser from './settingComponents/seeUser/SeeUser';
 import { compressionFile } from '@/utils/imgCompressUtil';
-// import Title from 'antd/es/skeleton/Title';
 import DeviceSheet from './settingComponents/deivceSheet/DeviceSheet';
 import CustomOption from './settingComponents/customOption/CustomOption';
 import UserSheet from './settingComponents/userSheet/UserSheet';
@@ -212,7 +202,7 @@ export default function Setting() {
   const [organizationId, setOrganizationId] = useState('')
   const roleId = useSelector(roleIdSelect)
   const dispatch: any = useDispatch()
-  console.log(roleId, '...............roleIdroleId');
+
 
   const [open, setOpen] = useState(false);
   const [placement, setPlacement] = useState<DrawerProps['placement']>('bottom');
@@ -347,7 +337,7 @@ export default function Setting() {
       // setDeviceSource
     })
   }
-  console.log(deviceSource, '.................deviceSourcedeviceSource');
+
 
 
   const [headImg, setHeadImg] = useState('')
@@ -496,7 +486,7 @@ export default function Setting() {
 
   const items = allTitle[premission]
 
-  console.log(items, '...........................yyyyyyyydsdssd');
+
 
   const [strokeSource, setStrokeSource] = useState([])
   const [manageSource, setManageSource] = useState([])
@@ -504,7 +494,7 @@ export default function Setting() {
   const [projectManageSource, setProjectManageSource] = useState<Array<any>>([])
 
   const [deleteClick, setDeleteClick] = useState(false)
-  console.log(deviceSource, 'deviceSourcedeviceSource');
+
   const deleteEquip = ({ did, index, user }: any) => {
     Instancercv({
       method: "post",
@@ -845,7 +835,7 @@ export default function Setting() {
             }}>重置密码 </div>
             <div className='delete' style={{ marginRight: '1rem' }}
               onClick={() => {
-                console.log('............................32233232');
+
 
                 setDelete(record)
                 setIsModalDeviceUserOpen(true)
@@ -934,7 +924,7 @@ export default function Setting() {
           organizeType: projectUser.organizeType
         },
       }).then((res) => {
-        console.log(res.data.msg, '...00.........添加成功....');
+
         if (res.data.msg == "success") {
           message.info('添加成功')
           setOrganizationId(res.data.organizationId)
@@ -957,7 +947,7 @@ export default function Setting() {
           roleId: 1
         },
       }).then((res) => {
-        console.log(res.data.msg, '....99........添加成功....');
+
 
         if (res.data.msg == "success") {
           message.info('添加成功')
@@ -1531,7 +1521,7 @@ export default function Setting() {
 
   const [spinning, setSpinning] = useState<boolean>(false);
   const [img, setImg] = useState('https://images.bodyta.com/327d1a0e38e64f1588731239bf534c77.png')
-  console.log(bottomRef.current, 'bottomRef.current')
+
   const changeHeadImg = (headImg: any) => {
 
     if (bottomRef.current) {
@@ -1619,7 +1609,7 @@ export default function Setting() {
     },
 
   ]
-  console.log(strokeSource, listData, '................3243433443443');
+
 
   return (
     <>
@@ -1935,11 +1925,13 @@ export default function Setting() {
             })
           }}><div className="setTitleInfo flex"><img className='setTitleImg' src={setItem} alt="" /> 产品简介</div> <img src={goRight} alt="" /></div>
           <div className='setTitle' onClick={() => {
+
             navigate('/productIntroduction', {
               state: {
                 isFalse: true
               }
             })
+
           }}><div className="setTitleInfo flex"><img className='setTitleImg' src={setItem} alt="" /> 产品铺设、配网、绑定</div> <img src={goRight} alt="" /></div>
           {/* <div className='setTitle' onClick={() => {
             navigate('/nurseSetting')

@@ -61,17 +61,12 @@ export default function TurnReport(props: PropsType) {
         sensorName: '',
     }) as any
     const isMobile = useGetWindowSize()
-
-
     const { logid, id, dataListName } = isMobile ? location.state : props
     const [timeId, setTimeId] = useState()
     const token = useSelector(tokenSelect)
     const leftRef = useRef<any>(null)
     const rightRef = useRef<any>(null)
-    // const [useNameList, setUseNameList] = useState([])
-    // const paramsName: any = window.location.href.split('/')[4] || ''
     const [dataList, setDataList] = useState<any>([])
-
     const timeName = data.id && data.id.substring(0, 10);
     const timeMills = logid.split(' ')[0]
     const timeMills1 = logid.split(' ')[1]
@@ -93,21 +88,14 @@ export default function TurnReport(props: PropsType) {
         }).then((res) => {
             const record = res.data.page.records//.map((item :any )=> item.posture)
             let timeId: any = ''
-
             if (record.length) {
                 record.forEach((item: any) => {
                     const id = item.id.split(' ')[1]
-
-                    console.log(id, timeMills1, '............1111.......timeIdtimeIdtimeId');
-
                     if (id === timeMills1) {
                         timeId = item.id
                     }
-
                 })
             }
-            // console.log(timeId, '....................2222...........timeIdtimeIdtimeId');
-
             instance({
                 method: "get",
                 url: "/sleep/nurse/getFliplog",
@@ -197,22 +185,23 @@ export default function TurnReport(props: PropsType) {
                                         }} style={{ width: '2rem', position: 'absolute', left: '1rem' }} />护理报告</div>
                                     <div className="nurseReportContent">
                                         <Card>
-                                            {/* <div className="bgc">
-                          <img src={data.img} style={{ width: '6rem',}} alt="" />
-                      </div> */}
+
                                             <div className="personLeft">
                                                 <div className="personalImg">
-                                                    {/* <div className="img" style={{
-                                          background: `url(${data.headImg ? data.headImg : nullImg
-                                              })  center center / cover no-repeat`,
-                                      }}></div> */}
-                                                    <img src={dataList.headImg ? dataList.headImg : nullImg} alt="" />
+                                                    <div className="img" style={{
+                                                        background: `url(${dataList.headImg ? dataList.headImg : nullImg
+                                                            })  center center / cover no-repeat`,
+                                                    }}></div>
                                                 </div>
                                                 <div className="itemContents">
                                                     <div className="personalName">{dataList.patientName}</div>
                                                     <div className="itemContent">
                                                         <div className="itemTitle">年龄</div>
                                                         <div className="itemData">{dataList.age}</div>
+                                                    </div>
+                                                    <div className="itemContent">
+                                                        <div className="itemTitle">性别</div>
+                                                        <div className="itemData">{dataList.sex == 0 ? '女' : "男"}</div>
                                                     </div>
                                                     <div className="itemContent">
                                                         <div className="itemTitle">床号</div>
@@ -328,7 +317,7 @@ export default function TurnReport(props: PropsType) {
                                                     <div className='w-[20rem]'><span className=' text-[#888888]'>护理日期</span><span style={{ fontFamily: 'Source Han Sans' }} className='font-bold w-[8rem]  ml-[0.7rem]'>{timeMills}</span></div>
                                                 </div>
                                                 <div className="w-[5rem] ml-[3rem]">
-                                                    <div><span className=' text-[#888888]'>性别</span><span style={{ fontFamily: 'Source Han Sans' }} className='font-bold  ml-[0.75rem]'>男</span></div>
+                                                    <div><span className=' text-[#888888]'>性别</span><span style={{ fontFamily: 'Source Han Sans' }} className='font-bold  ml-[0.75rem]'>{dataList.sex == 0 ? '女' : "男"}</span></div>
                                                 </div>
                                             </div>
                                         </div>

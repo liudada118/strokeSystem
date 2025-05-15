@@ -27,7 +27,7 @@ export function CardContainTitle(props: any) {
         }>
             <div className='flex items-center mb-[0.9rem]'>
                 <div className={`${useGetWind ? 'h-[13px] w-[5px] rounded-[3px] bg-[#0072EF] mr-[7px]' : ""} `}></div>
-                <div>{title}</div>
+                <div className='text-[1.2rem] text-[#000000] font-medium'>{title}</div>
             </div>
             {props.children}
         </div >

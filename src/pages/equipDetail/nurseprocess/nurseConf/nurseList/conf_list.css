@@ -68,7 +68,7 @@
 
 .pc_nurse_conf_list .list_item p:nth-child(1) {
   display: flex;
-  width: 7rem;
+  width: 6rem;
 }
 
 .pc_nurse_conf_list .list_item p:nth-child(2) {

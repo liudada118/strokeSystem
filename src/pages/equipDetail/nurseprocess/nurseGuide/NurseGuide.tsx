@@ -19,7 +19,7 @@ const guideContent = [
 
 export default function NurseGuide() {
     return (
-        <div className="pfBold" style={{ backgroundColor: '#F7F8FD', width: '100%', padding: '1rem' }}>
+        <div className="pfBold" style={{ backgroundColor: '#F7F8FD', width: '100%', padding: '1rem', overflowY: "auto" }}>
             {guideContent.map((a, indexs) => {
                 return <div key={indexs} style={{ backgroundColor: '#fff', borderRadius: '5px', padding: '2rem 1rem', marginBottom: '1rem' }}>
                     <div className="guideTitle">

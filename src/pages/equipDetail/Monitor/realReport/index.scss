@@ -308,14 +308,14 @@
     height: 100%;
 
     .nurseTitleContent {
-        padding: 2rem 2rem;
+        padding: 1rem 2rem;
         width: 100%;
         text-align: center;
     }
 
     .nurseTitleReal {
         position: relative;
-        margin-bottom: 1.84rem;
+        // margin-bottom: 1.84rem;
         font-weight: bold;
         font-size: 1.28rem;
     }
@@ -385,7 +385,7 @@
     width: 100%;
     display: flex;
     align-items: center;
-
+    padding-top: 1.5rem;
     .progressItem {
         width: 0.72rem;
         height: 0.72rem;

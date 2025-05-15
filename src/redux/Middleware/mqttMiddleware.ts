@@ -150,6 +150,9 @@ const MqttMiddleware = (storeApi: any) => (next: any) => (action: any) => {
                 equipsPlay: equipsPlayRes,
                 equipPcPlay: equipPcPlayRes,
             }))
+
+            console.log(newVoiceExample.voiceQueue)
+
             newVoiceExample.playVoice()
 
         }, 2000);
@@ -329,7 +332,7 @@ function message({ payload, storeApi, data }: any) {
 
                                 // console.log(first)
 
-                                const voiceText = exChangeText(`${item.roomNum}号床${alarmRule.voiceText} ${item.roomNum}号床${alarmRule.voiceText}`)
+                                const voiceText = exChangeText(`${item.roomNum}号床${alarmRule.voiceText}、${item.roomNum}号床${alarmRule.voiceText}`)
 
 
                                 newVoiceExample.voicePush(voiceText)
@@ -340,7 +343,7 @@ function message({ payload, storeApi, data }: any) {
 
                         else {
 
-
+                       
                             if (alarmRule.flag && !riskArr[alarmRule.type].includes(item.sensorName)) {
                                 // 如果显示风险数组里面没有这个设备这个类型的报警,那么将之前这个设备的所有报警都删除，添加这个报警
                                 if (!arr.length || (arr.length && !arr.filter((alarmRule: any, index: any) => {
@@ -369,7 +372,7 @@ function message({ payload, storeApi, data }: any) {
 
                                     // console.log(first)
 
-                                    const voiceText = exChangeText(`${item.roomNum}号床${alarmRule.voiceText} 、 ${item.roomNum}号床${alarmRule.voiceText}`)
+                                    const voiceText = exChangeText(`${item.roomNum}号床${alarmRule.voiceText}、${item.roomNum}号床${alarmRule.voiceText}`)
 
 
                                     newVoiceExample.voicePush(voiceText)

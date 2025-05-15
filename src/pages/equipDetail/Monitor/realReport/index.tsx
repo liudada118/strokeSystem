@@ -167,7 +167,7 @@ export default forwardRef((props: any, refs: any) => {
   let location: any = useLocation();
   // const onbedState = location.state ? location.state.person.onBed : 0
 
-  const [valueArr, setValueArr] = useState<any>({ rate: 0, onBedTime: 0, onbedState: equipInfo.onBed })
+  const [valueArr, setValueArr] = useState<any>({ rate: 0, onBedTime: 0, onbedState: equipInfo?.onBed })
 
   const valueArrRef = useRef(valueArr);
 
@@ -224,8 +224,8 @@ export default forwardRef((props: any, refs: any) => {
    * 获取初始矩阵信息
    */
   const getFirstMaritx = () => {
-    const start = location.pathname.includes('small') ? 0 : equipInfo.nurseStart
-    const end = location.pathname.includes('small') ? 24 * 60 * 60 * 1000 : equipInfo.nurseEnd
+    const start = location.pathname.includes('small') ? 0 : equipInfo?.nurseStart
+    const end = location.pathname.includes('small') ? 24 * 60 * 60 * 1000 : equipInfo?.nurseEnd
     instance({
       method: "post",
       url: "/sleep/nurse/getMatrixListByName",

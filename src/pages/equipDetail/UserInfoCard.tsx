@@ -462,12 +462,22 @@ const UserInfoCard: (props: UserInfoCardProps) => React.JSX.Element = (props) =>
                         <div className="flex items-center justify-center justify-between px-[14px]">
                             <img src={arrow} alt="" className='w-[12px] h-[18px] mb-[10px] mr-[20px]'
                                 onClick={() => navigate(`/ `)} />
+
+                            <div>
+
+                            </div>
                             <p style={{ fontSize: "14px", color: "#0072EF", fontWeight: "600" }} onClick={() => navigate(`/equipInfo/${sensorName}`)} >
                                 查看
                             </p >
                         </div>
                         <div className='flex w-full pl-[3rem]'>
-                            <img src={userInfo.headImg ? userInfo.headImg : nullImg} alt="" className='w-[5.3rem] h-[5.3rem]  mr-[1.2rem] rounded-[6px]' />
+                            <div className='w-[5.3rem] h-[5.3rem]  mr-[1.2rem] rounded-[6px]'>
+                                <div className="w-full h-full rounded-[6px]" style={{
+                                    background: `url(${userInfo.headImg ? userInfo.headImg : nullImg
+                                        })  center center / cover no-repeat`,
+                                }}></div>
+                            </div>
+                            {/* <img src={userInfo.headImg ? userInfo.headImg : nullImg} alt="" className='w-[5.3rem] h-[5.3rem]  mr-[1.2rem] rounded-[6px]' /> */}
                             <div className='flex flex-col justify-around '>
                                 <span className={`text-[${indowSize.isMobile == true ? "1.2rem" : '0.875rem'}] font-semibold`} >{userInfo.patientName}</span>
                                 <span className='flex flex-wrap w-full'>
@@ -497,7 +507,7 @@ const UserInfoCard: (props: UserInfoCardProps) => React.JSX.Element = (props) =>
             {isMobile && (
                 <CommonNavBar title='个人信息及设置' onBack={() => navigate(`/report/0/${sensorName} `)} />
             )}
-            <div className='md:pt-[4.5rem] h-full'>
+            <div className='md:pt-[3.8rem] h-full'>
                 <div
                     className='bg-[#fff] rounded-[2px] pt-[1.2rem] pl-[1rem] pb-[1rem] md:w-[96%] md:mx-auto md:rounded-[10px]'>
                     <div className='flex items-center justify-between mb-[0.8rem]'>
@@ -515,7 +525,11 @@ const UserInfoCard: (props: UserInfoCardProps) => React.JSX.Element = (props) =>
                         }
                     </div>
                     <div className='flex'>
-                        <img src={userInfo.headImg ? userInfo.headImg : nullImg} alt="" className='w-[4rem] h-[4rem]  mr-[1.2rem] rounded-[6px]' />
+                        <div className="w-[4rem] h-[4rem]  mr-[1.2rem] rounded-[6px]" style={{
+                            background: `url(${userInfo.headImg ? userInfo.headImg : nullImg
+                                })  center center / cover no-repeat`,
+                        }}></div>
+                      
                         <div className='flex flex-col justify-around md:justify-between'>
                             <span className='text-sm font-semibold' >{userInfo.patientName}</span>
                             <span className='flex flex-wrap w-full'>

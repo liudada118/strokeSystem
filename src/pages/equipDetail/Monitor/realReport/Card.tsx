@@ -8,7 +8,7 @@ interface cardProps {
 export default function Card(props: any) {
   const { children, title, unheight, mdmb } = props
   return (
-    <div className={`md:w-[94%] md:mx-auto bg-[#fff] py-[1.4rem] flex flex-col px-[1.1rem] w-full rounded-[10px] ${unheight ? '' : ' h-full'} ${props.margin ? '' : 'mb-[1.85rem] '} ${mdmb ? 'md:mb-[0.8rem] ' : ''}`} >
+    <div className={`md:w-[94%] md:mx-auto bg-[#fff] py-[1.4rem] flex flex-col px-[1.1rem] w-full rounded-[10px] ${unheight ? '' : ' h-full'} ${props.margin ? '' : 'mb-[10px]'} ${mdmb ? 'md:mb-[0.8rem] ' : ''}`} >
       {title ? <div className='mb-[1rem]  flex items-center'>
         <div className='bg-[#0072EF] w-[0.5rem] h-[0.5rem] mr-[0.4rem]'></div> <div className='text-lg font-semibold'>{title}</div>
       </div> : ''}

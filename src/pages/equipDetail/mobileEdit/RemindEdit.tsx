@@ -152,19 +152,20 @@ export function RemindEdit() {
             title: '设置监测时间段'
         },
     ]
-    const sosArr = [
-        {
-            type: FormType.SWITCH,
-            objKey: "switchE",
-            label: 'sos提醒'
-        },
-        {
-            type: FormType.TIME_RANGE,
-            objKey: "timeRangeE",
-            label: '监测时间段',
-            title: '设置监测时间段'
-        },
-    ]
+    //不要删除
+    // const sosArr = [
+    //     {
+    //         type: FormType.SWITCH,
+    //         objKey: "switchE",
+    //         label: 'sos提醒'
+    //     },
+    //     {
+    //         type: FormType.TIME_RANGE,
+    //         objKey: "timeRangeE",
+    //         label: '监测时间段',
+    //         title: '设置监测时间段'
+    //     },
+    // ]
 
     const getEquipInfo = () => {
         Instancercv({
@@ -304,7 +305,8 @@ export function RemindEdit() {
                     })
                 }
             </List>
-            <List className='w-[92%] mx-auto mt-[10px] rounded-[10px]'>
+            {/*  */}
+            {/* <List className='w-[92%] mx-auto mt-[10px] rounded-[10px]'>
                 {
                     sosArr.map((offBedItem) => {
                         if (!formValue.switchD && offBedItem.type !== FormType.SWITCH) {
@@ -315,7 +317,7 @@ export function RemindEdit() {
                         )
                     })
                 }
-            </List>
+            </List> */}
             <Picker
                 columns={pickerInfo.columns}
                 visible={pickerInfo.visible}

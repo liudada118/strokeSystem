@@ -40,7 +40,7 @@ function Card(props: cardParam) {
                 return message.error("您没有权限修改该信息");
             }
             setClick(type)
-        }} className={` px-[8px] flex items-center justify-between bg-[#fff] md:mx-auto md:w-[96%] ${border ? '' : 'rounded-[10px]'} ${margin ? '' : 'mb-[15px]'}`}>
+        }} className={` px-[8px] flex items-center justify-between bg-[#fff] md:mx-auto md:w-[96%] ${border ? '' : 'rounded-[10px]'} ${margin ? '' : 'mb-[15px]'} mt-[14px]`}>
             <div className={`flex py-[14px]  px-[7px] w-full items-center ${borderBottom ? 'border-b' : ''}`}>
                 <div className='flex basis-full'>
                     <div className='bg-[#0072EF] rounded-[3px] items-center mr-[12px]'>

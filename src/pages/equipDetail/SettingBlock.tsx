@@ -580,62 +580,63 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
         },
       ],
     },
-    {
-      label: "SOS提醒设置",
-      id: "turn_over_switch",
-      value: valueToAlarmFlag(sosAlarm),
-      handleSwitch: () => {
-        setUserInfo({
-          ...userInfo,
-          sosAlarm: alarmFlagToValue(!valueToAlarmFlag(sosAlarm)),
-        });
-        setAlarmParamChange(true);
-      },
-      params: [
-        {
-          label: "监测时间段",
-          id: "timeRangeE",
-          value: `${timePeriodInitFormat({
-            timeStamp: sosStart,
-            type: "start",
-          })}-${timePeriodInitFormat({ timeStamp: sosEnd, type: "end" })}`,
-          onChange: () => {
-            setSosOpen(true);
-          },
-          modal: (
-            <CommonFormModal
-              title="SOS提醒设置"
-              open={sosOpen}
-              close={() => setSosOpen(false)}
-              formList={[
-                {
-                  label: "监测时间段",
-                  key: "timeRangeE",
-                  value: `${timePeriodInitFormat({
-                    timeStamp: sosStart,
-                    type: "start",
-                  })}-${timePeriodInitFormat({
-                    timeStamp: sosEnd,
-                    type: "end",
-                  })}`,
-                  type: FormType.TIME_RANGE,
-                },
-              ]}
-              onFinish={(values) => {
-                console.log(
-                  values,
+    // 不要删除 后期开发
+    // {
+    //   label: "SOS提醒设置",
+    //   id: "turn_over_switch",
+    //   value: valueToAlarmFlag(sosAlarm),
+    //   handleSwitch: () => {
+    //     setUserInfo({
+    //       ...userInfo,
+    //       sosAlarm: alarmFlagToValue(!valueToAlarmFlag(sosAlarm)),
+    //     });
+    //     setAlarmParamChange(true);
+    //   },
+    //   params: [
+    //     {
+    //       label: "监测时间段",
+    //       id: "timeRangeE",
+    //       value: `${timePeriodInitFormat({
+    //         timeStamp: sosStart,
+    //         type: "start",
+    //       })}-${timePeriodInitFormat({ timeStamp: sosEnd, type: "end" })}`,
+    //       onChange: () => {
+    //         setSosOpen(true);
+    //       },
+    //       modal: (
+    //         <CommonFormModal
+    //           title="SOS提醒设置"
+    //           open={sosOpen}
+    //           close={() => setSosOpen(false)}
+    //           formList={[
+    //             {
+    //               label: "监测时间段",
+    //               key: "timeRangeE",
+    //               value: `${timePeriodInitFormat({
+    //                 timeStamp: sosStart,
+    //                 type: "start",
+    //               })}-${timePeriodInitFormat({
+    //                 timeStamp: sosEnd,
+    //                 type: "end",
+    //               })}`,
+    //               type: FormType.TIME_RANGE,
+    //             },
+    //           ]}
+    //           onFinish={(values) => {
+    //             console.log(
+    //               values,
 
-                );
-                // setTimeRangeD(values.timeRangeD)
-                changeValueToUserInfo(values);
-                setAlarmParamChange(true);
-                // setAlarmParamchange(true)
-              }}
-            />
-          ),
-        },
-      ],
-    },
+    //             );
+    //             // setTimeRangeD(values.timeRangeD)
+    //             changeValueToUserInfo(values);
+    //             setAlarmParamChange(true);
+    //             // setAlarmParamchange(true)
+    //           }}
+    //         />
+    //       ),
+    //     },
+    //   ],
+    // },
   ];
   const machineType = [
     {

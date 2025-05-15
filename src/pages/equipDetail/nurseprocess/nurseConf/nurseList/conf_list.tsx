@@ -136,6 +136,7 @@ export default function PCNurseList(props: any) {
     }, []);
     const [visible, setVisible] = useState(false);
     const [imgData, setImgData] = useState<any>([]);
+    const [i, setIndex] = useState(0)
     return (
         <div className="nurse_scroll1">
             <div className="pc_nurse_conf_list">
@@ -176,13 +177,18 @@ export default function PCNurseList(props: any) {
                                             onClick={() => {
                                                 if (isMobile) {
                                                     setImgData(item.uploadImage);
-                                                    setVisible(true);
+                                                    // setVisible(true);
+
                                                 }
                                             }}
                                             className={`${!isMobile ? 'pc_nurse_conf_list_img' : ''}`}
                                         >
-                                            {item.uploadImage.map((item: any) => {
-                                                return isMobile ? <img key={item} src={item} alt="" /> : <Image
+                                            {item.uploadImage.map((item: any, index: number) => {
+                                                return isMobile ? <img onClick={() => {
+                                                    setIndex(i => i + index)
+                                                    // setImgData(item.uploadImage);
+                                                    setVisible(true);
+                                                }} key={item} src={item} alt="" /> : <Image
 
                                                     src={item}
                                                 />
@@ -209,11 +215,13 @@ export default function PCNurseList(props: any) {
                     : ""}
                 {(imgData || []).length > 1 ? (
                     <ImageViewer.Multi
+                        key={i}
                         images={imgData}
                         visible={visible}
-                        defaultIndex={1}
+                        defaultIndex={i}
                         onClose={() => {
                             setVisible(false);
+                            setIndex(0)
                         }}
                     />
                 ) : (

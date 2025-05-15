@@ -63,7 +63,8 @@ export default function SettingMobile() {
         <div className='pb-[15px] mt-4' >
             <Card title='提醒设置' img={mobileRemind} type='remind' />
             <Card title='翻身设置' img={mobileTurn} type='turn' border margin borderBottom />
-            <Card title='护理设置' img={mobileNurse} type='nurse' border />
+            {/* 不要删除后期开发 */}
+            {/* <Card title='护理设置' img={mobileNurse} type='nurse' border /> */}
             {/* 不要删除后期开发 */}
             {/* <Card title='推送日报设置' img={mobilePush} type='pushReport' /> */}
             <Card title='设备类型' img={mobileEquiptype} type='equipType' margin />

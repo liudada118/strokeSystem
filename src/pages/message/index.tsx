@@ -575,7 +575,7 @@ export default function Message() {
   const startOfMonth = currentMonth1.startOf('month').toDate();
   const endOfMonth = currentMonth1.endOf('month').toDate();
   const renderDate = (date: any) => {
-    console.log(new Date(currentCalendarValue).toLocaleDateString(), 'new Date(currentCalendarValue)')
+
     const { firstDay, lastDay } = getCurrentMonthFirstAndLastDay(currentCalendarValue);
     const firstDate = firstDay.date.getTime()
     const lastDate = lastDay.date.getTime()
@@ -647,7 +647,7 @@ export default function Message() {
     if (type === 'nowmonth') {
       nowMonth.setDate(1)
     }
-    console.log(newYear, '...........newYear..dataRange................................newYear.......')
+
     return {
       year: {
         date: newYear,
@@ -674,7 +674,7 @@ export default function Message() {
   };
   const handlePrevYear = () => {
     // currentCalendarValue = getNaturalMonthOffsetDates(currentCalendarValue, 'preyear').prevMonth.date
-    console.log(currentCalendarValue, '...........currentCalendarValue.......prepreprepre...')
+
     setCurrentMonth(currentMonth1.subtract(1, 'year'));
   };
   const handleNextMonth = () => {
@@ -683,7 +683,7 @@ export default function Message() {
   };
   const handleNextYear = () => {
     // currentCalendarValue = getNaturalMonthOffsetDates(currentCalendarValue, 'nextyear').nextMonth.date
-    console.log(currentCalendarValue, '...........currentCalendarValue.......nextnextnextnext...........')
+
     setCurrentMonth(currentMonth1.add(1, 'year'));
   };
   const prevMonthButton = <img style={{ width: "1.5rem", height: "1.5rem", }} src={yue} onClick={handlePrevMonth} alt="" />;

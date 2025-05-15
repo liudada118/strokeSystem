@@ -106,6 +106,8 @@ export const MessageRightTitle = (props: messageParam) => {
                         <><Space style={{ width: "50rem", height: "2.07rem", marginLeft: "0.7rem" }} direction="vertical" size={12}>
                             <ConfigProvider locale={zhCN}>
                                 <RangePicker
+                                    format="YYYY-MM-DD HH:mm"       // 控制显示格式
+                                    showSecond={false}   // 隐藏秒
                                     placeholder={['开始时间', '结束时间']}
                                     showNow={true}
                                     onChange={(dates, dateStrings) => handleDateChange(dates, dateStrings)}

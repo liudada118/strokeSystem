@@ -1313,7 +1313,9 @@ export default function Message() {
                     <div className="flex justify-center">分</div>
                   </Select.Option>
                   {[...Array(60)].map((_, index) => (
-                    <Select.Option key={`${index}_v5`} value={index.toString()}>
+                    <Select.Option key={`${index}_v5`} value={index.toString()}
+                      disabled={index === 0}
+                    >
                       <div className="flex justify-center">
                         {index.toString().padStart(2, "0")}
                       </div>

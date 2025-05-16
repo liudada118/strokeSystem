@@ -17,11 +17,20 @@ export const sulRank = (num: number) => {
 }
 
 export function rateToHeart(value: any) {
-    if (value == 0) return 0
+    if (value <= 0) return 0
+    // const x = value < 10 ? 10  : value < 35 ? 35value  
 
-    // const y =  Math.pow(value, 2) * (−0.0533) + 5.6 * value −10.67
+    let x;
+    if (value < 10) {
+        x = 10
+    } else if (value <= 35) {
+        x = value
+    } else {
+        x = 35
+    }
+    const y = Math.pow((x), 2) * (-0.0533) + 5.6 * (x) - 10.67
+    return Math.floor(y)
 
-    return Math.round(value + 45 + 5)
 }
 
 export function rateArrToHeart(arr: any) {

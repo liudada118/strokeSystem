@@ -308,7 +308,7 @@
     cursor: pointer;
     border-radius: 2.2rem;
     color: #929EAB;
-    line-height: 4.5rem;
+    /* line-height: 4.5rem; */
     margin-left: 0.5rem;
     margin-right: 0.5rem;
     height: 2rem;

@@ -7,6 +7,7 @@ import { findAlarmSwitch, findAlarmToCatch, initEquipPc, neatEquips, returnRealA
 import { voiceArr } from '@/utils/voice';
 import { initData } from '../equip/equipSlice';
 import { web } from '@/api/api';
+import { rateToHeart } from '@/utils/dataToFormat';
 // import { equip } from '@/pages/home/Home';
 
 // 只在mqtt运行中改变
@@ -228,7 +229,9 @@ function message({ payload, storeApi, data }: any) {
                     item.onBed = item.leavebedParam ? jsonObj.realtimeLeaveBedParam < item.leavebedParam ? 0 : jsonObj.realtimeOnbedState > 0 ? jsonObj.realtimeOnbedState : 1 : jsonObj.realtimeOnbedState
                     item.onBedState = jsonObj.realtimeOnbedState
                     item.breath = jsonObj.realtimeBreathRate
-                    item.heartRate = jsonObj.heartRateRandom
+                    // item.heartRate = jsonObj.heartRateRandom
+
+                    item.heartRate = rateToHeart(jsonObj.realtimeBreathRate)
                     item.sos = jsonObj.realtimeSosState
                     // console.log(jsonObj, 'jsonObj.......')
                     // item.nurse = jsonObj.realtimeOnbedState
@@ -251,7 +254,12 @@ function message({ payload, storeApi, data }: any) {
 
 
                     if (item.onBed == 0) {
+                        // 初始化离床时间
                         item.outbedTime = (new Date().getTime() - jsonObj.onOutOffBedTimeMillis) / 1000
+
+                        // 将呼吸心率值置为0
+                        item.breath = 0
+                        item.heartRate = 0
 
                     } else {
                         item.onbedTime = (new Date().getTime() - jsonObj.onOutOffBedTimeMillis) / 1000

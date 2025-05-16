@@ -472,14 +472,39 @@ export default function Message() {
   // 标题切换
   const titleRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const [dataRange, setDataRange] = useState<any>(null); //日期
-  const [hours, setHours] = useState<string>("0"); // 小时
-  const [minutes, setMinutes] = useState<string>("0"); // 分钟
+  const [hours, setHours] = useState<string>("1"); // 小时
+  const [minutes, setMinutes] = useState<string>("1"); // 分钟
   const [chooseTimeType, setChooseTimeType] = useState<any>('start');
   const [timeList, setTimeList] = useState<any>(timeArr);
 
   const today = new Date();
 
+  const dateStr = new Date(timeList[0]).toUTCString(); 
+  const cleanTime = dateStr.replace(/\.\d+ GMT$/, ' GMT'); 
+  const dateStr1 = new Date(timeList[1]).toUTCString(); 
+  const cleanTim2e = dateStr1.replace(/\.\d+ GMT$/, ' GMT');
+  function formatTime(timeStr: any) {
+    const date = new Date(timeStr); 
+    return date.toISOString()
+      .split('T')[0] + ' ' + 
+      date.toISOString().split('T')[1].split('.')[0]; 
+  }
+  const time = [
+    cleanTime,
+    cleanTim2e
+  ]
   const timeSearch = () => {
+    const formattedList = time.map(formatTime);
+    const modifiedList = formattedList.map(timeStr => {
+      return timeStr.split(':').slice(0, 2).join(':') + ":00"; 
+    });
+    if (modifiedList[0] == modifiedList[1]) {
+      message.info('开始时间不能和结束时间相同')
+      return
+    }
+    // const
+    // console.log(www, www1, '..........009999');
+
     setVisible(false);
     setMobileData([]);
     loadMore({
@@ -536,7 +561,6 @@ export default function Message() {
     if (chooseTimeType === 'start') {
       const start = new Date(value).getTime();
       const end = new Date(timeList[1]).getTime();
-
       if (start > currentTime) {
         return message.info("开始时间不能大于当前时间");
       }
@@ -553,7 +577,12 @@ export default function Message() {
       if (start < end) {
         return message.info("结束时间不能小于开始时间");
       }
+
     }
+
+    // if (currentTime == end) {
+    //   return message.info("开始时间不能和结束时间相同");
+    // }
     return false;
   };
   const [currentMonth1, setCurrentMonth] = useState(dayjs());
@@ -1321,7 +1350,10 @@ export default function Message() {
                     <div className="flex justify-center">分</div>
                   </Select.Option>
                   {[...Array(60)].map((_, index) => (
-                    <Select.Option key={`${index}_v5`} value={index.toString()}>
+                    <Select.Option
+                      key={`${index}_v5`}
+                      value={index.toString()}
+                    >
                       <div className="flex justify-center">
                         {index.toString().padStart(2, "0")}
                       </div>

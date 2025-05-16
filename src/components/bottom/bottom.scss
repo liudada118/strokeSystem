@@ -59,11 +59,11 @@
             font-weight: bold;
         }
         position: fixed;
-        bottom: 10px;
+        bottom: 0;
         width: 100%;
         // height: 3.5rem;
         background-color: #fff;
-        padding: 0.52rem 3.96rem 0.72rem 2.96rem;
+        padding: 0.52rem 3.96rem 1.72rem 2.96rem;
     }
 
     .bottomItemContent {
@@ -162,16 +162,14 @@
          top: 0;
          height: 100%;
          width: 4.3rem;
-       
          background: #DCE3E9;
          height: 100%;
          display: flex;
          flex-direction: column;
          justify-content: space-between;
          // align-items: center;
-         padding: 1rem 0 .7rem;
+         padding: 1rem 0 3.7rem;
      }
- 
      .bottomItem{
          display: flex;
          // align-items: center;

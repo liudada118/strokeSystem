@@ -30,6 +30,7 @@ import {
   Popup,
   Calendar,
   InfiniteScroll,
+  Ellipsis,
 } from "antd-mobile";
 import { useNavigate } from "react-router-dom";
 dayjs.extend(isBetween);
@@ -697,8 +698,6 @@ export default function Message() {
                           <div
                             key={`${index}_v2`}
                             onClick={() => {
-                              console.log(item.key, '............titleList1titleList1');
-
                               setNurseType(item.title);
                               setTitle(item.title);
                               setParams({
@@ -989,7 +988,7 @@ export default function Message() {
                 <div className="table-container" style={{ overflowY: "auto" }}>
                   <div className="flex w-[98%] h-[3.3rem] ml-[1%] mr-[1%] bg-[#F5F8FA] rounded-xl">
                     <p className="notificationTable w-[20%] ml-[1rem]">序号</p>
-                    <p className="notificationTable w-[30%]">床号/姓名</p>
+                    <p className="notificationTable w-[30%]">姓名/床号</p>
                     <p className="notificationTable w-[30%] pl-[1rem]">
                       提醒时间
                     </p>
@@ -1042,20 +1041,29 @@ export default function Message() {
                                   >
                                     <p
                                       style={{
-                                        fontSize: "1.25rem",
-                                        color: "#32373E",
+                                        fontSize: "1rem",
+                                        color: "#929EAB",
+                                        wordBreak: 'break-all',
+                                        overflowWrap: 'break-word'
+                                        // overflow: "hidden",
+                                        // textOverflow: "ellipsis",
+                                        // whiteSpace: "nowrap",
                                       }}
                                     >
                                       {" "}
-                                      {item.roomNumber}
+                                      {item.name}
+
                                     </p>
                                     <p
                                       style={{
                                         fontSize: "1rem",
-                                        color: "#929EAB",
+                                        color: "#32373E",
+                                        wordBreak: 'break-all',
+                                        overflowWrap: 'break-word'
                                       }}
                                     >
-                                      {item.name}
+                                      {item.roomNumber}
+
                                     </p>
                                   </div>
                                   <div className="notificationTableDiv w-[30%] pl-[1rem]">

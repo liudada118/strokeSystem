@@ -214,6 +214,8 @@ export default function Setting() {
     localStorage.removeItem('token')
     localStorage.removeItem('roleId')
     localStorage.removeItem('organizeId')
+    localStorage.removeItem('list')
+    localStorage.removeItem('headImg')
     dispatch(loginOut({}))
     dispatch(equipLoginOut({}))
     dispatch(tokenLoginout({}))
@@ -1216,7 +1218,11 @@ export default function Setting() {
           },
         }).then((res) => {
           getItemManage(deleteObj.id)
-
+          if (res.data.code == 500) {
+            message.error('该用户已绑定过其他的项目')
+          } else {
+            message.info('添加成功')
+          }
 
         }).catch((e) => {
           message.error('服务器异常')
@@ -1276,12 +1282,9 @@ export default function Setting() {
         },
       }).then((res) => {
         getItemPerson(deleteObj.id)
-
-
         if (res.data.msg == 'add Manager Success') {
           message.info('添加成功')
         }
-
         if (res.data.code == 500) {
           message.error('该家属已绑定过其他的项目')
         }
@@ -1294,7 +1297,6 @@ export default function Setting() {
       message.error('用户名长度需要大于5')
     }
   }
-
   const handlePersonCancel = () => {
     setIsModalPersonOpen(false)
   }
@@ -1828,7 +1830,6 @@ export default function Setting() {
 
       <Modal title="添加新家属" okText='确认' cancelText='取消' open={isModalPersonOpen} onOk={handlePersonOk} onCancel={handlePersonCancel}>
         <div style={{ padding: '0.5rem 3rem' }}>
-
           <div style={{ display: 'flex', alignItems: 'center' }} className="deviceItem"><div style={{ width: '5rem', }}> 手机号:</div> <Input value={nurseUser.user} style={{ flex: 1 }} onChange={(e) => {
             // setProjectAddress(e.target.value)
             let obj = { ...nurseUser }

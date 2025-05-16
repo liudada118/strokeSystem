@@ -11,7 +11,11 @@ import instance, { Instancercv, netUrl } from "@/api/api";
 import { message } from "antd";
 import "./nurseAdd";
 import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
 import Item from 'antd/es/list/Item';
+dayjs.extend(utc);
+dayjs.extend(timezone);
 function NurseAdd(props: any) {
     const { type, sensorName, onClose } = props
     console.log(type, props, '...................typetype');
@@ -172,9 +176,7 @@ function NurseAdd(props: any) {
                                     const hour = v[0] && +v[0] < 10 ? '0' + v[0] : v[0]
                                     const min = v[1] && +v[1] < 10 ? '0' + v[1] : v[1]
                                     const result = `${hour}:${min}`
-                                    const time = new Date(dayjs().format("YYYY-MM-DD") + ' ' + `${result}`).getTime()
-                                    console.log(time, new Date().getTime(), '.......................newDategetTime');
-
+                                    const time = new Date(dayjs(new Date().getTime()).format("YYYY-MM-DD") + ' ' + `${result}`).getTime()
                                     if (time > new Date().getTime()) return message.info('时间不能大于当前时间')
                                     setCompletionTime(time)
                                 }}
@@ -261,11 +263,8 @@ function NurseAdd(props: any) {
                                                 }
                                             }}
                                         />
-
                                     </div>
-
                                 }
-
                             </div>
                         </div>
                         <div>
@@ -288,8 +287,6 @@ function NurseAdd(props: any) {
                 </div>
             </div>
         </Popup >
-
-
     )
 }
 

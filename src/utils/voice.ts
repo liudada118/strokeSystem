@@ -1,5 +1,5 @@
 import { voiceUrl } from "@/api/api"
-import { exChangeText } from "@/redux/Middleware/constant";
+import { audioPause, audioPlay, exChangeText } from "@/redux/Middleware/constant";
 import { message } from "antd"
 import axios from "axios"
 
@@ -70,6 +70,7 @@ export class voiceArr {
             this.voiceQueue = res
             if(indexArr.includes(0)){
                 this.audio.pause()
+                audioPause()
                 this.playFlag = true
             }else{
                 // this.voiceQueue.splice(0, 1)
@@ -106,6 +107,7 @@ export class voiceArr {
                 onSuccess: function (htmlAudioElement: any) {
                     // messageAntd.error('播放语音')
                     that.audio.play();
+                    audioPlay()
 
                 },
                 onError: function (text: any) {

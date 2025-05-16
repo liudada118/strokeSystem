@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import voice from "@/assets/audio/y2284.mp3";
 import { Dialog, DotLoading, ErrorBlock } from "antd-mobile";
 import "./index.scss";
+import { audioPlay } from "@/redux/Middleware/constant";
 // import { DemoBlock } from 'demos'
 let first = true;
 export default function VoicePremission() {
@@ -39,6 +40,7 @@ export default function VoicePremission() {
     audio.setAttribute("src", voice);
     if (audio) {
       audio.play();
+      audioPlay()
       setIsVoiceModalOpen(false);
       first = false;
     } else {

@@ -466,9 +466,9 @@ const UserInfoCard: (props: UserInfoCardProps) => React.JSX.Element = (props) =>
                             <div>
 
                             </div>
-                            <p style={{ fontSize: "14px", color: "#0072EF", fontWeight: "600" }} onClick={() => navigate(`/equipInfo/${sensorName}`)} >
+                            {/* <p style={{ fontSize: "14px", color: "#0072EF", fontWeight: "600" }} onClick={() => navigate(`/equipInfo/${sensorName}`)} >
                                 查看
-                            </p >
+                            </p > */}
                         </div>
                         <div className='flex w-full pl-[3rem]'>
                             <div className='w-[5.3rem] h-[5.3rem]  mr-[1.2rem] rounded-[6px]'>

@@ -1,11 +1,12 @@
 
 import mqtt from 'mqtt/dist/mqtt';
-import { exChangeText, HOST, PORT, reloadWebview } from './constant';
+import { exChangeText, PORT, reloadWebview } from './constant';
 import { createTimer, mqttConnect } from '../mqtt/mqttSlice';
 // import { alarmJudge, ALARMTYPE } from './alarmUtil';
 import { findAlarmSwitch, findAlarmToCatch, initEquipPc, neatEquips, returnRealAlarm, alarmJudge, ALARMTYPE } from '../equip/equipUtil';
 import { voiceArr } from '@/utils/voice';
 import { initData } from '../equip/equipSlice';
+import { web } from '@/api/api';
 // import { equip } from '@/pages/home/Home';
 
 // 只在mqtt运行中改变
@@ -69,7 +70,7 @@ const MqttMiddleware = (storeApi: any) => (next: any) => (action: any) => {
             password: 'public'
         };
 
-        const client = mqtt.connect(`wss://${HOST}:${PORT}/mqtt`, options);
+        const client = mqtt.connect(`wss://${web}:${PORT}/mqtt`, options);
 
         window.client = client
 

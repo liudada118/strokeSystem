@@ -18,6 +18,9 @@ export const sulRank = (num: number) => {
 
 export function rateToHeart(value: any) {
     if (value == 0) return 0
+
+    // const y =  Math.pow(value, 2) * (−0.0533) + 5.6 * value −10.67
+
     return Math.round(value + 45 + 5)
 }
 

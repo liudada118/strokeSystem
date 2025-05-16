@@ -127,7 +127,7 @@ function NurseAdd(props: any) {
                     <div className='overflow-auto px-[1.48rem]' style={{ height: `calc(100% - 4rem)`, }}>
                         <div className="mt-[2rem] h-[4.5rem] rounded-[0.4rem] bg-[#F5F8FA] flex items-center mb-[0.75rem]">
                             <div className="text-[#32373E] text-[1.25rem] ml-[1rem] ">
-                                护理项目：
+                                护理任务：
                             </div>
                             <div className="text-[#32373E] text-[1.25rem] m-[0rem] flex items-center">
                                 <Input type="text" disabled={props.type === '记录护理项目'} onChange={(e: any) => {

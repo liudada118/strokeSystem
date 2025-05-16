@@ -51,15 +51,17 @@ export default function DeviceSheet(props: DeviceSheet) {
         title: '姓名',
         dataIndex: 'patientName',
         key: 'patientName'
+
     },
     {
         title: '关联用户',
         dataIndex: 'operate',
         key: 'operate',
+
         render: (text: any, record: any, index: any) => {
 
             return (
-                <div style={{ display: 'flex', color: '#0256FF', cursor: 'pointer' }}>
+                <div style={{ display: 'flex', color: '#0256FF', cursor: 'pointer', alignItems: 'center' }}>
                     <div className='see' style={{ marginRight: '1rem', position: 'relative', }} onClick={() => {
                         getDeviceSUser({ id: record.deviceId, roleId: 3, setUser: setDeviceOneUser })
                         setUserShow(true)
@@ -80,10 +82,11 @@ export default function DeviceSheet(props: DeviceSheet) {
         title: '关联家属',
         dataIndex: 'family',
         key: 'family',
+
         render: (text: any, record: any, index: any) => {
 
             return (
-                <div style={{ display: 'flex', color: '#0256FF', cursor: 'pointer' }}>
+                <div style={{ display: 'flex', color: '#0256FF', cursor: 'pointer', alignItems: 'center' }}>
                     <div className='see' style={{ marginRight: '1rem', position: 'relative', }} onClick={() => {
                         getDeviceSUser({ id: record.deviceId, roleId: 4, setUser: setFamilyOneUser })
                         setFamilyShow(true)

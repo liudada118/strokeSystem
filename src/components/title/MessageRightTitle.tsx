@@ -8,7 +8,9 @@ import './index.scss'
 import { useGetWindowSize } from '../../hooks/hook'
 import useDebounce from '../../utils/publicInput'
 import logg from '@/assets/image/loog.png'
+import duration from 'dayjs/plugin/duration'; // 需安装 duration 插件
 const { RangePicker } = DatePicker;
+dayjs.extend(duration); // 启用 duration 插件
 interface messageParam {
     titleChangeGetMessage: Function,
     titleKey?: string
@@ -98,6 +100,62 @@ export const MessageRightTitle = (props: messageParam) => {
         };
     }, [timeoutId]);
     const [loog, setLoog] = useState('JQHEALTHCARE')
+
+
+    const disabledDate = (current: any) => {
+        const now = dayjs();
+        return current && current > now.endOf('day');
+    };
+    // 动态禁用时间（禁用未来时间）
+    const disabledTime = (current: any, type: any) => {
+        const now = dayjs();
+        if (!current) return {};
+
+        // 获取当前时间的小时和分钟
+        const currentHour = now.hour();
+        const currentMinute = now.minute();
+
+        // 当选择开始时间时（仅对 RangePicker 有效）
+        if (type === 'start') {
+            return {
+                disabledHours: () => {
+                    const hours = [];
+                    for (let i = 0; i < 24; i++) {
+                        if (i > currentHour) hours.push(i);
+                    }
+                    return hours;
+                },
+                disabledMinutes: (selectedHour: any) => {
+                    if (selectedHour === currentHour) {
+                        return Array.from({ length: 60 }).map((_, i) => i > currentMinute ? i : -1);
+                    }
+                    return [];
+                }
+            };
+        }
+
+        // 当选择结束时间时（需配合开始时间逻辑）
+        if (type === 'end') {
+            const start = current.clone().startOf('day');
+            return {
+                disabledHours: () => {
+                    const hours = [];
+                    for (let i = 0; i < 24; i++) {
+                        if (i < start.hour()) hours.push(i);
+                    }
+                    return hours;
+                },
+                disabledMinutes: (selectedHour: any) => {
+                    if (selectedHour === start.hour()) {
+                        return Array.from({ length: 60 }).map((_, i) => i < start.minute() ? i : -1);
+                    }
+                    return [];
+                }
+            };
+        }
+
+        return {};
+    };
     return (
         <>
             {
@@ -106,6 +164,9 @@ export const MessageRightTitle = (props: messageParam) => {
                         <><Space style={{ width: "50rem", height: "2.07rem", marginLeft: "0.7rem" }} direction="vertical" size={12}>
                             <ConfigProvider locale={zhCN}>
                                 <RangePicker
+
+                                    disabledDate={disabledDate}
+                                    disabledTime={disabledTime}
                                     format="YYYY-MM-DD HH:mm"       // 控制显示格式
                                     showSecond={false}   // 隐藏秒
                                     placeholder={['开始时间', '结束时间']}

@@ -11,62 +11,28 @@ import {
   Pagination,
   Button,
   Table,
-  Input,
-  Space,
   Select,
   ConfigProvider,
-  Result,
   message,
   Spin,
 } from "antd";
 import Icon, {
   CaretDownOutlined,
   LeftOutlined,
-  ZoomInOutlined,
 } from "@ant-design/icons";
 import { useGetWindowSize } from "../../hooks/hook";
 import zhCN from "antd/locale/zh_CN";
 // import Kdsd from './messageDatePicker'
 import isBetween from 'dayjs/plugin/isBetween';
 import {
-  ActionSheet,
   PullToRefresh,
   SpinLoading,
   Popup,
   Calendar,
   InfiniteScroll,
 } from "antd-mobile";
-import type {
-  Action,
-  ActionSheetShowHandler,
-} from "antd-mobile/es/components/action-sheet";
 import { useNavigate } from "react-router-dom";
-import nian from '@/assets/image/nian.png'
-import yue from '@/assets/image/yue.png'
-
-
 dayjs.extend(isBetween);
-
-const { Option } = Select;
-const { RangePicker } = DatePicker;
-const getfirstOrLastDayOfMonth = (date: any, type: any) => {
-  let now = new Date(date);
-  if (type === 'first') {
-    now.setDate(1)
-  } else {
-    // 创建下个月第一天的日期对象
-    now = new Date(now.getFullYear(), now.getMonth() + 1, 1);
-    if (new Date().getTime() < now.getTime()) {
-      now = new Date();
-    } else {
-      // 减去1天得到本月最后一天
-      now.setDate(now.getDate() - 1);
-    }
-  }
-
-
-  return now;
-}
 let currentCalendarValue = new Date()
 // const { Option } = Select;
 type RangePickerProps = GetProps<typeof DatePicker.RangePicker>;
@@ -132,8 +98,6 @@ export default function Message() {
   });
   const [visible, setVisible] = useState(false);
   // 昨天提醒 62 次 前天提醒 26 次
-  console.log(total, "......total");
-
   const [datarq, setData] = useState<any>([
     {
       yestodayAlarmCount: "",
@@ -233,6 +197,8 @@ export default function Message() {
     return message;
   };
   const [nurseType, setNurseType] = useState("其他提醒");
+
+
   // 表格状态
   const titleList = [
     {
@@ -245,29 +211,29 @@ export default function Message() {
       key: "",
       title: "",
     },
+    // {
+    //   id: 3,
+    //   key: "sos",
+    //   title: "SOS提醒",
+    // },
     {
       id: 3,
-      key: "sos",
-      title: "SOS提醒",
-    },
-    {
-      id: 4,
       key: "fallbed",
       title: "坠床提醒",
     },
     {
-      id: 5,
+      id: 4,
       key: "outOffBed",
       title: "离床提醒",
     },
     {
-      id: 6,
+      id: 5,
       key: "situp",
       title: "坐床边提醒",
     },
     {
-      id: 7,
-      key: !WindowSize ? "" : "nursing,offline",
+      id: 6,
+      key: !WindowSize ? "nursing,offline" : "nursing,offline",
       title: nurseType,
     },
   ];
@@ -285,7 +251,7 @@ export default function Message() {
   ];
 
   let getDataList = (dataList: any) => {
-    console.log(dataList, '.............................dataListdataListdataList');
+
 
     return dataList.map((item: any, index: number) => {
       return {
@@ -317,6 +283,8 @@ export default function Message() {
   const [pageTotal, setPageTotal] = useState(0);
   const [titleTrue, setTitleTrue] = useState(false);
   const [weekForFirstMonth, setWeekForFirstMonth] = useState(-1);
+  console.log(title, '..........title');
+
   const homeSelectNurse: any = [
     { value: "nursing", label: "护理提醒" },
     { value: "offline", label: "离线提醒" },
@@ -324,9 +292,12 @@ export default function Message() {
   // 标题切换
   const onTitle = (item: any) => {
     // setIsName(true)
+    if (item.title == "其他提醒") {
+      setTitleTrue(true)
+    }
     if (
       item.title !== "全部提醒" ||
-      item.title !== "SOS提醒" ||
+      // item.title !== "SOS提醒" ||
       item.title !== "坠床提醒" ||
       item.title !== "离床提醒" ||
       item.title !== "坐床边提醒"
@@ -343,7 +314,7 @@ export default function Message() {
     }
     if (
       item.title == "全部提醒" ||
-      item.title == "SOS提醒" ||
+      // item.title == "SOS提醒" ||
       item.title == "坠床提醒" ||
       item.title == "离床提醒" ||
       item.title == "坐床边提醒"
@@ -355,25 +326,38 @@ export default function Message() {
     setTitleId(item.id);
     setTitleIdKey(item.key);
     if (item.key === "otherReminders") return setNursing(true);
-    if (!WindowSize) {
-      if (item.title == '其他提醒') return ''
+    if (!WindowSize && item.key === 'nursing,offline' && ['护理提醒', '离线提醒'].includes(nurseType)) {
+      return
     }
-    setParams({
-      ...params,
-      pageNum: 1,
-      pageSize: 10,
-      types: item.key,
-      startMills: timeArr[0],
-      endMills: timeArr[1],
-    });
-    getMessage({
-      ...params,
-      pageNum: 1,
-      pageSize: 10,
-      types: item.key,
-      startMills: timeArr[0],
-      endMills: timeArr[1],
-    });
+    if (!WindowSize) {
+      setParams({
+        ...params,
+        pageNum: 1,
+        pageSize: 10,
+        types: item.key,
+        startMills: timeArr[0],
+        endMills: timeArr[1],
+      });
+      getMessage({
+        ...params,
+        pageNum: 1,
+        pageSize: 10,
+        types: item.key,
+        startMills: timeArr[0],
+        endMills: timeArr[1],
+      });
+    } else {
+
+      setMobileData([]);
+      loadMore({
+        ...params,
+        pageNum: 1,
+        pageSize: 10,
+        types: item.key,
+        startMills: timeArr[0],
+        endMills: timeArr[1],
+      }, []);
+    }
   };
   //请求数据接收
   const initMessagesPage = (res: any) => {
@@ -487,8 +471,8 @@ export default function Message() {
   // 标题切换
   const titleRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const [dataRange, setDataRange] = useState<any>(null); //日期
-  const [hours, setHours] = useState<string>("1"); // 小时
-  const [minutes, setMinutes] = useState<string>("1"); // 分钟
+  const [hours, setHours] = useState<string>("0"); // 小时
+  const [minutes, setMinutes] = useState<string>("0"); // 分钟
   const [chooseTimeType, setChooseTimeType] = useState<any>('start');
   const [timeList, setTimeList] = useState<any>(timeArr);
 
@@ -551,6 +535,7 @@ export default function Message() {
     if (chooseTimeType === 'start') {
       const start = new Date(value).getTime();
       const end = new Date(timeList[1]).getTime();
+
       if (start > currentTime) {
         return message.info("开始时间不能大于当前时间");
       }
@@ -566,8 +551,6 @@ export default function Message() {
       }
       if (start < end) {
         return message.info("结束时间不能小于开始时间");
-      } if (start == end) {
-        return message.info("开始时间不能等于结束时间");
       }
     }
     return false;
@@ -588,9 +571,6 @@ export default function Message() {
 
     const isInRange: any = dayjs(date).isBetween(startOfMonth, endOfMonth, null, '[]');
     const formattedDate = dayjs(date).format('D');
-    // if (!isInRange) {
-    //   return <div style={{ visibility: 'hidden' }}></div>;
-    // }
     return (
       <div style={{ lineHeight: '40px', height: '40px', marginBottom: '12px' }}>
         {formattedDate}
@@ -668,30 +648,6 @@ export default function Message() {
       }
     };
   }
-
-  const handlePrevMonth = () => {
-    currentCalendarValue = getNaturalMonthOffsetDates(currentCalendarValue, 'premonth').prevMonth.date
-    setCurrentMonth(currentMonth1.subtract(1, 'month'));
-  };
-  const handlePrevYear = () => {
-    // currentCalendarValue = getNaturalMonthOffsetDates(currentCalendarValue, 'preyear').prevMonth.date
-
-    setCurrentMonth(currentMonth1.subtract(1, 'year'));
-  };
-  const handleNextMonth = () => {
-    currentCalendarValue = getNaturalMonthOffsetDates(currentCalendarValue, 'nextmonth').nextMonth.date
-    setCurrentMonth(currentMonth1.add(1, 'month'));
-  };
-  const handleNextYear = () => {
-    // currentCalendarValue = getNaturalMonthOffsetDates(currentCalendarValue, 'nextyear').nextMonth.date
-
-    setCurrentMonth(currentMonth1.add(1, 'year'));
-  };
-  const prevMonthButton = <img style={{ width: "1.5rem", height: "1.5rem", }} src={yue} onClick={handlePrevMonth} alt="" />;
-  const prevYearButton = <img style={{ width: "1.6rem", height: "1.6rem", marginLeft: "0.3rem" }} src={nian} onClick={handlePrevYear} alt="" />;
-  const nextMonthButton = <img style={{ width: "1.6rem", height: "1.6rem", transform: 'rotate(180deg)', }} src={yue} onClick={handleNextMonth} alt="" />;
-  const nextYearButton = <img style={{ width: "1.5rem", height: "1.5rem", transform: "rotate(180deg)", marginRight: "0.3rem" }} src={nian} onClick={handleNextYear} alt="" />;
-
   return (
     <>
       {!WindowSize ? (
@@ -728,7 +684,7 @@ export default function Message() {
                         width: "7rem",
                         height: "7rem",
                         zIndex: "10",
-                        left: "59%",
+                        left: "49%",
                         display: "flex",
                         flexDirection: "column",
                         alignItems: "center",
@@ -741,8 +697,10 @@ export default function Message() {
                           <div
                             key={`${index}_v2`}
                             onClick={() => {
-                              setNurseType(item.title);
+                              console.log(item.key, '............titleList1titleList1');
 
+                              setNurseType(item.title);
+                              setTitle(item.title);
                               setParams({
                                 ...params,
                                 types: item.key,
@@ -1218,17 +1176,8 @@ export default function Message() {
                   >
                     {dayjs(timeList[0]).format('YYYY-MM-DD')}-{dayjs(timeList[0]).format('HH:mm')}
                   </span>
-                  <span
-                    className="w-[2rem] h-[0.1rem] flex justify-center items-center  bg-[#999999]lint-height-[2.67rem]"
-                  ></span>
-                  {/* <input
-                    value={formattedDates[1]}
-                    disabled
-                    onChange={(e: any) => setEndInputTime(e.target.value)}
-                    placeholder="2025-1-1-10:10"
-                    style={{ fontFamily: "PingFang SC", textAlign: "center" }}
-                    className="w-[12rem] h-[2.67rem] rounded-[0.9rem] bg-[#ECF0F4] text-[1.2rem] "
-                  /> */}
+                  <span className="w-[2rem] h-[0.1rem] flex justify-center items-center  bg-[#999999]lint-height-[2.67rem]"></span>
+
                   <span
                     className="w-[12rem] h-[2.67rem] rounded-[0.9rem] bg-[#ECF0F4] text-[1.2rem] text-center lint-height-[2.67rem]"
                     style={{ lineHeight: '2.67rem', color: chooseTimeType !== 'end' ? '#666' : '#0072EF' }}
@@ -1249,16 +1198,7 @@ export default function Message() {
                   allowClear
                   max={new Date()}
                   min={new Date(1900, 0, 1)}
-                  // max={getfirstOrLastDayOfMonth(currentCalendarValue, 'last')}
-                  // min={getfirstOrLastDayOfMonth(currentCalendarValue, 'first')}
-                  // prevMonthButton={prevMonthButton}
-                  // prevYearButton={prevYearButton}
-                  // nextMonthButton={nextMonthButton}
-                  // nextYearButton={nextYearButton}
-                  // onPageChange={(dataRange: any) => {
-                  //   console.log('dataRange...........................', dataRange)
-                  //   currentCalendarValue = getNaturalMonthOffsetDates(currentCalendarValue, 'year', dataRange).year.date
-                  // }}
+
                   onChange={(dataRange: any) => {
                     if (!dataRange) return
                     const date = new Date(dataRange)
@@ -1324,18 +1264,6 @@ export default function Message() {
                   <Select.Option value={"时"} disabled>
                     <div className="flex justify-center">时</div>
                   </Select.Option>
-                  {[...Array(60)].map((_, index) => (
-                    <Select.Option
-                      key={`${index}_v5`}
-                      value={index.toString()}
-                      disabled={index === 0} // 仅当 index 为 0 时禁用
-                    >
-                      <div className="flex justify-center">
-                        {index.toString().padStart(2, "0")}
-                      </div>
-                    </Select.Option>
-                  ))}
-                  {/*                   
                   {[...Array(24)].map((_, index) => (
                     <Select.Option
                       key={`${index}_v4`}
@@ -1345,7 +1273,7 @@ export default function Message() {
                         {index.toString().padStart(2, "0")}
                       </div>
                     </Select.Option>
-                  ))} */}
+                  ))}
                 </Select>{" "}:{" "}
                 <Select
                   showSearch={false}
@@ -1385,9 +1313,7 @@ export default function Message() {
                     <div className="flex justify-center">分</div>
                   </Select.Option>
                   {[...Array(60)].map((_, index) => (
-                    <Select.Option key={`${index}_v5`} value={index.toString()}
-                      disabled={index === 0} // 仅当 index 为 0 时禁用
-                    >
+                    <Select.Option key={`${index}_v5`} value={index.toString()}>
                       <div className="flex justify-center">
                         {index.toString().padStart(2, "0")}
                       </div>

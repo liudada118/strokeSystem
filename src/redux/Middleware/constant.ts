@@ -44,7 +44,7 @@ export function reloadWebview() {
 }
 
 export function audioPlay() {
-    message.info('audioPlay')
+    // message.info('audioPlay')
     try {
         const u = window.navigator.userAgent
         if (u.indexOf('Android') > -1 || u.indexOf('Adr') > -1) {
@@ -56,7 +56,7 @@ export function audioPlay() {
 }
 
 export function audioPause(){
-    message.info('audioPause')
+    // message.info('audioPause')
     try {
         const u = window.navigator.userAgent
         if (u.indexOf('Android') > -1 || u.indexOf('Adr') > -1) {

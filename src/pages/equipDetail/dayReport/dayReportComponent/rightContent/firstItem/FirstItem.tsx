@@ -259,7 +259,6 @@ function FirstItem(props: firstItemProps) {
             const data = flat.flat()
             const res = data.map((item: any) => item.perMinuteBreathRate)
             const xinLv: any = rateArrToHeart(res)
-            console.log(xinLv, '................................................................xinLvxinLvxinLv');
             // const filteredData = xinLv.filter((item: any) => item >= 50 || item === 0);
             // 最大心率计算
             const max: any = Math.max(...xinLv)

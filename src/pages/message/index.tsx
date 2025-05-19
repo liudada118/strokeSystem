@@ -476,18 +476,16 @@ export default function Message() {
   const [minutes, setMinutes] = useState<string>("1"); // 分钟
   const [chooseTimeType, setChooseTimeType] = useState<any>('start');
   const [timeList, setTimeList] = useState<any>(timeArr);
-
   const today = new Date();
-
-  const dateStr = new Date(timeList[0]).toUTCString(); 
-  const cleanTime = dateStr.replace(/\.\d+ GMT$/, ' GMT'); 
-  const dateStr1 = new Date(timeList[1]).toUTCString(); 
+  const dateStr = new Date(timeList[0]).toUTCString();
+  const cleanTime = dateStr.replace(/\.\d+ GMT$/, ' GMT');
+  const dateStr1 = new Date(timeList[1]).toUTCString();
   const cleanTim2e = dateStr1.replace(/\.\d+ GMT$/, ' GMT');
   function formatTime(timeStr: any) {
-    const date = new Date(timeStr); 
+    const date = new Date(timeStr);
     return date.toISOString()
-      .split('T')[0] + ' ' + 
-      date.toISOString().split('T')[1].split('.')[0]; 
+      .split('T')[0] + ' ' +
+      date.toISOString().split('T')[1].split('.')[0];
   }
   const time = [
     cleanTime,
@@ -496,15 +494,12 @@ export default function Message() {
   const timeSearch = () => {
     const formattedList = time.map(formatTime);
     const modifiedList = formattedList.map(timeStr => {
-      return timeStr.split(':').slice(0, 2).join(':') + ":00"; 
+      return timeStr.split(':').slice(0, 2).join(':') + ":00";
     });
     if (modifiedList[0] == modifiedList[1]) {
       message.info('开始时间不能和结束时间相同')
       return
     }
-    // const
-    // console.log(www, www1, '..........009999');
-
     setVisible(false);
     setMobileData([]);
     loadMore({
@@ -814,7 +809,6 @@ export default function Message() {
                         />
                       </ConfigProvider>
                     )}
-
                   </div>
                   <div className="msgToinfoStrPage ">
                     <div className="msgToinfoStrPageDiv">
@@ -1193,17 +1187,6 @@ export default function Message() {
                   自定义区间
                 </div>
                 <div className="flex justify-around">
-                  {/* <input
-                    value={formattedDates[0]}
-                    disabled
-                    onChange={(e: any) => setStartInputTime(e.target.value)}
-                    placeholder="2025-1-1-10:10"
-                    style={{ fontFamily: "PingFang SC", textAlign: "center" }}
-                    className="w-[12rem] h-[2.67rem] rounded-[0.9rem] bg-[#ECF0F4] text-[1.2rem] "
-                    onClick={() => {
-                      console.log('000000000000000')
-                    }}
-                  /> */}
                   <span
                     className="w-[12rem] h-[2.67rem] rounded-[0.9rem] bg-[#ECF0F4] text-[1.2rem] text-center lint-height-[2.67rem]"
                     style={{ lineHeight: '2.67rem', color: chooseTimeType !== 'start' ? '#666' : '#0072EF' }}
@@ -1211,10 +1194,9 @@ export default function Message() {
                       setChooseTimeType('start')
                     }}
                   >
-                    {dayjs(timeList[0]).format('YYYY-MM-DD')}-{dayjs(timeList[0]).format('HH:mm')}
+                    {dayjs(new Date(timeList[0]).getTime()).format('YYYY-MM-DD')}-{dayjs(new Date(timeList[0]).getTime()).format('HH:mm')}
                   </span>
                   <span className="w-[2rem] h-[0.1rem] flex justify-center items-center  bg-[#999999]lint-height-[2.67rem]"></span>
-
                   <span
                     className="w-[12rem] h-[2.67rem] rounded-[0.9rem] bg-[#ECF0F4] text-[1.2rem] text-center lint-height-[2.67rem]"
                     style={{ lineHeight: '2.67rem', color: chooseTimeType !== 'end' ? '#666' : '#0072EF' }}
@@ -1222,7 +1204,7 @@ export default function Message() {
                       setChooseTimeType('end')
                     }}
                   >
-                    {dayjs(timeList[1]).format('YYYY-MM-DD')}-{dayjs(timeList[1]).format('HH:mm')}
+                    {dayjs(new Date(timeList[1]).getTime()).format('YYYY-MM-DD')}-{dayjs(new Date(timeList[1]).getTime()).format('HH:mm')}
                   </span>
                 </div>
               </div>
@@ -1235,12 +1217,10 @@ export default function Message() {
                   allowClear
                   max={new Date()}
                   min={new Date(1900, 0, 1)}
-
                   onChange={(dataRange: any) => {
                     if (!dataRange) return
                     const date = new Date(dataRange)
                     const dateStr = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`
-
                     currentCalendarValue = getNaturalMonthOffsetDates(dataRange, 'nowmonth').nowMonth.date
                     if (chooseTimeType === 'start') {
                       const hourse = dayjs(timeList[0]).format('HH:mm')
@@ -1274,7 +1254,8 @@ export default function Message() {
                   placeholder="10"
                   optionFilterProp="children"
                   value={hours}
-                  onChange={(value) => {
+                  onSelect={(value) => {
+                    console.log(chooseTimeType, value, '.......chooseTimeType.........');
                     if (chooseTimeType === 'start') {
                       const date = new Date(timeList[0])
                       date.setHours(+value)
@@ -1285,7 +1266,7 @@ export default function Message() {
                         ])
                         setHours(value as string)
                       }
-                    } else {
+                    } else if (chooseTimeType == 'end') {
                       const date = new Date(timeList[1])
                       date.setHours(+value)
                       if (!checkoutTime(date)) {
@@ -1322,7 +1303,7 @@ export default function Message() {
                   placeholder="10"
                   optionFilterProp="children"
                   value={minutes}
-                  onChange={(value) => {
+                  onSelect={(value) => {
                     if (chooseTimeType === 'start') {
                       const date = new Date(timeList[0])
                       date.setMinutes(+value)
@@ -1333,7 +1314,7 @@ export default function Message() {
                         ])
                         setMinutes(value as string)
                       }
-                    } else {
+                    } else if (chooseTimeType == 'end') {
                       const date = new Date(timeList[1])
                       date.setMinutes(+value)
                       if (!checkoutTime(date)) {

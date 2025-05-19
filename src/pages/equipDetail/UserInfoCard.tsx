@@ -451,7 +451,7 @@ const UserInfoCard: (props: UserInfoCardProps) => React.JSX.Element = (props) =>
     if (outer) {
         return (
             <div
-                className={`fixed z-[90] w-full top-[${indowSize.isMobile == true ? '' : '2.8rem'}]w - full h-[${indowSize.isMobile == true ? '9.6rem' : "6rem"}] bg - [#fff]`} >
+                className={`fixed z-[99999999] w-full top-[${indowSize.isMobile == true ? '' : '2.8rem'}]w - full h-[${indowSize.isMobile == true ? '9.6rem' : "6rem"}] bg - [#fff]`} >
                 <div className='flex items-end justify-between   h-full py-[1.2rem] bg-[#fff] mx-auto border-b border-b-[#DCE3E9]'>
                     <div className='w-full h-full'>
                         <div className="flex items-center justify-center justify-between px-[14px]">

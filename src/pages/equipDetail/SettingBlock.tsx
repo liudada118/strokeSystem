@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useRef } from "react";
 import CommonFormModal, { FormType } from "../../components/CommonFormModal";
 import { Button, Input, message, Modal, Popconfirm, Switch } from "antd";
 import type { PopconfirmProps } from "antd";
@@ -637,6 +637,7 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
     //   ],
     // },
   ];
+  console.log(leavebedParam, '.....................leavebedParam')
   const machineType = [
     {
       label: "床垫类型",
@@ -646,6 +647,7 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
       label: "MAC地址",
       value: deviceId,
     },
+
 
     //  暂时先注释了，后期说不定会添加 ，先别删除
     // {
@@ -862,9 +864,15 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
     message.info("取消成功");
   };
   const [switchOpen, setSwitchOpen] = useState(false);
-  const [switchOpenValue, setSwitchOpenValue] = useState<any>(0);
+  const [switchOpenValue, setSwitchOpenValue] = useState<any>(leavebedParam);
+  const inputRef = useRef<any>(null);
   const isOpen = () => {
     setSwitchOpen(true);
+    setTimeout(() => {
+      if (inputRef.current) {
+        inputRef.current.focus();
+      }
+    }, 0);
   };
   const onBlurShezhi = () => {
     if (switchOpenValue.length > 4) return message.info("只能0到99数字");
@@ -979,25 +987,28 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
             离床参数 <span className="mr-[3rem] " style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{leavebedParam}</span>
           </span>
           {switchOpen ? (
-            <Input
-              maxLength={5}
-              value={switchOpenValue}
-              placeholder="请输入"
-              onBlur={onBlurShezhi}
-              onChange={(val: any) => {
-                const inputValue: any = val.target.value;
-                if (inputValue.length > 2) {
-                  setSwitchOpenValue('')
-                  return message.info("不能大于99");
-                }
-                if (!/^[^\u4e00-\u9fa5]{0,10}$/g.test(inputValue)) {
-                  setSwitchOpenValue('')
-                  return message.info("请输入数字");
-                }
-                setSwitchOpenValue(inputValue)
-              }}
-              className="input_leave_setupInput"
-            ></Input>
+            <>
+              <Input
+                ref={inputRef}
+                maxLength={5}
+                value={switchOpenValue}
+                placeholder="请输入"
+                onBlur={onBlurShezhi}
+                onChange={(val: any) => {
+                  const inputValue: any = val.target.value;
+                  if (inputValue.length > 2) {
+                    setSwitchOpenValue('')
+                    return message.info("不能大于99");
+                  }
+                  if (!/^[^\u4e00-\u9fa5]{0,10}$/g.test(inputValue)) {
+                    setSwitchOpenValue('')
+                    return message.info("请输入数字");
+                  }
+                  setSwitchOpenValue(inputValue)
+                }}
+                className="input_leave_setupInput"
+              ></Input>
+            </>
           ) : (
             <span
               onClick={isOpen}

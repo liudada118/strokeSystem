@@ -18,7 +18,7 @@ let objKeyToCloud: modelUserInfo = {
     switchA: "leaveBedAlarm",
     switchB: "leaveBedAlarm",
     switchC: "situpAlarm",
-    switchD: "fallbedAlarm",
+    switchD: "  ",
     switchE: "sosAlarm",
     timeIntervalB: "leaveBedPeriod",
     timeRangeB: {
@@ -38,7 +38,6 @@ let objKeyToCloud: modelUserInfo = {
         end: 'sosEnd'
     },
 }
-
 /**
  * 
  * @returns 提醒修改

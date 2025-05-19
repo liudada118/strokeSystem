@@ -1,5 +1,6 @@
 import { OUTBEDTYPE } from "@/redux/equip/equipUtil"
 import { fakeData, fakeSensorNameArr } from "./fakeData"
+import { rateToHeart } from "@/utils/dataToFormat"
 
 /**
  * 
@@ -109,7 +110,7 @@ export const returnRealtimeData: (param: minDataParam) => realtimeReturn = ({ js
     // 如果是假数据设备
     if (fakeSensorNameArr.includes(sensorName)) {
         const rate = Math.round(12 + 4 * Math.random())
-        const heart = Math.round(rate * 5 + 4 * Math.random())
+        const heart = rateToHeart(rate) //Math.round(rate * 5 + 4 * Math.random())
         res.heart = heart
         res.rate = rate
     }

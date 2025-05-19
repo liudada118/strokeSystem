@@ -83,11 +83,11 @@ const CommonFormModal: (props: CommonFormModalProps) => React.JSX.Element = (pro
                 console.log('...........qwer');
                 return message.info('姓名和年龄不能为空')
             }
-            if (values.patientName.length > 20 && values.patientName) {
-                return message.info('姓名不能超过20个字符')
+            if (values.patientName.length > 4 && values.patientName) {
+                return message.info('姓名不能超过4个字符')
             }
-            if (values.roomNum && values.roomNum.length > 20) {
-                return message.info('床号不能超过20个字符')
+            if (values.roomNum && values.roomNum.length > 10) {
+                return message.info('床号不能超过10个字符')
             }
             if (values.age && !/^(0|[1-9]\d?|1\d{2}|200)$/.test(values.age)) {
                 return message.info('请检查年龄不能大于200岁,必须是数字不能有其他字符')

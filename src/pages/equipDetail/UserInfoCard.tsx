@@ -422,15 +422,12 @@ const UserInfoCard: (props: UserInfoCardProps) => React.JSX.Element = (props) =>
     }, [userModal])
     const handleVisibilityChange = () => {
         const html = document.getElementsByTagName("html")[0];
-        console.log("页面状态变化：", document.hidden);
-
         if (!document.hidden) {
             // 当页面重新显示在前台时
             html.style.fontSize = '16px';
             // window.location.reload(); // 刷新页面
         }
     };
-
     useEffect(() => {
         handleVisibilityChange(); // 初始化时执行一次
         // 添加事件监听器
@@ -443,14 +440,12 @@ const UserInfoCard: (props: UserInfoCardProps) => React.JSX.Element = (props) =>
         };
         // 添加123
     }, []);
-
     const roleId: any = localStorage.getItem('roleId')
     const handleClickUserEdit = () => {
         if (isMobile) {
             navigate('/userInfo_editing', { state: { sensorName, type: 'personal', userModal } })
         } else {
             setUserInfoOpen(true)
-
         }
     }
     if (outer) {
@@ -462,13 +457,11 @@ const UserInfoCard: (props: UserInfoCardProps) => React.JSX.Element = (props) =>
                         <div className="flex items-center justify-center justify-between px-[14px]">
                             <img src={arrow} alt="" className='w-[12px] h-[18px] mb-[10px] mr-[20px]'
                                 onClick={() => navigate(`/ `)} />
-
                             <div>
-
                             </div>
-                            <p style={{ fontSize: "14px", color: "#0072EF", fontWeight: "600" }} onClick={() => navigate(`/equipInfo/${sensorName}`)} >
+                            {/* <p style={{ fontSize: "14px", color: "#0072EF", fontWeight: "600" }} onClick={() => navigate(`/equipInfo/${sensorName}`)} >
                                 查看
-                            </p >
+                            </p > */}
                         </div>
                         <div className='flex w-full pl-[3rem]'>
                             <div className='w-[5.3rem] h-[5.3rem]  mr-[1.2rem] rounded-[6px]'>
@@ -513,7 +506,7 @@ const UserInfoCard: (props: UserInfoCardProps) => React.JSX.Element = (props) =>
                     <div className='flex items-center justify-between mb-[0.8rem]'>
                         <span className='text-base font-semibold'>个人信息</span>
                         {
-                            roleId == 1 && 2 ?
+                            roleId == 1 || roleId == 2 || roleId == 0 ?
                                 <span className='text-[#0072EF] text-sm cursor-pointer mr-[10px]'
                                     onClick={() => {
                                         handleClickUserEdit()
@@ -529,7 +522,7 @@ const UserInfoCard: (props: UserInfoCardProps) => React.JSX.Element = (props) =>
                             background: `url(${userInfo.headImg ? userInfo.headImg : nullImg
                                 })  center center / cover no-repeat`,
                         }}></div>
-                      
+
                         <div className='flex flex-col justify-around md:justify-between'>
                             <span className='text-sm font-semibold' >{userInfo.patientName}</span>
                             <span className='flex flex-wrap w-full'>

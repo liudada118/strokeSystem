@@ -275,6 +275,7 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
     value: `${item}小时`,
   }));
 
+
   const settings = [
     {
       label: "翻身设置",
@@ -405,8 +406,6 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
                 },
               ]}
               onFinish={(values) => {
-
-
                 // setTimeRangeB(values.timeRangeB)
                 changeValueToUserInfo(values);
                 setAlarmParamChange(true);
@@ -798,8 +797,7 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
   //     })
 
   // }
-
-  const roleId = useSelector(roleIdSelect);
+  const roleId: any = localStorage.getItem('roleId')
   const isManageFlag = isManage(roleId);
   const renderFooterBtn = () => {
     return isManageFlag ? (
@@ -823,10 +821,8 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
       ""
     );
   };
-
   const [isSettingClick, setIsSettingClick] = useState(false);
   const role: any = localStorage.getItem("roleId");
-
   const handleAlarmSettingClick = () => {
     if (!(roleId == 1 || role == 2)) return message.info("暂无权限");
     const flag = !isSettingClick;
@@ -839,7 +835,6 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
       handleSettingCompleted();
     }
   };
-
   //设备解绑
   const confirm: PopconfirmProps["onConfirm"] = async (e) => {
 
@@ -871,9 +866,7 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
   const isOpen = () => {
     setSwitchOpen(true);
   };
-  // const roleId: any = localStorage.getItem('roleId')
   const onBlurShezhi = () => {
-
     if (switchOpenValue.length > 4) return message.info("只能0到99数字");
     if (!/^(0|[1-9]\d?|1\d{2}|99)$/.test(switchOpenValue)) return message.info("离床参数只能是数字，0到99");
     if (switchOpenValue) {
@@ -906,7 +899,7 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
     <div className="overflow-scroll h-[calc(100%-11.2rem)] mt-6">
       <div className="flex justify-between ">
         <CommonTitle name={"提醒设置"} type="square" />
-        {roleId == (1 || 2) ? (
+        {roleId == 1 || roleId == 2 || roleId == 0 ? (
           <div
             className="text-base text-sm leading-7 mr-[10px] text-[#0072EF] cursor-pointer"
             onClick={handleAlarmSettingClick}
@@ -969,7 +962,7 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
             ))}
         </div>
       ))}
-      {roleId === (1 || 2) ? (
+      {roleId == 1 || roleId == 2 || roleId == 0 ? (
         <div
           className="flex justify-between items-center"
           style={{
@@ -1051,7 +1044,7 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
                 <span className="mr-[2rem]">{item.label}</span>
                 <span>{item.value}</span>
 
-                {item.label === "MAC地址" ? roleId === (1 || 2) ? (
+                {item.label === "MAC地址" ? roleId === 1 || 2 || 0 ? (
                   <Popconfirm
                     title="你确定要解除绑定吗？"
                     description="解除绑定后，此信息再也没有了。"
@@ -1060,7 +1053,7 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
                     okText="是"
                     cancelText="否"
                   >
-                    {roleId === (1 || 2 || 0) ? (
+                    {roleId == 1 || roleId == 2 || roleId == 0 ? (
                       <span
                         className="text-[#0072EF] ml-[1rem] "
                         style={{ cursor: "pointer" }}
@@ -1127,24 +1120,9 @@ const SettingMoDal = (props: any) => {
   const close = () => {
     setOpen(false);
   };
-  const [roleId, setRoleId] = useState(0);
-  useEffect(() => {
-    Instancercv({
-      method: "get",
-      url: "/organize/getUserAuthority",
-      headers: {
-        "content-type": "multipart/form-data",
-        token: localStorage.getItem("token"),
-      },
-      params: {
-        username: localStorage.getItem("phone"),
-      },
-    }).then((res) => {
-      const roleId = res.data.data.roleId;
-      setRoleId(roleId);
-    });
-  }, []);
-  const navigate = useNavigate();
+
+  const roleId: any = localStorage.getItem('roleId')
+
   const openOnCkick = () => {
     if (!(roleId == 1 || roleId == 2 || roleId == 0)) return message.info("暂无权限");
     // setOpen(true);

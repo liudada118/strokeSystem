@@ -17,7 +17,6 @@ export default function FamilySheet(props: familySheetProps) {
     const [deleteObj, setDelete] = useState<any>({})
     const [nurseUser, setnurseUser] = useState<any>({})
     const [isModalDeletePersonOpen, setIsModalDeletePersonOpen] = useState(false)
-
     message.config({
         top: 100,
         duration: 1.5,
@@ -79,10 +78,7 @@ export default function FamilySheet(props: familySheetProps) {
                 )
             }
         },
-
-
     ]
-
     const getItemPerson = (id: any) => {
         Instancercv({
             method: "get",
@@ -96,8 +92,6 @@ export default function FamilySheet(props: familySheetProps) {
                 roleIds: `${[4]}`
             }
         }).then((res) => {
-
-
             let data = [...res.data.data]
             data = data.map((a: any, index: any) => {
                 a.id = index + 1
@@ -109,7 +103,6 @@ export default function FamilySheet(props: familySheetProps) {
 
         })
     }
-
     const deleteUserByOrganizeIdAndUsername = ({ user, id, type }: any) => {
         Instancercv({
             method: "get",
@@ -130,12 +123,10 @@ export default function FamilySheet(props: familySheetProps) {
             }
         })
     }
-
     const handleDeletePersonOk = () => {
         deleteUserByOrganizeIdAndUsername({ user: deleteObj.username, id: localStorage.getItem('organizeId'), type: 'person' })
         setIsModalDeletePersonOpen(false)
     }
-
     const handleDeletePersonCancel = () => {
         setIsModalDeletePersonOpen(false)
     }
@@ -147,7 +138,6 @@ export default function FamilySheet(props: familySheetProps) {
         if (!nurseUser.user || !nurseUser.name) {
             return message.info('用户名和手机号不能为空')
         }
-
         Instancercv({
             method: "post",
             url: "/organize/addOrganizeManager",
@@ -163,10 +153,11 @@ export default function FamilySheet(props: familySheetProps) {
                 roleId: 4
             },
         }).then((res) => {
-            getItemPerson(deleteObj.id)
-
+            getItemPerson(deleteObj.id)       
             if (res.data.msg === 'add Manager Success') {
                 return message.info('添加成功')
+            } else if (res.data.code == 500) {
+                return message.info('该账号已存在')
             }
         }).catch((e) => {
             message.error('服务器异常')

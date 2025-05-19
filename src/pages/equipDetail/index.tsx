@@ -21,6 +21,7 @@ import { selectEquipBySensorname } from "@/redux/equip/equipSlice";
 import { getNurseConfist } from "@/utils/getNursingConfig"
 import NursingStencil from '@/pages/equipDetail/nurseprocess/nursingOpen/nursingStencil'
 import { NavBar } from "antd-mobile";
+import { log } from "console";
 
 const TabTheme = {
     components: {
@@ -341,9 +342,13 @@ function Provide() {
                 deviceId: id
             }
         }).then((res) => {
+
+
             const flipbodyConfig = JSON.parse(res.data.flipbodyConfig)
+            console.log(res, flipbodyConfig, '.......................setNurseFormValuesetNurseFormValue');
             const { flipbodyCount, flipbodyTime } = flipbodyConfig
             if (flipbodyCount) {
+
                 setNurseFormValue({
                     timeRangeA: `${flipbodyCount}次`,
                     timeIntervalA: `${flipbodyTime / 60}小时`,
@@ -424,6 +429,7 @@ function Provide() {
                         nurseArr[i].status = calNurseItemStatus(4)
                     }
                 }
+
             }
             setTurnAroundPlan(nurseArr)
         }).catch((err) => {

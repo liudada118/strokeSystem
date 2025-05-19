@@ -902,7 +902,6 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
     }
     setSwitchOpen(false);
   };
-
   return (
     <div className="overflow-scroll h-[calc(100%-11.2rem)] mt-6">
       <div className="flex justify-between ">

@@ -45,8 +45,8 @@ export const MessageRightTitle = (props: messageParam) => {
         patientName.push(item.patientName)
         roomNum.push(item.roomNum)
     })
-    const [startMills, setStartMills] = useState<any>(null)
-    const [endMills, setEndMills] = useState<any>(null)
+    const [startMills, setStartMills] = useState<any>(0)
+    const [endMills, setEndMills] = useState<any>(0)
     // 时间选择器
     const handleDateChange = (dates: any, dateStrings: [string, string]) => {
         const startMills = dayjs(dateStrings[0]).format('YYYY-MM-DD HH:mm:ss');
@@ -77,6 +77,8 @@ export const MessageRightTitle = (props: messageParam) => {
                     patientName: value,
                     pageNum: 1,
                     pageSize: 10,
+                    startMills: startMills !== 0 ? startMills : timeArr[0],
+                    endMills: endMills !== 0 ? endMills : timeArr[1],
                 });
             }, 300);
             setTimeoutId(newTimeoutId);
@@ -87,6 +89,8 @@ export const MessageRightTitle = (props: messageParam) => {
                     pageNum: 1,
                     pageSize: 10,
                     roomNum: value,
+                    startMills: startMills !== 0 ? startMills : timeArr[0],
+                    endMills: endMills !== 0 ? endMills : timeArr[1],
                 });
             }, 300);
             setTimeoutId(newTimeoutId);

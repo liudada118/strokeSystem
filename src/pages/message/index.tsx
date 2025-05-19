@@ -91,6 +91,7 @@ export default function Message() {
   const formattedTime = now.format('YYYY-MM-DD HH:mm:ss');
   const timestamp = dayjs(formattedTime).valueOf();
   const WindowSize = useGetWindowSize();
+  const [startEnd, setStartEnd] = useState(null);
   message.config({
     top: 100,
     duration: 1.5,
@@ -282,6 +283,7 @@ export default function Message() {
   const [nursing, setNursing] = useState(false);
   const [isName, setIsName] = useState(false);
   const [pageTotal, setPageTotal] = useState(0);
+
   const [titleTrue, setTitleTrue] = useState(false);
   const [weekForFirstMonth, setWeekForFirstMonth] = useState(-1);
   console.log(title, '..........title');
@@ -290,76 +292,6 @@ export default function Message() {
     { value: "nursing", label: "护理提醒" },
     { value: "offline", label: "离线提醒" },
   ];
-  // 标题切换
-  const onTitle = (item: any) => {
-    // setIsName(true)
-    if (item.title == "其他提醒") {
-      setTitleTrue(true)
-    }
-    if (
-      item.title !== "全部提醒" ||
-      // item.title !== "SOS提醒" ||
-      item.title !== "坠床提醒" ||
-      item.title !== "离床提醒" ||
-      item.title !== "坐床边提醒"
-    ) {
-      setTitleTrue(true);
-    }
-    if (
-      item.title !== "其他提醒" &&
-      nurseType !== "护理提醒" &&
-      nurseType !== "离线提醒"
-    ) {
-      setNurseType("其他提醒");
-      setTitleTrue(false);
-    }
-    if (
-      item.title == "全部提醒" ||
-      // item.title == "SOS提醒" ||
-      item.title == "坠床提醒" ||
-      item.title == "离床提醒" ||
-      item.title == "坐床边提醒"
-    ) {
-      setNurseType("其他提醒");
-      setTitleTrue(false);
-    }
-    setTitle(item.title);
-    setTitleId(item.id);
-    setTitleIdKey(item.key);
-    if (item.key === "otherReminders") return setNursing(true);
-    if (!WindowSize && item.key === 'nursing,offline' && ['护理提醒', '离线提醒'].includes(nurseType)) {
-      return
-    }
-    if (!WindowSize) {
-      setParams({
-        ...params,
-        pageNum: 1,
-        pageSize: 10,
-        types: item.key,
-        startMills: timeArr[0],
-        endMills: timeArr[1],
-      });
-      getMessage({
-        ...params,
-        pageNum: 1,
-        pageSize: 10,
-        types: item.key,
-        startMills: timeArr[0],
-        endMills: timeArr[1],
-      });
-    } else {
-
-      setMobileData([]);
-      loadMore({
-        ...params,
-        pageNum: 1,
-        pageSize: 10,
-        types: item.key,
-        startMills: timeArr[0],
-        endMills: timeArr[1],
-      }, []);
-    }
-  };
   //请求数据接收
   const initMessagesPage = (res: any) => {
     try {
@@ -417,19 +349,7 @@ export default function Message() {
       key: "type",
     },
   ];
-  const getSearchValue = (item: any) => {
-    setParams({
-      ...params,
-      ...item,
-      pageNum: 1,
-    });
 
-    getMessage({
-      ...params,
-      ...item,
-      pageNum: 1,
-    });
-  };
   const [name, setName] = useState("");
   const homeSelect = [
     { value: "patientName", label: "姓名" },
@@ -481,6 +401,10 @@ export default function Message() {
   const cleanTime = dateStr.replace(/\.\d+ GMT$/, ' GMT');
   const dateStr1 = new Date(timeList[1]).toUTCString();
   const cleanTim2e = dateStr1.replace(/\.\d+ GMT$/, ' GMT');
+  const [pcStart, setPcStart] = useState<any>({
+    start: 0,
+    end: 0,
+  })
   function formatTime(timeStr: any) {
     const date = new Date(timeStr);
     return date.toISOString()
@@ -491,6 +415,100 @@ export default function Message() {
     cleanTime,
     cleanTim2e
   ]
+  // 标题切换
+  const onTitle = (item: any) => {
+
+    // setIsName(true)
+    if (item.title == "其他提醒") {
+      setTitleTrue(true)
+    }
+    if (
+      item.title !== "全部提醒" ||
+      // item.title !== "SOS提醒" ||
+      item.title !== "坠床提醒" ||
+      item.title !== "离床提醒" ||
+      item.title !== "坐床边提醒"
+    ) {
+      setTitleTrue(true);
+    }
+    if (
+      item.title !== "其他提醒" &&
+      nurseType !== "护理提醒" &&
+      nurseType !== "离线提醒"
+    ) {
+      setNurseType("其他提醒");
+      setTitleTrue(false);
+    }
+    if (
+      item.title == "全部提醒" ||
+      // item.title == "SOS提醒" ||
+      item.title == "坠床提醒" ||
+      item.title == "离床提醒" ||
+      item.title == "坐床边提醒"
+    ) {
+      setNurseType("其他提醒");
+      setTitleTrue(false);
+    }
+    setTitle(item.title);
+    setTitleId(item.id);
+    setTitleIdKey(item.key);
+    if (item.key === "otherReminders") return setNursing(true);
+    if (!WindowSize && item.key === 'nursing,offline' && ['护理提醒', '离线提醒'].includes(nurseType)) {
+      return
+    }
+    if (!WindowSize) {
+      setParams({
+        ...params,
+        pageNum: 1,
+        pageSize: 10,
+        types: item.key,
+        startMills: pcStart.start !== 0 ? pcStart.start : timeArr[0],
+        endMills: pcStart.end !== 0 ? pcStart.end : timeArr[1],
+
+      });
+      getMessage({
+        ...params,
+        pageNum: 1,
+        pageSize: 10,
+        types: item.key,
+        startMills: pcStart.start !== 0 ? pcStart.start : timeArr[0],
+        endMills: pcStart.end !== 0 ? pcStart.end : timeArr[1],
+      });
+    } else {
+      setMobileData([]);
+      loadMore({
+        ...params,
+        pageNum: 1,
+        pageSize: 10,
+        types: item.key,
+        startMills: dayjs(timeList[0]).valueOf(),
+        endMills: dayjs(timeList[1]).valueOf(),
+      }, []);
+    }
+  };
+  console.log(pcStart, '..............111.....08900');
+
+  const getSearchValue = (item: any) => {
+    console.log(item, '.............222.111.....08900');
+
+    setPcStart({
+      start: item.startMills,
+      end: item.endMills,
+    })
+    console.log(item[0], item[1], item, '......................08900');
+
+    setParams({
+      ...params,
+      ...item,
+      pageNum: 1,
+    });
+    getMessage({
+      ...params,
+      ...item,
+      pageNum: 1,
+    });
+  };
+
   const timeSearch = () => {
     const formattedList = time.map(formatTime);
     const modifiedList = formattedList.map(timeStr => {
@@ -565,14 +583,12 @@ export default function Message() {
     } else {
       const start = new Date(value).getTime();
       const end = new Date(timeList[0]).getTime();
-
       if (start > currentTime) {
         return message.info("结束时间不能大于当前时间");
       }
       if (start < end) {
         return message.info("结束时间不能小于开始时间");
       }
-
     }
 
     // if (currentTime == end) {
@@ -727,14 +743,14 @@ export default function Message() {
                               setParams({
                                 ...params,
                                 types: item.key,
-                                startMills: timeArr[0],
-                                endMills: timeArr[1],
+                                startMills: pcStart.start !== 0 ? pcStart.start : timeArr[0],
+                                endMills: pcStart.end !== 0 ? pcStart.end : timeArr[1],
                               });
                               getMessage({
                                 ...params,
                                 types: item.key,
-                                startMills: timeArr[0],
-                                endMills: timeArr[1],
+                                startMills: pcStart.start !== 0 ? pcStart.start : timeArr[0],
+                                endMills: pcStart.end !== 0 ? pcStart.end : timeArr[1],
                               });
                               setTitleTrue(false);
                             }}
@@ -762,7 +778,7 @@ export default function Message() {
                           style={{ color: "#0072EF" }}
                         >
 
-                          {todayAlarmCount}
+                          {pageTotal}
                         </span>{" "}
                         次
                       </p>
@@ -962,7 +978,7 @@ export default function Message() {
                         color: "#0072EF",
                       }}
                     >
-                      {todayAlarmCount}
+                      {pageTotal}
                     </span>{" "}
                     <span style={{ fontSize: "14px" }}>次</span>
                   </p>

@@ -178,7 +178,7 @@ export default forwardRef((props: any, refs: any) => {
 
   const initOnbedOrLeaveBedPage = ({ circleArr, resSleep, timer, wsPointData, type }: any) => {
     console.log(valueArrRef.current.onbedState)
-    if ( valueArrRef.current.onbedState && ![0,100].includes(valueArrRef.current.onbedState)) {
+    if (valueArrRef.current.onbedState && ![0, 100].includes(valueArrRef.current.onbedState)) {
       initPage({ circleArr, resSleep, timer, wsPointData, type })
     } else {
       initPage({ circleArr: [], wsPointData: new Array(1024).fill(0), resSleep: 4, type: 'realtime' })

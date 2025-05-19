@@ -222,9 +222,11 @@ function TurnReportProps(props: turnReport) {
     <CardWithoutTitle>
       <div className="turnReportContent nurseContent">
         <div className="nurseTitleName">翻身卡
-          <div className="learnMore cursor-pointer" onClick={() => {
+          {/* 后期开发 */}
+          {/* <div className="learnMore cursor-pointer" onClick={() => {
             if (props.changeFlag) props.changeFlag(true)
-          }}>查看更多</div></div>
+          }}>查看更多</div> */}
+        </div>
         <div className="nurseValueItems">
           <div className="nurseValueItem">
             <div className="nurseValueTitle">实际翻身次数</div>

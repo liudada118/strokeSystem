@@ -55,8 +55,6 @@ const TurnCardTable: (props: TurnCardTableProps) => React.JSX.Element = (props) 
                     "token": token
                 },
             }).then((res: any) => {
-                console.log(res, '........setDataListsetDataList');
-
                 setDataList({
                     ...dataList,
                     flipBodyCount: res.data.flipBodyCount,

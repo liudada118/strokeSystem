@@ -175,8 +175,19 @@ function NurseAdd(props: any) {
                                     if (!v) return
                                     const hour = v[0] && +v[0] < 10 ? '0' + v[0] : v[0]
                                     const min = v[1] && +v[1] < 10 ? '0' + v[1] : v[1]
-                                    const result = `${hour}:${min}`
-                                    const time = new Date(dayjs(new Date().getTime()).format("YYYY-MM-DD") + ' ' + `${result}`).getTime()
+                                    // const result = `${hour}:${min}` // 10 : 50
+                                    // // const time = new Date(dayjs().format("YYYY-MM-DD") + ' ' + `${result}`).getTime()
+                                    // // console.log(time, result,new Date().getTime(), '.......................newDategetTime');
+
+                                    // const dateStr = `${dayjs().format("YYYY-MM-DD")}T${result}`; // e.g., "2025-05-16T14:30:00"  
+                                    // console.log(dateStr); // check the output  
+                                    // const time = new Date(dateStr).getTime();
+                                    // console.log((dayjs(1747377861037).format("YYYY-MM-DD")) , 'dayjs')
+
+
+                                    const time = new Date(new Date().toLocaleDateString()).getTime() + Number(hour) * 60*60*1000 + Number(min)*60*1000
+
+
                                     if (time > new Date().getTime()) return message.info('时间不能大于当前时间')
                                     setCompletionTime(time)
                                 }}

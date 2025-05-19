@@ -100,7 +100,7 @@ const equipSlice = createSlice({
                 state.equipPc = equipPc
                 state.equipConstant = res
             } catch (error) {
-                console.log(error, '2131212124121...................44444444...............yyyyds')
+             
             }
         }
     },
@@ -346,7 +346,7 @@ export const changePersonalEquipAlarmInfo = createAsyncThunk('equip/changeAlarmI
         const response = await fetchDatarcv(realOption)
         return response.data
     } catch (error) {
-        console.log(error, '000000.................44444444...............yyyyds....yyyyds')
+
     }
 })
 

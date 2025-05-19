@@ -10,6 +10,7 @@ import {
   changePersonalEquipAlarmInfo,
   selectEquipBySensorname,
   statusSelect, fetchEquips,
+  selectRealEquipBySensorname,
 } from "@/redux/equip/equipSlice";
 import { onOverSettings } from '@/redux/Nurse/Nurse'
 import { equipInfoFormatUtil, minToHourText } from "@/utils/dataToFormat";
@@ -637,7 +638,6 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
     //   ],
     // },
   ];
-  console.log(leavebedParam, '.....................leavebedParam')
   const machineType = [
     {
       label: "床垫类型",
@@ -694,7 +694,6 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
     onModify(true);
   };
 
-  //overSettings
   const handleSettingCompleted = () => {
 
     dispatch(onOverSettings(true))
@@ -864,7 +863,7 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
     message.info("取消成功");
   };
   const [switchOpen, setSwitchOpen] = useState(false);
-  const [switchOpenValue, setSwitchOpenValue] = useState<any>(leavebedParam);
+
   const inputRef = useRef<any>(null);
   const isOpen = () => {
     setSwitchOpen(true);
@@ -874,6 +873,32 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
       }
     }, 0);
   };
+  const [bedExitParametersBedExit, setBedExitParametersBedExit] = useState()
+  const [switchOpenValue, setSwitchOpenValue] = useState<any>(leavebedParam);
+  const bedExitParameters = () => {
+    try {
+      Instancercv({
+        method: "get",
+        url: "/device/selectSinglePatient",
+        headers: {
+          "content-type": "multipart/form-data",
+          "token": token
+        },
+        params: {
+          sensorName: sensorName,
+          phoneNum: localStorage.getItem('phone')
+        }
+      }).then((res: any) => {
+        setBedExitParametersBedExit(res.data.data.leavebedParam)
+        message.success("修改成功");
+      })
+    } catch (error) {
+
+    }
+  }
+  useEffect(() => {
+    bedExitParameters()
+  }, [])
   const onBlurShezhi = () => {
     if (switchOpenValue.length > 4) return message.info("只能0到99数字");
     if (!/^(0|[1-9]\d?|1\d{2}|99)$/.test(switchOpenValue)) return message.info("离床参数只能是数字，0到99");
@@ -893,11 +918,12 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
           },
         }).then((res: any) => {
           // fetchEquips()
-          dispatch(fetchEquips())
-          message.success("修改成功");
+
+          bedExitParameters()
+          // message.success("修改成功");
         });
       } catch (error) {
-        message.success("修改成功");
+
       }
     }
     setSwitchOpen(false);
@@ -983,7 +1009,7 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
             className="text-base text-[#32373E] ml-[0.4rem]"
             style={{ fontWeight: "600" }}
           >
-            离床参数 <span className="mr-[3rem] " style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{leavebedParam}</span>
+            离床参数 <span className="mr-[3rem] " style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{bedExitParametersBedExit}</span>
           </span>
           {switchOpen ? (
             <>

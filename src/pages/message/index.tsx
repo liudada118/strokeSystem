@@ -75,12 +75,9 @@ export function msgToinfoStr(msg: string): string {
   return "";
 }
 
-const timeArr = [
-  new Date(new Date().toLocaleDateString()).getTime(),
-  new Date().getTime(),
-];
 export default function Message() {
   const navigator = useNavigate();
+  const [timeArr, setTimeArr] = useState<any>([new Date(new Date().toLocaleDateString()).getTime(), new Date().getTime()])
   const phone = localStorage.getItem("phone") || "";
   const token = localStorage.getItem("token") || "";
   const [total, setTotal] = useState(0);
@@ -113,9 +110,9 @@ export default function Message() {
     pageNum: 1,
     pageSize: 10,
     startMills: timeArr[0],
-    endMills: timestamp,
-    types: "nursing,fallbed,outOffBed,situp,offline,sos",
-  });
+    endMills: timeArr[1],
+    types: "nursing,fallbed,outOffBed,situp,offline",
+  }) as any;
   const [messages, setMessages] = useState<message[]>([]);
   // 请求msg
   useEffect(() => {
@@ -205,7 +202,7 @@ export default function Message() {
   const titleList = [
     {
       id: 1,
-      key: "nursing,fallbed,outOffBed,situp,offline,sos",
+      key: "nursing,fallbed,outOffBed,situp,offline",
       title: "全部提醒",
     },
     {
@@ -275,7 +272,7 @@ export default function Message() {
   const data: any[] = getDataList(dataList);
   // 标题切换
   const [titleId, setTitleId] = useState(1);
-  const [titleKey, setTitleIdKey] = useState("");
+  const [titleKey, setTitleIdKey] = useState("nursing,fallbed,outOffBed,situp,offline");
   const [title, setTitle] = useState("全部提醒");
   const [hasMore, setHasMore] = useState(true);
   const [mobileData, setMobileData] = useState([]) as any;
@@ -286,7 +283,7 @@ export default function Message() {
 
   const [titleTrue, setTitleTrue] = useState(false);
   const [weekForFirstMonth, setWeekForFirstMonth] = useState(-1);
-  console.log(title, '..........title');
+
 
   const homeSelectNurse: any = [
     { value: "nursing", label: "护理提醒" },
@@ -360,19 +357,21 @@ export default function Message() {
   const [patientNameRoomNum, setpatientName] = useState<any>("");
 
   const [timeoutId, setTimeoutId] = useState<any>(null);
+  const [popupVisible, setPopupVisible] = useState(false);
   const handleInputChange = (value: any) => {
     setpatientName(value);
     if (timeoutId) {
       clearTimeout(timeoutId);
     }
-
     if (selectType === 'patientName') {
       const newTimeoutId = setTimeout(() => {
         loadMore({
           ...params,
           pageNum: 1,
-          // types: titleKey,
+          types: titleKey,
           patientName: value,
+          startMills: pcStart.start !== 0 ? pcStart.start : timeArr[0],
+          endMills: pcStart.end !== 0 ? pcStart.end : timeArr[1],
         }, []);
       }, 300);
       setTimeoutId(newTimeoutId);
@@ -381,8 +380,10 @@ export default function Message() {
         loadMore({
           ...params,
           pageNum: 1,
-          // types: titleKey,
+          types: titleKey,
           roomNum: value,
+          startMills: pcStart.start !== 0 ? pcStart.start : timeArr[0],
+          endMills: pcStart.end !== 0 ? pcStart.end : timeArr[1],
         }, []);
       }, 300);
       setTimeoutId(newTimeoutId);
@@ -481,22 +482,25 @@ export default function Message() {
         pageNum: 1,
         pageSize: 10,
         types: item.key,
-        startMills: dayjs(timeList[0]).valueOf(),
-        endMills: dayjs(timeList[1]).valueOf(),
+        startMills: pcStart.start !== 0 ? pcStart.start : timeArr[0],
+        endMills: pcStart.end !== 0 ? pcStart.end : timeArr[1],
       }, []);
     }
   };
-  console.log(pcStart, '..............111.....08900');
 
   const getSearchValue = (item: any) => {
-    console.log(item, '.............222.111.....08900');
-
     setPcStart({
       start: item.startMills,
       end: item.endMills,
     })
-    console.log(item[0], item[1], item, '......................08900');
-
+    if (!item.roomNum) {
+      delete item.roomNum
+      delete params?.roomNum
+    }
+    if (!item.patientName) {
+      delete item.patientName
+      delete params?.patientName
+    }
     setParams({
       ...params,
       ...item,
@@ -508,7 +512,6 @@ export default function Message() {
       pageNum: 1,
     });
   };
-
   const timeSearch = () => {
     const formattedList = time.map(formatTime);
     const modifiedList = formattedList.map(timeStr => {
@@ -520,6 +523,10 @@ export default function Message() {
     }
     setVisible(false);
     setMobileData([]);
+    setPcStart({
+      start: dayjs(timeList[0]).valueOf(),
+      end: dayjs(timeList[1]).valueOf(),
+    })
     loadMore({
       ...params,
       pageNum: 1,
@@ -555,6 +562,18 @@ export default function Message() {
   };
   const loadMore = async (searchParams?: any, initData?: any) => {
     const pageNum = params.pageNum + 1;
+    if (popupVisible) {
+      if (!searchParams.roomNum) {
+        delete searchParams.roomNum
+        delete params?.roomNum
+      }
+
+      if (!searchParams.patientName) {
+        delete searchParams.patientName
+        delete params?.patientName
+      }
+    }
+
     setParams({
       ...params,
       pageNum,
@@ -590,7 +609,6 @@ export default function Message() {
         return message.info("结束时间不能小于开始时间");
       }
     }
-
     // if (currentTime == end) {
     //   return message.info("开始时间不能和结束时间相同");
     // }
@@ -609,7 +627,6 @@ export default function Message() {
     if (firstDate > date.getTime() || lastDate < date.getTime()) {
       return '';
     }
-
     const isInRange: any = dayjs(date).isBetween(startOfMonth, endOfMonth, null, '[]');
     const formattedDate = dayjs(date).format('D');
     return (
@@ -620,14 +637,11 @@ export default function Message() {
   };
   const getCurrentMonthFirstAndLastDay = (date: any) => {
     const now = date;
-
     // 获取当月第一天（00:00:00）
     const firstDay = new Date(now.getFullYear(), now.getMonth(), 1);
-
     // 获取当月最后一天（23:59:59）
     const lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0);
     lastDay.setHours(23, 59, 59, 999); // 设置为当天最后一毫秒
-
     return {
       firstDay: {
         date: firstDay,
@@ -643,33 +657,28 @@ export default function Message() {
   }
   const getNaturalMonthOffsetDates = (date: any, type?: any, year?: any) => {
     const now = date;
-
     // 一个月后的今天（自然月）
     const nextMonth = new Date(now);
     nextMonth.setDate(1)
     if (type === 'nextmonth') {
       nextMonth.setMonth(nextMonth.getMonth() + 1);
     }
-
     // 前一个月的今天（自然月）
     let prevMonth = new Date(now);
     prevMonth.setDate(1)
     if (type === 'premonth') {
       prevMonth.setMonth(prevMonth.getMonth() - 1);
     }
-
     let newYear = new Date(now);
     newYear.setDate(1)
     if (type === 'year') {
       newYear.setFullYear(year);
     }
-
     // 前一个月的今天（自然月）
     let nowMonth = new Date(now);
     if (type === 'nowmonth') {
       nowMonth.setDate(1)
     }
-
     return {
       year: {
         date: newYear,
@@ -688,6 +697,15 @@ export default function Message() {
         formatted: nowMonth.toLocaleDateString()
       }
     };
+  }
+  const calendarRef = useRef<any>(null);
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  const onReset = () => {
+    const today: any = new Date();
+    setSelectedDate(today);
+    setTimeList(
+      timeArr
+    )
   }
   return (
     <>
@@ -872,6 +890,16 @@ export default function Message() {
                 defaultValue={selectType}
                 style={{ width: 80 }}
                 onChange={(e) => {
+                  setPopupVisible(true)
+                  setMobileData([]);
+                  loadMore({
+                    ...params,
+                    roomNum: '',
+                    patientName: '',
+                    pageNum: 1,
+                    pageSize: 10,
+                    types: titleKey
+                  }, []);
                   setSelectType(e);
                   setpatientName('')
                 }}
@@ -891,13 +919,13 @@ export default function Message() {
                 onChange={(e: any) => handleInputChange(e.target.value)}
                 // onChange={(e) => setpatientName(e.target.value)}
                 placeholder="请输入姓名/床号"
-              // onBlur={onBlur}
+
               />
               {/* <img src={fang} style={{ width: "1.5rem", height: "1.5rem" }} alt="" /> */}
               {/* <ZoomInOutlined className="MessageYiDongFangDAJing" /> */}
             </div>
             <span
-              // onClick={onShijian}
+
               onClick={() => {
                 setVisible(true);
               }}
@@ -907,15 +935,6 @@ export default function Message() {
               <CaretDownOutlined />
             </span>
           </div>
-          {/* {
-            fale ? <Space style={{ width: "50rem", height: "39px", marginLeft: "10px" }} direction="vertical" size={12}>
-              <RangePicker
-                placeholder={['开始时间', '结束时间']}
-                onChange={(dates, dateStrings) => handleDateChange(dates, dateStrings)}
-                style={{ width: "18rem", height: "39px", marginLeft: "10px" }}
-                showTime />
-            </Space> : ""
-          } */}
           <div className="MessageYiDOngTitle">
             {titleList &&
               titleList.map((item, index) => {
@@ -1197,10 +1216,10 @@ export default function Message() {
                 style={{ borderBottom: "1px solid #D8D8D8" }}
               >
                 <div
-                  className="my-[1rem] ml-[2.3rem] text-[1.4rem] text-[#000]"
+                  className="flex  justify-between  my-[1rem] mx-[2.3rem] text-[1.4rem] text-[#000]"
                   style={{ fontFamily: " PingFang SC" }}
                 >
-                  自定义区间
+                  <span >自定义区间</span> <span onClick={() => onReset()}>重置</span>
                 </div>
                 <div className="flex justify-around">
                   <span
@@ -1226,7 +1245,8 @@ export default function Message() {
               </div>
               <div className="customStyle">
                 <Calendar
-                  defaultValue={new Date()}
+                  ref={calendarRef}
+                  value={selectedDate}
                   // renderDate={renderDate}
                   className={`calendar-set-box`}
                   selectionMode="single"
@@ -1236,6 +1256,7 @@ export default function Message() {
                   onChange={(dataRange: any) => {
                     if (!dataRange) return
                     const date = new Date(dataRange)
+                    setSelectedDate(date)
                     const dateStr = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`
                     currentCalendarValue = getNaturalMonthOffsetDates(dataRange, 'nowmonth').nowMonth.date
                     if (chooseTimeType === 'start') {
@@ -1271,7 +1292,6 @@ export default function Message() {
                   optionFilterProp="children"
                   value={hours}
                   onSelect={(value) => {
-                    console.log(chooseTimeType, value, '.......chooseTimeType.........');
                     if (chooseTimeType === 'start') {
                       const date = new Date(timeList[0])
                       date.setHours(+value)

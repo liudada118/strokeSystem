@@ -27,7 +27,8 @@ export enum FormType {
     ADDRESS = 'ADDRESS',
     SICKNESS = 'SICKNESS',
     INPUT_NUMBER = 'INPUT_NUMBER',
-    RADIO_CASCADE = 'RADIO_CASCADE'
+    RADIO_CASCADE = 'RADIO_CASCADE',
+    TIME_INTERVAL_V2 = 'TIME_INTERVAL_V2'
 }
 type CommonFormItem = {
     label: string;

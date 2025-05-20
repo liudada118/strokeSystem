@@ -32,7 +32,7 @@ export default function Equip() {
     const navigate = useNavigate()
     const equip = useSelector(equipPlaySelect)
     const equipPc = useSelector(equipPcPlaySelect)
-    const newVoiceExample = useSelector(newVoiceExampleSelect)  
+    const newVoiceExample = useSelector(newVoiceExampleSelect)
     const alarm = useSelector(alarmSelect)
     const homeSelectValue = useSelector((state: any) => state.home.homeSelectValue)
     const homeSelectType = useSelector((state: any) => state.home.homeSelectType)
@@ -148,7 +148,7 @@ export default function Equip() {
                 {datalist.length ? datalist.map((equips: Array<equip>, indexs: any) => {
                     return <div className="equipsContent" key={indexs}>
                         <div className={`equips`}>
-                            {equips?.map((item, index) => {                           
+                            {equips?.map((item, index) => {                         
                                 const alarmInfo = alarm.filter((a: any) => {
                                     return a.sensorName == item.sensorName
                                 })
@@ -234,7 +234,7 @@ export default function Equip() {
                   `}
                                             onClick={() => {
                                                 if (item.type == 'large') {
-                                             
+
                                                     navigate(`/report/0/${item.sensorName}`, {
                                                         state: {
                                                             person: item
@@ -243,7 +243,7 @@ export default function Equip() {
                                                     dispatch(nurseOpen(false))
                                                 }
                                                 else {
-                                                   
+
                                                     navigate(`/report/0/${item.sensorName}`, {
                                                         state: {
                                                             person: item
@@ -328,7 +328,7 @@ export default function Equip() {
                             return (
                                 <div className={`equip`} key={item.sensorName}
                                     onClick={(e) => {
-                                
+
                                         navigate(`/report/0/${item.sensorName}`, {
                                             state: {
                                                 person: item
@@ -391,7 +391,7 @@ export default function Equip() {
                                         className={`equipItem  ${stateToObj[onBedState(item)].class}`}
                                         onClick={() => {
                                             if (item.type == 'large') {
-                                             
+
                                                 navigate(`/report/0/${item.sensorName}`, {
                                                     state: {
                                                         person: item
@@ -400,7 +400,7 @@ export default function Equip() {
                                                 dispatch(nurseOpen(false))
                                             }
                                             else {
-                                             
+
                                                 navigate(`/report/0/${item.sensorName}`, {
                                                     state: {
                                                         person: item

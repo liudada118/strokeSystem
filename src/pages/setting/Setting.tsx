@@ -1452,7 +1452,7 @@ export default function Setting() {
 
   const warehouse = () => {
     // localhost:8080/rcv/device/addSensorIndex?mac=AC6C&type=dd
-    instance({
+    Instancercv({
       method: "post",
       url: `/device/addSensorIndex`,
       params: {
@@ -1465,8 +1465,8 @@ export default function Setting() {
       },
     }).then((res) => {
 
-      if (res.data.msg == "success") {
-        message.success('入库成功')
+      if (res.data.msg == "设备入库成功") {
+        message.success('设备入库成功')
       }
     })
 

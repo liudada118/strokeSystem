@@ -74,7 +74,7 @@ export function TurnEdit() {
             title: '设置翻身次数'
         },
         {
-            type: FormType.TIME_INTERVAL,
+            type: FormType.TIME_INTERVAL_V2,
             objKey: "timeIntervalA",
             label: '设置翻身间隔',
             title: '设置翻身间隔'

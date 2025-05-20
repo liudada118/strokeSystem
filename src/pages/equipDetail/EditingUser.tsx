@@ -639,6 +639,12 @@ const timeIntervalColumns = [
     value: index === 0 ? index : `${index}分钟后提醒`,
   })),
 ];
+const fanshencolumns = [
+  [1, 2, 3].map((item, index) => ({
+    label: `${item}小时`,
+    value: `${item}小时`,
+  })),
+];
 
 const secondArr = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
@@ -716,6 +722,13 @@ export const RenderListItem = ({
         visible: true,
         key,
       });
+    } else if (type === FormType.TIME_INTERVAL_V2) {
+      setPickerInfo({
+        title,
+        columns: fanshencolumns,
+        visible: true,
+        key,
+      });
     } else {
       setPickerInfo({
         title,
@@ -749,6 +762,7 @@ export const RenderListItem = ({
     case FormType.SECONDRATE:
     case FormType.TIME_RANGE:
     case FormType.TIME_INTERVAL:
+    case FormType.TIME_INTERVAL_V2:
       return (
         <List.Item
           key={key}

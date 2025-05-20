@@ -1,4 +1,5 @@
 export function press(arr: any, width: any, height: any, type = "row") {
+    return arr
     let wsPointData: any = [...arr];
 
     if (type == "row") {

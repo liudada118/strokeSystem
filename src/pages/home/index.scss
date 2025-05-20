@@ -871,3 +871,17 @@
         }
     }
 }
+
+
+.Equipcarousel{
+   
+    .slick-dots{
+         bottom:0 !important;   
+        .slick-active{
+            &:where(.css-dev-only-do-not-override-1v5z42l).ant-carousel .slick-dots li button{
+                background: #0072EF!important;
+            }
+        }
+         
+    }
+}

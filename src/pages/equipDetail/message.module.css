@@ -85,8 +85,9 @@
 .mobileTabContent :global .ant-tabs-nav {
   position: fixed !important;
   top: 9.7rem;
-  z-index: 9;
+  z-index: 99999999;
   width: 100%;
+  border-top: 1px solid #e8e8e8;
 }
 
 .mobileTabContent :global .ant-tabs-content-holder {

@@ -218,9 +218,7 @@ export function RemindEdit() {
 
         }
     }
-    console.log(pickerInfo.columns, '..................pickerInfocolumns');
-
-    const formatSetting = (formValue: any) => {
+      const formatSetting = (formValue: any) => {
         let obj = {}
         const newValue = {
             ...formValue,

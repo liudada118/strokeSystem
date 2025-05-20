@@ -193,7 +193,6 @@ export function NurseEdit() {
   };
 
   const saveNurseConfigToCloud = () => {
-    console.log(nurseConfig, "99999999");
     Instancercv({
       method: "post",
       url: "/nursing/updateNursingConfig",

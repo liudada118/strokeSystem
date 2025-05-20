@@ -32,7 +32,7 @@ export default function NurseList(props: any) {
 
   const handleVisibilityChange = () => {
     const html = document.getElementsByTagName("html")[0];
-    console.log("页面状态变化：", document.hidden);
+
 
     if (!document.hidden) {
       // 当页面重新显示在前台时

@@ -891,7 +891,6 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
         }
       }).then((res: any) => {
         setBedExitParametersBedExit(res.data.data.leavebedParam)
-        message.success("修改成功");
       })
     } catch (error) {
 

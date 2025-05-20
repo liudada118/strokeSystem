@@ -866,6 +866,7 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
 
   const inputRef = useRef<any>(null);
   const isOpen = () => {
+    bedExitParameters()
     setSwitchOpen(true);
     setTimeout(() => {
       if (inputRef.current) {
@@ -873,8 +874,8 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
       }
     }, 0);
   };
-  const [bedExitParametersBedExit, setBedExitParametersBedExit] = useState()
-  const [switchOpenValue, setSwitchOpenValue] = useState<any>(leavebedParam);
+  const [bedExitParametersBedExit, setBedExitParametersBedExit] = useState<any>()
+  // const [switchOpenValue, setSwitchOpenValue] = useState<any>(leavebedParam);
   const bedExitParameters = () => {
     try {
       Instancercv({
@@ -900,9 +901,9 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
     bedExitParameters()
   }, [])
   const onBlurShezhi = () => {
-    if (switchOpenValue.length > 4) return message.info("只能0到99数字");
-    if (!/^(0|[1-9]\d?|1\d{2}|99)$/.test(switchOpenValue)) return message.info("离床参数只能是数字，0到99");
-    if (switchOpenValue) {
+    if (bedExitParametersBedExit.length > 4) return message.info("只能0到99数字");
+    if (!/^(0|[1-9]\d?|1\d{2}|99)$/.test(bedExitParametersBedExit)) return message.info("离床参数只能是数字，0到99");
+    if (bedExitParametersBedExit) {
       try {
         Instancercv({
           method: "post",
@@ -914,7 +915,7 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
           },
           data: {
             deviceId: sensorName,
-            leaveBedParam: switchOpenValue,
+            leaveBedParam: bedExitParametersBedExit,
           },
         }).then((res: any) => {
           // fetchEquips()
@@ -1016,20 +1017,20 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
               <Input
                 ref={inputRef}
                 maxLength={5}
-                value={switchOpenValue}
+                value={bedExitParametersBedExit}
                 placeholder="请输入"
                 onBlur={onBlurShezhi}
                 onChange={(val: any) => {
                   const inputValue: any = val.target.value;
                   if (inputValue.length > 2) {
-                    setSwitchOpenValue('')
+                    setBedExitParametersBedExit('')
                     return message.info("不能大于99");
                   }
                   if (!/^[^\u4e00-\u9fa5]{0,10}$/g.test(inputValue)) {
-                    setSwitchOpenValue('')
+                    setBedExitParametersBedExit('')
                     return message.info("请输入数字");
                   }
-                  setSwitchOpenValue(inputValue)
+                  setBedExitParametersBedExit(inputValue)
                 }}
                 className="input_leave_setupInput"
               ></Input>

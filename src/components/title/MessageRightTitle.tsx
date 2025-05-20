@@ -15,36 +15,23 @@ interface messageParam {
     titleChangeGetMessage: Function,
     titleKey?: string
 }
-const timeArr = [new Date(new Date().toLocaleDateString()).getTime(), new Date(new Date().toLocaleDateString()).getTime() + 86400000]
 
 export const MessageRightTitle = (props: messageParam) => {
     const { titleChangeGetMessage, titleKey } = props
-    const [timeArr, setTimeArr] = useState<any>([new Date(new Date().toLocaleDateString()).getTime(), new Date(new Date().toLocaleDateString()).getTime() + 86400000])
+    const [timeArr, setTimeArr] = useState<any>([new Date(new Date().toLocaleDateString()).getTime(), new Date().getTime()])
+
+    // const [timeArr, setTimeArr] = useState<any>([new Date(new Date().toLocaleDateString()).getTime(), new Date(new Date().toLocaleDateString()).getTime() + 86400000])
     // 搜索框
     const [patientNameRoomNum, setpatientName] = useState<any>('')
     const storedData = localStorage.getItem('dataList');
     const dataList = storedData ? JSON.parse(storedData) : [];
     const windowSize = useGetWindowSize()
-    //去重
-    function unique(list: any) {
-        if (!Array.isArray(list)) {
-            console.log('type error!')
-            return
-        }
-        var array = [];
-        for (var i = 0; i < list.length; i++) {
-            if (array.indexOf(list[i]) === -1) {
-                array.push(list[i])
-            }
-        }
-        return array;
-    }
     const patientName: any = []
     const roomNum: any = []
-    dataList.forEach((item: any) => {
-        patientName.push(item.patientName)
-        roomNum.push(item.roomNum)
-    })
+    // dataList.forEach((item: any) => {
+    //     patientName.push(item.patientName)
+    //     roomNum.push(item.roomNum)
+    // })
     const [startMills, setStartMills] = useState<any>(0)
     const [endMills, setEndMills] = useState<any>(0)
     // 时间选择器
@@ -58,44 +45,13 @@ export const MessageRightTitle = (props: messageParam) => {
             endMills: dateStrings[1] ? new Date(endMills).valueOf() : timeArr[1]
         })
     };
-    const homeSelect: any = [
+    const [homeSelect, setHomeSelect]: any = useState([
         { value: 'patientName', label: '姓名' },
         { value: 'roomNum', label: '床号' },
-    ]
+    ])
     const [selectType, setSelectType] = useState('patientName');
+    const [selectFalse, setSelectFalse] = useState(false);
     const [timeoutId, setTimeoutId] = useState<any>(null);
-    const debouncedPatientNameRoomNum = useDebounce(patientNameRoomNum, 1000);
-    const handleInputChange = (value: any) => {
-        setpatientName(value);
-        if (timeoutId) {
-            clearTimeout(timeoutId);
-        }
-
-        if (selectType === 'patientName') {
-            const newTimeoutId = setTimeout(() => {
-                titleChangeGetMessage({
-                    patientName: value,
-                    pageNum: 1,
-                    pageSize: 10,
-                    startMills: startMills !== 0 ? startMills : timeArr[0],
-                    endMills: endMills !== 0 ? endMills : timeArr[1],
-                });
-            }, 300);
-            setTimeoutId(newTimeoutId);
-        } else if (selectType === 'roomNum') {
-            const newTimeoutId = setTimeout(() => {
-                titleChangeGetMessage({
-
-                    pageNum: 1,
-                    pageSize: 10,
-                    roomNum: value,
-                    startMills: startMills !== 0 ? startMills : timeArr[0],
-                    endMills: endMills !== 0 ? endMills : timeArr[1],
-                });
-            }, 300);
-            setTimeoutId(newTimeoutId);
-        }
-    };
     useEffect(() => {
         return () => {
             if (timeoutId) {
@@ -103,9 +59,38 @@ export const MessageRightTitle = (props: messageParam) => {
             }
         };
     }, [timeoutId]);
+    const handleInputChange = (value: any) => {
+        setpatientName(value);
+        if (timeoutId) {
+            clearTimeout(timeoutId);
+        }
+        if (selectType == 'patientName' && patientNameRoomNum !== '') {
+            const newTimeoutId = setTimeout(() => {
+                titleChangeGetMessage({
+                    patientName: value,
+                    pageNum: 1,
+                    pageSize: 10,
+                    types: titleKey,
+                    startMills: startMills !== 0 ? startMills : timeArr[0],
+                    endMills: endMills !== 0 ? endMills : timeArr[1],
+                });
+            }, 300);
+            setTimeoutId(newTimeoutId);
+        } else if (selectType == 'roomNum' && patientNameRoomNum !== '') {
+            const newTimeoutId = setTimeout(() => {
+                titleChangeGetMessage({
+                    pageNum: 1,
+                    pageSize: 10,
+                    roomNum: value,
+                    types: titleKey,
+                    startMills: startMills !== 0 ? startMills : timeArr[0],
+                    endMills: endMills !== 0 ? endMills : timeArr[1],
+                });
+            }, 300);
+            setTimeoutId(newTimeoutId);
+        }
+    };
     const [loog, setLoog] = useState('JQHEALTHCARE')
-
-
     const disabledDate = (current: any) => {
         const now = dayjs();
         return current && current > now.endOf('day');
@@ -114,7 +99,6 @@ export const MessageRightTitle = (props: messageParam) => {
     const disabledTime = (current: any, type: any) => {
         const now = dayjs();
         if (!current) return {};
-
         // 获取当前时间的小时和分钟
         const currentHour = now.hour();
         const currentMinute = now.minute();
@@ -160,6 +144,25 @@ export const MessageRightTitle = (props: messageParam) => {
 
         return {};
     };
+    const handleSelect = (e: any) => {
+        setpatientName('');
+        setSelectType(e);
+        const params = {
+            pageNum: 1,
+            pageSize: 10,
+            types: titleKey,
+            [e]: '',
+            startMills: startMills !== 0 ? startMills : timeArr[0],
+            endMills: endMills !== 0 ? endMills : timeArr[1],
+        }
+        if (patientNameRoomNum) {
+            params[e] = ''
+        }
+
+        console.log('Select 触发:', e, params);
+        titleChangeGetMessage(params);
+
+    };
     return (
         <>
             {
@@ -185,22 +188,34 @@ export const MessageRightTitle = (props: messageParam) => {
                                     className="MessageYiDOngTitlesearchSelect"
                                     defaultValue={selectType}
                                     style={{ width: 80, height: "1.5rem", border: 'none important', }}
-                                    onChange={(e) => { setSelectType(e) }}
+                                    onSelect={(e: any) => handleSelect(e)}
+                                    // onSelect={(e) => {
+                                    //     setpatientName('')
+                                    //     setSelectType(e)
+                                    //     setSelectFalse(!selectFalse)
+                                    //     console.log('............00000');
+
+                                    //     if (e) {
+                                    //         titleChangeGetMessage({
+                                    //             pageNum: 1,
+                                    //             pageSize: 10,
+
+                                    //             types: titleKey,
+                                    //             startMills: startMills !== 0 ? startMills : timeArr[0],
+                                    //             endMills: endMills !== 0 ? endMills : timeArr[1],
+                                    //         });
+                                    //     }
+
+                                    // }}
                                     options={homeSelect}
                                 />
                                 <Input className="messageTitlediv2_you_inp"
                                     allowClear
                                     value={patientNameRoomNum}
-                                    // onBlur={((e: any) => {
-                                    //     setpatientName(e.target.value)
-                                    //     titleChangeGetMessage({
-                                    //         patientName: selectType === 'patientName' ? patientNameRoomNum : "",
-                                    //         roomNum: selectType === 'roomNum' ? patientNameRoomNum : ""
-                                    //     })
-                                    // })}
+
                                     onChange={(e: any) => handleInputChange(e.target.value)}
                                     placeholder="请输入姓名/床号" />
-                                {/* <img style={{ width: "1rem", height: "1rem", marginRight: "20px" }} src={fang} alt="" /> */}
+
                             </div></>
                     </div>
                     :

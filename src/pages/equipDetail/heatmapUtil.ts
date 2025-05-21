@@ -99,7 +99,7 @@ export const returnRealtimeData: (param: minDataParam) => realtimeReturn = ({ js
     const { realtimeStrokeRisk, heartRateRandom, realtimeBreathRate, onOutOffBedTimeMillis, realtimeBodyMoveArr, realtimeOnbedState ,realtimeLeaveBedParam  } = jsonObj
 
     const res = {
-        heart: heartRateRandom,
+        heart: rateToHeart(heartRateRandom),
         rate: realtimeBreathRate,
         stroke: realtimeStrokeRisk,
         onBedTime: (new Date().getTime() - onOutOffBedTimeMillis) / 1000,

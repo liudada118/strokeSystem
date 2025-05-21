@@ -41,7 +41,6 @@ export default function SeeUser(props: seeUserProps) {
             <Modal title="删除" open={isModalDeviceDeleteOpen} onOk={handleDeviceDeleteOk} onCancel={handleDeviceDeleteCancel}>
                 确定要删除关联用户“{deleteDeviceObj.nick}”吗?
             </Modal>
-
             {props.userShow && props.deleteObj.deviceId == props.record.deviceId && Object.keys(props.deviceOneUser).length ?
                 <>
                     <div className='seeItem' >
@@ -63,7 +62,6 @@ export default function SeeUser(props: seeUserProps) {
                             props.setUserShow(false)
                             props.setDeviceOneUser([])
                         }}>
-
                     </div> : ''}
                 </> : ''}
         </>

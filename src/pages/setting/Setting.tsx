@@ -322,6 +322,7 @@ export default function Setting() {
     }
   }, [])
   const [deviceSource, setDeviceSource] = useState<Array<any>>([{}])
+
   const getProjectList = () => {
     Instancercv({
       method: "get",
@@ -1139,7 +1140,7 @@ export default function Setting() {
         return a
       })
       // message.info('添加成功')
-      console.log(res.data.data, '................................添加成功.');
+
       setDeviceSource(res.data.data)
     })
   }

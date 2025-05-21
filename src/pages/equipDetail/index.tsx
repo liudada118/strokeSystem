@@ -154,11 +154,7 @@ const EquipDetail = () => {
         // 添加111
     }, []);
     const { isMobile } = useWindowSize()
-
     const dispale = useDispatch()
-    const html = document.getElementsByTagName('html')
-    console.log(html, '...................0000..................html');
-
     const tabList = [{
         label: '监测',
         key: 'monitor',

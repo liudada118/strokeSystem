@@ -1,9 +1,9 @@
-import { Input, message, Modal, Table } from 'antd'
+import { ConfigProvider, Input, message, Modal, Table } from 'antd'
 import React, { useState } from 'react'
 import add from "@/assets/image/addBlue.png"
 import axios from 'axios'
 import { Instancercv, instance } from '@/api/api'
-
+import zhCN from 'antd/locale/zh_CN';
 interface userSheetProps {
     manageSource: any
     setManageSource: Function
@@ -346,7 +346,6 @@ export default function UserSheet(props: userSheetProps) {
 
                     <div style={{ display: 'flex', alignItems: 'center' }} className="deviceItem"><div style={{ width: '5rem', }}> 护工名:</div>
                         <Input value={nurseUser.name} style={{ flex: 1 }} onChange={(e) => {
-
                             let obj = { ...nurseUser }
                             obj.name = e.target.value
                             setnurseUser(obj)
@@ -361,12 +360,22 @@ export default function UserSheet(props: userSheetProps) {
                         setIsModalNurseOpen(true)
                         setDelete({ id: localStorage.getItem('organizeId') })
                     }}> <img src={add} style={{ width: '1rem' }} alt="" /> 新建护工</div></div>
-                <Table dataSource={props.manageSource} onRow={(record: any) => {
-                    return {
-                        onClick: (e: any) => {
-                            setDelete(record)
-                        }
-                    }
-                }} columns={manage} /></div></>
+                <ConfigProvider locale={zhCN}>
+                    <Table
+                        pagination={{
+                            pageSizeOptions: [10, 20, 30, 40, 50],
+                            showSizeChanger: true,
+                            defaultPageSize: 10
+                        }}
+                        dataSource={props.manageSource} onRow={(record: any) => {
+                            return {
+                                onClick: (e: any) => {
+                                    setDelete(record)
+                                }
+                            }
+                        }} columns={manage} />
+                </ConfigProvider>
+
+            </div></>
     )
 }

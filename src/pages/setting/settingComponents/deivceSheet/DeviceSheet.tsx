@@ -1,7 +1,8 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 // import { instance, netUrl } from '../../../assets/util'
-import { message, Modal, Select, Table } from 'antd'
+import { ConfigProvider, message, Modal, Select, Table } from 'antd'
+import zhCN from 'antd/locale/zh_CN';
 import no from "../../../assets/icon/no.png";
 import SeeUser from '../seeUser/SeeUser';
 import { Instancercv } from '@/api/api';
@@ -24,20 +25,25 @@ export default function DeviceSheet(props: DeviceSheet) {
     const [deleteClick, setDeleteClick] = useState(false)
     const [isModalAssocOpen, setIsModalAssocOpen] = useState(false)
     const [bindUser, setBindUser] = useState<any>()
+
+
     const device = [{
         title: '序号',
         dataIndex: 'id',
         key: 'id',
+        width: '10%',
     },
     {
         title: 'mac地址',
         dataIndex: 'mac',
         key: 'mac',
+        width: '10%',
     },
     {
         title: '设备类型',
         dataIndex: 'type',
         key: 'type',
+        width: '10%',
         render: (text: any, record: any, index: any) => {
             return <div>{text == 'small' ? '安护' : '智护'}</div>
         }
@@ -45,19 +51,20 @@ export default function DeviceSheet(props: DeviceSheet) {
     {
         title: '床号',
         dataIndex: 'roomNum',
-        key: 'roomNum'
+        key: 'roomNum',
+        width: '20%',
     },
     {
         title: '姓名',
         dataIndex: 'patientName',
-        key: 'patientName'
-
+        key: 'patientName',
+        width: '20%',
     },
     {
         title: '关联用户',
         dataIndex: 'operate',
         key: 'operate',
-
+        width: '15%',
         render: (text: any, record: any, index: any) => {
 
             return (
@@ -82,9 +89,8 @@ export default function DeviceSheet(props: DeviceSheet) {
         title: '关联家属',
         dataIndex: 'family',
         key: 'family',
-
+        width: '15%',
         render: (text: any, record: any, index: any) => {
-
             return (
                 <div style={{ display: 'flex', color: '#0256FF', cursor: 'pointer', alignItems: 'center' }}>
                     <div className='see' style={{ marginRight: '1rem', position: 'relative', }} onClick={() => {
@@ -103,7 +109,6 @@ export default function DeviceSheet(props: DeviceSheet) {
             )
         }
     },
-
     ]
     message.config({
         top: 100,
@@ -234,8 +239,6 @@ export default function DeviceSheet(props: DeviceSheet) {
         setIsModalAssocOpen(false)
         setBindUser(undefined)
     }
-
-
     return (
         <>
             <Modal title="删除" open={isModalDeviceDeleteOpen} onOk={handleDeviceDeleteOk} onCancel={handleDeviceDeleteCancel}>
@@ -253,21 +256,26 @@ export default function DeviceSheet(props: DeviceSheet) {
                     options={deviceUser.map((a) => { return { value: a.username, label: a.nickname } })}
                 />
             </Modal>
-
             <div className="projectContent">
-                {
-                    roleId == 0 ? <div>1</div> : <>
-                        <div className="projectTitle">设备管理</div>
-                        <Table dataSource={props.deviceSource} onRow={(record: any) => {
-                            return {
-                                onClick: (e: any) => {
-                                    setDelete(record)
+                <>
+                    <div className="projectTitle">设备管理</div>
+                    <ConfigProvider locale={zhCN}>
+                        <Table
+                            pagination={{
+                                pageSizeOptions: [10, 20, 30, 40, 50],
+                                showSizeChanger: true,
+                                defaultPageSize: 10
+                            }}
+                            dataSource={props.deviceSource} onRow={(record: any) => {
+                                return {
+                                    onClick: (e: any) => {
+                                        setDelete(record)
+                                    }
                                 }
-                            }
-                        }} columns={device} />
-                    </>
-                }
+                            }} columns={device} />
+                    </ConfigProvider>
 
+                </>
             </div>
         </>
     )

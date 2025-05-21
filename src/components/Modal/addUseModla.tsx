@@ -427,28 +427,22 @@ const addUseModla = forwardRef((props: addUseModlaProps, ref) => {
                             onSearch={handleSearch}
                             onChange={handleChange}
                             notFoundContent={null}
-
                             options={(data || []).map((d) => ({
                                 value: d.value,
                                 label: d.text,
                             }))}
                             onKeyDown={handleKeyDown}
                         />
-
-
+                        {/* 暂时取消扫码功能，后期开发 */}
                         {/* <img style={{ height: '1.6rem', marginLeft: '0.5rem' }} src={photo} onClick={() => { handleScan(false) }} alt="" /> */}
                     </div>
                 </div>
-
                 <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }} className='deviceItem'><div className="deviceTitle"> 姓名:</div>
                     {didData.length ? <div style={{ flex: 1 }}>{didData[0].patientName}</div> : <Input style={{ flex: 1 }} value={userinfo.patientName} onChange={(e) => {
-
                         const value = { ...userinfo, patientName: e.target.value }
                         setUserInfo(value)
                     }} />}
-
                 </div>
-
                 <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }} className='deviceItem'><div className="deviceTitle">年龄:</div>
                     {didData.length ? <div style={{ flex: 1 }}>{didData[0].age}</div> : <Input style={{ flex: 1 }} value={userinfo.age} onChange={(e) => {
 

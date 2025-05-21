@@ -140,10 +140,10 @@ export default function PCNurseList(props: any) {
     return (
         <div className="nurse_scroll1">
             <div className="pc_nurse_conf_list">
-                <div className={`list_item`}>
-                    <p>时间</p>
-                    <p>护理任务</p>
-                    <p>状态</p>
+                <div className={`${isMobile ? 'list_item' : 'list_itemPc'}`}>
+                    < p style={{ fontSize: isMobile ? '1.2rem' : "0.8rem" }}>时间</p>
+                    <p style={{ fontSize: isMobile ? '1.2rem' : "0.8rem" }}>护理任务</p>
+                    <p style={{ fontSize: isMobile ? '1.2rem' : "0.8rem", color: '#000' }}>状态</p>
                 </div>
                 {listData.length > 0
                     ? listData
@@ -154,10 +154,10 @@ export default function PCNurseList(props: any) {
                             return (
                                 <div
                                     key={"list_" + index}
-                                    className={`list_item ${isMobile ? 'list_item_width' : 'list_item_widthPc'} is_line ${item.status ? "finsh" : ""
+                                    className={` ${isMobile ? 'list_item' : 'list_itemPc'} is_line ${item.status ? "finsh" : ""
                                         }`}
                                 >
-                                    <p>
+                                    <p style={{ fontSize: isMobile ? '1.2rem' : "0.8rem" }}>
                                         <span>{dayjs(item.completionTime).format("HH:mm")}</span>
                                         <span
                                             className={`${index === listData.length - 1 ? "" : "is_line"
@@ -166,9 +166,9 @@ export default function PCNurseList(props: any) {
                                             <i>{index + 1}</i>
                                         </span>
                                     </p>
-                                    <p>
+                                    <p style={{ fontSize: isMobile ? '1.2rem' : "0.8rem" }}>
                                         <span
-                                            style={{ color: !item.status ? "#929EAB" : "#32373E" }}
+                                            style={{ color: !item.status ? "#929EAB" : "#32373E", fontSize: isMobile ? '1.1rem' : "" }}
                                         >
                                             {item.title}
                                         </span>
@@ -178,7 +178,6 @@ export default function PCNurseList(props: any) {
                                                 if (isMobile) {
                                                     setImgData(item.uploadImage);
                                                     // setVisible(true);
-
                                                 }
                                             }}
                                             className={`${!isMobile ? 'pc_nurse_conf_list_img' : ''}`}
@@ -189,7 +188,6 @@ export default function PCNurseList(props: any) {
                                                     // setImgData(item.uploadImage);
                                                     setVisible(true);
                                                 }} key={item} src={item} alt="" /> : <Image
-
                                                     src={item}
                                                 />
                                             })}
@@ -233,7 +231,6 @@ export default function PCNurseList(props: any) {
                         }}
                     />
                 )}
-
                 {listData.length === 0 && (
                     <div className={`${props?.type === 'daEeport' ? 'empty_nurse_box_daEeport' : 'empty_nurse_box h-[10rem]'}`}>
                         <Empty
@@ -243,6 +240,6 @@ export default function PCNurseList(props: any) {
                     </div>
                 )}
             </div>
-        </div>
+        </div >
     );
 }

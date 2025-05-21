@@ -28,11 +28,13 @@ export default function FamilySheet(props: familySheetProps) {
             title: '序号',
             dataIndex: 'id',
             key: 'id',
+            width: '20%',
         },
         {
             title: '姓名',
             dataIndex: 'nickname',
             key: 'nickname',
+            width: '20%',
             render: (record: any) => {
 
                 return (
@@ -48,6 +50,7 @@ export default function FamilySheet(props: familySheetProps) {
             title: '手机号',
             dataIndex: 'username',
             key: 'username',
+            width: '30%',
             render: (record: any) => {
 
                 return (
@@ -63,6 +66,7 @@ export default function FamilySheet(props: familySheetProps) {
             dataIndex: 'operate',
             key: 'operate',
             align: 'center',
+            width: '30%',
             render: (text: any, record: any, index: any) => {
                 console.log(record)
                 return (
@@ -123,6 +127,8 @@ export default function FamilySheet(props: familySheetProps) {
             }
         })
     }
+
+
     const handleDeletePersonOk = () => {
         deleteUserByOrganizeIdAndUsername({ user: deleteObj.username, id: localStorage.getItem('organizeId'), type: 'person' })
         setIsModalDeletePersonOpen(false)
@@ -153,7 +159,7 @@ export default function FamilySheet(props: familySheetProps) {
                 roleId: 4
             },
         }).then((res) => {
-            getItemPerson(deleteObj.id)       
+            getItemPerson(deleteObj.id)
             if (res.data.msg === 'add Manager Success') {
                 return message.info('添加成功')
             } else if (res.data.code == 500) {
@@ -169,6 +175,7 @@ export default function FamilySheet(props: familySheetProps) {
     const handlePersonCancel = () => {
         setIsModalPersonOpen(false)
     }
+    console.log(props.personSource, deleteObj, '...............propsersonSource');
     return (
         <>
             <Modal title="添加新家属" open={isModalPersonOpen} onOk={handlePersonOk} onCancel={handlePersonCancel}>
@@ -199,8 +206,11 @@ export default function FamilySheet(props: familySheetProps) {
                     setDelete({ id: localStorage.getItem('organizeId') })
                 }}> <img src={add} style={{ width: '1rem' }} alt="" /> 新建家属</div></div>
                 <Table dataSource={props.personSource} onRow={(record: any) => {
+                    console.log(record, '...111.........propsersonSource');
                     return {
                         onClick: (e: any) => {
+
+
                             setDelete(record)
                         }
                     }

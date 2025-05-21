@@ -24,10 +24,6 @@
   border-bottom: 0rem !important;
 }
 
-.pc_nurse_conf_list .list_item:nth-child(1) p:nth-child(1) {
-  padding-left: 0.5rem;
-}
-
 .pc_nurse_conf_list .list_item:not(:first-child).preview p {
   height: 4rem;
 }
@@ -140,7 +136,7 @@
 }
 
 .pc_nurse_conf_list .list_item:not(:first-child) p:nth-child(1) span:nth-child(1) {
-  width: 3rem;
+  width: 3.5rem;
 }
 
 .pc_nurse_conf_list .list_item:not(:first-child) p:nth-child(1) span:nth-child(2) i {
@@ -167,6 +163,166 @@
 }
 
 .pc_nurse_conf_list .list_item.todo::before {
+  background: #E6EBF0;
+  height: 100%;
+}
+
+.pc_nurse_conf_list .list_itemPc {
+  position: relative;
+  display: flex;
+  padding: 0 0.5rem;
+}
+
+.pc_nurse_conf_list .list_itemPc:nth-child(1) {
+  background: #F5F8FA;
+}
+
+.pc_nurse_conf_list .list_itemPc:nth-child(1) p {
+  font-weight: 600;
+  padding: 0.5rem 0;
+  border-bottom: 0rem !important;
+}
+
+.pc_nurse_conf_list .list_itemPc:not(:first-child).preview p {
+  height: 4rem;
+}
+
+.pc_nurse_conf_list .list_itemPc.finsh p:nth-child(1) span:nth-child(2).index_box i {
+  background: #0072EF;
+}
+
+.pc_nurse_conf_list .list_itemPc.finsh p:nth-child(1) span:nth-child(2).index_box.is_line:before {
+  background: #0072EF;
+}
+
+.pc_nurse_conf_list .list_itemPc.finsh p:last-child span {
+  background: transparent !important;
+}
+
+.pc_nurse_conf_list .list_itemPc p {
+  flex-shrink: 1;
+}
+
+.pc_nurse_conf_list .list_itemPc p .index_box {
+  display: flex;
+  position: relative;
+}
+
+.pc_nurse_conf_list .list_itemPc p .index_box.is_line:before {
+  display: inline-block;
+  content: " ";
+  width: 0.2rem;
+  height: 100%;
+  position: absolute;
+  top: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #E6EBF0;
+  z-index: 0;
+}
+
+.pc_nurse_conf_list .list_itemPc p:nth-child(1) {
+  display: flex;
+  width: 4rem;
+  margin-right: 0.2rem;
+}
+
+.pc_nurse_conf_list .list_itemPc p:nth-child(2) {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  flex-wrap: wrap;
+  word-break: break-all;
+}
+
+.pc_nurse_conf_list .list_itemPc p:nth-child(2) span:nth-child(1) {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #32373E !important;
+}
+
+.pc_nurse_conf_list .list_itemPc p:nth-child(2) span:nth-child(2) {
+  color: #32373E !important;
+  font-size: 0.8rem;
+}
+
+.pc_nurse_conf_list .list_itemPc p:nth-child(2) span:nth-child(3) {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.pc_nurse_conf_list .list_itemPc p:nth-child(2) span:nth-child(3) img {
+  width: 2rem;
+  height: 2rem;
+  margin: 0 0.5rem 0.5rem 0;
+  border-radius: 3px;
+  margin-top: 5px;
+}
+
+.pc_nurse_conf_list .list_itemPc p:nth-child(2) span:nth-child(3).pc_nurse_conf_list_img:nth-child(3) img {
+  width: 2rem;
+  margin: 0;
+  margin-left: 0.1rem;
+  margin-bottom: 0.2rem;
+  margin-top: 0.2rem;
+}
+
+.pc_nurse_conf_list .list_itemPc p:nth-child(3) {
+  display: flex;
+  align-items: center;
+  width: 5.5rem;
+  color: #929EAB;
+  justify-content: center;
+}
+
+.pc_nurse_conf_list .list_itemPc p:nth-child(3) span {
+  width: 100%;
+  text-align: center;
+  padding: 0.2rem;
+  margin-right: 0.2rem;
+}
+
+.pc_nurse_conf_list .list_itemPc p:nth-child(4) {
+  width: 3rem;
+  text-align: center;
+}
+
+.pc_nurse_conf_list .list_itemPc:not(:first-child) p:not(:first-child) {
+  padding: 1rem 0.5rem 0.5rem 0rem;
+}
+
+.pc_nurse_conf_list .list_itemPc:not(:first-child) p:nth-child(1) span {
+  padding-top: 1rem;
+}
+
+.pc_nurse_conf_list .list_itemPc:not(:first-child) p:nth-child(1) span:nth-child(1) {
+  width: 2.6rem;
+}
+
+.pc_nurse_conf_list .list_itemPc:not(:first-child) p:nth-child(1) span:nth-child(2) i {
+  position: relative;
+  z-index: 0;
+  display: inline-block;
+  background: #E6EBF0;
+  border-radius: 100%;
+  color: #fff;
+  width: 1.5rem;
+  height: 1.5rem;
+  text-align: center;
+  font-style: normal;
+  line-height: 1.5rem;
+}
+
+.pc_nurse_conf_list .list_itemPc:not(:first-child) p:nth-child(3) span {
+  background: #E6EBF0;
+  border-radius: 0.3rem;
+}
+
+.pc_nurse_conf_list .list_itemPc:not(:first-child) p:nth-child(4) {
+  color: #0072EF;
+}
+
+.pc_nurse_conf_list .list_itemPc.todo::before {
   background: #E6EBF0;
   height: 100%;
 }

@@ -407,7 +407,7 @@ export default function Message() {
     end: 0,
   })
   function formatTime(timeStr: any) {
-    const date = new Date(timeStr);
+    const date = new Date(getTimeNumber(timeStr));
     return date.toISOString()
       .split('T')[0] + ' ' +
       date.toISOString().split('T')[1].split('.')[0];
@@ -513,8 +513,8 @@ export default function Message() {
     });
   };
   const timeSearch = () => {
-    const formattedList = time.map(formatTime);
-    const modifiedList = formattedList.map(timeStr => {
+    const formattedList = timeList.map(formatTime);
+    const modifiedList = formattedList.map((timeStr: any) => {
       return timeStr.split(':').slice(0, 2).join(':') + ":00";
     });
     if (modifiedList[0] == modifiedList[1]) {
@@ -591,8 +591,8 @@ export default function Message() {
   const checkoutTime = (value: any) => {
     const currentTime = new Date().getTime();
     if (chooseTimeType === 'start') {
-      const start = new Date(value).getTime();
-      const end = new Date(timeList[1]).getTime();
+      const start = new Date(getTimeNumber(value)).getTime();
+      const end = new Date(getTimeNumber(timeList[1])).getTime();
       if (start > currentTime) {
         return message.info("开始时间不能大于当前时间");
       }
@@ -600,8 +600,8 @@ export default function Message() {
         return message.info("开始时间不能大于结束时间");
       }
     } else {
-      const start = new Date(value).getTime();
-      const end = new Date(timeList[0]).getTime();
+      const start = new Date(getTimeNumber(value)).getTime();
+      const end = new Date(getTimeNumber(timeList[0])).getTime();
       if (start > currentTime) {
         return message.info("结束时间不能大于当前时间");
       }
@@ -706,6 +706,24 @@ export default function Message() {
     setTimeList(
       timeArr
     )
+  }
+  const getTimeNumber = (date: any) => {
+    let time = new Date(date).getTime();
+    if (isNaN(time) && typeof date === 'string') {
+      const [datePart, timePart] = date.split(' ');
+      const [year, month, day] = datePart.split('-');
+      const [hours, minutes] = timePart.split(':');
+
+      const newdate = new Date(
+        parseInt(year),
+        parseInt(month) - 1, // 月份从0开始
+        parseInt(day),
+        parseInt(hours),
+        parseInt(minutes)
+      );
+      time = newdate.getTime();
+    }
+    return time
   }
   return (
     <>
@@ -1227,9 +1245,10 @@ export default function Message() {
                     style={{ lineHeight: '2.67rem', color: chooseTimeType !== 'start' ? '#666' : '#0072EF' }}
                     onClick={() => {
                       setChooseTimeType('start')
+                      setSelectedDate(new Date(getTimeNumber(timeList[0])))
                     }}
                   >
-                    {dayjs(new Date(timeList[0]).getTime()).format('YYYY-MM-DD')}-{dayjs(new Date(timeList[0]).getTime()).format('HH:mm')}
+                    {dayjs(getTimeNumber(timeList[0])).format('YYYY-MM-DD')}-{dayjs(getTimeNumber(timeList[0])).format('HH:mm')}
                   </span>
                   <span className="w-[2rem] h-[0.1rem] flex justify-center items-center  bg-[#999999]lint-height-[2.67rem]"></span>
                   <span
@@ -1237,9 +1256,10 @@ export default function Message() {
                     style={{ lineHeight: '2.67rem', color: chooseTimeType !== 'end' ? '#666' : '#0072EF' }}
                     onClick={() => {
                       setChooseTimeType('end')
+                      setSelectedDate(new Date(getTimeNumber(timeList[1])))
                     }}
                   >
-                    {dayjs(new Date(timeList[1]).getTime()).format('YYYY-MM-DD')}-{dayjs(new Date(timeList[1]).getTime()).format('HH:mm')}
+                    {dayjs(getTimeNumber(timeList[1])).format('YYYY-MM-DD')}-{dayjs(getTimeNumber(timeList[1])).format('HH:mm')}
                   </span>
                 </div>
               </div>
@@ -1293,7 +1313,7 @@ export default function Message() {
                   value={hours}
                   onSelect={(value) => {
                     if (chooseTimeType === 'start') {
-                      const date = new Date(timeList[0])
+                      const date = new Date(getTimeNumber(timeList[0]))
                       date.setHours(+value)
                       if (!checkoutTime(date)) {
                         setTimeList([
@@ -1303,7 +1323,7 @@ export default function Message() {
                         setHours(value as string)
                       }
                     } else if (chooseTimeType == 'end') {
-                      const date = new Date(timeList[1])
+                      const date = new Date(getTimeNumber(timeList[1]))
                       date.setHours(+value)
                       if (!checkoutTime(date)) {
                         setTimeList([
@@ -1341,7 +1361,7 @@ export default function Message() {
                   value={minutes}
                   onSelect={(value) => {
                     if (chooseTimeType === 'start') {
-                      const date = new Date(timeList[0])
+                      const date = new Date(getTimeNumber(timeList[0]))
                       date.setMinutes(+value)
                       if (!checkoutTime(date)) {
                         setTimeList([
@@ -1351,7 +1371,7 @@ export default function Message() {
                         setMinutes(value as string)
                       }
                     } else if (chooseTimeType == 'end') {
-                      const date = new Date(timeList[1])
+                      const date = new Date(getTimeNumber(timeList[1]))
                       date.setMinutes(+value)
                       if (!checkoutTime(date)) {
                         setTimeList([

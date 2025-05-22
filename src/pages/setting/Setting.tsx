@@ -860,7 +860,7 @@ export default function Setting() {
               </Popconfirm> */}
 
 
-              </div> : record.roleId == 2 ? <div
+              </div> : record.roleId == 2 || record.roleId == 1 ? <div
                 style={{ cursor: 'pointer' }}
                 onClick={() => {
                   console.log(deleteObj)

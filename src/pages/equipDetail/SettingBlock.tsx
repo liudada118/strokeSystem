@@ -875,7 +875,6 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
     }, 0);
   };
   const [bedExitParametersBedExit, setBedExitParametersBedExit] = useState<any>()
-  // const [switchOpenValue, setSwitchOpenValue] = useState<any>(leavebedParam);
   const bedExitParameters = () => {
     try {
       Instancercv({
@@ -893,7 +892,6 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
         setBedExitParametersBedExit(res.data.data.leavebedParam)
       })
     } catch (error) {
-
     }
   }
   useEffect(() => {
@@ -917,13 +915,10 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
             leaveBedParam: bedExitParametersBedExit,
           },
         }).then((res: any) => {
-          // fetchEquips()
-
           bedExitParameters()
-          // message.success("修改成功");
+          message.success("修改成功");
         });
       } catch (error) {
-
       }
     }
     setSwitchOpen(false);

@@ -35,26 +35,19 @@ const onBedStackPush = ({ stack, state }: onBed) => {
 }
 
 
-const MqttMiddleware = (storeApi: any) => (next: any) => (action: any) => {
+ const MqttMiddleware = (storeApi: any) => (next: any) => (action: any) => {
     const state: any = storeApi.getState()
     const token = state.token.token
     const phone = state.token.phone
     const mqttClient = state.mqtt.client
-
     next(action)
     if (token && phone && action.type == "equip/fetchEquips/fulfilled") {
-
-
         let { equips, switchArr: alarm, realAlarmArr: sosArrOver, riskArr: riskArrs, equipsPlay } = storeApi.getState().equip
-
         riskArr = JSON.parse(JSON.stringify(riskArrs))
         arr = JSON.parse(JSON.stringify(sosArrOver))
         resData = JSON.parse(JSON.stringify(equips)) //[...equips]
         equipsPlayArr = JSON.parse(JSON.stringify(equipsPlay))
-
-
         const newVoiceExample = new voiceArr()
-
         storeApi.dispatch(initData({
             newVoiceExample: newVoiceExample
         }))
@@ -70,25 +63,18 @@ const MqttMiddleware = (storeApi: any) => (next: any) => (action: any) => {
             username: 'web',
             password: 'public'
         };
-
         const client = mqtt.connect(`wss://${web}:${PORT}/mqtt`, options);
-
         window.client = client
-
         client.on('connect', function () {
-
             // storeApi.dispatch(mqttConnectionState(client));
             storeApi.dispatch(mqttConnect((client)))
             client.subscribe(`${phone}`);
         });
-
         client.on('message', ((topic: any, payload: any) => {
             const device = message({ payload, storeApi });
             // console.log(device);
             // console.log('messagemessagemessage')
-
         }));
-
         client.on("error", (error: any) => {
             console.log("error");
         });
@@ -152,25 +138,16 @@ const MqttMiddleware = (storeApi: any) => (next: any) => (action: any) => {
                 equipsPlay: equipsPlayRes,
                 equipPcPlay: equipPcPlayRes,
             }))
-
             console.log(newVoiceExample.voiceQueue)
-
             newVoiceExample.playVoice()
-
         }, 2000);
-
         storeApi.dispatch((createTimer(timer)))
-
-
-
     }
-
     // 请求成功后将  缓存报警数组  同步
     if (token && phone && action.type == "alarm/delete/fulfilled") {
         const { realAlarmArr } = storeApi.getState().equip
         arr = JSON.parse(JSON.stringify(realAlarmArr))
     }
-
     // 用户退出时   清空本地缓存
     if (action.type == 'mqtt/mqttLoginout') {
         console.log('out')
@@ -181,7 +158,7 @@ const MqttMiddleware = (storeApi: any) => (next: any) => (action: any) => {
     }
 }
 
-function message({ payload, storeApi, data }: any) {
+ function message({ payload, storeApi, data }: any) {
     let { equips, switchArr: alarm, realAlarmArr: sosArrOver, riskArr: riskArrs, newVoiceExample, equipsPlay } = storeApi.getState().equip
 
     if (!Object.keys(riskArr).length) riskArr = JSON.parse(JSON.stringify(riskArrs))
@@ -224,8 +201,8 @@ function message({ payload, storeApi, data }: any) {
 
             resData.forEach((item, index) => {
                 if (item.sensorName == jsonObj.deviceName) {
-                    let rateValue = 16 - 4 * (Math.random())
-
+                    let rateValue = 16 - 4 * (Math.random())          
+                       
                     item.onBed = item.leavebedParam ? jsonObj.realtimeLeaveBedParam < item.leavebedParam ? 0 : jsonObj.realtimeOnbedState > 0 ? jsonObj.realtimeOnbedState : 1 : jsonObj.realtimeOnbedState
                     item.onBedState = jsonObj.realtimeOnbedState
                     item.breath = jsonObj.realtimeBreathRate
@@ -419,5 +396,5 @@ function message({ payload, storeApi, data }: any) {
 
     }
 }
-
+ 
 export default MqttMiddleware;

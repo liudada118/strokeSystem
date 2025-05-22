@@ -24,7 +24,7 @@ import { message } from 'antd';
 
 import { useGetWindowSize } from '../../hooks/hook';
 import show from './ScanCode/utils/show';
-import { instance, Instancercv, netRepUrl } from '@/api/api';
+import { instance, netUrl, Instancercv, netRepUrl } from '@/api/api';
 import ImgUpload from '../imgUpload/ImgUpload';
 import { useDispatch, useSelector } from 'react-redux';
 import { headImgSelect } from '@/redux/premission/premission';
@@ -149,26 +149,11 @@ const Bottom = forwardRef((props: bottomProps, refs: any) => {
   const [didData, setDidData] = useState<any>([])
   const [data, setData] = useState<Array<any>>([]);
   const [value, setValue] = useState<string>();
-
   const headImg = useSelector(headImgSelect)
-
   const handleSearch = (newValue: string) => {
-
     fetch(newValue, setData);
   };
-
-
-
-
-
-
   const [mac, setMac] = useState('')
-
-
-
-
-
-
   function parseJson(json: string) {
     let res = json
     while (typeof res == 'string') {
@@ -176,10 +161,7 @@ const Bottom = forwardRef((props: bottomProps, refs: any) => {
     }
     return res
   }
-
-
   setBottomInfo()
-
   /**
    * 设置不同分栏的图片
    */
@@ -190,12 +172,8 @@ const Bottom = forwardRef((props: bottomProps, refs: any) => {
       bottomArr = mobileBottomArr
     }
   }
-
-
-
   useEffect(() => {
     window.addEventListener("resize", setBottomInfo);
-
     instance({
       url: "/sleep/log/getUnreadCount",
       method: "get",
@@ -208,7 +186,6 @@ const Bottom = forwardRef((props: bottomProps, refs: any) => {
     }).catch((err) => {
       // message.error('服务器错误')
     })
-
     return () => {
       window.removeEventListener('resize', setBottomInfo)
     }
@@ -254,7 +231,6 @@ const Bottom = forwardRef((props: bottomProps, refs: any) => {
 
   const showModal = () => {
     console.log('showModal', '............', isModalOpen);
-
     setIsModalOpen(true);
   };
   const onMessage = (val: any) => {
@@ -274,6 +250,10 @@ const Bottom = forwardRef((props: bottomProps, refs: any) => {
         {bottomArr.map((a, index) => <div className={`bottomItem ${onIndex == index ? 'bottonSelectItem' : ''} ${!isMobile && onIndex == index ? 'selectItempc' : ''}`} onClick={() => {
           navigate(a.route)
           setIndex(index)
+
+          if (index == 0) {
+            dispatch(fetchEquips())
+          }
           if (index == 1) {
             try {
               instance({
@@ -291,8 +271,8 @@ const Bottom = forwardRef((props: bottomProps, refs: any) => {
                   "content-type": "application/x-www-form-urlencoded",
                   token: token,
                 },
-              }).then(()=>{
-                
+              }).then(() => {
+
               })
 
 

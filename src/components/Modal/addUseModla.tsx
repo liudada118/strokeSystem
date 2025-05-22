@@ -156,14 +156,13 @@ const addUseModla = forwardRef((props: addUseModlaProps, ref) => {
         //     return message.info('请输入设备号')
         // }
         if (mac || userinfo.did.length == 12) {
-            const arr = ['patientName', 'roomNum', 'age', 'did']
+            const arr = ['patientName', 'age', 'did']
             const zeroArr = []
             arr.forEach((a) => {
                 if (userinfo[a] == '') {
                     zeroArr.push(a)
                 }
             })
-
             if ((didData.length && userinfo['did'] == '') || (!didData.length && zeroArr.length)) {
                 message.error('信息不能为空')
             } else if (userinfo['did'].length != 12) {
@@ -178,14 +177,11 @@ const addUseModla = forwardRef((props: addUseModlaProps, ref) => {
         }
         onClose(false)
     };
-
     const [mac, setMac] = useState('')
-
     const handleCancel = () => {
         setIsModalOpen(false);
         onClose(false)
     };
-
     /**
      * 将用户输入信息清空
      */
@@ -194,7 +190,6 @@ const addUseModla = forwardRef((props: addUseModlaProps, ref) => {
         setMac('')
         setDidData([])
     }
-
     /**
      * 如果识别为老设备  那么直接添加
      */
@@ -215,7 +210,6 @@ const addUseModla = forwardRef((props: addUseModlaProps, ref) => {
 
         })
     }
-
     /**
      * 如果是新设备  那么获取用户输入的信息  添加到数据库
      */
@@ -258,7 +252,7 @@ const addUseModla = forwardRef((props: addUseModlaProps, ref) => {
         }
     }
     const addEquip = () => {
-        console.log('addEquip')
+
         if (didData.length) {
             addOldEquip()
         } else {
@@ -278,7 +272,7 @@ const addUseModla = forwardRef((props: addUseModlaProps, ref) => {
      * 扫码
      */
     function handleScan(multiple: boolean) {
-        console.log('99999999999......')
+
         show({
             multiple,
             onOk: (code: any, close) => {
@@ -355,9 +349,8 @@ const addUseModla = forwardRef((props: addUseModlaProps, ref) => {
      */
     const img = localStorage.getItem('headImg') ? localStorage.getItem('headImg') : logo
     // const [headImg, setHeadImg] = useState(img)
-    // // const [headImg , setHeadImg] = useState(logo)
-
-    // // 获取头像
+    // const [headImg , setHeadImg] = useState(logo)
+    // 获取头像
     // useEffect(() => {
     //   Instancercv({
     //     method: "get",
@@ -419,7 +412,7 @@ const addUseModla = forwardRef((props: addUseModlaProps, ref) => {
                         <Select
                             showSearch
                             value={value}
-                            placeholder={'请输入6位SN码'}
+                            placeholder={'请输入设备的SN码'}
                             style={{ width: '100%' }}
                             defaultActiveFirstOption={false}
                             suffixIcon={null}

@@ -1,8 +1,8 @@
 import { message } from "antd";
 import axios from "axios";
 
-// export const web = 'juqiao.bodyta.com'
-export const web = 'sensor.bodyta.com'
+export const web = 'juqiao.bodyta.com'
+// export const web = 'sensor.bodyta.com'
 
 // export const netUrl = `http://${web}:8080/rcv`;
 // export const netRepUrl = `http://${web}:8081`;

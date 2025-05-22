@@ -49,6 +49,9 @@ const Nurse: React.FC = () => {
     //     };
     //     // 添加111
     // }, []);
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
     const { isMobile } = useWindowSize()
     const sensorName = window.location.href.split('/')[6] || ''
     // const [nursePersonTemplate, setNursePersonTemplate] = useState([])

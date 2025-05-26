@@ -100,7 +100,7 @@ export const returnRealtimeData: (param: minDataParam) => realtimeReturn = ({ js
 localStorage.setItem('realtimeLeaveBedParam', JSON.stringify(realtimeLeaveBedParam))
 
     const res = {
-        heart: rateToHeart(heartRateRandom),
+        heart: rateToHeart(realtimeBreathRate),
         rate: realtimeBreathRate,
         stroke: realtimeStrokeRisk,
         onBedTime: (new Date().getTime() - onOutOffBedTimeMillis) / 1000,

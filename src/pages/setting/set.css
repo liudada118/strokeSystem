@@ -1,0 +1,121 @@
+.setContent {
+  display: flex;
+  flex-direction: column;
+  min-height: 60vh;
+  background-color: #F5F6F7;
+}
+
+.setContent .setBox {
+  flex: 1;
+  margin-bottom: 60px;
+  margin-top: 4rem;
+}
+
+.setContent .reprotSelect {
+  display: none;
+}
+
+.setContent .setTitle {
+  background-color: #fefefe;
+  padding: 1rem 2rem;
+  border-bottom: #F5F6F7 1px solid;
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.28rem;
+  color: #222;
+  align-items: center;
+}
+
+.setContent .setTitle .setTitleImg {
+  width: 1.76rem;
+  height: 1.76rem;
+}
+
+.setContent .setTitle img {
+  width: 1rem;
+  height: 1rem;
+}
+
+.setContent .loginOut {
+  margin-top: 1rem;
+}
+
+.setContent .loginOut .loginOutButton {
+  font-size: 1.28rem;
+  color: #fff;
+  padding: 0.72rem 0;
+  background: linear-gradient(135deg, #46B9FF 0%, #B4D4FF 100%);
+  border-radius: 0.72rem;
+  text-align: center;
+}
+
+.setBoxPc {
+  flex: 1;
+  margin-left: 4.41rem;
+  margin-bottom: 60px;
+  margin-top: 4rem;
+  padding: 2rem 2rem;
+  display: flex;
+}
+
+.setBoxPc .selectBox {
+  width: 20rem;
+  margin-right: 1rem;
+}
+
+.setBoxPc .contentBox {
+  flex: 1;
+}
+
+.setBoxPc .projectContent {
+  height: 100%;
+  padding: 3rem;
+  background-color: #fff;
+}
+
+.setBoxPc .projectContent .projectTitle {
+  display: flex;
+  justify-content: space-between;
+}
+
+.see {
+  display: flex;
+  justify-content: center;
+}
+
+.seeItem {
+  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.3);
+  border-radius: 7px;
+  padding: 9px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  position: absolute;
+  top: 100%;
+  z-index: 10000;
+  background-color: #fff;
+}
+
+.sureDelete {
+  font-size: 0.8rem;
+  color: #000;
+  display: flex;
+  align-items: center;
+}
+
+.sureDeleteButton {
+  background-color: #aaa;
+  border-radius: 50%;
+  height: 1rem;
+  width: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media screen and (min-width: 940px) {
+  .setBox {
+    margin-left: 7.41rem;
+    padding: 3.7rem 10rem;
+  }
+}

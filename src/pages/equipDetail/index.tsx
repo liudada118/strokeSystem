@@ -54,7 +54,8 @@ const EquipDetail = () => {
 
     const param = useParams()
     const { type, id } = param
-    const { state: { person: { status } } } = useLocation()
+    const state: any = useLocation()
+    const status = state?.person?.status || 'default'
     const navigate = useNavigate()
     const token = useSelector(tokenSelect)
     const [activeKey, setActiveKey] = useState(activeKeyArr[(type || 0)])

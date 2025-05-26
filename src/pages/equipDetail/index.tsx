@@ -448,8 +448,7 @@ function Provide() {
                 deviceId: id
             }
         }).then((res) => {
-            let nursingConfig = getNurseConfist(res)
-            console.log('typetype................66660000');
+            let nursingConfig = getNurseConfist(res)      
 
             // if (res.data.templateEffectiveFlag == 1) {
             //     nursingConfig = JSON.parse(res.data.nursingConfig || '[]')

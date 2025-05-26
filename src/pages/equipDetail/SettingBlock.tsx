@@ -26,6 +26,7 @@ import { DataContext } from ".";
 import { unbindHheDevice } from "../../api/index";
 import { nurseOpen, nurseHomeOnChlick } from "../../redux/Nurse/Nurse";
 import { setIsGotoNursePage } from "../../redux/Nurse/Nurse";
+import useWindowSize from '@/hooks/useWindowSize'
 
 
 interface SettingBlockProps {
@@ -81,6 +82,8 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
   const [timeCModalOpen, setTimeCModalOpen] = useState<boolean>(false);
   const [timeDModalOpen, setTimeDModalOpen] = useState<boolean>(false);
   const [sosOpen, setSosOpen] = useState<boolean>(false);
+  const usewindowSize = useWindowSize()
+
   const [leaveParamModalOpen, setLeaveParamModalOpen] =
     useState<boolean>(false);
 
@@ -129,7 +132,7 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
         deviceId: sensorName,
       },
     }).then((res) => {
-      console.log(res.data, "typetype..........777");
+
       const flipbodyConfig = JSON.parse(res.data.flipbodyConfig);
       console.log(flipbodyConfig);
       const { flipbodyCount, flipbodyTime } = flipbodyConfig;
@@ -638,6 +641,7 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
     //   ],
     // },
   ];
+  const realtimeLeaveBedParam: any = localStorage.getItem('realtimeLeaveBedParam')
   const machineType = [
     {
       label: "床垫类型",
@@ -650,12 +654,47 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
 
 
     //  暂时先注释了，后期说不定会添加 ，先别删除
+    {
+      label: "当前压力",
+      value: realtimeLeaveBedParam,
+      params: [
+        {
+          label: "当前压力 ",
+          value: realtimeLeaveBedParam,
+          id: "leavebedParam",
+          onChange: () => {
+            setLeaveParamModalOpen(true);
+          },
+          modal: (
+            <CommonFormModal
+              title="当前压力 "
+              open={leaveParamModalOpen}
+              close={() => setLeaveParamModalOpen(false)}
+              formList={[
+                {
+                  label: "当前压力 ",
+                  key: "leavebedParam",
+                  value: realtimeLeaveBedParam,
+                  type: FormType.INPUT,
+                },
+              ]}
+              onFinish={(values) => {
+                // setTimeRangeD(values.timeRangeD)
+                // changeValueToUserInfo(values)
+                setUserInfo({ ...userInfo, ...values });
+                setLeaveBedParamChange(true);
+              }}
+            />
+          ),
+        },
+      ],
+    },
     // {
-    //   label: "设备校准",
+    //   label: "离床参数",
     //   value: leavebedParam,
     //   params: [
     //     {
-    //       label: "设备校准",
+    //       label: "离床参数 ",
     //       value: leavebedParam,
     //       id: "leavebedParam",
     //       onChange: () => {
@@ -663,12 +702,12 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
     //       },
     //       modal: (
     //         <CommonFormModal
-    //           title="设备校准"
+    //           title="离床参数 "
     //           open={leaveParamModalOpen}
     //           close={() => setLeaveParamModalOpen(false)}
     //           formList={[
     //             {
-    //               label: "设备校准",
+    //               label: "离床参数 ",
     //               key: "leavebedParam",
     //               value: leavebedParam,
     //               type: FormType.INPUT,
@@ -990,59 +1029,7 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
             ))}
         </div>
       ))}
-      {roleId == 1 || roleId == 2 || roleId == 0 ? (
-        <div
-          className="flex justify-between items-center"
-          style={{
-            background: "#ffff",
-            height: "4rem",
-            lineHeight: "4rem",
-            marginBottom: "1rem",
-          }}
-        >
-          <span
-            className="text-base text-[#32373E] ml-[0.4rem]"
-            style={{ fontWeight: "600" }}
-          >
-            离床参数 <span className="mr-[3rem] " style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{bedExitParametersBedExit}</span>
-          </span>
-          {switchOpen ? (
-            <>
-              <Input
-                ref={inputRef}
-                maxLength={5}
-                value={bedExitParametersBedExit}
-                placeholder="请输入"
-                onBlur={onBlurShezhi}
-                onChange={(val: any) => {
-                  const inputValue: any = val.target.value;
-                  if (inputValue.length > 2) {
-                    setBedExitParametersBedExit('')
-                    return message.info("不能大于99");
-                  }
-                  if (!/^[^\u4e00-\u9fa5]{0,10}$/g.test(inputValue)) {
-                    setBedExitParametersBedExit('')
-                    return message.info("请输入数字");
-                  }
-                  setBedExitParametersBedExit(inputValue)
-                }}
-                className="input_leave_setupInput"
-              ></Input>
-            </>
-          ) : (
-            <span
-              onClick={isOpen}
-              className="mr-[2rem]"
-              style={{ cursor: "pointer" }}
-            >
-              设置
-            </span>
-          )}
-        </div>
-      ) : (
-        ""
-      )
-      }
+
       {/* {renderFooterBtn()} */}
       <CommonTitle name={"健康配置"} type="square" />
       {/* <div className='bg-[#fff] mb-[10px] p-[10px] px-[0.8rem] flex justify-between items-center'>
@@ -1057,9 +1044,16 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
             </div> */}
 
       <CommonTitle name={"设备类型"} type="square" />
-      <div className="bg-[#fff] mb-[10px] pt-[10px] px-[0.8rem]">
-        <span className="text-base inline-block font-semibold mb-[10px]">
-          设备类型
+      <div className="bg-[#fff]  pt-[10px] px-[0.8rem]">
+        <span className="text-base inline-block font-semibold mb-[10px] flex justify-between">
+          <span>设备类型</span>    <Popconfirm
+            title="你确定要解除绑定吗？"
+            description="解除绑定后，此信息再也没有了。"
+            onConfirm={confirm}
+            onCancel={cancel}
+            okText="是"
+            cancelText="否"
+          ><span style={{ fontWeight: "normal", color: "#0072EF", marginRight: "20px", }}>解绑设备</span></Popconfirm>
         </span>
         <div>
           {machineType.map((item) => (
@@ -1073,29 +1067,36 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
             >
               <div>
                 <span className="mr-[2rem]">{item.label}</span>
-                <span>{item.value}</span>
+                <span>
+                  {item.value == '离床参数' ? <>设置</> : item.value}
+
+                </span>
 
                 {item.label === "MAC地址" ? roleId === 1 || 2 || 0 ? (
-                  <Popconfirm
-                    title="你确定要解除绑定吗？"
-                    description="解除绑定后，此信息再也没有了。"
-                    onConfirm={confirm}
-                    onCancel={cancel}
-                    okText="是"
-                    cancelText="否"
-                  >
-                    {roleId == 1 || roleId == 2 || roleId == 0 ? (
-                      <span
-                        className="text-[#0072EF] ml-[1rem] "
-                        style={{ cursor: "pointer" }}
+                  <>
+                    {
+                      usewindowSize.isMobile ? <Popconfirm
+                        title="你确定要解除绑定吗？"
+                        description="解除绑定后，此信息再也没有了。"
+                        onConfirm={confirm}
+                        onCancel={cancel}
+                        okText="是"
+                        cancelText="否"
                       >
-                        解绑设备
-                      </span>
-                    )
-                      : (
-                        ""
-                      )}
-                  </Popconfirm>
+                        {roleId == 1 || roleId == 2 || roleId == 0 ? (
+                          <span
+                            className="text-[#0072EF] ml-[1rem] "
+                            style={{ cursor: "pointer" }}
+                          >
+                            解绑设备
+                          </span>
+                        )
+                          : (
+                            ""
+                          )}
+                      </Popconfirm> : ''
+                    }
+                  </>
                 ) : (
                   <span
                     className="text-[#0072EF] ml-[1rem]"
@@ -1135,6 +1136,61 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
           ))}
         </div>
       </div>
+
+      {roleId == 1 || roleId == 2 || roleId == 0 ? (
+        <div
+          className="flex justify-between items-center"
+          style={{
+            background: "#ffff",
+            height: "3rem",
+            lineHeight: "4rem",
+            marginBottom: "1rem",
+          }}
+        >
+          <span className="mx-[2rem]  text-sm text-[#6C7784] ml-[0.4rem] pl-[10px]">
+            <span className=" mr-[1.7rem]">离床参数</span> <span className="mr-[2rem] " style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+              {switchOpen ? (
+                <>
+                  <Input
+                    ref={inputRef}
+                    maxLength={5}
+                    value={bedExitParametersBedExit}
+                    placeholder="请输入"
+                    onBlur={onBlurShezhi}
+                    onChange={(val: any) => {
+                      const inputValue: any = val.target.value;
+                      if (inputValue.length > 2) {
+                        setBedExitParametersBedExit('')
+                        return message.info("不能大于99");
+                      }
+                      if (!/^[^\u4e00-\u9fa5]{0,10}$/g.test(inputValue)) {
+                        setBedExitParametersBedExit('')
+                        return message.info("请输入数字");
+                      }
+                      setBedExitParametersBedExit(inputValue)
+                    }}
+                    className="input_leave_setupInput"
+                  ></Input>
+                </>
+              ) : (
+                <span>{bedExitParametersBedExit}</span>
+              )}
+
+            </span>
+          </span>
+          <span
+            onClick={isOpen}
+            className="mr-[2rem] text-[0.8rem] text-[#0072EF]"
+            style={{ cursor: "pointer" }}
+          >
+            设置
+          </span>
+
+        </div>
+      ) : (
+        ""
+      )
+      }
     </div >
   );
 };

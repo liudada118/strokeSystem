@@ -18,7 +18,7 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 function NurseAdd(props: any) {
     const { type, sensorName, onClose } = props
-    console.log(type, props, '...................typetype');
+  
 
     const [notes, setNotes] = useState<any>('')
     const [uploadImage, setUploadImage] = useState<any>([])

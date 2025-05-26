@@ -76,8 +76,7 @@ const RecordForm: React.FC = () => {
                 deviceId: sensorName
             }
         }).then((res) => {
-            console.log('typetype................6666');
-
+       
             let nursingConfig = getNurseConfist(res)
             // if (res.data.templateEffectiveFlag == 1) {
             //     nursingConfig = JSON.parse(res.data.nursingConfig || '[]')

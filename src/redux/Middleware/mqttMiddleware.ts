@@ -202,7 +202,7 @@ const onBedStackPush = ({ stack, state }: onBed) => {
             resData.forEach((item, index) => {
                 if (item.sensorName == jsonObj.deviceName) {
                     let rateValue = 16 - 4 * (Math.random())          
-                       
+                                              
                     item.onBed = item.leavebedParam ? jsonObj.realtimeLeaveBedParam < item.leavebedParam ? 0 : jsonObj.realtimeOnbedState > 0 ? jsonObj.realtimeOnbedState : 1 : jsonObj.realtimeOnbedState
                     item.onBedState = jsonObj.realtimeOnbedState
                     item.breath = jsonObj.realtimeBreathRate
@@ -362,7 +362,7 @@ const onBedStackPush = ({ stack, state }: onBed) => {
 
 
                                     newVoiceExample.voicePush(voiceText)
-                                    console.log(newVoiceExample.voiceQueue)
+                                 
                                     // sosArrOver = arr
                                     // setSosArr(arr)
                                     riskArr[alarmRule.type].push(item.sensorName)

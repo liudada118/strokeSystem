@@ -135,15 +135,12 @@ const equipSlice = createSlice({
             //     realAlarmArr: realAlarmArr,
             //     newVoiceExample: newVoiceExample
             // }))
-
-
             // const equipArr = action.payload.data.records
             // const cloudAlarmArr = action.payload.allAlarm
             // const { equip, newEquip, riskArr, alarmSwitchTypeObj } = neatEquips({ equipArr: equipArr })
             // const alarmConformTimeArr = findAlarmToCatch({ equips: equip, cloudAlarmArr: cloudAlarmArr })
             // const switchArr = findAlarmSwitch({ equip: equip })
             // const realAlarmArr = returnRealAlarm({ cache: alarmConformTimeArr, switchArr: switchArr, alarmSwitchTypeObj, riskArr })
-
             state.equips = equip
             state.equipPc = newEquip
             state.equipsPlay = equip
@@ -153,12 +150,7 @@ const equipSlice = createSlice({
             state.switchArr = switchArr
             state.realAlarmArr = realAlarmArr
             // state.newVoiceExample = new voiceArr()
-
-
-
-
         })
-
         builder.addCase(fetchEquips.rejected, (state, action) => {
             state.status = 'failed'
             state.error = action.error.message
@@ -173,6 +165,7 @@ const equipSlice = createSlice({
         builder.addCase(changePersonalEquipUserInfo.fulfilled, (state, action) => {
             const equip = JSON.parse(JSON.stringify(state.equips))
             const { res, equipPc } = changeOnerEquipInfo({ equips: equip, changeInfo: action.payload[1] })
+console.log(res,equipPc,res,'......................................resresres');
 
             // 实时的数据  跟  静态服务器数据都得更新
             state.equips = res

@@ -95,8 +95,9 @@ interface realtimeReturn {
  * @returns heart :心率   rate : 呼吸 , stroke : 卒中 ,onBedTime : 在床时间 ,  bodyMove : 体动数组
  */
 export const returnRealtimeData: (param: minDataParam) => realtimeReturn = ({ jsonObj, sensorName,leavebedParam }) => {
-
+  
     const { realtimeStrokeRisk, heartRateRandom, realtimeBreathRate, onOutOffBedTimeMillis, realtimeBodyMoveArr, realtimeOnbedState ,realtimeLeaveBedParam  } = jsonObj
+localStorage.setItem('realtimeLeaveBedParam', JSON.stringify(realtimeLeaveBedParam))
 
     const res = {
         heart: rateToHeart(heartRateRandom),
@@ -122,7 +123,7 @@ export const returnRealtimeData: (param: minDataParam) => realtimeReturn = ({ js
         res.stroke = 0
         res.onBedTime = 0
     }
-    return res
+    return res  
 }
 
 /**

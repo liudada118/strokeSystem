@@ -105,7 +105,7 @@
 }
 
 .rowItem + .rowItem {
-  border-top: 1px solid #DCE3E9;
+  border-bottom: 1px solid #DCE3E9;
 }
 
 .mobileSettingContent :global .adm-list-header {

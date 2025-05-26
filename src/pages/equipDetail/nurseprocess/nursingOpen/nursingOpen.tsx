@@ -119,7 +119,6 @@ function NursingOpen(props: propsType) {
       },
     });
     if (res.data.code === 0) {
-      console.log(res, '...3333.............typetype');
       let nursingConfig = getNurseConfist(res)
       //   if (res.data.templateEffectiveFlag == 1) {
       //     list = JSON.parse(res.data.nursingConfig || '[]')

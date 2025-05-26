@@ -98,8 +98,7 @@ const Nurse: React.FC = () => {
         dispatch(nurseIsOpenAdd(true))
     }
 
-    useEffect(() => {
-        console.log('2222222222222', openNurse)
+    useEffect(() => {  
     }, [openNurse])
     const isRestNuserpage = useSelector((state: any) => state.nurse.isRestNuserpage)
     useEffect(() => {

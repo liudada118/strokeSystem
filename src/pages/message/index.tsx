@@ -276,15 +276,11 @@ export default function Message() {
   const [title, setTitle] = useState("全部提醒");
   const [hasMore, setHasMore] = useState(true);
   const [mobileData, setMobileData] = useState([]) as any;
-
   const [nursing, setNursing] = useState(false);
   const [isName, setIsName] = useState(false);
   const [pageTotal, setPageTotal] = useState(0);
-
   const [titleTrue, setTitleTrue] = useState(false);
   const [weekForFirstMonth, setWeekForFirstMonth] = useState(-1);
-
-
   const homeSelectNurse: any = [
     { value: "nursing", label: "护理提醒" },
     { value: "offline", label: "离线提醒" },
@@ -346,7 +342,6 @@ export default function Message() {
       key: "type",
     },
   ];
-
   const [name, setName] = useState("");
   const homeSelect = [
     { value: "patientName", label: "姓名" },
@@ -355,11 +350,11 @@ export default function Message() {
   const [selectType, setSelectType] = useState("patientName");
   // 搜索框
   const [patientNameRoomNum, setpatientName] = useState<any>("");
-
   const [timeoutId, setTimeoutId] = useState<any>(null);
   const [popupVisible, setPopupVisible] = useState(false);
   const handleInputChange = (value: any) => {
     setpatientName(value);
+    setMobileData([]);
     if (timeoutId) {
       clearTimeout(timeoutId);
     }
@@ -389,7 +384,6 @@ export default function Message() {
       setTimeoutId(newTimeoutId);
     }
   };
-
   // 标题切换
   const titleRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const [dataRange, setDataRange] = useState<any>(null); //日期
@@ -562,7 +556,7 @@ export default function Message() {
   };
   const loadMore = async (searchParams?: any, initData?: any) => {
     const pageNum = params.pageNum + 1;
-    if (popupVisible) {
+    if (pageNum === 1 && popupVisible) {
       if (!searchParams.roomNum) {
         delete searchParams.roomNum
         delete params?.roomNum
@@ -937,13 +931,11 @@ export default function Message() {
                 onChange={(e: any) => handleInputChange(e.target.value)}
                 // onChange={(e) => setpatientName(e.target.value)}
                 placeholder="请输入姓名/床号"
-
               />
               {/* <img src={fang} style={{ width: "1.5rem", height: "1.5rem" }} alt="" /> */}
               {/* <ZoomInOutlined className="MessageYiDongFangDAJing" /> */}
             </div>
             <span
-
               onClick={() => {
                 setVisible(true);
               }}

@@ -71,7 +71,7 @@ export default function FamilySheet(props: familySheetProps) {
                 console.log(record)
                 return (
                     <div style={{ display: 'flex', justifyContent: "center", color: '#0256FF', justifyItems: 'center', cursor: "pointer" }}>
-                        <div className='delete' style={{ marginRight: '1rem' }}
+                        <div className='delete'
                             onClick={() => {
 
                                 setDelete(record)
@@ -101,8 +101,6 @@ export default function FamilySheet(props: familySheetProps) {
                 a.id = index + 1
                 return a
             })
-
-
             props.setPersonSource(res.data.data)
 
         })

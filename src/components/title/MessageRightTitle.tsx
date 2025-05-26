@@ -38,9 +38,11 @@ export const MessageRightTitle = (props: messageParam) => {
     const handleDateChange = (dates: any, dateStrings: [string, string]) => {
         const startMills = dayjs(dateStrings[0]).format('YYYY-MM-DD HH:mm:ss');
         const endMills = dayjs(dateStrings[1]).format('YYYY-MM-DD HH:mm:ss');
-        setStartMills(new Date(startMills).valueOf())
-        setEndMills(new Date(endMills).valueOf())
+        setStartMills(dateStrings[0] ? new Date(startMills).valueOf() : 0)
+        setEndMills(dateStrings[1] ? new Date(endMills).valueOf() : 0)
+        const key = selectType === 'patientName' ? 'patientName' : 'roomNum'
         titleChangeGetMessage({
+            [key]: patientNameRoomNum,
             startMills: dateStrings[0] ? new Date(startMills).valueOf() : timeArr[0],
             endMills: dateStrings[1] ? new Date(endMills).valueOf() : timeArr[1]
         })
@@ -64,7 +66,7 @@ export const MessageRightTitle = (props: messageParam) => {
         if (timeoutId) {
             clearTimeout(timeoutId);
         }
-        if (selectType == 'patientName' && patientNameRoomNum !== '') {
+        if (selectType == 'patientName') {
             const newTimeoutId = setTimeout(() => {
                 titleChangeGetMessage({
                     patientName: value,
@@ -76,7 +78,7 @@ export const MessageRightTitle = (props: messageParam) => {
                 });
             }, 300);
             setTimeoutId(newTimeoutId);
-        } else if (selectType == 'roomNum' && patientNameRoomNum !== '') {
+        } else if (selectType == 'roomNum') {
             const newTimeoutId = setTimeout(() => {
                 titleChangeGetMessage({
                     pageNum: 1,
@@ -96,54 +98,51 @@ export const MessageRightTitle = (props: messageParam) => {
         return current && current > now.endOf('day');
     };
     // 动态禁用时间（禁用未来时间）
-    const disabledTime = (current: any, type: any) => {
-        const now = dayjs();
-        if (!current) return {};
-        // 获取当前时间的小时和分钟
-        const currentHour = now.hour();
-        const currentMinute = now.minute();
-
-        // 当选择开始时间时（仅对 RangePicker 有效）
-        if (type === 'start') {
-            return {
-                disabledHours: () => {
-                    const hours = [];
-                    for (let i = 0; i < 24; i++) {
-                        if (i > currentHour) hours.push(i);
-                    }
-                    return hours;
-                },
-                disabledMinutes: (selectedHour: any) => {
-                    if (selectedHour === currentHour) {
-                        return Array.from({ length: 60 }).map((_, i) => i > currentMinute ? i : -1);
-                    }
-                    return [];
-                }
-            };
-        }
-
-        // 当选择结束时间时（需配合开始时间逻辑）
-        if (type === 'end') {
-            const start = current.clone().startOf('day');
-            return {
-                disabledHours: () => {
-                    const hours = [];
-                    for (let i = 0; i < 24; i++) {
-                        if (i < start.hour()) hours.push(i);
-                    }
-                    return hours;
-                },
-                disabledMinutes: (selectedHour: any) => {
-                    if (selectedHour === start.hour()) {
-                        return Array.from({ length: 60 }).map((_, i) => i < start.minute() ? i : -1);
-                    }
-                    return [];
-                }
-            };
-        }
-
-        return {};
-    };
+    // const disabledTime = (current: any, type: any) => {
+    //     const now = dayjs();
+    //     if (!current) return {};
+    //     // 获取当前时间的小时和分钟
+    //     const currentHour = now.hour();
+    //     const currentMinute = now.minute();
+    //     // 当选择开始时间时（仅对 RangePicker 有效）
+    //     if (type === 'start') {
+    //         return {
+    //             disabledHours: () => {
+    //                 const hours = [];
+    //                 for (let i = 0; i < 24; i++) {
+    //                     if (i > currentHour) hours.push(i);
+    //                 }
+    //                 return hours;
+    //             },
+    //             disabledMinutes: (selectedHour: any) => {
+    //                 if (selectedHour === currentHour) {
+    //                     return Array.from({ length: 60 }).map((_, i) => i > currentMinute ? i : -1);
+    //                 }
+    //                 return [];
+    //             }
+    //         };
+    //     }
+    //     // 当选择结束时间时（需配合开始时间逻辑）
+    //     if (type === 'end') {
+    //         const start = current.clone().startOf('day');
+    //         return {
+    //             disabledHours: () => {
+    //                 const hours = [];
+    //                 for (let i = 0; i < 24; i++) {
+    //                     if (i < start.hour()) hours.push(i);
+    //                 }
+    //                 return hours;
+    //             },
+    //             disabledMinutes: (selectedHour: any) => {
+    //                 if (selectedHour === start.hour()) {
+    //                     return Array.from({ length: 60 }).map((_, i) => i < start.minute() ? i : -1);
+    //                 }
+    //                 return [];
+    //             }
+    //         };
+    //     }
+    //     return {};
+    // };
     const handleSelect = (e: any) => {
         setpatientName('');
         setSelectType(e);
@@ -158,10 +157,8 @@ export const MessageRightTitle = (props: messageParam) => {
         if (patientNameRoomNum) {
             params[e] = ''
         }
-
         console.log('Select 触发:', e, params);
         titleChangeGetMessage(params);
-
     };
     return (
         <>
@@ -171,9 +168,8 @@ export const MessageRightTitle = (props: messageParam) => {
                         <><Space style={{ width: "50rem", height: "2.07rem", marginLeft: "0.7rem" }} direction="vertical" size={12}>
                             <ConfigProvider locale={zhCN}>
                                 <RangePicker
-
                                     disabledDate={disabledDate}
-                                    disabledTime={disabledTime}
+                                    // disabledTime={disabledTime}
                                     format="YYYY-MM-DD HH:mm"       // 控制显示格式
                                     showSecond={false}   // 隐藏秒
                                     placeholder={['开始时间', '结束时间']}
@@ -189,30 +185,13 @@ export const MessageRightTitle = (props: messageParam) => {
                                     defaultValue={selectType}
                                     style={{ width: 80, height: "1.5rem", border: 'none important', }}
                                     onSelect={(e: any) => handleSelect(e)}
-                                    // onSelect={(e) => {
-                                    //     setpatientName('')
-                                    //     setSelectType(e)
-                                    //     setSelectFalse(!selectFalse)
-                                    //     console.log('............00000');
-
-                                    //     if (e) {
-                                    //         titleChangeGetMessage({
-                                    //             pageNum: 1,
-                                    //             pageSize: 10,
-
-                                    //             types: titleKey,
-                                    //             startMills: startMills !== 0 ? startMills : timeArr[0],
-                                    //             endMills: endMills !== 0 ? endMills : timeArr[1],
-                                    //         });
-                                    //     }
-
-                                    // }}
+                                   
                                     options={homeSelect}
                                 />
                                 <Input className="messageTitlediv2_you_inp"
                                     allowClear
                                     value={patientNameRoomNum}
-
+                                 
                                     onChange={(e: any) => handleInputChange(e.target.value)}
                                     placeholder="请输入姓名/床号" />
 

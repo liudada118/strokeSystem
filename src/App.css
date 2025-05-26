@@ -54,4 +54,54 @@
 html,body,#root {
     width: 100%;
     height: 100%;
+    /* 隐藏滚动条但保留滚动功能（所有浏览器） */
+
+
 }
+body::-webkit-scrollbar {
+  display: none; 
+}
+
+body::-webkit-scrollbar {
+  display: none; 
+}
+::-webkit-scrollbar{
+    width: 3px; /*对垂直流动条有效*/
+    height: 3px; /*对水平流动条有效*/
+}
+
+::-webkit-scrollbar{
+    display: none;
+}
+
+body::-webkit-scrollbar{
+    display: none;
+}
+
+.content::-webkit-scrollbar{
+    display: none;
+}
+
+main::-webkit-scrollbar{
+    display: none;
+}
+
+::-webkit-scrollbar{
+    width: 3px; /*对垂直流动条有效*/
+    height: 3px; /*对水平流动条有效*/
+}
+/*定义滚动条的轨道颜色、内阴影及圆角*/
+::-webkit-scrollbar-track{
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+  background-color: #6d6d6d;
+  opacity: 0.4; 
+}
+/*定义滑块颜色、内阴影及圆角*/
+::-webkit-scrollbar-thumb{
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+  background: #6E7794;
+  opacity: 0.7;
+  border-radius: 2px; 
+}
+ 
+ 

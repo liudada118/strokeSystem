@@ -272,7 +272,7 @@ const EquipDetail = () => {
                         nurseOpen ? <div className='w-full h-[92%]  pr-[6.4rem]  pt-[1rem] h-full'>
                             <NursingStencil></NursingStencil>
                         </div>
-                            : <div className='w-[calc(76%-30px)] pt-[1rem] h-full'>
+                            : <div className='w-[calc(76%-20px)] pt-[1rem] h-full'>
                                 <Tabs
                                     className={styles.tabContent}
                                     defaultActiveKey={activeKey}

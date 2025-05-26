@@ -129,8 +129,11 @@ export const stateToObj = {
     text: '在床',
     //清醒暂时改成在床版本稳定了在改回来
     // text: '清醒',
-    img: newWide,
-    class: 'wideState'
+    // 不要删除后期改回来用这个 newWide wideState
+    //  img: newWide,
+    // class: 'wideState'
+    img: newSleep,
+    class: 'sleepState'
   },
   [SIT_STATE]: {
     text: '坐起',
@@ -145,7 +148,6 @@ export const stateToObj = {
     class: 'sleepState'
   }
 }
-
 export function OnBedState(props: onbedStateProps) {
   const { item } = props
   return <>{

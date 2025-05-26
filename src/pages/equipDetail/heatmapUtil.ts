@@ -97,7 +97,6 @@ interface realtimeReturn {
 export const returnRealtimeData: (param: minDataParam) => realtimeReturn = ({ jsonObj, sensorName,leavebedParam }) => {
   
     const { realtimeStrokeRisk, heartRateRandom, realtimeBreathRate, onOutOffBedTimeMillis, realtimeBodyMoveArr, realtimeOnbedState ,realtimeLeaveBedParam  } = jsonObj
-localStorage.setItem('realtimeLeaveBedParam', JSON.stringify(realtimeLeaveBedParam))
 
     const res = {
         heart: rateToHeart(realtimeBreathRate),

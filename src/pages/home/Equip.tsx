@@ -333,7 +333,7 @@ export default function Equip() {
                                                 }}
                                             >我已知晓</div>
                                         </div> : ''}
-                                 
+
                                     <div
                                         className={`equipItem  ${stateToObj[onBedState(item)].class}`}
                                         onClick={() => {

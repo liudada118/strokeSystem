@@ -17,7 +17,7 @@ interface equipState {
     realAlarmArr: any
     newVoiceExample: any
     equipConstant: any
-
+    
 }
 
 const initialState: equipState = {
@@ -33,7 +33,7 @@ const initialState: equipState = {
     status: 'idle',
     error: null,
     equipConstant: [],
-   
+ 
 }
 
 const equipSlice = createSlice({
@@ -63,7 +63,7 @@ const equipSlice = createSlice({
             // state = {...state , ...action.payload}
 
         },
-        changeEquip(state, action) {
+         changeEquip(state, action) {
             const { equips, equipPc } = action.payload
             if (equips) state.equips = equips
             if (equipPc) state.equipPc = equipPc

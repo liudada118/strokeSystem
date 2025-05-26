@@ -8,6 +8,7 @@ import { voiceArr } from '@/utils/voice';
 import { initData } from '../equip/equipSlice';
 import { web } from '@/api/api';
 import { rateToHeart } from '@/utils/dataToFormat';
+import {onCurrentPressure} from '@/redux/Nurse/Nurse'
 // import { equip } from '@/pages/home/Home';
 
 // 只在mqtt运行中改变
@@ -72,6 +73,7 @@ const onBedStackPush = ({ stack, state }: onBed) => {
         });
         client.on('message', ((topic: any, payload: any) => {
             const device = message({ payload, storeApi });
+           storeApi.dispatch(onCurrentPressure(JSON.parse(payload)))
             // console.log(device);
             // console.log('messagemessagemessage')
         }));
@@ -160,15 +162,12 @@ const onBedStackPush = ({ stack, state }: onBed) => {
 
  function message({ payload, storeApi, data }: any) {
     let { equips, switchArr: alarm, realAlarmArr: sosArrOver, riskArr: riskArrs, newVoiceExample, equipsPlay } = storeApi.getState().equip
-
     if (!Object.keys(riskArr).length) riskArr = JSON.parse(JSON.stringify(riskArrs))
     if (!arr.length) arr = JSON.parse(JSON.stringify(sosArrOver))
     if (!resData.length) resData = JSON.parse(JSON.stringify(equips)) //[...equips]
     equipsPlayArr = JSON.parse(JSON.stringify(equipsPlay))
     const jsonObj = JSON.parse(payload);
-
     // console.log(jsonObj)
-
     if (jsonObj.type === 'alarm') {
         // let message = [...overMessage]
         if (jsonObj.alarmMsg.includes('offline')) {
@@ -176,8 +175,6 @@ const onBedStackPush = ({ stack, state }: onBed) => {
             resData.forEach((item, index) => {
                 if (item.sensorName == jsonObj.deviceName) {
                     item.onBedState = 100
-
-
                 }
             })
             // setEquips(resData)

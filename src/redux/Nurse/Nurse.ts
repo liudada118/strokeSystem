@@ -12,7 +12,9 @@ const initialState: any = {
   isDataList:true,
   nurseHome:false,
   overSettings:false,
-  currentPressure:0
+  currentPressure:[],
+  userId:'',
+  currentPressureName:0
 };
 
 const mqttSlice = createSlice({
@@ -54,11 +56,17 @@ nurseHomeOnChlick(state, action) {
   state.nurseHome = action.payload
 },
 onCurrentPressure(state, action){
- state.currentPressure=action.payload
+if(action.payload.deviceName===state.userId){
+ state.currentPressureName=action.payload.realtimeLeaveBedParam
+}
+},
+onName(state, action){
+ state.userId=action.payload
 }
   },
 });
-export const { nurseOpen, nurseDataList, nurseIsOpenAdd, resetNuserpage, nurseSensorName, setNurseListData,setIsGotoNursePage,showTabsTabs,showDataLIst ,nurseHomeOnChlick,onOverSettings,onCurrentPressure} =
+
+export const { nurseOpen, nurseDataList, nurseIsOpenAdd, resetNuserpage, nurseSensorName, setNurseListData,setIsGotoNursePage,showTabsTabs,showDataLIst ,nurseHomeOnChlick,onOverSettings,onCurrentPressure,onName} =
   mqttSlice.actions;
 export const mqttSelect = (state: any) => state.mqtt.client;
 

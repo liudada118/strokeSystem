@@ -54,6 +54,7 @@ const EquipDetail = () => {
 
     const param = useParams()
     const { type, id } = param
+    const { state: { person: { status } } } = useLocation()
     const navigate = useNavigate()
     const token = useSelector(tokenSelect)
     const [activeKey, setActiveKey] = useState(activeKeyArr[(type || 0)])
@@ -207,7 +208,7 @@ const EquipDetail = () => {
                     <Title />
 
                     <NoEquipLoading>
-                        <UserInfoCard outer isMobile />
+                        <UserInfoCard status={status} outer isMobile />
                         {
                             nurseOpen ? <div className='w-[calc(76%-130px)] pt-[1rem] h-[40rem]'>
                                 <NursingStencil></NursingStencil>
@@ -266,7 +267,7 @@ const EquipDetail = () => {
             >
                 <div className='flex ml-[15px] h-[calc(100vh-62px)] overflow-hidden'>
                     <div className='w-[24%] pt-[1rem] mr-[15px]'>
-                        <UserInfoCard />
+                        <UserInfoCard status={status} />
                     </div>
                     {
                         nurseOpen ? <div className='w-full h-[92%]  pr-[6.4rem]  pt-[1rem] h-full'>
@@ -344,7 +345,7 @@ function Provide() {
 
 
             const flipbodyConfig = JSON.parse(res.data.flipbodyConfig)
-            console.log(res, flipbodyConfig, '.......................setNurseFormValuesetNurseFormValue');
+
             const { flipbodyCount, flipbodyTime } = flipbodyConfig
             if (flipbodyCount) {
 
@@ -448,7 +449,7 @@ function Provide() {
                 deviceId: id
             }
         }).then((res) => {
-            let nursingConfig = getNurseConfist(res)      
+            let nursingConfig = getNurseConfist(res)
 
             // if (res.data.templateEffectiveFlag == 1) {
             //     nursingConfig = JSON.parse(res.data.nursingConfig || '[]')

@@ -12,7 +12,7 @@ import {
   statusSelect, fetchEquips,
   selectRealEquipBySensorname,
 } from "@/redux/equip/equipSlice";
-import { onOverSettings } from '@/redux/Nurse/Nurse'
+import { onOverSettings, onName } from '@/redux/Nurse/Nurse'
 import { equipInfoFormatUtil, minToHourText } from "@/utils/dataToFormat";
 import { phoneSelect, tokenSelect } from "@/redux/token/tokenSlice";
 import { isManage, roleIdSelect } from "@/redux/premission/premission";
@@ -37,6 +37,7 @@ interface SettingBlockProps {
   submitCloud: any;
   nurseformValue: any;
   setNurseFormValue: any;
+  status: any;
 }
 
 const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
@@ -66,12 +67,13 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
   const phone = useSelector(phoneSelect);
   const token = useSelector(tokenSelect);
   const dispatch: any = useDispatch();
+  dispatch(onName(sensorName))
   const navigate = useNavigate();
   // const status = useSelector(statusSelect)
   const context = useContext(DataContext);
   const { nurseformValue, submitCloud, setNurseFormValue } = context;
 
-  const { onModify } = props;
+  const { onModify, status } = props;
   // TODO:合并成一个state对象
   const [editing, setEditing] = useState<boolean>(false);
 
@@ -641,7 +643,7 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
     //   ],
     // },
   ];
-  const realtimeLeaveBedParam: any = localStorage.getItem('realtimeLeaveBedParam')
+  const currentPressureName = useSelector((state: any) => state.nurse.currentPressureName)
   const machineType = [
     {
       label: "床垫类型",
@@ -654,41 +656,41 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
 
 
     //  暂时先注释了，后期说不定会添加 ，先别删除
-    {
-      label: "当前压力",
-      value: realtimeLeaveBedParam,
-      params: [
-        {
-          label: "当前压力 ",
-          value: realtimeLeaveBedParam,
-          id: "leavebedParam",
-          onChange: () => {
-            setLeaveParamModalOpen(true);
-          },
-          modal: (
-            <CommonFormModal
-              title="当前压力 "
-              open={leaveParamModalOpen}
-              close={() => setLeaveParamModalOpen(false)}
-              formList={[
-                {
-                  label: "当前压力 ",
-                  key: "leavebedParam",
-                  value: realtimeLeaveBedParam,
-                  type: FormType.INPUT,
-                },
-              ]}
-              onFinish={(values) => {
-                // setTimeRangeD(values.timeRangeD)
-                // changeValueToUserInfo(values)
-                setUserInfo({ ...userInfo, ...values });
-                setLeaveBedParamChange(true);
-              }}
-            />
-          ),
-        },
-      ],
-    },
+    // {
+    //   label: "当前压力",
+    //   value: currentPressureName,
+    //   params: [
+    //     {
+    //       label: "当前压力 ",
+    //       value: currentPressureName,
+    //       id: "leavebedParam",
+    //       onChange: () => {
+    //         setLeaveParamModalOpen(true);
+    //       },
+    //       modal: (
+    //         <CommonFormModal
+    //           title="当前压力 "
+    //           open={leaveParamModalOpen}
+    //           close={() => setLeaveParamModalOpen(false)}
+    //           formList={[
+    //             {
+    //               label: "当前压力 ",
+    //               key: "leavebedParam",
+    //               value: currentPressureName,
+    //               type: FormType.INPUT,
+    //             },
+    //           ]}
+    //           onFinish={(values) => {
+    //             // setTimeRangeD(values.timeRangeD)
+    //             // changeValueToUserInfo(values)
+    //             setUserInfo({ ...userInfo, ...values });
+    //             setLeaveBedParamChange(true);
+    //           }}
+    //         />
+    //       ),
+    //     },
+    //   ],
+    // },
     // {
     //   label: "离床参数",
     //   value: leavebedParam,
@@ -1053,7 +1055,7 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
             onCancel={cancel}
             okText="是"
             cancelText="否"
-          ><span style={{ fontWeight: "normal", color: "#0072EF", marginRight: "20px", }}>解绑设备</span></Popconfirm>
+          ><span style={{ fontWeight: "normal", color: "#0072EF", marginRight: "20px", cursor: "pointer" }}>解绑设备</span></Popconfirm>
         </span>
         <div>
           {machineType.map((item) => (
@@ -1085,7 +1087,7 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
                       >
                         {roleId == 1 || roleId == 2 || roleId == 0 ? (
                           <span
-                            className="text-[#0072EF] ml-[1rem] "
+                            className="text-[#0072EF] ml-[1rem]  "
                             style={{ cursor: "pointer" }}
                           >
                             解绑设备
@@ -1136,15 +1138,19 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
           ))}
         </div>
       </div>
-
+      <div className="bg-[#fff]">
+        <div className="mx-[1rem] py-[0.5rem] flex bg-[#fff]" style={{ borderTop: "1px solid #DCE3E9" }} >
+          <span className=" text-sm text-[#6C7784] mr-[2rem]">当前压力</span><span className=" text-sm text-[#6C7784]">{
+            status == 'unknow' ? '--' : currentPressureName == 'undefined' ? 0 : currentPressureName
+          }</span>
+        </div>
+      </div>
       {roleId == 1 || roleId == 2 || roleId == 0 ? (
         <div
           className="flex justify-between items-center"
           style={{
             background: "#ffff",
-            height: "3rem",
-            lineHeight: "4rem",
-            marginBottom: "1rem",
+            padding: "0.5rem 0 1rem 0",
           }}
         >
           <span className="mx-[2rem]  text-sm text-[#6C7784] ml-[0.4rem] pl-[10px]">

@@ -76,20 +76,25 @@ export default function Equip() {
     }, [homeSelectValue])
     const [i, setI] = useState()
     const data = () => {
-        instance({
-            method: "get",
-            url: netUrl + "/device/selectDeviceWithPatient",
-            params: {
-                phoneNum: phone,
-                pageSize: 500,
-            },
-            headers: {
-                "content-type": "application/x-www-form-urlencoded",
-                "token": token
-            },
-        }).then((res: any) => {
-            setequipPc(res.data.data.records)
-        });
+        try {
+            instance({
+                method: "get",
+                url: netUrl + "/device/selectDeviceWithPatient",
+                params: {
+                    phoneNum: phone,
+                    pageSize: 500,
+                },
+                headers: {
+                    "content-type": "application/x-www-form-urlencoded",
+                    "token": token
+                },
+            }).then((res: any) => {
+
+                setequipPc(res.data.data.records)
+            });
+        } catch (error) {
+
+        }
     }
     useEffect(() => {
         data()

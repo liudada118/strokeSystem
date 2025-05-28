@@ -25,12 +25,9 @@ export const getNurseConfist = (res: any) => {
       nursingConfig = JSON.parse(res.data.nursingConfig || "[]");
     }
   }
-
   return Array.isArray(nursingConfig) ? nursingConfig : [];
 };
-
 export const templateToData = (str: string, type?: string | undefined) => {
-  
   const arr: any = [];
   const splitArr = str?.replace("{", "").replace("}", "").split(",");
   console.log(splitArr);
@@ -39,7 +36,6 @@ export const templateToData = (str: string, type?: string | undefined) => {
       return;
     }
     let key :any= splitItem.split(":")[0]||splitItem.split("：")[0];
-
     let value:any = splitItem.split(":")[1]||splitItem.split("：")[1];
     value = value.replace(new RegExp('"', "g"), "");
     if (key.match(/-?\d+/)) {
@@ -55,6 +51,5 @@ export const templateToData = (str: string, type?: string | undefined) => {
       status: "todo",
     });
   });
-  
   return arr;
 };

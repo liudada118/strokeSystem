@@ -247,12 +247,12 @@ const Bottom = forwardRef((props: bottomProps, refs: any) => {
       }
       <div className="bottomItemContent">
         {!isMobile ? <div className="bottomItem">  {<img style={{ width: '2rem', borderRadius: '3px' }} src={headImg ? headImg : logo} alt="" onClick={() => { navigate('/') }} />}</div> : ''}
-        {bottomArr.map((a, index) => <div className={`bottomItem ${onIndex == index ? 'bottonSelectItem' : ''} ${!isMobile && onIndex == index ? 'selectItempc' : ''}`} onClick={() => {
+        {bottomArr.map((a, index) => <div key={index + 'Bottom'} className={`bottomItem ${onIndex == index ? 'bottonSelectItem' : ''} ${!isMobile && onIndex == index ? 'selectItempc' : ''}`} onClick={() => {
           navigate(a.route)
           setIndex(index)
 
           if (index == 0) {
-            dispatch(fetchEquips())
+            // dispatch(fetchEquips())
           }
           if (index == 1) {
             try {

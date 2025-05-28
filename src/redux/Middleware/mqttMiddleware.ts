@@ -140,7 +140,7 @@ const onBedStackPush = ({ stack, state }: onBed) => {
                 equipsPlay: equipsPlayRes,
                 equipPcPlay: equipPcPlayRes,
             }))
-            console.log(newVoiceExample.voiceQueue)
+            // console.log(newVoiceExample.voiceQueue)
             newVoiceExample.playVoice()
         }, 2000);
         storeApi.dispatch((createTimer(timer)))

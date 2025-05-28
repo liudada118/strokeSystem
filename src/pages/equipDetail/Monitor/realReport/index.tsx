@@ -391,7 +391,7 @@ export default forwardRef((props: any, refs: any) => {
             </Card>
           </div>
 
-          <div className="rightContent">
+          <div className="rightContent ">
 
             {/* <NurseTextInfo equipInfo={equipInfo} timer={timer} sensorName={sensorName} /> */}
             <Card unheight title={'在床体征'}>
@@ -416,8 +416,8 @@ export default forwardRef((props: any, refs: any) => {
                 </div>
               </div>
             </Card>
-
-            <Card unheight title={'睡姿'}>
+            {/* 暂时先注释，后期开发 */}
+            {/* <Card unheight title={'睡姿'}>
               <div className="bedSoresSleepType">
 
                 {
@@ -432,9 +432,9 @@ export default forwardRef((props: any, refs: any) => {
                   })
                 }
               </div>
-            </Card>
+            </Card> */}
             <Card unheight title={'实时体动'} margin={true} mdmb={true}>
-              <div className="realChart">
+              <div className={`realChart ${!isMobile ? 'h-[300px]' : ''}`}>
                 <RealChart
                   index={1}
                   ref={moveRef}

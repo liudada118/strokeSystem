@@ -32,13 +32,8 @@ const TabTheme = {
         },
     },
 }
-
 export const DataContext = createContext<any>({ turnAroundPlan: [] })
-
 const EquipDetail = () => {
-
-
-
     // const typeToActiveKey:any = {
     //     '0': 'monitor',
     //     '1': 'nurse',

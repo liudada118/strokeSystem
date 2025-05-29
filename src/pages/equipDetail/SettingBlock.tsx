@@ -63,7 +63,6 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
   const equipInfo = useSelector((state) =>
     selectEquipBySensorname(state, sensorName)
   );
-
   const phone = useSelector(phoneSelect);
   const token = useSelector(tokenSelect);
   const dispatch: any = useDispatch();
@@ -72,7 +71,6 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
   // const status = useSelector(statusSelect)
   const context = useContext(DataContext);
   const { nurseformValue, submitCloud, setNurseFormValue } = context;
-
   const { onModify, status } = props;
   // TODO:合并成一个state对象
   const [editing, setEditing] = useState<boolean>(false);
@@ -630,7 +628,6 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
     //           onFinish={(values) => {
     //             console.log(
     //               values,
-
     //             );
     //             // setTimeRangeD(values.timeRangeD)
     //             changeValueToUserInfo(values);
@@ -1141,7 +1138,7 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
       <div className="bg-[#fff]">
         <div className="mx-[1rem] py-[0.5rem] flex bg-[#fff]" style={{ borderTop: "1px solid #DCE3E9" }} >
           <span className=" text-sm text-[#6C7784] mr-[2rem]">当前压力</span><span className=" text-sm text-[#6C7784]">{
-            status == 'unknow' ? '--' : currentPressureName == 'undefined' ? 0 : currentPressureName
+            status === 'unknow' ? '--' : currentPressureName == 'undefined' ? 0 : currentPressureName
           }</span>
         </div>
       </div>

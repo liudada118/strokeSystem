@@ -276,7 +276,7 @@ const NurseRecord: (props: NurseRecordProps) => React.JSX.Element = (props) => {
     const format = 'HH:mm';
     const [templateTime, setTemplateTime] = useState("")
     const onTimeChange: TimePickerProps['onChange'] = (time, timeString) => {
-       
+
         if (typeof timeString == 'string') {
             const h = parseInt(timeString.split(':')[0])
             const m = parseInt(timeString.split(':')[1])
@@ -311,11 +311,11 @@ const NurseRecord: (props: NurseRecordProps) => React.JSX.Element = (props) => {
                     <span className='text-lg text-[#32373E] font-semibold'>护理</span>
                     <span className='cursor-pointer text-[#0072EF] text-sm font-medium'
                         onClick={() => {
-                         
+
                             setCurrentNurse({})
                             if (tempList.length === 0) {
                                 if (roleId !== 1 || roleId !== 2 || roleId !== 0) {
-                                    message.info(`${roleId == (1 || 2 || 0) ? '请先添加护理计划！' : "请先联系管理员添加护理计划！"}`)
+                                    message.info(`${roleId == (1 || 2 || 0) ? '请先添加护理计划' : "请先联系管理员添加护理计划"}`)
                                     return
                                 }
                             }
@@ -359,7 +359,7 @@ const NurseRecord: (props: NurseRecordProps) => React.JSX.Element = (props) => {
                             setCurrentNurse({})
                             if (tempList.length === 0) {
                                 if (roleId !== 1 || roleId !== 2 || roleId !== 0) {
-                                    message.info(`${roleId == (1 || 2 || 0) ? '请先添加护理计划！' : "请先联系管理员添加护理计划！"}`)
+                                    message.info(`${roleId == (1 || 2 || 0) ? '请先添加护理计划' : "请先联系管理员添加护理计划"}`)
                                     return
                                 }
                             }

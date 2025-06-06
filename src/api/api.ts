@@ -29,8 +29,17 @@ instance.interceptors.response.use(function (response) {
   return response
 }, function (err) {
   console.log(err, 'err')
-  
   if (err.response.status === 401) {
+    localStorage.removeItem('token')
+    localStorage.removeItem('phone')
+    localStorage.removeItem('roleId')
+    localStorage.removeItem('organizeId')
+    localStorage.removeItem('loglevel')
+    localStorage.removeItem('device')
+    localStorage.removeItem('loginTime')
+    localStorage.removeItem('loglevel')
+    localStorage.removeItem('time')
+    message.info('登录过期，请重新登录')
     window.location.hash = '#/login'
   }
   if(err){
@@ -71,15 +80,23 @@ Instancercv.interceptors.response.use(function (response) {
 }, function (err) {
   console.log(err, 'err')
   if (err.response.status === 401) {
+    localStorage.removeItem('token')
+    localStorage.removeItem('phone')
+    localStorage.removeItem('roleId')
+    localStorage.removeItem('organizeId')
+    localStorage.removeItem('loglevel')
+    localStorage.removeItem('device')
+    localStorage.removeItem('loginTime')
+    localStorage.removeItem('loglevel')
+    localStorage.removeItem('time')
+    message.info('登录过期，请重新登录')
     window.location.hash = '#/login'
   }
 })
-
 export async function fetchDatarcv(options: any) {
   const res:any = await Instancercv(options)
   return res
 }
-
 // export default Instancercv
 export default instance
 export async function fetchData(options: any) {

@@ -18,7 +18,7 @@ const mqttSlice = createSlice({
             state.timer = action.payload
         },
         mqttLoginout(state, action) {
-            state.client.end()
+            state?.client?.end()
             clearInterval(state.timer)
             
             state.client = null

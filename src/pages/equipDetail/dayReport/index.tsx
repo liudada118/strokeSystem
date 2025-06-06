@@ -581,6 +581,7 @@ export default function DayReport() {
 
       // setOnbedTime(Number(res.data.todayOnbedTime) * 1000)
       setNurse(res.data.nursingCount)
+      // 报警次数 离床 坠床 坐起  todayAlarmCount
       setAlarm(res.data.todayAlarmCount)
       setMissNurse(res.data.missNursingCount)
       setStroke(res.data.strokeAlarmList)

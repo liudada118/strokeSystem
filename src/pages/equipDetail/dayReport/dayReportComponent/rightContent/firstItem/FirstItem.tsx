@@ -119,8 +119,8 @@ function FirstItem(props: firstItemProps) {
     const [bodyValueArr, setBodyValueArr] = useState<any>([])
     const [bodyTimeArr, setBodyTimeArr] = useState<any>([])
 
-    console.log(props.data);
-
+  console.log(props.data);
+  
     useEffect(() => {
         let bodyValueArr: Array<any> = [], bodyTimeArr: Array<any> = [], strokeArr: any = []
 
@@ -199,6 +199,7 @@ function FirstItem(props: firstItemProps) {
         // }
 
         const res = objToTidyChartsData({ data: props.onbedList, startDate: props.dayData })
+        console.log(res, props.onbedList, '..........................strokeValue');
 
         // console.log(obj, yValue, onbedArr, strokeValue, 'obj')
 
@@ -217,35 +218,25 @@ function FirstItem(props: firstItemProps) {
     }
 
     // 心率计算
-    const [heartRateMax, srtHeartRateMax] = useState()
-    const [heartRateMin, srtHeartRateMin] = useState()
-    function mostCommonValue(arr: any) {
-        if (arr.length === 0) return null;  // 如果数组为空，返回 null  
-
-        const countMap: any = {};  // 创建一个对象用于存储每个值的计数  
-        let maxCount = 0;     // 记录最大计数  
-        let mostCommon = null; // 记录出现次数最多的值  
-
-        // 遍历数组并计数  
-        arr.forEach((value: any) => {
-            countMap[value] = (countMap[value] || 0) + 1; // 如果不存在则初始化为 0，并加 1  
-            // 更新最多值和最大计数  
-            if (countMap[value] > maxCount) {
-                maxCount = countMap[value];
-                mostCommon = value;
-            }
-        });
-
-        return mostCommon; // 返回最多的值  
-    }
+    const [heartRateMax, srtHeartRateMax] = useState(null)
+    const [heartRateMin, srtHeartRateMin] = useState(null)
+    const [heartRateAll, setHeartRateAll] = useState()
+    const [time, setTime] = useState([])
     useEffect(() => {
+        let now = new Date();
+        let yesterday8pm = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1, 20, 0, 0);
+        let today12pm = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 12, 0, 0);
+        let yesterday8pmTimestamp = yesterday8pm.getTime();
+        let today12pmTimestamp = today12pm.getTime();
+        console.log(yesterday8pmTimestamp, today12pmTimestamp, '时间戳datedatedate');
+
         instance({
             method: "get",
             url: "/sleep/nurse/getRecords",
             params: {
                 deviceName: props.sensorName,
-                startTime: new Date(new Date().toLocaleDateString()).getTime(),
-                endTime: new Date(new Date().toLocaleDateString()).getTime() + (24 * 60 - 1) * 60 * 1000,
+                startTime: yesterday8pmTimestamp,
+                endTime: today12pmTimestamp,
                 pageNum: 1,
                 pageSize: 99
             },
@@ -256,21 +247,54 @@ function FirstItem(props: firstItemProps) {
         }).then((result: any) => {
             // [].flat
             const flat = result.data.onbedList
-            const data = flat.flat()
-            const res = data.map((item: any) => item.perMinuteBreathRate)
-            const xinLv: any = rateArrToHeart(res)
-            // const filteredData = xinLv.filter((item: any) => item >= 50 || item === 0);
-            // 最大心率计算
-            const max: any = Math.max(...xinLv)
-            // 最小心率计算
-            const min: any = calMinExcludingZero(xinLv)
-            setDataList(xinLv)
-            srtHeartRateMin(min)
+            const listTime: any = [
+                '20:00',
+                // '22:00',
+                '00:00',
+                // '02:00',
+                '04:00',
+                // '06:00',
+                '08:00',
+                // '10:00',
+                '12:00',
+            ]
+            const timeList = [] as any
+            const dataList = [] as any
+            const list = flat.map((item: any) => {
+                return dayjs(item.time).format('HH:mm');
+            })
+            listTime.forEach((item: any) => {
+                if (!list.includes(item)) {
+                    flat.push({
+                        time: item,
+                        perMinuteBreathRate: 0
+                    })
+                }
+            })
 
+            const sortedIndices = flat.sort((a: any, b: any) => a.time - b.time);
+            sortedIndices.map((item: any) => {
+                // if (item.perMinuteBreathRate !== 0) {
+                const hour = typeof (item.time) === 'number' ? dayjs(item.time).format('HH:mm') : item.time;
+                timeList.push(hour)
+                dataList.push(item.perMinuteBreathRate === 0 ? null : item.perMinuteBreathRate * 4)
+                // }
+            })
+
+            // 最大心率计算
+            const max: any = Math.max(...dataList)
+            // // 最小心率计算
+            const min: any = calMinExcludingZero(dataList)
+            Math.min(...dataList)
+            setTime(timeList)
+            setHeartRateAll(dataList)
+            srtHeartRateMin(min)
             srtHeartRateMax(max)
         }).catch((err: any) => {
+
         });
     }, [])
+
     function calMinExcludingZero(arr: any) {
         if (!Array.isArray(arr)) {
             return 0;
@@ -281,10 +305,6 @@ function FirstItem(props: firstItemProps) {
         }
         return Math.min(...filteredArr);
     }
-    const [dataList, setDataList] = useState([])
-    console.log(dataList, '.........dataList');
-
-
 
     return (
         <div className="firstItem">
@@ -429,22 +449,19 @@ function FirstItem(props: firstItemProps) {
                                 </div>
                                 <div className="nurseStati">
                                     <div className="nurseChart">
-                                        {props.data.breathrate && Array.isArray(props.data.inbed_timestamp_list) ? (
-                                            <CurveChart
-                                                index={2}
-                                                // dataList={dataList}
-                                                ydata={rateArrToHeart(oriRateToRate(props.data.breathrate))}
-                                                fontsize={!isMobile ? 8 : 8}
-                                                xdata={timeArrToTimer(props.data.inbed_timestamp_list)}
-                                                // 假数据
-                                                padding={positionArr}
-                                                lineColor='#EA0000'
-                                                tipFormat={function (params: any) {
-                                                    return `${stampToTime(params[0].name)} ${parseInt(params[0].value)}次`;
-                                                }}
-                                            // mark={false}
-                                            />
-                                        ) : null}
+                                        {/* <div id={`chart_CurveChart`} style={{ height: "100%" }}></div> */}
+                                        <CurveChart
+                                            index={2}
+                                            ydata={heartRateAll ? heartRateAll : []}
+                                            xdata={time}
+                                            isFalse={true}
+                                            padding={positionArr}
+                                            lineColor='#EA0000'
+                                            tipFormat={function (params: any) {
+                                                return `${stampToTime(params[0].name)} ${parseInt(params[0].value)}次`;
+                                            }}
+                                        />
+
                                     </div>
                                 </div>
                             </div> : ''}
@@ -471,6 +488,7 @@ function FirstItem(props: firstItemProps) {
                                                 ydata={oriRateToRate(props.data.breathrate)}
                                                 xdata={timeArrToTimer(props.data.inbed_timestamp_list)}
                                                 fontsize={!isMobile ? 8 : 8}
+                                                isFalse={false}
                                                 // 假数据
                                                 padding={positionArr}
                                                 tipFormat={function (params: any) {

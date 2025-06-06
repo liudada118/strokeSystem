@@ -9,6 +9,8 @@ import axios from "axios";
 
 import useWindowSize from '@/hooks/useWindowSize'
 import './index.scss'
+import { useDispatch } from "react-redux";
+import { fetchEquips } from "@/redux/equip/equipSlice";
 
 export enum FormType {
     INPUT = 'INPUT',
@@ -51,7 +53,7 @@ interface CommonFormModalProps {
 }
 const CommonFormModal: (props: CommonFormModalProps) => React.JSX.Element = (props) => {
     const [form] = Form.useForm() as any;
-
+    const dispatch: any = useDispatch()
     const { open, close, formList, title, onFinish, imgChange, sensorName, updateName } = props
     const [timeStart, setTimeStart] = useState<number>(0)
     const [timeEnd, setTimeEnd] = useState<number>(0)
@@ -135,6 +137,7 @@ const CommonFormModal: (props: CommonFormModalProps) => React.JSX.Element = (pro
             }).then((res) => {
                 if (res.data.msg == 'update success') {
                     // getuserInfo()
+                    dispatch(fetchEquips())
                     message.success('修改成功')
                 }
             });

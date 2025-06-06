@@ -76,7 +76,7 @@ interface curveChartData {
   strokeArr?: any;
   fontsize?: any;
   stroke?: any;
-  // tipFormat ?: any
+  isFalse?: any
 }
 
 interface curveIndex {
@@ -97,6 +97,7 @@ interface curveIndex {
   lineColor?: any;
   padding?: any;
   fontsize?: any;
+  isFalse?: boolean;
 }
 
 export function Charts(props: circleData) {
@@ -195,9 +196,7 @@ export function CurveChart(props: curveIndex) {
       mark,
       fontsize,
     } = props;
-    console.log(ydata, '.............................ydataydataydataydata');
 
-    let yarr = [];
 
     const option = {
       tooltip: {
@@ -213,7 +212,9 @@ export function CurveChart(props: curveIndex) {
       color: ["#006EFF", "#67E0E3", "#9FE6B8"],
       xAxis: {
         type: "category",
-        data: [
+        minInterval: 100,
+        // props.isFalse === false ? props.xdata :
+        data: props.isFalse === true ? props.xdata : [
           "20:00",
           "22:00",
           "00:00",
@@ -232,10 +233,33 @@ export function CurveChart(props: curveIndex) {
           },
         },
         axisLabel: {
-          interval: 0,
+
+          // interval: 'auto',  // 自动隐藏部分标签
+          // interval: 120,
+          formatter: function (value: string, index: number) {
+            const listTime: any = [
+              '20:00',
+              // '22:00',
+              '00:00',
+              // '02:00',
+              '04:00',
+              // '06:00',
+              '08:00',
+              // '10:00',
+              '12:00',
+            ]
+
+            return props.isFalse === true ? listTime.includes(value) ? value : '' : value;
+            // const hour = parseInt(value?.slice(0, 2));
+            // console.log(hour, 'hour');
+            // const hour1 = parseInt(value?.slice(3, 5));
+            // console.log(hour1 === 30 ? value : "", 'hour1');
+            // return hour % 1 === 0 ? `${hour}:00` : '';
+          },
+          interval: 0, // 自动隐藏部分标签
           fontSize: 10,
+          length: 10,
           show: true,
-          // interval: interval != undefined ? interval >= 0 ? interval : 2000 : 2000, //x轴间隔多少显示刻度
           showMinLabel: true,
           showMaxLabel: true,
           textStyle: {
@@ -288,43 +312,21 @@ export function CurveChart(props: curveIndex) {
           smooth: smooth == undefined ? true : smooth,
           step: step == undefined ? "" : step,
           // data : [1,2,3,4,5,6,7],
-          data: color ? color : ydata, //y轴上的数据也是动态的，也作为参数传进来
+          data: ydata.map(item => props.isFalse === true ? item : item > 0 ? item : 0), //y轴上的数据也是动态的，也作为参数传进来
+          // ydata
+          // , //y轴上的数据也是动态的，也作为参数传进来
           symbol: "none",
-          // itemStyle: {
-          //   normal: {
-          //     lineStyle: {
-          //       color: lineColor,
-          //     },
-          //   },
-          // },
+          connectNulls: false,
           lineStyle: {
             width: 1,
             color: lineColor,
           },
-          // areaStyle: {
-          //   normal: {
-          //     color: {
-          //       type: 'linear',
-          //       x: 0,
-          //       y: 0,
-          //       x2: 0,
-          //       y2: 1,
-          //       colorStops: [
-          //         {
-          //           offset: 0,
-          //           color: 'rgba(14,156,255,0.4)' // 0% 处的颜色
-          //         },
-          //         {
-          //           offset: 1,
-          //           color: 'rgba(14,156,255,0)' // 100% 处的颜色
-          //         }
-          //       ],
-          //       global: false // 缺省为 false
-          //     }
-          //   }
-          // },
+          encode: {
+            x: (dataIndex: any) => props.xdata[dataIndex]
+          }
         },
         {
+          connectNulls: false,
           symbolSize: 20,
           data: [
             ["aaa", 8.04],
@@ -363,9 +365,7 @@ export function CurveChart(props: curveIndex) {
               show: true,
               position: "middle",
             },
-            // data: [{
-            //   yAxis: props.mark ? 60 : -1,//这里设置false是隐藏不了的，可以设置为-1
-            // },]
+
           },
         },
       ],
@@ -856,12 +856,13 @@ export function CategoryChart(props: categoryChartProps) {
         }
         : {
           show: true,
-          formatter: props.tipFormat,
+          // formatter: props.tipFormat,
         },
       xAxis: {
         type: "category",
         data: props.xdata,
         minInterval: 12,
+
         axisLabel: {
           show: true,
           interval: 7,
@@ -869,13 +870,13 @@ export function CategoryChart(props: categoryChartProps) {
             fontSize: fontsize ? fontsize : 8, //更改坐标轴文字大小
           },
 
-          formatter: props.formatter
-            ? function (value: any) {
-              console.log(value);
-              let tip = value.slice(0, 2);
-              return tip;
-            }
-            : "{value}",
+          // formatter: props.formatter
+          //   ? function (value: any) {
+          //     console.log(value);
+          //     let tip = value.slice(0, 2);
+          //     return tip;
+          //   }
+          //   : "{value}",
         },
         axisLine: {
           show: true,

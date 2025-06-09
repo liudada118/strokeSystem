@@ -240,7 +240,7 @@ export default forwardRef((props: any, refs: any) => {
       },
     }).then((res) => {
 
-      const { wsPointData, timer, resSleep, circleArr } = returnCloudHeatmapData({ res: res.data, sensorName, equipInfo })
+      const { wsPointData, timer, resSleep, circleArr } = returnCloudHeatmapData({ res: res?.data, sensorName, equipInfo })
       // console.log(first)
       initOnbedOrLeaveBedPage({ wsPointData, timer, resSleep, circleArr })
       // setValueArr((prevState: any) => {
@@ -417,7 +417,7 @@ export default forwardRef((props: any, refs: any) => {
               </div>
             </Card>
             {/* 暂时先注释，后期开发 */}
-            {/* <Card unheight title={'睡姿'}>
+            <Card unheight title={'睡姿'}>
               <div className="bedSoresSleepType">
 
                 {
@@ -432,9 +432,9 @@ export default forwardRef((props: any, refs: any) => {
                   })
                 }
               </div>
-            </Card> */}
+            </Card>
             <Card unheight title={'实时体动'} margin={true} mdmb={true}>
-              <div className={`realChart ${!isMobile ? 'h-[300px]' : ''}`}>
+              <div className={`realChart`}>
                 <RealChart
                   index={1}
                   ref={moveRef}

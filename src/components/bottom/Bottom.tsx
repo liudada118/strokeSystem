@@ -180,7 +180,7 @@ const Bottom = forwardRef((props: bottomProps, refs: any) => {
       params: { phone: phone, }
     }).then((e) => {
 
-      if (e.data.unreadFlag == 1) {
+      if (e?.data?.unreadFlag == 1) {
         setRead(true)
       }
     }).catch((err) => {
@@ -282,7 +282,7 @@ const Bottom = forwardRef((props: bottomProps, refs: any) => {
               method: "get",
               params: { phone: phone, }
             }).then((e) => {
-              if (e.data.code == 0) {
+              if (e?.data?.code == 0) {
                 setRead(false)
               }
             })

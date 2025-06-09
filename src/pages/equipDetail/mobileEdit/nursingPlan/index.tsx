@@ -82,7 +82,7 @@ export default function NursingPlan() {
         deviceId: sensorName,
       },
     }).then((res: any) => {
-      if (res.data.code === 0) {
+      if (res?.data?.code === 0) {
         let nursingConfig = getNurseConfist(res)
         const list = Array.isArray(nursingConfig) ? nursingConfig : []
 
@@ -105,7 +105,7 @@ export default function NursingPlan() {
         phoneNum: localStorage.getItem('phone')
       }
     }).then((res: any) => {
-      setSensorName(res.data.data.patientName)
+      setSensorName(res?.data?.data?.patientName)
     })
   }, []);
 

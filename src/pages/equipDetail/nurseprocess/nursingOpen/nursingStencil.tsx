@@ -43,7 +43,7 @@ function NursingStencil(props: propsType) {
                 phoneNum: localStorage.getItem('phone')
             }
         }).then((res: any) => {
-            setName(res.data.data.patientName || '[]')
+            setName(res?.data?.data?.patientName || '[]')
         })
     }, []);
 
@@ -63,8 +63,7 @@ function NursingStencil(props: propsType) {
                 deviceId: sensorName
             }
         }).then((res) => {
-            let nursingConfig = getNurseConfist(res);
-            console.log(nursingConfig, 'ddddddddddd.....')
+            let nursingConfig = getNurseConfist(res);      
             setNurseConfigList(nursingConfig)
         })
     }

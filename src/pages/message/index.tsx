@@ -173,9 +173,9 @@ export default function Message() {
       };
       const res = await instance(option);
       if (WindowSize) {
-        setMobileData(getDataList(res.data.data.records));
+        setMobileData(getDataList(res?.data?.data?.records));
       } else {
-        setDataLIst(res.data.data.records);
+        setDataLIst(res?.data?.data?.records);
       }
       setFalse(false);
       initMessagesPage(res);

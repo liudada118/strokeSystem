@@ -340,7 +340,7 @@ function Provide() {
         }).then((res) => {
 
 
-            const flipbodyConfig = JSON.parse(res.data.flipbodyConfig)
+            const flipbodyConfig = JSON.parse(res?.data?.flipbodyConfig)
 
             const { flipbodyCount, flipbodyTime } = flipbodyConfig
             if (flipbodyCount) {
@@ -408,9 +408,9 @@ function Provide() {
             },
         }).then((res) => {
             const nurseArr: any = []
-            const flipbodyData = res.data.flipbodyData
+            const flipbodyData = res?.data?.flipbodyData
 
-            const nurseTotal = res.data.flipbodyCount
+            const nurseTotal = res?.data?.flipbodyCount
             const flipbodyLen = Object.keys(flipbodyData).length
             for (let i = 0; i < nurseTotal; i++) {
                 nurseArr[i] = {}

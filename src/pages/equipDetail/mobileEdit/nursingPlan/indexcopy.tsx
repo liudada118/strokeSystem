@@ -61,7 +61,7 @@ export default function NursingPlan() {
         ...(type ? { type } : {}),
       },
     }).then((res: any) => {
-      if (res.data.code === 0) {
+      if (res?.data?.code === 0) {
         let nursingConfig = getNurseConfist(res)
        
 
@@ -93,7 +93,7 @@ export default function NursingPlan() {
     }).then((res: any) => {
 
 
-      setSensorName(res.data.data.patientName)
+      setSensorName(res?.data?.data?.patientName)
    
     })
   }, []);

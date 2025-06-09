@@ -98,8 +98,8 @@ export default function EquipTypeEdit(props?: any) {
           phoneNum: localStorage.getItem("phone"),
         },
       }).then((res: any) => {
-        if (res && res.data.code == 0) {
-          const info = res.data?.data || {};
+        if (res && res?.data?.code == 0) {
+          const info = res?.data?.data || {};
           setEquipTypeInfo({
             type: info.type,
             deviceId: info.deviceId,

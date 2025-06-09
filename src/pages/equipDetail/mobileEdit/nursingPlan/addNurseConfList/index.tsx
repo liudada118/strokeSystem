@@ -172,7 +172,7 @@ export default function AddNurseConfList() {
                 phoneNum: localStorage.getItem('phone')
             }
         }).then((res: any) => {
-            setSensorName(res.data.data.patientName)
+            setSensorName(res?.data?.data?.patientName)
         })
     }, []);
 

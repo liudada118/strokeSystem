@@ -113,12 +113,10 @@ function NursingOpen(props: propsType) {
       },
       params: {
         deviceId: sensorName,
-        // ...(type ? { type } : {}),
-        // 这个type展示献先写死 到时候要换成 这个里面的 iditems
         type: type
       },
     });
-    if (res.data.code === 0) {
+    if (res?.data?.code === 0) {
       let nursingConfig = getNurseConfist(res)
       //   if (res.data.templateEffectiveFlag == 1) {
       //     list = JSON.parse(res.data.nursingConfig || '[]')
@@ -266,9 +264,9 @@ function NursingOpen(props: propsType) {
         phoneNum: localStorage.getItem("phone"),
       },
     }).then((res: any) => {
-      console.log(res.data.data.patientName, '..........patientNamepatientName');
+  
 
-      setName(res.data.data.patientName || '');
+      setName(res?.data?.data?.patientName || '');
     });
   }, []);
 

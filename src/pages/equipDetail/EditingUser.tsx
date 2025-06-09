@@ -309,9 +309,9 @@ const PersonalInfo = (props: any) => {
           phoneNum: localStorage.getItem("phone"),
         },
       }).then((res: any) => {
-        if (res && res.data.code == 0) {
+        if (res && res?.data?.code == 0) {
 
-          const info = res.data?.data || {};
+          const info = res?.data?.data || {};
           setUserInfo({
             headImg: info.headImg,
             patientName: info.patientName,
@@ -341,7 +341,6 @@ const PersonalInfo = (props: any) => {
   }, [sensorName]);
 
   const modifyUserInfo = (params: any) => {
-    console.log(params, '........................paramsparams');
     if (params.patientName === '') {
       message.info('姓名不能为空');
       return;

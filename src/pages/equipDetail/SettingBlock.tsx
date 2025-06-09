@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState, useRef } from "react";
 import CommonFormModal, { FormType } from "../../components/CommonFormModal";
-import { Button, Input, message, Modal, Popconfirm, Switch } from "antd";
+import { Button, Input, message, Modal, Popconfirm, Switch, Radio } from "antd";
+import type { RadioChangeEvent } from 'antd';
 import type { PopconfirmProps } from "antd";
 import styles from "./message.module.scss";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
@@ -27,7 +28,11 @@ import { unbindHheDevice } from "../../api/index";
 import { nurseOpen, nurseHomeOnChlick } from "../../redux/Nurse/Nurse";
 import { setIsGotoNursePage } from "../../redux/Nurse/Nurse";
 import useWindowSize from '@/hooks/useWindowSize'
-
+const style: React.CSSProperties = {
+  display: 'flex',
+  flexDirection: 'column',
+  gap: 8,
+};
 
 interface SettingBlockProps {
   onModify: (value: boolean) => void;
@@ -133,7 +138,7 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
       },
     }).then((res) => {
 
-      const flipbodyConfig = JSON.parse(res.data.flipbodyConfig);
+      const flipbodyConfig = JSON.parse(res?.data?.flipbodyConfig);
       console.log(flipbodyConfig);
       const { flipbodyCount, flipbodyTime } = flipbodyConfig;
       if (flipbodyCount) {
@@ -927,7 +932,7 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
           phoneNum: localStorage.getItem('phone')
         }
       }).then((res: any) => {
-        setBedExitParametersBedExit(res.data.data.leavebedParam)
+        setBedExitParametersBedExit(res?.data?.data?.leavebedParam)
       })
     } catch (error) {
     }
@@ -961,6 +966,81 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
     }
     setSwitchOpen(false);
   };
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [valueInputTime, setValueInputTime] = useState(0);
+  const [valleaveBedParam, setValleaveBedParam] = useState({
+    leaveBedParam: '',
+    leaveBedTimeParam: '',
+    situpTimeParam: ''
+  });
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+  const [value, setValue] = useState(0);
+  const onChangeRadio = (e: RadioChangeEvent) => {
+    setValue(e.target.value);
+  };
+  useEffect(() => {
+    getBedSettingParam()
+  }, [])
+  const getBedSettingParam = () => {
+    try {
+      instance({
+        method: "get",
+        url: "/sleep/device/getBedSettingParam",
+        headers: {
+          "content-type": "application/json",
+          "token": token
+        },
+        params: {
+          deviceName: sensorName,
+        }
+      }).then((res: any) => {
+        console.log(res.data.leaveBedParam, '........res.data.leaveBedParam');
+
+        setValleaveBedParam({
+          leaveBedParam: res.data.leaveBedParam,
+          leaveBedTimeParam: res.data.leaveBedTimeParam,
+          situpTimeParam: res.data.situpTimeParam,
+
+        })
+      })
+    } catch (error) {
+    }
+  }
+  const handleOk = () => {
+    if (!valueInputTime) return message.info("请输入时间");
+    try {
+      instance({
+        method: "get",
+        url: "/sleep/device/sendCommand",
+        headers: {
+          "content-type": "application/json",
+          "token": token
+        },
+        params: {
+          mac: deviceId,
+          commandNumber: value,
+          value: valueInputTime,
+        }
+      }).then((res: any) => {
+        if (res.data.code == 0) {
+          getBedSettingParam()
+          message.success("设置成功");
+
+        } else if (res.data.code == 1000) {
+          message.error("设备离线");
+        }
+
+      })
+    } catch (error) {
+    }
+    setIsModalOpen(false);
+  };
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+  const Jqamdmin = localStorage.getItem('phone')
   return (
     <div className="overflow-scroll h-[calc(100%-11.2rem)] mt-6">
       <div className="flex justify-between ">
@@ -1180,6 +1260,7 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
               )}
 
             </span>
+
           </span>
           <span
             onClick={isOpen}
@@ -1194,6 +1275,44 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
         ""
       )
       }
+      {/* 调试设备 */}
+      {
+        Jqamdmin == 'JQadmin' && <div className="bg-[#fff] flex justify-between py-[0.5rem] text-sm px-[1rem]">
+          测试设备 只有Jqadmin有这个功能正在测试
+        </div>
+      }
+      {Jqamdmin == 'JQadmin' && <div className="bg-[#fff] flex justify-between py-[0.5rem] text-sm px-[1rem]">
+        <div className="flex flex-wrap gap-[10px] ">
+          <span className="text-[#6C7784]">离床参数{valleaveBedParam.leaveBedParam} </span>
+          <span className="text-[#6C7784]">离床报警{valleaveBedParam.leaveBedTimeParam}分钟 </span>
+          <span className="text-[#6C7784]">坐起报警{valleaveBedParam.situpTimeParam}分钟</span>
+        </div>
+        <div onClick={showModal} className="text-[#0072EF] ml-[1rem] cursor-pointer">设置</div>
+      </div>
+      }
+      <Modal
+        title="Basic Modal"
+        closable={{ 'aria-label': 'Custom Close Button' }}
+        open={isModalOpen}
+        onOk={handleOk}
+        onCancel={handleCancel}
+      >
+        <Radio.Group
+          style={style}
+          onChange={onChangeRadio}
+          value={value}
+          options={[
+            { value: 0, label: '设置离床参数' },
+            { value: 1, label: '离床报警设置分钟数' },
+            { value: 2, label: '坐起报警设置分钟数' },
+          ]}
+        />
+        时间<Input onChange={(e: any) => {
+          let inputValue = e.target.value;
+          if (inputValue > 255) return message.info("最大只能到255分钟");
+          setValueInputTime(e.target.value)
+        }} className="w-[8rem]" type="text" />
+      </Modal>
     </div >
   );
 };

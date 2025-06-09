@@ -14,15 +14,15 @@ const isSameDay = (timestamp1: number, timestamp2: number) => {
  * @returns
  */
 export const getNurseConfist = (res: any) => {
-  let nursingConfig = [];
-  if (res.data.templateEffectiveFlag == 1) {
-    nursingConfig = JSON.parse(res.data.nursingConfig || "[]");
+  let nursingConfig :any= [];
+  if (res?.data?.templateEffectiveFlag == 1) {
+    nursingConfig = JSON.parse(res?.data?.nursingConfig || "[]");
   } else {
     const nowTime = new Date().getTime();
-    if (isSameDay(res.data.templateUpdatetime, nowTime)) {
-      nursingConfig = JSON.parse(res.data.oldTemplate || "[]");
+    if (isSameDay(res?.data?.templateUpdatetime, nowTime)) {
+      nursingConfig = JSON.parse(res?.data?.oldTemplate || "[]");
     } else {
-      nursingConfig = JSON.parse(res.data.nursingConfig || "[]");
+      nursingConfig = JSON.parse(res?.data?.nursingConfig || "[]");
     }
   }
   return Array.isArray(nursingConfig) ? nursingConfig : [];

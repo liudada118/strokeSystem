@@ -128,7 +128,7 @@ export function TurnEdit() {
                 deviceId: sensorName
             }
         }).then((res) => {  
-            const flipbodyConfig = JSON.parse(res.data.flipbodyConfig)
+            const flipbodyConfig = JSON.parse(res?.data?.flipbodyConfig)
             console.log(flipbodyConfig)
             const { flipbodyCount, flipbodyTime } = flipbodyConfig
             if (flipbodyCount) {

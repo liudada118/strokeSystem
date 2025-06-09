@@ -210,7 +210,7 @@ export default function NurseProcesst(props: nurseProcessProps) {
     })
       .then((res) => {
         const { wsPointData, timer, resSleep, circleArr } =
-          returnCloudHeatmapData({ res: res.data, sensorName, equipInfo });
+          returnCloudHeatmapData({ res: res?.data, sensorName, equipInfo });
         nowPos = resSleep;
         startMatrix = [...wsPointData];
 

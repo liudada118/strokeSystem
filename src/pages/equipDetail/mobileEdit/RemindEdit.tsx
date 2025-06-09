@@ -183,7 +183,7 @@ export function RemindEdit() {
                 fallbedStart, fallbedEnd, fallbedAlarm,
                 leaveBedStart, leaveBedEnd, leaveBedPeriod, leaveBedAlarm,
                 situpStart, situpEnd, situpAlarm, sosAlarm, sosStart, sosEnd
-            } = res.data.data
+            } = res?.data?.data
             setFormValue({
                 timeRangeB: `${timePeriodInitFormat({ timeStamp: leaveBedStart, type: 'start' })} - ${timePeriodInitFormat({ timeStamp: leaveBedEnd, type: 'end' })} `,
                 timeIntervalB: leaveBedPeriod === 0 ? '实时提醒' : `${leaveBedPeriod}分钟后提醒`,
@@ -218,7 +218,7 @@ export function RemindEdit() {
 
         }
     }
-      const formatSetting = (formValue: any) => {
+    const formatSetting = (formValue: any) => {
         let obj = {}
         const newValue = {
             ...formValue,

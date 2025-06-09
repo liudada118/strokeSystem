@@ -107,8 +107,8 @@ const TurnCardTable: (props: TurnCardTableProps) => React.JSX.Element = (props) 
 
 
 
-            setFlipbodyDataList(res.data.flipbodyCount)
-            const dataList: any = Object.values(res.data.flipbodyData).filter((item: any, index) => item.status >= 3).length
+            setFlipbodyDataList(res?.data?.flipbodyCount)
+            const dataList: any = Object.values(res?.data?.flipbodyData).filter((item: any, index) => item.status >= 3).length
             setFlipbodyData(dataList)
         }).catch((err) => {
             // message.error('')

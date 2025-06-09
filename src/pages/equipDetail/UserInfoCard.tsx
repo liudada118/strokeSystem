@@ -142,9 +142,9 @@ const UserInfoCard: (props: UserInfoCardProps) => React.JSX.Element = (props) =>
                 }
             }).then((res: any) => {
 
-                if (res && res.data.code == 0) {
+                if (res && res?.data?.code == 0) {
 
-                    setUserInfo(res.data.data)
+                    setUserInfo(res?.data?.data)
                 }
             })
         }

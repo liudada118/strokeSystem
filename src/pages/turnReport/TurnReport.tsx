@@ -154,7 +154,7 @@ export default function TurnReport(props: PropsType) {
                 phoneNum: localStorage.getItem('phone')
             }
         }).then((res: any) => {
-            setDataList(res.data.data)
+            setDataList(res?.data?.data)
         })
 
     }, [])

@@ -42,9 +42,9 @@ const onBedStackPush = ({ stack, state }: onBed) => {
     const phone = state.token.phone
     const mqttClient = state.mqtt.client
     next(action)
-    if (token && phone && action.type == "equip/fetchEquips/fulfilled") {
+    if (token && phone && (action.type == "equip/changeUserInfo/fulfilled" || action.type === 'equip/fetchEquips/fulfilled')) {
         let { equips, switchArr: alarm, realAlarmArr: sosArrOver, riskArr: riskArrs, equipsPlay } = storeApi.getState().equip
-        riskArr = JSON.parse(JSON.stringify(riskArrs))
+         riskArr = JSON.parse(JSON.stringify(riskArrs))
         arr = JSON.parse(JSON.stringify(sosArrOver))
         resData = JSON.parse(JSON.stringify(equips)) //[...equips]
         equipsPlayArr = JSON.parse(JSON.stringify(equipsPlay))
@@ -72,6 +72,7 @@ const onBedStackPush = ({ stack, state }: onBed) => {
             client.subscribe(`${phone}`);
         });
         client.on('message', ((topic: any, payload: any) => {
+            // console.log('homeSelectValue66666666666666666', topic, payload)
             const device = message({ payload, storeApi });
            storeApi.dispatch(onCurrentPressure(JSON.parse(payload)))
             // console.log(device);
@@ -100,7 +101,14 @@ const onBedStackPush = ({ stack, state }: onBed) => {
         client.on("disconnect", function (packet: any) { });
 
         let timer = setInterval(() => {
-
+            
+            // let { equips, switchArr: alarm, realAlarmArr: sosArrOver, riskArr: riskArrs, equipsPlay } = storeApi.getState().equip
+            // equipsPlayArr = JSON.parse(JSON.stringify(equipsPlay))
+            // arr = JSON.parse(JSON.stringify(sosArrOver))
+        
+            // riskArr = JSON.parse(JSON.stringify(riskArrs))
+            
+            // resData = JSON.parse(JSON.stringify(equips)) //[...equips]
             resData.forEach((equip, index) => {
                 if (equip.onBedStack) {
                     onBedStackPush({ stack: equip.onBedStack, state: equip.onBedState })

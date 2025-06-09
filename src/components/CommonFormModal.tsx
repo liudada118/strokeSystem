@@ -10,7 +10,7 @@ import axios from "axios";
 import useWindowSize from '@/hooks/useWindowSize'
 import './index.scss'
 import { useDispatch } from "react-redux";
-import { fetchEquips } from "@/redux/equip/equipSlice";
+import { changePersonalEquipUserInfo, fetchEquips } from "@/redux/equip/equipSlice";
 
 export enum FormType {
     INPUT = 'INPUT',
@@ -115,6 +115,18 @@ const CommonFormModal: (props: CommonFormModalProps) => React.JSX.Element = (pro
             if (today < selectedDate) {
                 return message.info('所选日期不能大于当前日期');
             }
+            const params: any = {
+                deviceId: sensorName,
+                "headImg": headImg ? headImg : values.headImg,
+                "patientName": values.patientName,
+                // "age": age === 0 && -1 ? 1 : age, // '2025-3-1'
+                "age": values.age ? values.age : '',
+                "roomNum": values.roomNum,
+                "sex": values.sex == 1 ? 1 : 0,
+                "telephone": values.telephone,
+                "address": values.address,
+                "medicalHistory": values.medicalHistory ? values.medicalHistory : '',
+            }
             axios({
                 method: "post",
                 url: netUrl + "/device/update",
@@ -122,22 +134,14 @@ const CommonFormModal: (props: CommonFormModalProps) => React.JSX.Element = (pro
                     "content-type": "application/x-www-form-urlencoded",
                     "token": localStorage.getItem('token')
                 },
-                params: {
-                    deviceId: sensorName,
-                    "headImg": headImg ? headImg : values.headImg,
-                    "patientName": values.patientName,
-                    // "age": age === 0 && -1 ? 1 : age, // '2025-3-1'
-                    "age": values.age ? values.age : '',
-                    "roomNum": values.roomNum,
-                    "sex": values.sex == 1 ? 1 : 0,
-                    "telephone": values.telephone,
-                    "address": values.address,
-                    "medicalHistory": values.medicalHistory ? values.medicalHistory : '',
-                },
-            }).then((res) => {
+                params
+            }).then((res: any) => {
                 if (res.data.msg == 'update success') {
                     // getuserInfo()
-                    dispatch(fetchEquips())
+                    // dispatch(fetchEquips())
+                    console.log(res.data, '11111111........update success')
+                    // const
+                    dispatch(changePersonalEquipUserInfo(params))
                     message.success('修改成功')
                 }
             });
@@ -474,3 +478,7 @@ const CommonFormModal: (props: CommonFormModalProps) => React.JSX.Element = (pro
 }
 
 export default CommonFormModal
+
+function handleSettingCompleted(arg0: any): any {
+    throw new Error("Function not implemented.");
+}

@@ -143,7 +143,7 @@ function NursingOpen(props: propsType) {
     const isHasTemp = Array.isArray(rightNurseList) ? (rightNurseList || []).find((item: any) => {
       return +item.key === +templateTime;
     }) : false
-    if (isHasTemp) return message.warning("该护理时间已存在请重新选择！");
+    if (isHasTemp) return message.info("该护理时间已存在请重新选择");
     setRightNurseList([
       ...rightNurseList,
       {
@@ -264,7 +264,7 @@ function NursingOpen(props: propsType) {
         phoneNum: localStorage.getItem("phone"),
       },
     }).then((res: any) => {
-  
+
 
       setName(res?.data?.data?.patientName || '');
     });

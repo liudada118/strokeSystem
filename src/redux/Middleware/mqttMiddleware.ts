@@ -79,7 +79,7 @@ const onBedStackPush = ({ stack, state }: onBed) => {
             // console.log('messagemessagemessage')
         }));
         client.on("error", (error: any) => {
-            console.log("error");
+            console.log("error",error);
         });
         client.on("reconnect", () => {
             // console.log("Reconnecting...");

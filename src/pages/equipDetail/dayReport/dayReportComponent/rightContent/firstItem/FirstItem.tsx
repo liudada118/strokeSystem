@@ -119,8 +119,8 @@ function FirstItem(props: firstItemProps) {
     const [bodyValueArr, setBodyValueArr] = useState<any>([])
     const [bodyTimeArr, setBodyTimeArr] = useState<any>([])
 
-  console.log(props.data);
-  
+    console.log(props.data);
+
     useEffect(() => {
         let bodyValueArr: Array<any> = [], bodyTimeArr: Array<any> = [], strokeArr: any = []
 

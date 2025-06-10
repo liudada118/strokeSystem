@@ -83,8 +83,8 @@ export default function NurseConfEdit(props: any) {
   const onFinish = (value: any) => {
     if (!nurseName) return message.info("请填写护理名称");
     if (!value.hours || !value.minutes)
-      return message.warning("请填写护理时间！");
-    if (nurseName.length > 20) return message.warning("名称不能超过20个字符");
+      return message.info("请填写护理时间");
+    if (nurseName.length > 20) return message.info("名称不能超过20个字符");
     const tempNurseList = localStorage.getItem("tempList") || "[]";
     const list = JSON.parse(tempNurseList);
     const hoursVal = parseFloat(value.hours);
@@ -97,7 +97,7 @@ export default function NurseConfEdit(props: any) {
     const isHasTemp = list.find((item: any) => {
       return +item.key === +templateTime;
     });
-    if (isHasTemp) return message.warning("该护理时间已存在请重新选择！");
+    if (isHasTemp) return message.info("该护理时间已存在请重新选择");
     if (tempNurseList) {
       localStorage.setItem("tempList", JSON.stringify([
         ...list,
@@ -160,12 +160,12 @@ export default function NurseConfEdit(props: any) {
   const handleDropdownClick = async (e: any) => {
 
     const info: any = items.find((item) => item.key === e.key);
-   
+
 
     setDefaultTempInfo(info);
     getPersonTemplate(+info.key);
     dropdownRef.current?.close()
-   
+
   };
 
   // useEffect(() => {

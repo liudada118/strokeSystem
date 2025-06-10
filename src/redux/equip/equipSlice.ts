@@ -375,7 +375,7 @@ export const changePersonalEquipNurseInfo = createAsyncThunk('equip/changeNurseI
  */
 
 interface leaveParam {
-    deviceId: string
+    deviceId: any
     leaveBedParam: number
 }
 
@@ -386,12 +386,12 @@ export const changePersonalEquipLeaveBedInfo = createAsyncThunk('equip/changeLea
     const realOption = {
         method: 'post',
         url: `/device/updateLeaveBedParam`,
-        params: {
-            ...options
-        },
         headers: {
             "content-type": "application/x-www-form-urlencoded",
             "token": token
+        },
+         data: {
+            ...options
         },
     }
     const response = await fetchDatarcv(realOption)

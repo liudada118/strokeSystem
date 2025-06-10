@@ -173,7 +173,7 @@ const addUseModla = forwardRef((props: addUseModlaProps, ref) => {
                 setIsModalOpen(false);
             }
         } else {
-            message.error('正在搜索设备')
+            message.error('请输入设备信息')
         }
         onClose(false)
     };

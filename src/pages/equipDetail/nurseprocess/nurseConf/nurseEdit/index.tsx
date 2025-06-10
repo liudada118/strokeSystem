@@ -166,7 +166,7 @@ export default function NurseConfEdit(props: any) {
     const minutesVal = parseFloat(minutes);
     const hoursFormat = hoursVal < 10 ? `0${hoursVal}` : hoursVal;
     const minutesFormat = minutesVal < 10 ? `0${minutesVal}` : minutesVal;
-  
+
 
     const templateTime = new Date(
       `1970-01-01 ${hoursFormat}:${minutesFormat}`
@@ -174,7 +174,7 @@ export default function NurseConfEdit(props: any) {
     const isHasTemp = nurseList.find((item: any) => {
       return +item.key === +templateTime;
     });
-    if (isHasTemp) return message.info("该护理时间已存在请重新选择！");
+    if (isHasTemp) return message.info("该护理时间已存在请重新选择");
     setNurseList([
       ...nurseList,
       {
@@ -227,7 +227,7 @@ export default function NurseConfEdit(props: any) {
         time: dayjs(+item.key).format("HH:mm"),
       };
     });
-  
+
     Instancercv({
       method: "post",
       url: "/nursing/updateNursingConfig",
@@ -257,7 +257,7 @@ export default function NurseConfEdit(props: any) {
     setConfirmSave(true);
     setConfirmType("delete");
   };
-
+  // useWindowSize
   return (
     <>
       <div className="nurse_edit_box">

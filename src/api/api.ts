@@ -39,10 +39,10 @@ instance.interceptors.response.use(function (response) {
     localStorage.removeItem('loginTime')
     localStorage.removeItem('loglevel')
     localStorage.removeItem('time')
-      message.config({
+    message.config({
     top: 100,       // 消息显示在距离顶部100px的位置
-    duration: 1.5,  // 消息自动关闭延时为1.5秒
-    maxCount: 3,    // 同时最多显示3条消息
+    duration: 10,  // 消息自动关闭延时为1.5秒
+    maxCount: 1,    // 同时最多显示3条消息
     rtl: true       // 从右向左的布局(适合阿拉伯语等从右向左阅读的语言)
 });
     message.success('登录过期，请重新登录')
@@ -96,6 +96,12 @@ Instancercv.interceptors.response.use(function (response) {
     localStorage.removeItem('loginTime')
     localStorage.removeItem('loglevel')
     localStorage.removeItem('time')
+       message.config({
+    top: 100,       // 消息显示在距离顶部100px的位置
+    duration: 10,  // 消息自动关闭延时为1.5秒
+    maxCount: 1,    // 同时最多显示3条消息
+    rtl: true       // 从右向左的布局(适合阿拉伯语等从右向左阅读的语言)
+});
     message.success('登录过期，请重新登录')
     window.location.hash = '#/login'
   }

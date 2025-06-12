@@ -42,7 +42,26 @@ export function reloadWebview() {
         console.log(err)
     }
 }
-
+export function startMqtt() {
+    try {
+        const u = window.navigator.userAgent
+        if (u.indexOf('Android') > -1 || u.indexOf('Adr') > -1) {
+            eval(`Android.startMqtt();`)
+        }
+    } catch (err) {
+        console.log(err)
+    }
+}
+export function closeMqtt() {
+    try {
+        const u = window.navigator.userAgent
+        if (u.indexOf('Android') > -1 || u.indexOf('Adr') > -1) {
+            eval(`Android.closeMqtt();`)
+        }
+    } catch (err) {
+        console.log(err)
+    }
+}
 export function audioPlay() {
     // message.info('audioPlay')
     try {

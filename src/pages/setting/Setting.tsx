@@ -38,6 +38,7 @@ import { equipLoginOut } from '@/redux/equip/equipSlice';
 import { tokenLoginout } from '@/redux/token/tokenSlice';
 import { mqttLoginout } from '@/redux/mqtt/mqttSlice';
 import axios from 'axios';
+import { closeMqtt } from '@/redux/Middleware/constant';
 const sysIntroObj = {
   title: {
     name: '1系统简介',
@@ -209,7 +210,7 @@ export default function Setting() {
   let navigate = useNavigate();
   const showDrawer = () => {
     // setOpen(true);
-    navigate('/login')
+    closeMqtt()
     localStorage.removeItem('phone')
     localStorage.removeItem('token')
     localStorage.removeItem('roleId')
@@ -226,6 +227,7 @@ export default function Setting() {
     dispatch(equipLoginOut({}))
     dispatch(tokenLoginout({}))
     dispatch(mqttLoginout({}))
+    navigate('/login')
   };
 
   const onClose = () => {

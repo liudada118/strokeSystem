@@ -110,7 +110,7 @@ export class NoRender extends React.Component<noRenderProp> {
   }
 }
 
-const sleepType = [{ key: "1", name: '左侧卧', img: right, unImg: unRight }, { key: "2", name: '仰卧', img: back, unImg: unBack }, { key: "3", name: '右侧卧', img: left, unImg: unLeft }]
+const sleepType = [{ key: "1", name: '左侧卧', img: right, unImg: unRight }, { key: "0", name: '仰卧', img: back, unImg: unBack }, { key: "2", name: '右侧卧', img: left, unImg: unLeft }]
 let rateArr: Array<number> = [], heartArr: Array<number> = []
 let realDataInit = [[0]]
 for (let i = 0; i < 68; i++) {
@@ -340,22 +340,11 @@ export default forwardRef((props: any, refs: any) => {
         if (heatMapRef.current) heatMapRef.current.bthClickHandle((startMatrix))
       }
     });
-
     return () => {
       window.removeEventListener('resize', () => { })
       if (progressRef.current) progressRef.current.setCountZero()
     }
   }, []);
-  const dian = (name: string) => {
-
-  }
-
-  const changeSleepPos = (indexs: any) => {
-    // setSleepType(indexs)
-    // changeData({ sleepPos: indexs })
-
-
-  }
   return (
     <div id="realPc" className="pfBold">
 
@@ -411,7 +400,7 @@ export default forwardRef((props: any, refs: any) => {
                 <div className="flex-1 flex flex-col items-end">
                   <div className="">
                     <div className="text-[0.8rem] font-medium text-[#929EAB]">本次在床</div>
-                    <div className="text-[1rem]  text-[#000]"><span className="font-semibold"> {numToHour(valueArr.onBedTime)}</span> <span className="text-[0.6rem] text-[#929EAB]">小时</span></div>
+                    <div className="text-[1rem]  text-[#000]"><span className="font-semibold"> {numToHour(valueArr.onBedTime) == 'NaN' ? '--' : numToHour(valueArr.onBedTime)}</span> <span className="text-[0.6rem] text-[#929EAB]">小时</span></div>
                   </div>
                 </div>
               </div>
@@ -422,12 +411,12 @@ export default forwardRef((props: any, refs: any) => {
 
                 {
                   sleepType.map((item, index) => {
-                    return <div onClick={() => changeSleepPos(index)} style={{ flex: '0 0 calc((100% - 1.5rem*2)/3)', height: '100%', borderRadius: '5px', }} key={item.key}>
-                      <div className={`bedSoresSleepItem`} style={{ boxShadow: index == sleep ? "0rem 0.28rem 1.56rem 0.08rem rgba(0,116,254,0.33)" : '', background: index == sleep ? 'linear-gradient( 135deg, #009FFF 0%, #006CFD 100%)' : '#F7F8FD', }} >
-                        <img src={item.img} style={{ display: index == sleep ? 'none' : 'unset' }} alt="" />
-                        <img src={item.unImg} style={{ display: index == sleep ? 'unset' : 'none' }} alt="" />
+                    return <div key={item.key}  style={{ flex: '0 0 calc((100% - 1.5rem*2)/3)', height: '100%', borderRadius: '5px', }} >
+                      <div className={`bedSoresSleepItem`} style={{ boxShadow: item.key == sleep ? "0rem 0.28rem 1.56rem 0.08rem rgba(0,116,254,0.33)" : '', background: item.key == sleep ? 'linear-gradient( 135deg, #009FFF 0%, #006CFD 100%)' : '#F7F8FD', }} >
+                        <img src={item.img} style={{ display: item.key == sleep ? 'none' : 'unset' }} alt="" />
+                        <img src={item.unImg} style={{ display: item.key == sleep ? 'unset' : 'none' }} alt="" />
                       </div>
-                      <div onClick={() => dian(item.name)} className="mt-[1.2rem] text-[#929EAB]" style={{ textAlign: 'center' }}>{item.name}</div>
+                      <div  className="mt-[1.2rem] text-[#929EAB]" style={{ textAlign: 'center' }}>{item.name}</div>
                     </div>
                   })
                 }

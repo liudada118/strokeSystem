@@ -1,6 +1,6 @@
 
 import mqtt from 'mqtt/dist/mqtt';
-import { exChangeText, PORT, reloadWebview } from './constant';
+import { closeMqtt, exChangeText, PORT, reloadWebview, startMqtt } from './constant';
 import { createTimer, mqttConnect } from '../mqtt/mqttSlice';
 // import { alarmJudge, ALARMTYPE } from './alarmUtil';
 import { findAlarmSwitch, findAlarmToCatch, initEquipPc, neatEquips, returnRealAlarm, alarmJudge, ALARMTYPE } from '../equip/equipUtil';
@@ -42,7 +42,7 @@ const onBedStackPush = ({ stack, state }: onBed) => {
     const phone = state.token.phone
     const mqttClient = state.mqtt.client
     next(action)
-    if (token && phone && (action.type == "equip/changeUserInfo/fulfilled" || action.type === 'equip/fetchEquips/fulfilled')) {
+    if (token && phone && (action.type == "equip/changeUserInfo/fulfilled" || action.type === 'equip/fetchEquips/fulfilled'||action.type === 'equip/changeLeaveBedInfo/fulfilled')) {
         let { equips, switchArr: alarm, realAlarmArr: sosArrOver, riskArr: riskArrs, equipsPlay } = storeApi.getState().equip
          riskArr = JSON.parse(JSON.stringify(riskArrs))
         arr = JSON.parse(JSON.stringify(sosArrOver))
@@ -70,6 +70,7 @@ const onBedStackPush = ({ stack, state }: onBed) => {
             // storeApi.dispatch(mqttConnectionState(client));
             storeApi.dispatch(mqttConnect((client)))
             client.subscribe(`${phone}`);
+            startMqtt()
         });
         client.on('message', ((topic: any, payload: any) => {
             // console.log('homeSelectValue66666666666666666', topic, payload)
@@ -96,6 +97,7 @@ const onBedStackPush = ({ stack, state }: onBed) => {
         });
         client.on("close", function () {
             console.log("mqttClose")
+            closeMqtt()
             reloadWebview()
         });
         client.on("disconnect", function (packet: any) { });

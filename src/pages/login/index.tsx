@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { reduxSetPhone, reduxSetToken } from "@/redux/token/tokenSlice";
 import { loginOut } from '../../redux/premission/premission'
 import useWindowSize from '@/hooks/useWindowSize'
+import { startMqtt } from "@/redux/Middleware/constant";
 const { Option } = Select;
 
 const loginType = ["账号登录"];
@@ -20,8 +21,8 @@ export default function Login() {
 
   message.config({
     top: 100,
-    duration: 1.5,
-    maxCount: 3,
+    duration: 10,
+    maxCount: 1,
     rtl: true,
   });
   const dispatch = useDispatch()
@@ -119,13 +120,14 @@ export default function Login() {
       }).then((res) => {
 
 
-
+        // reStartMqtt
 
         if (res.data.code === 0) {
           const obj = res.data.authority.reduce((acc: any, curr: any, index: number) => {
             acc[index] = curr;
             return acc;
           },);
+          startMqtt()
           localStorage.setItem('roleId', res.data.authority[0].roleId);
           localStorage.setItem('organizeId', obj.organizeId)
           dispale(loginOut(obj.organizeId))
@@ -166,6 +168,7 @@ export default function Login() {
           // localStorage.setItem('phone', phone)
           dispatch(reduxSetPhone(phone))
           dispatch(reduxSetToken(token))
+          startMqtt()
           navigate('/')
           message.success('登录成功')
         } else {

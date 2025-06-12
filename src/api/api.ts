@@ -1,16 +1,18 @@
+
+import { closeMqtt } from "@/redux/Middleware/constant";
 import { message } from "antd";
 import axios from "axios";
 
 export const web = 'juqiao.bodyta.com'
 // export const web = 'sensor.bodyta.com'
 
-export const netUrl = `http://${web}:8080/rcv`;
-export const netRepUrl = `http://${web}:8081`;
-export const voiceUrl = `http://${web}`
+// export const netUrl = `http://${web}:8080/rcv`;
+// export const netRepUrl = `http://${web}:8081`;
+// export const voiceUrl = `http://${web}`
 
-// export const netUrl = `https://${web}/rcv`;
-// export const netRepUrl = `https://${web}`;
-// export const voiceUrl = `https://${web}`
+export const netUrl = `https://${web}/rcv`;
+export const netRepUrl = `https://${web}`;
+export const voiceUrl = `https://${web}`
 
 // export const netUrl = "https://sensor.bodyta.com/rcv";
 // export const netRepUrl = "https://sensor.bodyta.com";
@@ -30,6 +32,7 @@ instance.interceptors.response.use(function (response) {
 }, function (err) {
   console.log(err, 'err')
   if (err.response.status === 401) {
+    closeMqtt()
     localStorage.removeItem('token')
     localStorage.removeItem('phone')
     localStorage.removeItem('roleId')
@@ -81,12 +84,11 @@ Instancercv.interceptors.request.use(function (config: any) {
 });
 
 Instancercv.interceptors.response.use(function (response) {
-
   return response
 }, function (err) {
   console.log(err, 'err')
   if (err.response.status === 401) {
-  
+    closeMqtt()
     localStorage.removeItem('token')
     localStorage.removeItem('phone')
     localStorage.removeItem('roleId')
@@ -96,12 +98,12 @@ Instancercv.interceptors.response.use(function (response) {
     localStorage.removeItem('loginTime')
     localStorage.removeItem('loglevel')
     localStorage.removeItem('time')
-       message.config({
+    message.config({
     top: 100,       // 消息显示在距离顶部100px的位置
     duration: 10,  // 消息自动关闭延时为1.5秒
     maxCount: 1,    // 同时最多显示3条消息
     rtl: true       // 从右向左的布局(适合阿拉伯语等从右向左阅读的语言)
-});
+    });
     message.success('登录过期，请重新登录')
     window.location.hash = '#/login'
   }

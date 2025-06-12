@@ -12,6 +12,8 @@ import {
   selectEquipBySensorname,
   statusSelect, fetchEquips,
   selectRealEquipBySensorname,
+  changePersonalEquipLeaveBedInfo,
+  changePersonalEquipUserInfo
 } from "@/redux/equip/equipSlice";
 import { onOverSettings, onName } from '@/redux/Nurse/Nurse'
 import { equipInfoFormatUtil, minToHourText } from "@/utils/dataToFormat";
@@ -959,6 +961,11 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
           },
         }).then((res: any) => {
           bedExitParameters()
+          dispatch(changePersonalEquipLeaveBedInfo({
+            deviceId: sensorName,
+            leaveBedParam: bedExitParametersBedExit,
+          }))
+          dispatch(fetchEquips())
           message.success("修改成功");
         });
       } catch (error) {

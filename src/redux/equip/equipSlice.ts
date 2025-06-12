@@ -165,7 +165,6 @@ const equipSlice = createSlice({
         builder.addCase(changePersonalEquipUserInfo.fulfilled, (state, action) => {
             const equip = JSON.parse(JSON.stringify(state.equips))
             const { res, equipPc } = changeOnerEquipInfo({ equips: equip, changeInfo: action.payload[1] })
-console.log(res,equipPc,res,'......................................resresres');
 
             // 实时的数据  跟  静态服务器数据都得更新
             state.equips = res
@@ -273,6 +272,7 @@ interface userParam {
     roomNum: number
     patientName: number
     type: bedType
+    leaveBedParam?:any
 }
 export const changePersonalEquipUserInfo = createAsyncThunk('equip/changeUserInfo', async (options: userParam, { getState }) => {
     const state: any = getState()
@@ -394,7 +394,7 @@ export const changePersonalEquipLeaveBedInfo = createAsyncThunk('equip/changeLea
             ...options
         },
     }
-    const response = await fetchDatarcv(realOption)
+    const response = await fetchDatarcv(realOption) 
     return response.data
 })
 

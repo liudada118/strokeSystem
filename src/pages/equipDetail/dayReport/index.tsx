@@ -40,6 +40,8 @@ import { getMonthStartEndTimestamps, stampToTime } from "@/utils/timeConvert";
 import { selectEquipBySensorname } from "@/redux/equip/equipSlice";
 import { CardWithoutTitle } from "../Monitor/realReport/Card";
 import useWindowSize from '@/hooks/useWindowSize'
+import { fillTimeInterval } from "./dayReportComponent/rightContent/firstItem/utils";
+import { rateArrToHeart } from "@/utils/dataToFormat";
 
 const { RangePicker } = DatePicker;
 type RangePickerProps = GetProps<typeof DatePicker.RangePicker>;
@@ -500,8 +502,13 @@ export default function DayReport() {
     setAllTime(allTime);
 
   }
-
+  const [heartRateMax, srtHeartRateMax] = useState(null)
+  const [heartRateMin, srtHeartRateMin] = useState(null)
+  const [heartRateAll, setHeartRateAll] = useState([])
+  const [time, setTime] = useState([])
   const getNurseReport = (date: number) => {
+
+
     const token = localStorage.getItem('token') || ''
     instance({
       method: "get",
@@ -518,22 +525,76 @@ export default function DayReport() {
         "token": token
       },
     }).then((res) => {
-
       setTableLoading(false)
-
       // 获取护理
-      const arr = res.data.page.records
+      const arr = res?.data?.page?.records
+      const flat = res?.data?.onbedList
+      const listTime: any = [
+        '20:00',
+        // '22:00',
+        '00:00',
+        // '02:00',
+        '04:00',
+        // '06:00',
+        '08:00',
+        // '10:00',
+        '12:00',
+      ]
+      const timeList = [] as any
+      const dataList = [] as any
+      const list = flat.map((item: any) => {
+        return dayjs(item.time).format('HH:mm');
+      })
+      listTime.forEach((item: any) => {
+        if (!list.includes(item)) {
+          flat.push({
+            time: item,
+            perMinuteBreathRate: 0
+          })
+        }
+      })
+
+      const sortedIndices = flat.sort((a: any, b: any) => a.time - b.time);
+      const formatData = sortedIndices.map((item: any) => {
+        // if (item.perMinuteBreathRate !== 0) {
+        return {
+          ...item,
+          time: typeof (item.time) === 'number' ? dayjs(item.time).format('HH:mm') : item.time
+        };
+        // }
+      })
+
+      const fillTimeList = fillTimeInterval(formatData)
+
+      fillTimeList.map((item: any) => {
+        timeList.push(item.time)
+        dataList.push(item.perMinuteBreathRate === 0 ? null : item.perMinuteBreathRate)
+      })
+      // fillTimeInterval
+      // 最大心率计算
+
+      // // 最小心率计算
+
+      // const min: any = calMinExcludingZero(minHor)
+      // console.log(min, '0000000............rereree..........min');
+
+      // Math.min(...dataList)
+      setTime(timeList)
+      const hearList: any = rateArrToHeart(dataList)
+      const max: any = Math.max(...hearList)
+      Math.min(...hearList)
+      setHeartRateAll(hearList)
+      console.log(hearList, max, '................hearList');
+      srtHeartRateMax(max)
+
+
+
       setPageRecords(arr)
-
-
-
       const objArr1: any = []
-
       let turnNumber = 0, turnMax = 0
       let posArr = new Array(arr.length).fill(0)
       arr.forEach((a: any, index: number) => {
         let obj: any = {}
-
         obj.startTime = stampToTime(a.timeMills)
         obj.plan = stampToTime(a.timeMillsEnd)
         if (a.posture == 1) {
@@ -560,7 +621,6 @@ export default function DayReport() {
 
     })
   }
-
   const getNurseTimeReport = (date: number) => {
     const token = localStorage.getItem('token') || ''
     instance({
@@ -586,9 +646,7 @@ export default function DayReport() {
       setMissNurse(res.data.missNursingCount)
       setStroke(res.data.strokeAlarmList)
       setOutoffbed(res.data.outoffbedCount)
-
       const onbedList = res.data.onbedList
-
       setOnbedList(onbedList)
 
       const onbedArr = onbedList.map((a: any) => {
@@ -605,14 +663,11 @@ export default function DayReport() {
       alert(err)
     })
   }
-
   const style: React.CSSProperties = {
     border: `1px solid ${theme.useToken().token.colorPrimary}`,
     borderRadius: '50%',
   };
-
   const cellRender: any = (current: any, info: any) => {
-
     if (info.type !== 'date') {
       return info.originNode;
     }
@@ -625,7 +680,6 @@ export default function DayReport() {
       </div>
     );
   };
-
   function fetchMouthReport(date: any) {
     const dateObj = getMonthStartEndTimestamps(date)
     try {
@@ -650,22 +704,17 @@ export default function DayReport() {
 
     }
   }
-
   const disabledDate: RangePickerProps['disabledDate'] = (current) => {
     // Can not select days before today and today
-
     return current && !dateArr.includes(dayjs(current).format(dateFormat));
   };
   const [buttonFlag, setFlag] = useState(false)
   const getBlobPng = () => {
     setFlag(false)
-
     message.info('正在生成日报，请稍后')
     const node = document.querySelector(".dayRight");
-
     if (node) {
       domtoimage.toBlob(node).then((blob) => {
-
         // a
         // 调用file-save方法 直接保存图片
         saveAs(blob, `日报-${equipInfo.patientName}-${dayjs(dayDate).format('DD/MM/YYYY')}`)
@@ -673,29 +722,21 @@ export default function DayReport() {
         console.log(err)
       })
     }
-
-
-
   }
-
   return (
     <>
       <Modal title="压力分布图" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
         <div className="singleNurseContent">
           <div style={{ display: 'flex' }}>
-
             {!location.pathname.includes('/reportsmall') ? <> <div style={{ flex: '0 0 calc((100 - 0.5rem) / 2)', marginRight: '0.5rem' }}>
               <Heatmap ref={heatmapStart} arr={matrixObj.startMatrix} index={1} />
               <div style={{ fontWeight: 'bold', textAlign: 'center' }}>护理前</div>
             </div>
-
               <div style={{ flex: '0 0 calc((100 - 0.5rem) / 2)' }} >
-
                 <Heatmap ref={heatmapEnd} arr={matrixObj.endMatrix} index={2} />
                 <div style={{ fontWeight: 'bold', textAlign: 'center' }}>护理后</div>
               </div> </> : ''}
           </div>
-
           <h2>护理内容</h2>
           <ul>{contentStrArr.map((a, index) => {
             if (contentArr.includes(String(index))) {
@@ -704,7 +745,6 @@ export default function DayReport() {
               )
             }
           })}</ul>
-
           <h2>睡姿</h2>
           <div>{sleep ? sleep : '未填写'}</div>
           <h2>备注</h2>
@@ -805,7 +845,7 @@ export default function DayReport() {
           </div>} */}
           <div className="dayRight">
             {!nurseReportFlag ? <>
-              <FirstItem sensorName={sensorName} dayData={dayDate} stroke={storke} posChangeHour={posChangeHour} posChangeDay={posChangeDay} onbedList={onbedList} bodymove={bodymove} data={data} />
+              <FirstItem time={time} heartRateAll={heartRateAll} heartRateMax={heartRateMax} sensorName={sensorName} dayData={dayDate} stroke={storke} posChangeHour={posChangeHour} posChangeDay={posChangeDay} onbedList={onbedList} bodymove={bodymove} data={data} />
               <SecondItem outBed={outoffbed} data={data} alarm={alarm} nurse={nurse} sleepNums={sleepNums} posChangeDay={posChangeDay} posChangeHour={posChangeHour} allTime={allTime} />
               {!location.pathname.includes('small') ?
                 <div className="thirdItem">

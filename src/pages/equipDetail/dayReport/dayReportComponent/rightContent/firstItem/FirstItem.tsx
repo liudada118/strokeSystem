@@ -20,6 +20,9 @@ interface firstItemProps {
     onbedList: any
     dayData: any
     sensorName?: string
+    time?: any
+    heartRateAll: any
+    heartRateMax: any
 }
 
 
@@ -218,95 +221,95 @@ function FirstItem(props: firstItemProps) {
     }
 
     // 心率计算
-    const [heartRateMax, srtHeartRateMax] = useState(null)
-    const [heartRateMin, srtHeartRateMin] = useState(null)
-    const [heartRateAll, setHeartRateAll] = useState([])
-    const [time, setTime] = useState([])
-    useEffect(() => {
-        let now = new Date();
-        let yesterday8pm = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 2, 20, 0, 0);
-        let today12pm = new Date(now.getFullYear(), now.getMonth(), now.getDate(), -12, 0, 0);
-        let yesterday8pmTimestamp = yesterday8pm.getTime();
-        let today12pmTimestamp = today12pm.getTime();
-        console.log(yesterday8pmTimestamp, today12pmTimestamp, '时间戳datedatedate');
+    // const [heartRateMax, srtHeartRateMax] = useState(null)
+    // const [heartRateMin, srtHeartRateMin] = useState(null)
+    // const [heartRateAll, setHeartRateAll] = useState([])
+    // const [time, setTime] = useState([])
+    // useEffect(() => {
+    //     let now = new Date();
+    //     let yesterday8pm = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 2, 20, 0, 0);
+    //     let today12pm = new Date(now.getFullYear(), now.getMonth(), now.getDate(), -12, 0, 0);
+    //     let yesterday8pmTimestamp = yesterday8pm.getTime();
+    //     let today12pmTimestamp = today12pm.getTime();
+    //     console.log(yesterday8pmTimestamp, today12pmTimestamp, '时间戳datedatedate');
 
-        instance({
-            method: "get",
-            url: "/sleep/nurse/getRecords",
-            params: {
-                deviceName: props.sensorName,
-                startTime: yesterday8pmTimestamp,
-                endTime: today12pmTimestamp,
-                pageNum: 1,
-                pageSize: 99
-            },
-            headers: {
-                "content-type": "application/x-www-form-urlencoded",
-                "token": localStorage.getItem("token") || ""
-            },
-        }).then((result: any) => {
-            // [].flat
-            const flat = result.data.onbedList
-            const listTime: any = [
-                '20:00',
-                // '22:00',
-                '00:00',
-                // '02:00',
-                '04:00',
-                // '06:00',
-                '08:00',
-                // '10:00',
-                '12:00',
-            ]
-            const timeList = [] as any
-            const dataList = [] as any
-            const list = flat.map((item: any) => {
-                return dayjs(item.time).format('HH:mm');
-            })
-            listTime.forEach((item: any) => {
-                if (!list.includes(item)) {
-                    flat.push({
-                        time: item,
-                        perMinuteBreathRate: 0
-                    })
-                }
-            })
+    //     instance({
+    //         method: "get",
+    //         url: "/sleep/nurse/getRecords",
+    //         params: {
+    //             deviceName: props.sensorName,
+    //             startTime: yesterday8pmTimestamp,
+    //             endTime: today12pmTimestamp,
+    //             pageNum: 1,
+    //             pageSize: 99
+    //         },
+    //         headers: {
+    //             "content-type": "application/x-www-form-urlencoded",
+    //             "token": localStorage.getItem("token") || ""
+    //         },
+    //     }).then((result: any) => {
+    //         // [].flat
+    //         const flat = result.data.onbedList
+    //         const listTime: any = [
+    //             '20:00',
+    //             // '22:00',
+    //             '00:00',
+    //             // '02:00',
+    //             '04:00',
+    //             // '06:00',
+    //             '08:00',
+    //             // '10:00',
+    //             '12:00',
+    //         ]
+    //         const timeList = [] as any
+    //         const dataList = [] as any
+    //         const list = flat.map((item: any) => {
+    //             return dayjs(item.time).format('HH:mm');
+    //         })
+    //         listTime.forEach((item: any) => {
+    //             if (!list.includes(item)) {
+    //                 flat.push({
+    //                     time: item,
+    //                     perMinuteBreathRate: 0
+    //                 })
+    //             }
+    //         })
 
-            const sortedIndices = flat.sort((a: any, b: any) => a.time - b.time);
-            const formatData = sortedIndices.map((item: any) => {
-                // if (item.perMinuteBreathRate !== 0) {
-                return {
-                    ...item,
-                    time: typeof (item.time) === 'number' ? dayjs(item.time).format('HH:mm') : item.time
-                };
-                // }
-            })
+    //         const sortedIndices = flat.sort((a: any, b: any) => a.time - b.time);
+    //         const formatData = sortedIndices.map((item: any) => {
+    //             // if (item.perMinuteBreathRate !== 0) {
+    //             return {
+    //                 ...item,
+    //                 time: typeof (item.time) === 'number' ? dayjs(item.time).format('HH:mm') : item.time
+    //             };
+    //             // }
+    //         })
 
-            const fillTimeList = fillTimeInterval(formatData)
+    //         const fillTimeList = fillTimeInterval(formatData)
 
-            fillTimeList.map((item: any) => {
-                timeList.push(item.time)
-                dataList.push(item.perMinuteBreathRate === 0 ? null : item.perMinuteBreathRate)
-            })
-            // fillTimeInterval
-            // 最大心率计算
+    //         fillTimeList.map((item: any) => {
+    //             timeList.push(item.time)
+    //             dataList.push(item.perMinuteBreathRate === 0 ? null : item.perMinuteBreathRate)
+    //         })
+    //         // fillTimeInterval
+    //         // 最大心率计算
 
-            // // 最小心率计算
+    //         // // 最小心率计算
 
-            // const min: any = calMinExcludingZero(minHor)
-            // console.log(min, '0000000............rereree..........min');
+    //         // const min: any = calMinExcludingZero(minHor)
+    //         // console.log(min, '0000000............rereree..........min');
 
-            // Math.min(...dataList)
-            setTime(timeList)
-            const hearList: any = rateArrToHeart(dataList)
-            const max: any = Math.max(...hearList)
-            Math.min(...hearList)
-            setHeartRateAll(hearList)
-            console.log(hearList, max, '................hearList');
-            srtHeartRateMax(max)
-        }).catch((err: any) => {
-        });
-    }, [])
+    //         // Math.min(...dataList)
+    //         setTime(timeList)
+    //         const hearList: any = rateArrToHeart(dataList)
+    //         const max: any = Math.max(...hearList)
+    //         Math.min(...hearList)
+    //         setHeartRateAll(hearList)
+    //         console.log(hearList, max, '................hearList');
+    //         srtHeartRateMax(max)
+    //     }).catch((err: any) => {
+    //     });
+    // }, [])
 
     function calMinExcludingZero(arr: any) {
         if (!Array.isArray(arr)) {
@@ -457,12 +460,12 @@ function FirstItem(props: firstItemProps) {
                                 <div className="daySleepInfo">
                                     <div className="daySleepItem">
                                         {/* <div>  <span className="sleepDataNum">{props.data.breathrate ? calMan(rateArrToHeart(oriRateToRate(props.data.breathrate))) : '--'}</span><span className="sleepDataUtil">bpm</span></div> */}
-                                        <CapZeroUtil value={heartRateMax ? heartRateMax : '--'} util='bpm' />
+                                        <CapZeroUtil value={props.heartRateMax ? props.heartRateMax : '--'} util='bpm' />
                                         <div className="sleepDataUtil">最高心率</div>
                                     </div>
                                     <div className="daySleepItem">
                                         {/* <div> <span className="sleepDataNum">{props.data.breathrate ? calMin(rateArrToHeart(oriRateToRate(props.data.breathrate))) : '--'}</span><span className="sleepDataUtil">bpm</span></div> */}
-                                        <CapZeroUtil value={heartRateAll ? calMinExcludingZero(heartRateAll) : '--'} util='bpm' />
+                                        <CapZeroUtil value={props.heartRateAll ? calMinExcludingZero(props.heartRateAll) : '--'} util='bpm' />
                                         <div className="sleepDataUtil">最低心率</div>
                                     </div>
                                 </div>
@@ -471,8 +474,8 @@ function FirstItem(props: firstItemProps) {
                                         {/* <div id={`chart_CurveChart`} style={{ height: "100%" }}></div> */}
                                         <CurveChart
                                             index={2}
-                                            ydata={heartRateAll ? heartRateAll : []}
-                                            xdata={time}
+                                            ydata={props.heartRateAll ? props.heartRateAll : []}
+                                            xdata={props.time}
                                             isFalse={true}
                                             padding={positionArr}
                                             lineColor='#EA0000'

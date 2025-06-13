@@ -138,8 +138,14 @@ export default function Equip() {
         setOpen(true)
         setFals(true)
     }
+    console.log(datalist, '.................................build/apkTest/staticbuild/apkTest/staticbuild/apkTest/static');
+
     return (
-        <div className="main">
+        <div className="main"
+            onClick={() => {
+                console.log('0000000000.....................');
+            }}
+        >
             {
                 isOPen ? <AddUseModla isAddModalOpen={isOPen} onClose={((val: boolean) => setOpen(val))}></AddUseModla> : null
             }
@@ -162,17 +168,14 @@ export default function Equip() {
                                 if (item.type === 'add') {
                                     return <div style={{ width: "13.2rem", marginRight: "1rem", height: "14.5rem", borderColor: "#F5F8FA", boxShadow: "0px 0px 10px 0px rgba(164, 176, 188, 0.4)", borderRadius: "0.63rem", marginBottom: "1rem", border: "1px #ccc solid", position: "relative", display: "flex", alignItems: "center", justifyContent: "center", flexDirection: 'column' }} key={index}>
                                         <img className='w-[7rem] h-[7rem] mb-[1rem]' onClick={() => onOPen()} src={HomeImg} alt="" />
-                                        <Button onClick={() => onOPen()} color="primary" ghost style={{ color: "#fff", borderRadius: "3rem", background: "#fff !important", border: "solid 1px " }}>添加设备</Button>
+                                        <Button onClick={() => onOPen()} color="primary" style={{ color: "#fff", borderRadius: "3rem", background: "#fff !important", border: "solid 1px " }}>添加设备</Button>
                                     </div>
                                 }
                                 return (
                                     <div className={`equip`} key={item.sensorName}
                                         onClick={() => {
-                                            // navigate(`/report/0/${item.sensorName}`, {
-                                            //     state: {
-                                            //         person: item
-                                            //     },
-                                            // });
+                                            console.log('0000000000.....................');
+
                                         }}
                                     >
                                         {
@@ -209,7 +212,8 @@ export default function Equip() {
                                             </>
                                         }
                                         <div className={`equipItem  ${stateToObj[onBedState(item)].class}`}
-                                            onClick={() => {
+                                            onClick={(event) => {
+                                                event.stopPropagation();
                                                 if (item.type == 'large') {
 
                                                     navigate(`/report/0/${item.sensorName}`, {

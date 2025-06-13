@@ -70,7 +70,7 @@ const onBedStackPush = ({ stack, state }: onBed) => {
             // storeApi.dispatch(mqttConnectionState(client));
             storeApi.dispatch(mqttConnect((client)))
             client.subscribe(`${phone}`);
-            startMqtt()
+            // startMqtt()
         });
         client.on('message', ((topic: any, payload: any) => {
             // console.log('homeSelectValue66666666666666666', topic, payload)
@@ -97,7 +97,7 @@ const onBedStackPush = ({ stack, state }: onBed) => {
         });
         client.on("close", function () {
             console.log("mqttClose")
-            closeMqtt()
+            // closeMqtt()
             reloadWebview()
         });
         client.on("disconnect", function (packet: any) { });

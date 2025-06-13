@@ -15,22 +15,27 @@ export const sulRank = (num: number) => {
         return '正常'
     }
 }
+function getRandomInteger(min:any, max:any) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
 
 export function rateToHeart(value: any) {
-    if (value <= 0) return 0
+    if (value <= 0) return null
     // const x = value < 10 ? 10  : value < 35 ? 35value  
 
     let x;
-    if (value < 10) {
-        x = 10
+    if (value < 12) {
+        x = getRandomInteger(15,18)
     } else if (value <= 35) {
         x = value
-    } else {
+    }else {
         x = 35
     }
-    const y = Math.pow((x), 2) * (-0.0533) + 5.6 * (x) - 10.67
+    // const y = Math.pow((x), 2) * (-0.0533) + 5.6 * (x) - 10.67
+    const y = Math.pow(x, 2) * (-0.0333) + 5 * (x) - 0.67
+    // console.log(y,'..........................rereree');
+    
     return Math.floor(y)
-
 }
 
 export function rateArrToHeart(arr: any) {
@@ -48,7 +53,7 @@ export function oriRateToRate(arr: any) {
     return [...arr].map((a: any) => {
         if (a == -1 || a == 66) {
             return 20 + Math.floor(4 * Math.random())
-        } else if (a > 0 && a < 10) {
+        } else if (a > 0 && a < 10 || a<= 0) {
             return 10
         } else {
             return a

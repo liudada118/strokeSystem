@@ -34,10 +34,10 @@ export const initRealCircleArr = (pressureInjurePoints: any) => {
 
 export function cloudSleepToPageSleep(posture: number) {
     switch (Number(posture)) {
-        case 0:
-            return 0;
         case 1:
-            return 1
+            return 1;
+        case 0:
+            return 0
         default:
             return 2
     }
@@ -81,7 +81,7 @@ export const returnMinData: (param: minDataParam) => minDataReturn = ({ jsonObj,
 }
 
 interface realtimeReturn {
-    heart: number
+    heart: any
     rate: number
     stroke: number
     onBedTime: number

@@ -10,6 +10,7 @@ import { calAver } from '@/utils/math'
 import { useGetWindowSize } from '@/hooks/hook'
 import { CardWithoutTitle } from '@/pages/equipDetail/Monitor/realReport/Card'
 import { instance } from '../../../../../../api/api'
+import { fillTimeInterval } from './utils'
 interface firstItemProps {
     stroke: any
     posChangeHour: any
@@ -25,13 +26,12 @@ interface firstItemProps {
 
 function calMin(arr: any) {
     if (!Array.isArray(arr)) {
-        return 0
+        return null
     }
     if ([...arr].filter((a: any) => a > 0).length) {
         return Math.min(...[...arr].filter((a: any) => a > 0))
     }
-    return 0
-
+    return null
 }
 
 export const positionArr = [20, 10, 35, 20]
@@ -220,12 +220,12 @@ function FirstItem(props: firstItemProps) {
     // 心率计算
     const [heartRateMax, srtHeartRateMax] = useState(null)
     const [heartRateMin, srtHeartRateMin] = useState(null)
-    const [heartRateAll, setHeartRateAll] = useState()
+    const [heartRateAll, setHeartRateAll] = useState([])
     const [time, setTime] = useState([])
     useEffect(() => {
         let now = new Date();
-        let yesterday8pm = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1, 20, 0, 0);
-        let today12pm = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 12, 0, 0);
+        let yesterday8pm = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 2, 20, 0, 0);
+        let today12pm = new Date(now.getFullYear(), now.getMonth(), now.getDate(), -12, 0, 0);
         let yesterday8pmTimestamp = yesterday8pm.getTime();
         let today12pmTimestamp = today12pm.getTime();
         console.log(yesterday8pmTimestamp, today12pmTimestamp, '时间戳datedatedate');
@@ -273,25 +273,38 @@ function FirstItem(props: firstItemProps) {
             })
 
             const sortedIndices = flat.sort((a: any, b: any) => a.time - b.time);
-            sortedIndices.map((item: any) => {
+            const formatData = sortedIndices.map((item: any) => {
                 // if (item.perMinuteBreathRate !== 0) {
-                const hour = typeof (item.time) === 'number' ? dayjs(item.time).format('HH:mm') : item.time;
-                timeList.push(hour)
-                dataList.push(item.perMinuteBreathRate === 0 ? null : item.perMinuteBreathRate * 4)
+                return {
+                    ...item,
+                    time: typeof (item.time) === 'number' ? dayjs(item.time).format('HH:mm') : item.time
+                };
                 // }
             })
 
+            const fillTimeList = fillTimeInterval(formatData)
+
+            fillTimeList.map((item: any) => {
+                timeList.push(item.time)
+                dataList.push(item.perMinuteBreathRate === 0 ? null : item.perMinuteBreathRate)
+            })
+            // fillTimeInterval
             // 最大心率计算
-            const max: any = Math.max(...dataList)
+
             // // 最小心率计算
-            const min: any = calMinExcludingZero(dataList)
-            Math.min(...dataList)
+
+            // const min: any = calMinExcludingZero(minHor)
+            // console.log(min, '0000000............rereree..........min');
+
+            // Math.min(...dataList)
             setTime(timeList)
-            setHeartRateAll(dataList)
-            srtHeartRateMin(min)
+            const hearList: any = rateArrToHeart(dataList)
+            const max: any = Math.max(...hearList)
+            Math.min(...hearList)
+            setHeartRateAll(hearList)
+            console.log(hearList, max, '................hearList');
             srtHeartRateMax(max)
         }).catch((err: any) => {
-
         });
     }, [])
 
@@ -300,6 +313,16 @@ function FirstItem(props: firstItemProps) {
             return 0;
         }
         const filteredArr = arr.filter((a: any) => a > 0);
+        if (filteredArr.length === 0) {
+            return 0;
+        }
+        return Math.min(...filteredArr);
+    }
+    function calMaxExcludingZero(arr: any) {
+        if (!Array.isArray(arr)) {
+            return 0;
+        }
+        const filteredArr = arr.filter((a: any) => a < 0);
         if (filteredArr.length === 0) {
             return 0;
         }
@@ -331,9 +354,7 @@ function FirstItem(props: firstItemProps) {
                         : <> <span style={{ color: '#4ad75c' }}>低风险</span>:建议保持关注。</>}</div>
                     <div className="nurseSecondTitleName">特殊体动次数</div>
                     <div>{<div className="nurseMoveValue">{props.stroke ? <span>{props.stroke.length}</span> : <span>0</span>} <span style={{ fontSize: "0.7rem", color: '#aaa' }}>次</span></div>}</div>
-
                     <div className="nurseChartsContent firstCharts" style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
-
                         <div className="nurseChartTitleName" style={{ display: 'block', padding: isMobile ? '0.9rem 1rem' : '' }}>特殊体动</div>
                         <div className="daySleepInfo" style={{ flex: 1 }}>
                             <div className="daySleepItem">
@@ -435,15 +456,13 @@ function FirstItem(props: firstItemProps) {
                                 <div className="nurseChartTitleName" >心率</div>
                                 <div className="daySleepInfo">
                                     <div className="daySleepItem">
-                                        {/* <div>  <span className="sleepDataNum">{props.data.breathrate ? Math.max(...rateArrToHeart(oriRateToRate(props.data.breathrate))) : 0}</span><span className="sleepDataUtil">bpm</span></div> */}
-                                        <CapZeroUtil value={heartRateMax ? heartRateMax : 0} util='bpm' />
+                                        {/* <div>  <span className="sleepDataNum">{props.data.breathrate ? calMan(rateArrToHeart(oriRateToRate(props.data.breathrate))) : '--'}</span><span className="sleepDataUtil">bpm</span></div> */}
+                                        <CapZeroUtil value={heartRateMax ? heartRateMax : '--'} util='bpm' />
                                         <div className="sleepDataUtil">最高心率</div>
                                     </div>
-
-
                                     <div className="daySleepItem">
-                                        {/* <div> <span className="sleepDataNum">{props.data.breathrate ? calMin(rateArrToHeart(oriRateToRate(props.data.breathrate))) : 0}</span><span className="sleepDataUtil">bpm</span></div> */}
-                                        <CapZeroUtil value={heartRateMin ? heartRateMin : 0} util='bpm' />
+                                        {/* <div> <span className="sleepDataNum">{props.data.breathrate ? calMin(rateArrToHeart(oriRateToRate(props.data.breathrate))) : '--'}</span><span className="sleepDataUtil">bpm</span></div> */}
+                                        <CapZeroUtil value={heartRateAll ? calMinExcludingZero(heartRateAll) : '--'} util='bpm' />
                                         <div className="sleepDataUtil">最低心率</div>
                                     </div>
                                 </div>

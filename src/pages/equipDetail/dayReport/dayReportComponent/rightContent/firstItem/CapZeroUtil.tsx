@@ -1,8 +1,8 @@
 import React from 'react'
 
 interface CapZeroUtilProps {
-    value: number,
-    util : string
+    value: any,
+    util: string
 }
 
 export default function CapZeroUtil(props: CapZeroUtilProps) {

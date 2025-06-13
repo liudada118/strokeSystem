@@ -697,10 +697,7 @@ export const changeOnerEquipInfo = ({
   changeInfo,
 }: changeEquipParam) => {
   const res = [...equips];
-  const onersEquip: any = res.find(
-    (equip) =>
-      equip.sensorName == (changeInfo.deviceId || changeInfo.deviceName)
-  );
+  const onersEquip: any = res.find((equip) =>equip.sensorName == (changeInfo.deviceId || changeInfo.deviceName));
   const keys = Object.keys(changeInfo);
   const unModifyInfo = ["deviceId", "phone", "deviceName", "userName"];
 

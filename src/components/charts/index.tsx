@@ -81,7 +81,7 @@ interface curveChartData {
 
 interface curveIndex {
   xdata: any[];
-  ydata: number[];
+  ydata: any[];
   text?: string;
   type?: string;
   ymax?: number;
@@ -233,9 +233,8 @@ export function CurveChart(props: curveIndex) {
           },
         },
         axisLabel: {
-
           // interval: 'auto',  // 自动隐藏部分标签
-          // interval: 120,
+          // // interval: 120,
           formatter: function (value: string, index: number) {
             const listTime: any = [
               '20:00',
@@ -248,7 +247,6 @@ export function CurveChart(props: curveIndex) {
               // '10:00',
               '12:00',
             ]
-
             return props.isFalse === true ? listTime.includes(value) ? value : '' : value;
             // const hour = parseInt(value?.slice(0, 2));
             // console.log(hour, 'hour');

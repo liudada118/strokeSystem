@@ -1971,7 +1971,7 @@ export default function Setting() {
                 <div className="loginOutButton">退出登录</div>
               </div>
               {
-                localStorage.getItem('phone') === 'JQadmin' ? <p className='w-[244px] h-[41px] mt-2'>版本号 2.0 15</p> : ""
+                localStorage.getItem('phone') === 'JQadmin' ? <p className='w-[244px] h-[41px] mt-2'>版本号 2.0 17</p> : ""
               }
             </div>
             <div className="contentBox">

@@ -31,7 +31,6 @@ export const HomeRightTitle = () => {
         const value = e ? e.target.value.trim() : ''
         setSearchValue(value)
         dispatch(setHomeSelectValue(value))
-        console.log(value, '..........equips...11111.....222222.....')
         // if (value) {
         //     const res = equips.filter((equip: any) => {
         //         console.log(equip[selectType].toString().includes(value), 'equip[selectType].toString().includes(value).....222.....equips...11111.....222222.....')

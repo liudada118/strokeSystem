@@ -161,29 +161,34 @@ const equipSlice = createSlice({
             console.log(action.payload[0])
             state.realAlarmArr = realAlarmArr.filter((a) => a.sensorName != action.payload[0])
         })
-
         builder.addCase(changePersonalEquipUserInfo.fulfilled, (state, action) => {
             const equip = JSON.parse(JSON.stringify(state.equips))
             const { res, equipPc } = changeOnerEquipInfo({ equips: equip, changeInfo: action.payload[1] })
-
             // 实时的数据  跟  静态服务器数据都得更新
             state.equips = res
             state.equipPc = equipPc
             state.equipConstant = res
+            // 离床参数刷新页面
+            if(action.payload[1].leaveBedParam ){
+                 state.equips.map((item)=>{
+                    if(item.sensorName == action.payload[1].deviceId){
+                        item.leavebedParam = action.payload[1].leaveBedParam
+                    }
+                 })    
+            }
         })
-
         builder.addCase(changeEquipAllInfo.fulfilled, (state, action) => {
             console.log(state, state.equips, action.payload)
             const equip = JSON.parse(JSON.stringify(state.equips))
             console.log(equip)
-            const { res, equipPc } = changeOnerEquipInfo({ equips: equip, changeInfo: action.payload[0] })
-
+            const { res, equipPc } = changeOnerEquipInfo({ equips: equip, changeInfo: action.payload[1] })
             state.equips = res
             state.equipPc = equipPc
             state.equipConstant = res
         })
 
-        builder.addCase(addEquip.fulfilled , (state, action) => {
+        builder.addCase(changePersonalEquipLeaveBedInfo.fulfilled , (state, action) => {
+// console.log(state, state.equips, action.payload,'...........................changePersonalEquipLeaveBedInfo')
 
         })
 
@@ -227,13 +232,8 @@ export const fetchEquips = createAsyncThunk('equip/fetchEquips', async (_, { get
         },
     }
     const response = await fetchDatarcv(realOption)
-   
-    
     return response.data
 })
-
-export const { initData, changeDisplayEquip, equipLoginOut,changeEquipInfo } = equipSlice.actions
-
 
 /**
  * 确认告警
@@ -253,9 +253,6 @@ export const deleteAlarm = createAsyncThunk('alarm/delete', async (options: any,
             "token": token
         },
     }
-
-
-
     const response = await fetchData(realOption)
     return Promise.all([options.sensorName, fetchData(realOption)])
 })
@@ -265,13 +262,14 @@ export const deleteAlarm = createAsyncThunk('alarm/delete', async (options: any,
  */
 type bedType = 'large' | 'small'
 interface userParam {
-    deviceId: string
-    phone: string
-    age: number
-    chargeMan: number
-    roomNum: number
-    patientName: number
-    type: bedType
+    sensorName: any
+    deviceId: any
+    phone: any
+    age?: number
+    chargeMan?: number
+    roomNum?: number
+    patientName?: number
+    type?: bedType
     leaveBedParam?:any
 }
 export const changePersonalEquipUserInfo = createAsyncThunk('equip/changeUserInfo', async (options: userParam, { getState }) => {
@@ -298,29 +296,23 @@ export const changePersonalEquipUserInfo = createAsyncThunk('equip/changeUserInf
  */
 interface alarmParam {
     deviceName: string
-   
     strokeAlarm?: number
     sosAlarm?: number
     injuryAlarm?: number
     breathAlarm?: number
-
-
     fallbedAlarm?: number
     fallbedStart?: number
     fallbedEnd?: number
-
     leaveBedAlarm?: number
     leaveBedStart?: number
     leaveBedEnd?: number
     leaveBedPeriod?: number
-
     situpStart?: number
     situpEnd?: number
     situpAlarm?: number
 }
 export const changePersonalEquipAlarmInfo = createAsyncThunk('equip/changeAlarmInfo', async (options: alarmParam, { getState }) => {
     try {
-
         const state: any = getState()
         const token = state.token.token
         const phone = state.token.phone
@@ -339,7 +331,6 @@ export const changePersonalEquipAlarmInfo = createAsyncThunk('equip/changeAlarmI
         const response = await fetchDatarcv(realOption)
         return response.data
     } catch (error) {
-
     }
 })
 
@@ -382,7 +373,6 @@ interface leaveParam {
 export const changePersonalEquipLeaveBedInfo = createAsyncThunk('equip/changeLeaveBedInfo', async (options: leaveParam, { getState }) => {
     const state: any = getState()
     const token = state.token.token
-    
     const realOption = {
         method: 'post',
         url: `/device/updateLeaveBedParam`,
@@ -505,3 +495,4 @@ export const addEquip = createAsyncThunk('equip/add', async (options: equipAllIn
     // if()
     return response.data
 })
+export const { initData, changeDisplayEquip, equipLoginOut,changeEquipInfo } = equipSlice.actions

@@ -946,6 +946,10 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
     if (bedExitParametersBedExit.length > 4) return message.info("只能0到99数字");
     if (!/^(0|[1-9]\d?|1\d{2}|99)$/.test(bedExitParametersBedExit)) return message.info("离床参数只能是数字，0到99");
     if (bedExitParametersBedExit) {
+      const params: any = {
+        deviceId: sensorName,
+        leaveBedParam: bedExitParametersBedExit,
+      }
       try {
         Instancercv({
           method: "post",
@@ -955,17 +959,10 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
             "content-type": "application/x-www-form-urlencoded",
             token: token,
           },
-          data: {
-            deviceId: sensorName,
-            leaveBedParam: bedExitParametersBedExit,
-          },
+          data: params,
         }).then((res: any) => {
           bedExitParameters()
-          dispatch(changePersonalEquipLeaveBedInfo({
-            deviceId: sensorName,
-            leaveBedParam: bedExitParametersBedExit,
-          }))
-          dispatch(fetchEquips())
+          dispatch(changePersonalEquipUserInfo(params))
           message.success("修改成功");
         });
       } catch (error) {

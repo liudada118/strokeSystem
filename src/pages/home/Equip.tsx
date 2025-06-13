@@ -142,9 +142,7 @@ export default function Equip() {
 
     return (
         <div className="main"
-            onClick={() => {
-                console.log('0000000000.....................');
-            }}
+
         >
             {
                 isOPen ? <AddUseModla isAddModalOpen={isOPen} onClose={((val: boolean) => setOpen(val))}></AddUseModla> : null
@@ -159,7 +157,7 @@ export default function Equip() {
                 dots={datalist.length > 1}
                 autoplaySpeed={6000} >
                 {datalist.length ? datalist.map((equips: Array<equip>, indexs: any) => {
-                    return <div className="equipsContent" key={indexs}>
+                    return <div className="equipsContent" key={indexs + 'equips'}>
                         <div className={`equips`}>
                             {equips?.map((item, index) => {
                                 const alarmInfo = alarm.filter((a: any) => {
@@ -172,9 +170,8 @@ export default function Equip() {
                                     </div>
                                 }
                                 return (
-                                    <div className={`equip`} key={item.sensorName}
+                                    <div className={`equip`} key={index + 'HomeEquips'}
                                         onClick={() => {
-                                            console.log('0000000000.....................');
 
                                         }}
                                     >
@@ -295,7 +292,7 @@ export default function Equip() {
                             })}
                         </div>
                     </div>
-                }) : ''}
+                }) : <></>}
             </Carousel> :
                 <div className="equipsContent">
                     <div className={`equips`}>

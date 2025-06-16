@@ -32,7 +32,7 @@ const turnOverInfoText = [
     },
 ]
 
-const sleepType = [{ key: "1", name: '左侧', img: right, unImg: unRight }, { key: "2", name: '仰卧', img: back, unImg: unBack }, { key: "3", name: '右侧', img: left, unImg: unLeft }]
+const sleepType = [{ key: "1", name: '左侧', img: right, unImg: unRight }, { key: "0", name: '仰卧', img: back, unImg: unBack }, { key: "2", name: '右侧', img: left, unImg: unLeft }]
 interface nurseTitleParam {
     index: number
     total: number
@@ -221,9 +221,9 @@ export const UploadSleep = (props: uploadSleepParam) => {
                     {
                         sleepType.map((item, index) => {
                             return <div onClick={() => changeSleepPos(index)} style={{ flex: '0 0 calc((100% - 0.72rem*2)/3)', height: '100%', borderRadius: '5px', paddingBottom: '0.68rem' }} key={item.key}>
-                                <div className={`bedSoresSleepItem`} style={{ boxShadow: index == sleepTypenur ? "0rem 0.28rem 1.56rem 0.08rem rgba(0,116,254,0.33)" : '', background: index == sleepTypenur ? 'linear-gradient( 135deg, #009FFF 0%, #006CFD 100%)' : '#F7F8FD', }}>
-                                    <img onClick={(() => dias(item.name))} src={item.img} style={{ display: index == sleepTypenur ? 'none' : 'unset' }} alt="" />
-                                    <img onClick={(() => dias(item.name))} src={item.unImg} style={{ display: index == sleepTypenur ? 'unset' : 'none' }} alt="" />
+                                <div className={`bedSoresSleepItem`} style={{ boxShadow: item.key == sleepTypenur ? "0rem 0.28rem 1.56rem 0.08rem rgba(0,116,254,0.33)" : '', background: item.key == sleepTypenur ? 'linear-gradient( 135deg, #009FFF 0%, #006CFD 100%)' : '#F7F8FD', }}>
+                                    <img onClick={(() => dias(item.name))} src={item.img} style={{ display: item.key == sleepTypenur ? 'none' : 'unset' }} alt="" />
+                                    <img onClick={(() => dias(item.name))} src={item.unImg} style={{ display: item.key == sleepTypenur ? 'unset' : 'none' }} alt="" />
                                 </div>
                                 <div onClick={(() => dias(item.name))} style={{ textAlign: 'center', marginTop: "0.8rem" }}>{item.name}</div>
                             </div>

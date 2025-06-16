@@ -49,6 +49,14 @@ const onBedStackPush = ({ stack, state }: onBed) => {
         resData = JSON.parse(JSON.stringify(equips)) //[...equips]
         equipsPlayArr = JSON.parse(JSON.stringify(equipsPlay))
         const newVoiceExample = new voiceArr()
+
+        // window.playAudio = () => {
+        //     newVoiceExample.audio.play()
+        // }
+        // window.pauseAudio = () => {
+        //     newVoiceExample.audio.pause()
+        // }
+
         storeApi.dispatch(initData({
             newVoiceExample: newVoiceExample
         }))

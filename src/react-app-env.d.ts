@@ -74,4 +74,6 @@ declare module '*.module.sass' {
 
 declare interface Window {
   client : any
+  playAudio : any
+  pauseAudio : any
 }

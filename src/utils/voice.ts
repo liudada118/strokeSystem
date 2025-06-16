@@ -43,6 +43,8 @@ export class voiceArr {
     constructor() {
         this.voiceQueue = []
         this.playFlag = true
+        
+        
         this.voicePush = function (...value: any) {
             this.voiceQueue.push(...value)
             // alert(JSON.stringify(this.voiceQueue))

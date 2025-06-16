@@ -207,7 +207,12 @@ const TurnPlan: (props: TurnPlanProps) => React.JSX.Element = (props) => {
             </div>
             :
             <Button color="primary" variant="solid"
-                onClick={() => handleRecord()}
+                onClick={() => {
+                    if (isTimeOut(data.status)) {
+                        handleRecord()
+                    }
+                }
+                }
                 className={`w-[6rem] h-[2.4rem] text-sm ${inactive ? '!bg-[#ECF0F4] !text-[#C2CDD6]' : ''} ${isTimeOut(data.status) ? 'bg-[#EC6E38]' : ''} border-none`}
             >去记录</Button>
     }

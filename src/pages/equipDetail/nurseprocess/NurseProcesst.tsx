@@ -343,14 +343,6 @@ export default function NurseProcesst(props: nurseProcessProps) {
    */
   const submitReport = () => {
     const phone = localStorage.getItem("phone");
-    const yyds = {
-      deviceName: sensorName,
-      extra: obj.sleepPosImg || "extraData",
-      chargeMan: phone?.slice(-4),
-      flipbodyTime: new Date().getTime(),
-      posture: valueToSleep(sleepTypenur),
-      onbedTime: Math.floor(onBedTime),
-    };
     instance({
       method: "post",
       url: "/sleep/nurse/addNursingLog",
@@ -364,7 +356,7 @@ export default function NurseProcesst(props: nurseProcessProps) {
         chargeMan: phone?.slice(-4),
         flipbodyTime: new Date().getTime(),
         posture: valueToSleep(sleepTypenur),
-        onbedTime: Math.floor(onBedTime),
+        onbedTime: isNaN(Math.floor(onBedTime)) ? 0 : Math.floor(onBedTime),
       },
     }).then((res) => {
       message.success("护理成功");

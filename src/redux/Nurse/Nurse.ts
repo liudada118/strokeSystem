@@ -14,7 +14,9 @@ const initialState: any = {
   overSettings:false,
   currentPressure:[],
   userId:'',
-  currentPressureName:0
+  currentPressureName:0,
+  dailyTimeNursestart:{},
+  dailyTimeNurseEnd:0,
 };
 
 const mqttSlice = createSlice({
@@ -62,11 +64,17 @@ if(action.payload.deviceName===state.userId){
 },
 onName(state, action){
  state.userId=action.payload
+},
+startDailyTimeNurse(state, action){
+ state.dailyTimeNursestart=action.payload
+},
+endDailyTimeNurse(state, action){
+ state.dailyTimeNursestart=action.payload
 }
   },
 });
 
-export const { nurseOpen, nurseDataList, nurseIsOpenAdd, resetNuserpage, nurseSensorName, setNurseListData,setIsGotoNursePage,showTabsTabs,showDataLIst ,nurseHomeOnChlick,onOverSettings,onCurrentPressure,onName} =
+export const {startDailyTimeNurse,endDailyTimeNurse, nurseOpen, nurseDataList, nurseIsOpenAdd, resetNuserpage, nurseSensorName, setNurseListData,setIsGotoNursePage,showTabsTabs,showDataLIst ,nurseHomeOnChlick,onOverSettings,onCurrentPressure,onName} =
   mqttSlice.actions;
 export const mqttSelect = (state: any) => state.mqtt.client;
 

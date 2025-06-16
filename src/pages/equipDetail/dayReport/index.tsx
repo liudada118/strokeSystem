@@ -42,6 +42,7 @@ import { CardWithoutTitle } from "../Monitor/realReport/Card";
 import useWindowSize from '@/hooks/useWindowSize'
 import { fillTimeInterval } from "./dayReportComponent/rightContent/firstItem/utils";
 import { rateArrToHeart } from "@/utils/dataToFormat";
+import { endDailyTimeNurse, startDailyTimeNurse } from "@/redux/Nurse/Nurse";
 
 const { RangePicker } = DatePicker;
 type RangePickerProps = GetProps<typeof DatePicker.RangePicker>;
@@ -465,10 +466,7 @@ export default function DayReport() {
     const hour = (hourend - hourstart)
     setPosChangeHour(Math.round(pos / hour))
     setPosChangeDay(pos)
-
-
     setData(data);
-
     const sleepTime = data.sleeping_times
     const sleepProp = data.sleep_state.map((a: any) => {
       if (a[0] == 2 || a[0] == 3) {
@@ -485,14 +483,8 @@ export default function DayReport() {
       }
     })
     // console.log(wideProp)
-
     const onbedtime = sleepTime * (sleepProp.reduce((a: any, b: any) => a + b, 0) + wideProp.reduce((a: any, b: any) => a + b, 0)) / (sleepProp.reduce((a: any, b: any) => a + b, 0))
-
-
     setOnbedTime(onbedtime)
-
-
-
     let sleepNums = 0;
     data.sleep_state.forEach((a: any) => {
       sleepNums += a[1];
@@ -500,7 +492,6 @@ export default function DayReport() {
     setSleepNums(sleepNums);
     const allTime = data.deep_sleeping_times + data.light_sleep_time;
     setAllTime(allTime);
-
   }
   const [heartRateMax, srtHeartRateMax] = useState(null)
   const [heartRateMin, srtHeartRateMin] = useState(null)
@@ -773,15 +764,17 @@ export default function DayReport() {
         </div>
       </Modal>
       <div className="fixDataSelectContent pf">
-        <div className="dataSelectContent ">
+        <div className="dataSelectContent">
           <div className="dataSelect">
             <div className="clickSelectDate">
               <CaretLeftOutlined onClick={() => {
+                startDailyTimeNurse(dayDate - 24 * 60 * 60 * 1000)
                 setDayDate(dayDate - 24 * 60 * 60 * 1000)
               }} />
               <div className="clickDateValue">{`${dayjs(new Date(dayDate)).format('YYYY-MM-DD')}`}</div>
               <CaretRightOutlined onClick={() => {
                 if (dayDate < new Date().setHours(0, 0, 0, 0)) {
+                  endDailyTimeNurse(dayDate + 24 * 60 * 60 * 1000)
                   setDayDate(dayDate + 24 * 60 * 60 * 1000)
                 }
               }} style={{ color: dayDate >= new Date().setHours(0, 0, 0, 0) ? '#D8D8D8' : 'unset' }} />

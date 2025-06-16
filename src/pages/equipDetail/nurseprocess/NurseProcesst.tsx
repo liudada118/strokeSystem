@@ -579,9 +579,9 @@ const OneClickCare = (props: oneClickCareParam) => {
   console.log(isModalOpenSend, ".......isModalOpenSend.......");
   const sleepPose = [
     {
-      value: "右侧卧",
-      img: <img src={left} alt="" />,
-      unimg: <img src={unLeft} alt="" />,
+      value: "左侧卧",
+      img: <img src={left} alt="" className="scale-x-[-1]" />,
+      unimg: <img src={unLeft} alt="" className="scale-x-[-1]" />,
     },
     {
       value: "仰卧",
@@ -589,10 +589,11 @@ const OneClickCare = (props: oneClickCareParam) => {
       unimg: <img src={unBack} alt="" />,
     },
     {
-      value: "左侧卧",
-      img: <img src={left} alt="" className="scale-x-[-1]" />,
-      unimg: <img src={unLeft} alt="" className="scale-x-[-1]" />,
+      value: "右侧卧",
+      img: <img src={left} alt="" />,
+      unimg: <img src={unLeft} alt="" />,
     },
+
   ];
 
   // const [choosedSleep, setChoosedSleep] = useState<number>(sleepTypenur)

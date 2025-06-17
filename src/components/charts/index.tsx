@@ -1088,6 +1088,7 @@ export function SleepDateTypeChart(props: SleepDateType) {
           {yArr.map((a: any, index) => {
             return (
               <div
+                key={index + 'yDay'}
                 className="yText"
                 style={{
                   position: "relative",
@@ -1104,7 +1105,9 @@ export function SleepDateTypeChart(props: SleepDateType) {
         <div className="yRowContent">
           {yArr.map((a, index) => {
             return (
-              <div className="yRow">
+              <div
+                key={index}
+                className="yRow">
                 <div className="yRowLine"></div>
               </div>
             );
@@ -1400,6 +1403,7 @@ export function SleepSegAndProp(props: SleepSegAndPropType) {
           {new Array(20).fill(0).map((a: any, index: any) => {
             return (
               <div
+                key={index}
                 style={{
                   width: "1px",
                   height: "5px",

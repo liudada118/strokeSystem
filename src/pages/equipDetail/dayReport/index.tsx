@@ -573,14 +573,12 @@ export default function DayReport() {
       setTime(timeList)
       // const hearList: any = rateArrToHeart(dataList)
 
-      const listData = [50, 52, 54, 55, 56, 57, 58, 60, 61, 63, 66, 68, 69, 71, 74, 76, 78, 80, 82, 84, 85, 86, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 52, 54, 55, 56, 57, 58, 60, 61, 63, 66, 68, 69, 71, 74, 76, 78, 80, 82, 84, 85,]
+      const listData = [50, 52, 54, 55, 56, 57, 58, 60, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 74, 76, 78, 80, 82, 84, 85, 86, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 52, 54, 55, 56, 57, 58, 60, 61, 63, 66, 68, 69, 71, 74, 76, 78, 80, 82, 84, 85,]
       const hearList = dataList.map((item: any) => {
-        if (item === null) {
-          return null
-        }
         return listData[item]
       })
-      const max: any = Math.max(...hearList)
+      const maxa = hearList.filter((itme: any) => itme !== undefined)
+      const max: any = Math.max(...maxa)
       srtHeartRateMax(max)
       setHeartRateAll(hearList)
 

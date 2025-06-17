@@ -215,7 +215,7 @@ function HeatmapReport(props: heatmapProps) {
                             {
                                 [...heatmapColor].reverse().map((a, index) => {
                                     return (
-                                        <div style={{ width: '0.3rem', height: '1rem', backgroundColor: a, marginBottom: '0.48rem' }}></div>
+                                        <div key={index + 'nurseContent'} style={{ width: '0.3rem', height: '1rem', backgroundColor: a, marginBottom: '0.48rem' }}></div>
                                     )
                                 })
                             }

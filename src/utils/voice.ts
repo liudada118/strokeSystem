@@ -1,10 +1,10 @@
 import { voiceUrl } from "@/api/api"
-import { audioPause, audioPlay, exChangeText } from "@/redux/Middleware/constant";
+import { audioPause, audioPlay, clickVoice, exChangeText } from "@/redux/Middleware/constant";
 import { message } from "antd"
 import axios from "axios"
 
-function findTextIndex(arr:Array<string> , target : string) {
-    const indexes:Array<number> = [];
+function findTextIndex(arr: Array<string>, target: string) {
+    const indexes: Array<number> = [];
     arr.forEach((val, idx) => {
         if (val === target) {
             indexes.push(idx);
@@ -19,8 +19,8 @@ function arr2ClickRoom({ textArr, room }: any) {
         return roomText
     })
 
-    const indexArr =  findTextIndex(roomArr , exChangeText(room));
-    console.log(indexArr , 'indexArr')
+    const indexArr = findTextIndex(roomArr, exChangeText(room));
+    console.log(indexArr, 'indexArr')
     let newArr = [...textArr]
 
     // indexArr.forEach((a) => {
@@ -28,8 +28,8 @@ function arr2ClickRoom({ textArr, room }: any) {
     // })
     // const result = arr.filter((_, idx) => !indexesToRemove.includes(idx));
     const res = newArr.filter((_, idx) => !indexArr.includes(idx));
-    console.log(res ,'res')
-    return {res : res , indexArr : indexArr}
+    console.log(res, 'res')
+    return { res: res, indexArr: indexArr }
 }
 
 export class voiceArr {
@@ -43,8 +43,8 @@ export class voiceArr {
     constructor() {
         this.voiceQueue = []
         this.playFlag = true
-        
-        
+
+
         this.voicePush = function (...value: any) {
             this.voiceQueue.push(...value)
             // alert(JSON.stringify(this.voiceQueue))
@@ -67,18 +67,28 @@ export class voiceArr {
             // console.log(room)
 
             // this.voiceQueue = 
-            const {res , indexArr} = arr2ClickRoom({textArr : this.voiceQueue , room : room})
-            console.log(this.voiceQueue  , 'this.voiceQueue')
+            const { res, indexArr } = arr2ClickRoom({ textArr: this.voiceQueue, room: room })
+            console.log(this.voiceQueue, 'this.voiceQueue')
             this.voiceQueue = res
-            if(indexArr.includes(0)){
-                this.audio.pause()
-                audioPause()
+
+            if (indexArr.indexOf(0) >= 0) {
+                try {
+                    this.audio.pause()
+                    // audioPause()
+                    console.log('audioPause 成功')
+                } catch (e) {
+                    console.log(e, 'audioPause 出错')
+                }
+
                 this.playFlag = true
-            }else{
+            } else {
+                console.log('不调', indexArr.indexOf(0))
+
                 // this.voiceQueue.splice(0, 1)
             }
-            
-            
+
+
+
         }
         // this.audio = document.createElement('audio')
         this.audio = document.getElementById('audio')
@@ -108,8 +118,14 @@ export class voiceArr {
                 },
                 onSuccess: function (htmlAudioElement: any) {
                     // messageAntd.error('播放语音')
-                    that.audio.play();
-                    audioPlay()
+                    try {
+                        that.audio.play();
+                        // audioPlay()
+                        console.log('audioPlay  成功')
+                    } catch (e) {
+                        console.log(e, 'audioPlay  出错')
+                    }
+
 
                 },
                 onError: function (text: any) {

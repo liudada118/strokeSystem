@@ -85,3 +85,30 @@ export function audioPause(){
         console.log(err)
     }
 }
+
+export function clickVoice(props : any){
+    // message.info('audioPause')
+    try {
+        const u = window.navigator.userAgent
+        if (u.indexOf('Android') > -1 || u.indexOf('Adr') > -1) {
+            eval(`Android.clickVoice(${props});`)
+        }
+    } catch (err) {
+        console.log(err)
+    }
+}
+
+
+export function audioRemove(){
+    // message.info('audioPause')
+    try {
+        const u = window.navigator.userAgent
+        if (u.indexOf('Android') > -1 || u.indexOf('Adr') > -1) {
+            eval(`Android.audioRemove();`)
+        }
+    } catch (err) {
+        console.log(err)
+    }
+}
+
+

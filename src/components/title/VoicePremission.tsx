@@ -40,7 +40,7 @@ export default function VoicePremission() {
     audio.setAttribute("src", voice);
     if (audio) {
       audio.play();
-      audioPlay()
+      // audioPlay()
       setIsVoiceModalOpen(false);
       first = false;
     } else {

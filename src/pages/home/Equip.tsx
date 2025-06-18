@@ -26,6 +26,7 @@ import { initEquipPc } from "@/redux/equip/equipUtil";
 import { setHomeSelectValue, setHomeSelectType } from '../../redux/home/home'
 import HomeImg from '@/assets/image/hoemAdd.png'
 import { nurseOpen } from "@/redux/Nurse/Nurse";
+import { clickVoice } from '@/redux/Middleware/constant'
 // import { setHomeSelectValue } from '../../redux/home/home'
 
 export default function Equip() {
@@ -202,6 +203,7 @@ export default function Equip() {
                                                             // console.log(alarmInfo[0].roomNum ,'roomNum')
                                                             // alert(alarmInfo[0].roomNum)
                                                             newVoiceExample.clickVoice(alarmInfo[0].roomNum)
+                                                            clickVoice(alarmInfo[0].roomNum)
                                                         }}
                                                     >我已知晓</div>
                                                 </div>
@@ -335,6 +337,7 @@ export default function Equip() {
                                                     e.stopPropagation();
                                                     newVoiceExample.clickVoice(alarmInfo[0].roomNum)
                                                     alarmConfirmFunSensorName({ a: alarmInfo[0], sensorName: item.sensorName })
+                                                    clickVoice(alarmInfo[0].roomNum)
                                                 }}
                                             >我已知晓</div>
                                         </div> : ''}

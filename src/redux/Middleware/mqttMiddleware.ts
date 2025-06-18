@@ -1,6 +1,6 @@
 
 import mqtt from 'mqtt/dist/mqtt';
-import { closeMqtt, exChangeText, PORT, reloadWebview, startMqtt } from './constant';
+import { audioRemove, closeMqtt, exChangeText, PORT, reloadWebview, startMqtt } from './constant';
 import { createTimer, mqttConnect } from '../mqtt/mqttSlice';
 // import { alarmJudge, ALARMTYPE } from './alarmUtil';
 import { findAlarmSwitch, findAlarmToCatch, initEquipPc, neatEquips, returnRealAlarm, alarmJudge, ALARMTYPE } from '../equip/equipUtil';
@@ -56,6 +56,9 @@ const onBedStackPush = ({ stack, state }: onBed) => {
         // window.pauseAudio = () => {
         //     newVoiceExample.audio.pause()
         // }
+
+        window.newVoiceExample = newVoiceExample
+        audioRemove()
 
         storeApi.dispatch(initData({
             newVoiceExample: newVoiceExample

@@ -463,19 +463,33 @@ export function neatEquips({ equipArr }: neatEquipsProps): neatReturn {
  * @param equips 传入设备列表
  * @returns 返回电脑端 渲染列表数据
  */
-function moveLastToFront(arr:any) {
-    return arr.map((item:any) => {
-        if (!Array.isArray(item)) {
-            return item; // 非数组元素保持不变
-        }
-        if (item.length === 0) {
-            return []; // 空数组保持不变
-        }
-        const lastElement = item[item.length - 1];
-        return [lastElement, ...item.slice(0, item.length - 1)];
-    });
-}
 
+function processNestedArray(arr:any) {
+   
+    const addItems:any = [];
+   
+    arr.forEach((subArray:any) => {
+        if (Array.isArray(subArray)) {
+       
+            const filteredSubArray = subArray.filter(item => {
+                if (item && item.type === 'add') {
+                    addItems.push(item);
+                    return false; 
+                }
+                return true; 
+            });
+            
+         
+            subArray.length = 0; 
+            subArray.push(...filteredSubArray); 
+        }
+    });
+    if (addItems.length > 0 && arr.length > 0 && Array.isArray(arr[0])) {
+        arr[0].unshift(...addItems.reverse()); 
+    }
+    
+    return arr;
+}
 export function initEquipPc(res: any) {
   const equips = JSON.parse(JSON.stringify(res));
      equips.unshift({ type: 'add'})
@@ -511,7 +525,9 @@ export function initEquipPc(res: any) {
     });
     newEquip[i].push(...sortedItems);
   }
-  const ress =moveLastToFront(newEquip); 
+  const ress =processNestedArray(newEquip); 
+  console.log(ress,'......................................ress');
+  
   return ress;
 }
 type AlarmMap = {

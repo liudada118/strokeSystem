@@ -577,6 +577,8 @@ export default function DayReport() {
       const hearList = dataList.map((item: any) => {
         return listData[item]
       })
+      console.log(hearList, '...................................hearList');
+
       const maxa = hearList.filter((itme: any) => itme !== undefined)
       const max: any = Math.max(...maxa)
       srtHeartRateMax(max)

@@ -212,7 +212,7 @@ export function CurveChart(props: curveIndex) {
       color: ["#006EFF", "#67E0E3", "#9FE6B8"],
       xAxis: {
         type: "category",
-        minInterval: 100,
+        // minInterval: 100,
         // props.isFalse === false ? props.xdata :
         data: props.isFalse === true ? props.xdata : [
           "20:00",

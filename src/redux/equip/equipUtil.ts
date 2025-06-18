@@ -463,9 +463,22 @@ export function neatEquips({ equipArr }: neatEquipsProps): neatReturn {
  * @param equips 传入设备列表
  * @returns 返回电脑端 渲染列表数据
  */
+function moveLastToFront(arr:any) {
+    return arr.map((item:any) => {
+        if (!Array.isArray(item)) {
+            return item; // 非数组元素保持不变
+        }
+        if (item.length === 0) {
+            return []; // 空数组保持不变
+        }
+        const lastElement = item[item.length - 1];
+        return [lastElement, ...item.slice(0, item.length - 1)];
+    });
+}
 
 export function initEquipPc(res: any) {
   const equips = JSON.parse(JSON.stringify(res));
+     equips.unshift({ type: 'add'})
   const total = equips.length;
   const newEquip: any = [];
  
@@ -474,11 +487,11 @@ export function initEquipPc(res: any) {
   for (let i = 0; i < pages; i++) {
     newEquip[i] = [];
 
-    if (i === 0) {
-      newEquip[i].push({ type: 'add' });
-    }
+    // if (i === 0) {
+    //   newEquip[i].push({ type: 'add' });
+    // }
 
-    const numm = i === 0 ? 17 : 18;
+    const numm = i === 0 ? 18 : 18;
     const startIdx = i * numm;
     const endIdx = Math.min(startIdx + numm, total);
     
@@ -487,9 +500,7 @@ export function initEquipPc(res: any) {
     for (let j = startIdx; j < endIdx; j++) {
       pageItems.push(equips[j]);
     }
-    
-    // 对当前页的元素进行排序，online 状态的元素排在最前面
-    const sortedItems = pageItems.sort((a, b) => {
+    const sortedItems = pageItems.sort((a:any, b:any) => {
       if (a.status === 'online' && b.status !== 'online') {
         return -1; // a 排在 b 前面
       } else if (a.status !== 'online' && b.status === 'online') {
@@ -498,12 +509,10 @@ export function initEquipPc(res: any) {
         return 0; // 保持原有顺序
       }
     });
-    
-    // 将排序后的元素添加到当前页
     newEquip[i].push(...sortedItems);
   }
-  
-  return newEquip;
+  const ress =moveLastToFront(newEquip); 
+  return ress;
 }
 type AlarmMap = {
   [key in string]: string;

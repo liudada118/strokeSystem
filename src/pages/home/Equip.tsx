@@ -138,7 +138,6 @@ export default function Equip() {
         setOpen(true)
         setFals(true)
     }
-    console.log(datalist, '.................................build/apkTest/staticbuild/apkTest/staticbuild/apkTest/static');
 
     return (
         <div className="main"
@@ -164,7 +163,7 @@ export default function Equip() {
                                     return a.sensorName == item.sensorName
                                 })
                                 if (item.type === 'add') {
-                                    return <div style={{ width: "13.2rem", marginRight: "1rem", height: "14.5rem", borderColor: "#F5F8FA", boxShadow: "0px 0px 10px 0px rgba(164, 176, 188, 0.4)", borderRadius: "0.63rem", marginBottom: "1rem", border: "1px #ccc solid", position: "relative", display: "flex", alignItems: "center", justifyContent: "center", flexDirection: 'column' }} key={index}>
+                                    return <div style={{ width: "13.2rem", height: "14.5rem", borderColor: "#F5F8FA", boxShadow: "0px 0px 10px 0px rgba(164, 176, 188, 0.4)", borderRadius: "0.63rem", border: "1px #ccc solid", position: "relative", display: "flex", alignItems: "center", justifyContent: "center", flexDirection: 'column', marginRight: "0.8rem", marginBottom: "0.8rem" }} key={index}>
                                         <img className='w-[7rem] h-[7rem] mb-[1rem]' onClick={() => onOPen()} src={HomeImg} alt="" />
                                         <Button onClick={() => onOPen()} color="primary" style={{ color: "#fff", borderRadius: "3rem", background: "#fff !important", border: "solid 1px " }}>添加设备</Button>
                                     </div>

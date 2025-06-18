@@ -9,7 +9,7 @@ export default function UserInfo(props: any) {
             <p className='lineHeight'>{sysIntroObj.title.info}</p>
             {sysIntroObj.smallTitle.map((a: any, index: any) => {
                 return (
-                    <>
+                    <div key={index}>
                         <div style={{ fontSize: '0.97rem', fontWeight: 'bold', marginBottom: '1.18rem' }}>{a.name}</div>
                         {
                             a.info.info ? <p style={{ marginBottom: '1.18rem' }} className='lineHeight'>{a.info.info}</p> : ''
@@ -18,7 +18,7 @@ export default function UserInfo(props: any) {
                             a.info.imgArr ? <div>
                                 {a.info.imgArr.map((b: any, indexb: any) => {
                                     return (
-                                        <img className={`userInfoImg`} style={{width : `${b.width}%`}} src={b.src} alt="" />
+                                        <img className={`userInfoImg`} style={{ width: `${b.width}%` }} src={b.src} alt="" />
                                     )
                                 })}
                             </div> : ''
@@ -37,7 +37,7 @@ export default function UserInfo(props: any) {
                                                 c.info && c.info.imgArr ? <div>
                                                     {c.info.imgArr.map((d: any, indexb: any) => {
                                                         return (
-                                                            <img className={`userInfoImg`} style={{width : `${d.width}%`}} src={d.src} alt="" />
+                                                            <img className={`userInfoImg`} style={{ width: `${d.width}%` }} src={d.src} alt="" />
                                                         )
                                                     })}
                                                 </div> : ''
@@ -49,7 +49,7 @@ export default function UserInfo(props: any) {
                                 })
                             }</> : ''
                         }
-                    </>
+                    </div>
 
                 )
             })}

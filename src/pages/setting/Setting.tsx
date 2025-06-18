@@ -1627,7 +1627,7 @@ export default function Setting() {
       <Modal title="是否删除当前设备" open={isModalAdminDeleteDeviceOpen} onOk={handleAdminDeleteDeviceOk} onCancel={handleAdminDeleteDeviceCancel}>
 
 
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }} className='deviceItem'>
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', margin: '0 20px' }} className='deviceItem'>
           <div className="deviceTitle">设备号:</div>
           <div style={{ display: 'flex', flex: 1, alignItems: 'center' }}>
             {mac}

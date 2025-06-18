@@ -1000,8 +1000,8 @@ const SettingBlock: (props: SettingBlockProps) => React.JSX.Element = (
           deviceName: sensorName,
         }
       }).then((res: any) => {
-        console.log(res.data.leaveBedParam, '........res.data.leaveBedParam');
-
+        
+        
         setValleaveBedParam({
           leaveBedParam: res.data.leaveBedParam,
           leaveBedTimeParam: res.data.leaveBedTimeParam,

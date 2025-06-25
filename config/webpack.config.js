@@ -2,7 +2,8 @@
 
 // const serverPath = 'weixin/nurse/'
 // const serverPath = 'Ytest/'
-const serverPath = 'apkTest/'
+// const serverPath = 'apkTest/'
+const serverPath = 'cheshi/'
 // const serverPath = ''
 
 // const serverPath = 'test2/'

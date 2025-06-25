@@ -21,7 +21,7 @@ export const voiceUrl = `http://${web}`
 // export const netUrl = "http://10.100.14.214:8080/rcv";
 // export const netRepUrl = "http://10.100.14.214:8081";
 
-export const Instancercv = axios.create({
+export const Instancercv =  axios.create({
   baseURL: netUrl
 })
 export const instance = axios.create({

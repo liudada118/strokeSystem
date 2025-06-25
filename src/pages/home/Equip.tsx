@@ -26,6 +26,7 @@ import { initEquipPc } from "@/redux/equip/equipUtil";
 import { setHomeSelectValue, setHomeSelectType } from '../../redux/home/home'
 import HomeImg from '@/assets/image/hoemAdd.png'
 import { nurseOpen } from "@/redux/Nurse/Nurse";
+import { rateToHeart } from '@/utils/dataToFormat'
 import { clickVoice } from '@/redux/Middleware/constant'
 // import { setHomeSelectValue } from '../../redux/home/home'
 
@@ -400,7 +401,7 @@ export default function Equip() {
                                                 <div className="equipTitle"  >
                                                     <img className="equipTitleImg" src={item.onBed == 4 ? sitHeart : newHeart} alt="" /></div>
                                                 <div className="equipText">
-                                                    {item.heartRate ? item.breath == 88 || item.breath == -1 ? <Spin /> : item.heartRate : '--'}
+                                                    {item.heartRate ? item.breath == 88 || item.breath == -1 ? <Spin /> : rateToHeart(item.heartRate) : '--'}
                                                 </div>
                                             </div>
                                             <div className="breatheContent">
